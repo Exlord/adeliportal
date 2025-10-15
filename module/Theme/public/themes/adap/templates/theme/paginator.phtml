@@ -1,0 +1,60 @@
+<?php if ($this->pageCount > 1): ?>
+
+    <?
+    if (!isset($this->route_params) && !is_array($this->route_params))
+        $this->route_params = array();
+    $route_params = $this->route_params;
+    $route_options = $this->route_options;
+    $route_options['query']['page'] = 1;
+    $selected_per_page = isset($query['per_page']) ?: '';
+    $dataHref = $this->dataHref;
+
+    ?>
+    <div class="paginationControl">
+
+        <!-- First page link -->
+
+        <!-- Previous page link -->
+        <?php if (isset($this->previous)): ?>
+            <? $route_options['query']['page'] = $this->previous; ?>
+            <a class="btn previous "
+               title="<?= $this->translate('Previous') ?>"
+                <?= $dataHref ? 'data-' : '' ?>
+               href="<?php echo $this->url($this->route, $route_params, $route_options); ?>">
+            </a>
+        <?php else: ?>
+            <a class="btn previous disabled" title="<?= $this->translate('Previous') ?>">
+            </a>
+        <?php endif; ?>
+
+        <!-- Numbered page links -->
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if ($page != $this->current): ?>
+                <? $route_options['query']['page'] = $page; ?>
+                <a class="btn  "
+                   <?= $dataHref ? 'data-' : '' ?>href="<?php echo $this->url($this->route, $route_params, $route_options); ?>">
+                    <?php echo $page; ?>
+                </a>
+            <?php else: ?>
+                <a class="btn current_page">
+                    <?php echo $page; ?>
+                </a>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <!-- Next page link -->
+        <?php if (isset($this->next)): ?>
+            <? $route_options['query']['page'] = $this->next; ?>
+            <a class="btn next "
+               title="<?= $this->translate('Next') ?>"
+                <?= $dataHref ? 'data-' : '' ?>
+               href="<?php echo $this->url($this->route, $route_params, $route_options); ?>">
+            </a>
+        <?php else: ?>
+            <a class="btn next disabled" title="<?= $this->translate('Next') ?>">
+            </a>
+        <?php endif; ?>
+
+        <!-- Last page link -->
+    </div>
+<?php endif; ?>

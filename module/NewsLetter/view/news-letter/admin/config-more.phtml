@@ -1,0 +1,16 @@
+<div>
+    <h3 class="page-title">
+        <?=$this->translate('Configs Contact Us');?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formCollection($form->get('select'));
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>

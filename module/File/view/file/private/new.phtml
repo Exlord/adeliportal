@@ -1,0 +1,35 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Private File'); ?>
+    </h3>
+
+    <div class="row">
+        <?
+        $this->form->prepare();
+        print $this->form()->openTag($this->form);
+        ?>
+        <div class="col-md-6">
+            <? print $this->formRow($this->form->get('name')); ?>
+            <? print $this->formRow($this->form->get('title')); ?>
+            <? print $this->formRow($this->form->get('downloadAs')); ?>
+        </div>
+        <div class="col-md-6">
+            <? if (isset($this->model)) {
+                print
+                    \Theme\API\Common::Link(
+                        sprintf(t('Download %s'), "<strong>" . end(explode('/', $this->model['downloadAs'])) . "</strong>"),
+                        url('app/pf-ddl', array('file' => $this->model['id'])),
+                        array('class' => 'btn btn-default pull-right flip text-left dir-ltr')
+                    );
+            }?>
+            <? print $this->formRow($this->form->get('path')); ?>
+            <? print $this->formRow($this->form->get('accessibility')); ?>
+        </div>
+        <div class="col-md-12">
+            <? print $this->formCollection($this->form->get('buttons')); ?>
+        </div>
+        <?
+        print $this->form()->closeTag();
+        ?>
+    </div>
+</div>

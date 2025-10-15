@@ -1,0 +1,65 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Workshop Class'); ?>
+    </h3>
+
+    <div>
+        <? echo($this->form($this->form)); ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    var selectedEducator = false;
+    <?if($this->model && !$this->model->isNew){?>
+    selectedEducator = <?=json_encode($this->model)?>;
+    <?}?>
+    <?\Application\API\App::setEditor('note',$this)?>
+    var educatorUserRoles = <?=json_encode($this->educatorUserRoles)?>;
+    $(document).ready(function () {
+        $('#educator').select2({
+            minimumInputLength: 2,
+            ajax: {
+                type: 'POST',
+                url: '<?=url('admin/users/search')?>',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        q: term, //search term
+                        page_limit: 10, // page size
+                        page: page, // page number
+                        params: {'roleId': educatorUserRoles}
+                    };
+                },
+                results: function (data, page) {
+                    var more = (page * 10) < data.total;
+                    return {results: data.users, more: more};
+                }
+            },
+            escapeMarkup: function (m) {
+                return m;
+            },
+            formatResult: educatorResultFormat,
+            formatSelection: educatorResultFormat,
+            initSelection: function (element, callback) {
+                if (selectedEducator)
+                    callback(selectedEducator);
+            }
+        });
+    });
+    function educatorResultFormat(item) {
+        var text = item.text;
+        var name = item.name;
+        var dName = item.displayName;
+
+        if ((item.name && item.name.length) || (item.displayName && item.displayName.length))
+            text = " <small><em class='text-muted'>(" + item.text + ")</em></small>";
+
+        if ((item.displayName && item.displayName.length) && (item.name && item.name.length))
+            name = " <small><em class='text-muted'>(" + item.name + ")</em></small>";
+
+        text = dName + name + text;
+
+        return text;
+    }
+    <?$this->inlineScript()->captureEnd();?>
+</script>

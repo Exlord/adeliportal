@@ -1,0 +1,6 @@
+<?return array(
+    'CAPTCHA_OPERAND_PLUS' => 'plus',
+    'CAPTCHA_OPERATOR_MINUS' => 'minus',
+    'CAPTCHA_OPERATOR_EQUAL' => 'is equal to',
+    'CAPTCHA_OPERAND_NEGATIVE' => 'negative',
+);

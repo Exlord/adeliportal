@@ -1,0 +1,85 @@
+<div>
+    <a class="toolbar-button button ajax_page_load"
+       href="<?= url('admin/notify/config') ?>"><?= t('Simple Config') ?></a>
+
+    <h3 class="page-title">
+        <?= $this->translate('Advance Notification Settings'); ?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach ($form->getElements() as $el) {
+            echo $this->iptFormRow($el);
+        }
+
+        $roles = $form->get('user_roles');
+        ?>
+       <fieldset>
+           <legend><?=t($roles->getLabel())?></legend>
+           <p class="form_element_description">
+               <?=t($roles->getOption('description'))?>
+           </p>
+
+           <div id="roles_tabs">
+               <ul>
+                   <? foreach ($roles->getFieldsets() as $role) { ?>
+                       <li>
+                           <a href="#role-<?= str_replace(array('[' . ']'), '_', $role->getName())  ?>">
+                               <?= $this->translate($role->getLabel()) ?>
+                           </a>
+                       </li>
+                       <? $role->setLabel('');
+                   } ?>
+               </ul>
+               <? foreach ($roles->getFieldsets() as $role) { ?>
+                   <div id="role-<?= str_replace(array('[' . ']'), '_', $role->getName()) ?>">
+                       <div style="clear:both;">
+                           <div class="module_notifications_settings">
+                               <ul>
+                                   <? foreach ($role->get('modules')->getFieldsets() as $module) { ?>
+                                       <li>
+                                           <a href="#module-<?= str_replace(array('[' . ']'), '_', $module->getName()) ?>"><?= t($module->getLabel()) ?></a>
+                                       </li>
+                                   <? } ?>
+                               </ul>
+                               <? foreach ($role->get('modules')->getFieldsets() as $module) { ?>
+                                   <div id="module-<?= str_replace(array('[' . ']'), '_', $module->getName()) ?>">
+                                       <div style="clear:both;">
+                                           <div class="module_keys_tabs">
+                                               <ul>
+                                                   <? foreach ($module->getFieldsets() as $keys) { ?>
+                                                       <li>
+                                                           <a href="#module-key-<?= str_replace(array('[' . ']'), '_', $keys->getName()) ?>"><?= t($keys->getLabel()) ?></a>
+                                                       </li>
+                                                       <? $keys->setLabel('');
+                                                   } ?>
+                                               </ul>
+                                               <? foreach ($module->getFieldsets() as $keys) { ?>
+                                                   <div id="module-key-<?= str_replace(array('[' . ']'), '_', $keys->getName()) ?>">
+                                                       <?= $this->iptFormCollection($keys) ?>
+                                                   </div>
+                                               <? } ?>
+                                           </div>
+                                       </div>
+                                   </div>
+                               <? } ?>
+                           </div>
+                       </div>
+                   </div>
+               <? } ?>
+           </div>
+       </fieldset>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.module_notifications_settings').tabs();
+    $('#roles_tabs').tabs();
+    $('.module_keys_tabs').tabs();
+</script>

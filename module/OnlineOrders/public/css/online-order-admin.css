@@ -1,0 +1,31 @@
+.tbl-data-grid {
+	width: 100%;
+	text-align: center;
+}
+.tbl-data-grid-tr-1 {
+	line-height: 30px;
+	background-color: #ffffff;
+}
+.tbl-data-grid-tr-1:hover {
+	line-height: 30px;
+	background-color: #ffca47;
+}
+.tbl-data-grid-tr-2 {
+	line-height: 30px;
+	background-color: #eeeeee;
+}
+.tbl-data-grid-tr-2:hover {
+	line-height: 30px;
+	background-color: #ffca47;
+}
+.tbl-data-grid th {
+	font-size: 10px;
+	font-weight: bold;
+	color: #139ff7;
+	text-align: center;
+	padding-bottom: 10px;
+}
+.tbl-data-grid td {
+	border-top: 1px solid #dddddd;
+	text-align: center;
+}

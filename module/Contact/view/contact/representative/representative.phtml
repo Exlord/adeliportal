@@ -1,0 +1,89 @@
+<?
+if ($this->empty) {
+    ?>
+    <h2>
+        <?= t('Contact_REPRESENTATIVE_NOTFOUND') ?>
+    </h2>
+<?
+} else {
+    $this->headLink()->prependStylesheet($this->basePath() . '/css/contact.css');
+    $this->headScript()->appendFile($this->basePath() . '/js/contact-google-map.js');
+
+    $selectContactUser = $this->selectContactUser;
+    ?>
+
+    <div class="main-contact">
+        <div class="representative-header">
+            <h2>
+                <?= t('Contact_SHOW_INFO_WITH_CLICK') ?>
+            </h2>
+        </div>
+
+        <div class="user-contact" style="display: none;">
+            <?
+            if (!empty($selectContactUser))
+                foreach ($selectContactUser as $row) {
+                    ?>
+                    <div class="div-contact-user user_<?= $row['id'] ?>">
+                        <h2>
+                            <img src="<?= $this->basePath() . '/images/name.png' ?>">
+                            <?= $row['name'] ?>
+                        </h2>
+                        <? if (!empty($row['role'])) { ?>
+                            <label class="user-contact-role">
+                                <img src="<?= $this->basePath() . '/images/naghshkarbari.png' ?>">
+                                <span style="color: #966841; font-family: BYekan; font-size: 8pt;"><?= t('Role') . " : " ?></span>
+                                <span style="color: #808080; font-family: BMitra; font-size: 12pt; font-weight: normal;"><?= $row['role'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['mobile'])) { ?>
+                            <label class="user-contact-mobile">
+                                <img src="<?= $this->basePath() . '/images/mob.png' ?>">
+                                <span style="color: #966841; font-family: BYekan; font-size: 8pt;"><?= t('Mobile') . " : " ?></span>
+                                <span style="color: #808080; font-family: BMitra; font-size: 12pt; font-weight: normal;"><?= $row['mobile'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['phone'])) { ?>
+                            <label class="user-contact-phone">
+                                <img src="<?= $this->basePath() . '/images/phon.png' ?>">
+                                <span style="color: #966841; font-family: BYekan; font-size: 8pt;"><?= t('Phone') . " : " ?></span>
+                                <span style="color: #808080; font-family: BMitra; font-size: 12pt; font-weight: normal;"><?= $row['phone'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['fax'])) { ?>
+                            <label class="user-contact-fax">
+                                <img src="<?= $this->basePath() . '/images/fax.png' ?>">
+                                <span style="color: #966841; font-family: BYekan; font-size: 8pt;"><?= t('Fax') . " : " ?></span>
+                                <span style="color: #808080; font-family: BMitra; font-size: 12pt; font-weight: normal;"><?= $row['fax'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['description'])) { ?>
+                            <label class="user-contact-description">
+                                <span style="color: #808080; font-family: BMitra; font-size: 12pt; font-weight: normal;"><?= $row['description'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['address'])) { ?>
+                            <label class="user-contact-address">
+                                <img src="<?= $this->basePath() . '/images/address.png' ?>">
+                                <span style="color: #808080; font-family: BMitra; font-size: 12pt; font-weight: normal;"><?= $row['address'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['google'])) { ?>
+                            <span class="lat-lng-google" data-id="<?= $row['google'] ?>"></span>
+                        <? } ?>
+                    </div>
+                <? } ?>
+        </div>
+        <div class="main-representative">
+            <div class="map-contact">
+                <a href="#" class="reset-map"></a>
+                <div id="map" class="map-contact-us"></div>
+            </div>
+        </div>
+    </div>
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script type="text/javascript">
+        var googleMapCenter = '<?=$this->center?>';
+        var googleMapZoom = '<?=$this->zoom?>';
+    </script>
+<? } ?>

@@ -1,0 +1,4 @@
+.middle-menu .navigation li{float:left; width:25%; display:inline-block;}
+.middle-menu .navigation li a{ display:block;  line-height:30px;}
+.middle2-menu .navigation li{float:left; width:20%; display:inline-block;}
+.middle2-menu .navigation li a{ display:block;  line-height:30px;}

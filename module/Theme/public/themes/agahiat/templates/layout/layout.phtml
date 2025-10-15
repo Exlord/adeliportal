@@ -1,0 +1,263 @@
+<?
+$content = \Theme\API\Themes::renderLayout($this);
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    )
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie8.css',
+        'screen',
+        'lt IE 9'
+    );
+
+if ($direction == 'rtl')
+    $this->headLink()->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-rtl.min.css');
+
+$this->headLink()
+    ->prependStylesheet($basePath . '/select2/select2-bootstrap.css')
+    ->prependStylesheet($basePath . '/select2/select2.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-theme.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/flick/jquery-ui-1.10.4.custom.min.css')
+    ->prependStylesheet($basePath . '/css/system.css');
+
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/select2/select2.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . '/js/jquery-ui-1.10.4.custom.min.js')
+    ->prependFile($basePath . TEMPLATE_PATH . '/js/bootstrap.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    )
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/html5shiv.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+
+//---------------------------------- BLOCKS -----------------------------------------------//
+$before_main_content = $this->blocks('before_main_content');
+$after_main_content = $this->blocks('after_main_content');
+$header = $this->blocks('header');
+$footer = $this->blocks('footer');
+$col_right = $this->blocks('col_right');
+$col_left = $this->blocks('col_left');
+$topMenu = $this->blocks('top_menu');
+$clock = $this->blocks('clock');
+$logo = $this->blocks('logo');
+$message = $this->blocks('message');
+$label = $this->blocks('label');
+$desc_menu = $this->blocks('desc_menu');
+
+//$userLoginBlock = $this->user_logged_in_block();
+
+$mainColSize = 12;
+if ($col_left && $col_right)
+    $mainColSize = 6;
+if ($col_right || $col_left)
+    $mainColSize = 9;
+
+$clockPartial = $this->partial('theme/custom/clock');
+
+$flashMS = trim($this->flashMessenger()->render());
+$userLoginBlock = $this->user_login_block();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+<body id="page-top" class="<?= implode(' ', $this->body()->class) ?>">
+<div id="body">
+    <div id="container">
+        <div class="container-fluid width_950 margin_top_20">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 box_top">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-8 col-md-8">
+                            <? if ($topMenu) { ?>
+                                <? print $topMenu; ?>
+                            <? } ?>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-4">
+                            <ul class="box_login_user">
+                                <?
+                                if (!current_user()->id) {
+                                    ?>
+                                    <li>
+                                        <a href="<?= url('app/user/register') ?>" class="btn_register"></a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= url('app/user/login') ?>" id="login-popover-toggle"
+                                           class="btn_login"></a>
+
+                                        <div id="login-popover" class="hidden">
+                                            <?= $userLoginBlock; ?>
+                                        </div>
+                                    </li>
+                                <?
+                                } else {
+                                    ?>
+                                    <li class="manage">
+                                        <a href="<?= url('app/user') ?>" title="<?= t('Profile') ?>">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                            <span class="box_user_title">
+                                                    <?=getUserDisplayName(current_user());?>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <?
+                                    if (isAllowed(\Application\Module::ADMIN)) {
+                                        ?>
+                                        <li class="manage">
+                                            <a href="<?= url('admin') ?>" title="<?= t('Administration') ?>">
+                                                <span class="glyphicon glyphicon-cog"></span>
+                                            </a>
+                                        </li>
+                                    <?
+                                    }
+                                    ?>
+                                    <li class="manage">
+                                        <a href="<?= url('app/user/logout') ?>" title=" <?= t('Logout') ?>">
+                                            <span class="glyphicon glyphicon-log-out"></span>
+                                        </a>
+                                    </li>
+                                <?
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-12 box_main">
+                    <div class="row">
+
+                        <? if ($clock) { ?>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <?= $clock ?>
+                            </div>
+                        <? } ?>
+
+                        <? if ($logo) { ?>
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <?= $logo ?>
+                            </div>
+                        <? } ?>
+
+                        <? if ($message) { ?>
+                            <div class="col-xs-8 col-sm-4 col-md-4 zero_padding">
+                                <?= $message ?>
+                            </div>
+                        <? } ?>
+
+                        <? if ($label) { ?>
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                <?= $label ?>
+                            </div>
+                        <? } ?>
+
+                        <? if ($desc_menu) { ?>
+                            <div style="clear:both"></div>
+                            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                                <img src="<?= $basePath . TEMPLATE_PATH . '/images/main/amuzesh_titr.png' ?>"
+                                     class="img-responsive desc_img_site">
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <?= $desc_menu ?>
+                            </div>
+                        <? } ?>
+
+                        <? if ($before_main_content) { ?>
+                            <div class="col-md-12 before_main_content">
+                                <?= $before_main_content ?>
+                            </div>
+                        <? } ?>
+
+                        <? if ($col_left) { ?>
+                            <div class="col-md-3">
+                                <?= $col_left ?>
+                            </div>
+                        <? } ?>
+
+                        <div class="col-md-<?= $mainColSize ?>">
+                            <? if (!empty($flashMS)) { ?>
+                                <div id="system_messages"> <?= $flashMS ?></div>
+                            <? } ?>
+                            <?= $this->content ?>
+                        </div>
+
+                        <? if ($col_right) { ?>
+                            <div class="col-md-3">
+                                <?= $col_right ?>
+                            </div>
+                        <? } ?>
+
+                        <? if ($after_main_content) { ?>
+                            <div class="col-md-12 after_main_content">
+                                <?= $after_main_content ?>
+                            </div>
+                        <? } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="footer" class="container-fluid footer sticky-bottom">
+        <div class="row">
+            <div class=" col-md-12">
+                <div class="">
+                    <?
+                    $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                    $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    ?>
+                    <!--                    <p align="center">-->
+                    <!--                        --><? //= t('APPLICATION_BROWSERS') ?>
+                    <!--                    </p>-->
+
+                    <p align="center">
+                        <span><?= sprintf(t('APPLICATION_RIGHTS'), 'آگهیات') ?></span>
+                        <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                        &nbsp; .
+                        <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                        <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

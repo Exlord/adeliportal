@@ -1,0 +1,10 @@
+<div class="block <?=$this->block->data['class']?>" id="block-<?=$this->block->blockId?>">
+    <div class="block-body">
+        <?if ($this->block->title) { ?>
+            <div class="block-title"><?=$this->translate($this->block->title)?></div>
+        <? }?>
+        <div class="block-content">
+            <?=$this->block->content?>
+        </div>
+    </div>
+</div>

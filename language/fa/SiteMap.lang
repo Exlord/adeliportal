@@ -1,0 +1,11 @@
+<?return array(
+    'PERM_SiteMap' => "نقشه سایت",
+    'SITEMAP' => 'نقشه سایت',
+    'SITEMAP_DESC' => 'یک صفحه از نقشه سایت ایجاد می کند .',
+    'Sitemap' => 'نقشه سایت',
+    'Sitemap Configs' => 'تنظیمات نقشه سایت',
+    'select witch section of witch module should be included in the sitemap' => 'انتخاب کنید کدام قسمت از کدام ماژول ها باید در نقشه سایت قرار بگیرند',
+    "Sitemap Configs changed" => 'تنظیمات نقشه سایت تغییر کرد',
+    'Sitemap configs saved successfully' => 'تنظیمات نقشه سایت با موفقیت ذخیره شد',
+    'SITEMAP_FREQ'=>'بازه زمانی',
+);

@@ -1,0 +1,14 @@
+<?
+$form = $this->form;
+?>
+<div class="new-form">
+    <?
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    foreach ($form->getElements() as $el) {
+        echo $this->iptformRow($el);
+    }
+    echo $this->iptFormCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>

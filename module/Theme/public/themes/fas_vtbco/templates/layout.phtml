@@ -1,0 +1,401 @@
+<?
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+
+$this->headLink()
+    ->prependStylesheet($this->basePath() . '/css/system.css')
+    ->prependStylesheet($this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css')
+    ->prependStylesheet($this->basePath() . '/css/reset.min.css');
+
+$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/style.css');
+
+$this->headScript()
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/template.js')
+    ->prependFile($this->basePath() . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($this->basePath() . '/js/system.jquery.ui.js')
+    ->prependFile($this->basePath() . '/js/system.js')
+    ->prependFile($this->basePath() . '/js/forms.js')
+    ->prependFile($this->basePath() . '/js/jquery.transit.min.js')
+    ->prependFile($this->basePath() . '/js/general-client.js')
+    ->prependFile($this->basePath() . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($this->basePath() . '/js/jquery-1.9.1.min.js');
+
+
+$column_right_blocks = '';
+$has_column_right = strlen(trim($column_right_blocks));
+
+$mid_col_class = '';
+
+
+if ($has_column_right)
+    $mid_col_class = 'two_columns';
+
+$user_block = $this->user_logged_in_block();
+if (!$user_block) {
+    $user_login_block = $this->blocks('user-popup');
+}
+
+$headerBlock = $this->blocks('header');
+$topMenuBlock = $this->blocks('top-menu');
+
+$colRightBlock = $this->blocks('col-right');
+$hasRightColumn = !empty($colRightBlock);
+
+$debugBlock = $this->blocks('debug');
+$colMidTopBlock = $this->blocks('col-mid-top');
+
+$colLeftTopBlock = $this->blocks('col-left-top');
+$colLeftLeftBlock = $this->blocks('col-left-left');
+$colLeftRightBlock = $this->blocks('col-left-right');
+$hasLeftBlock = (!empty($colLeftTopBlock) || !empty($colLeftLeftBlock) || !empty($colLeftRightBlock));
+$footerBlock = $this->blocks('footer');
+
+$mainSlider = $this->blocks('main-slider');
+$logo = $this->blocks('logo');
+$menu = $this->blocks('menu');
+$footer_menu = $this->blocks('footer-menu');
+$footer_menu2 = $this->blocks('footer-menu2');
+$footer_menu3 = $this->blocks('footer-menu3');
+$footer_menu4 = $this->blocks('footer-menu4');
+$languageSwitcher = $this->langSwitcher(null);
+
+$breadcrumbs = $this->breadcrumb();
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <?= $this->head() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+    <style>
+        .col-mid-top-header{ width:100%; border-bottom:1px solid #cccccc; }
+        .mid-top-box-right{ width:20%; display:inline-block; margin-top:40px; }
+        .mid-top-box-right .block-content{ padding:0px !important; }
+        .mid-top-box-left{ width:65%; display:inline-block; }
+        .main-body{ width:100%; margin-right:auto; margin-left:auto; }
+        .mid-content{ width:980px !important; margin-right:auto; margin-left:auto; position:relative; display:flex !important; }
+        .box-mid-top-header{ width:980px !important; margin-right:auto; margin-left:auto; position:relative; }
+        .column{ width:100%; display:block }
+        .header{ }
+        .sidebar{ width:220px; display:inline-block; margin-top:10px; }
+        .box-content{ width:750px; display:inline-block; }
+        .top_menu_box{ width:100%; float:none; display:inline-block; background:#000000; position:fixed; z-index:99999; border-bottom:3px solid #CC0000; }
+        .box-top-menu{ width:auto; margin-left:auto; margin-right:auto; display:table; }
+        .block-content{ background:none !important; }
+        body{ padding:0px !important; background:#ececec !important; }
+        *{ font-family:BMitra !important; font-size:12pt !important; }
+        .box-content_body{ margin-top:10px; }
+        .th-container{ display:table; margin-left:auto; margin-right:auto; width:auto; }
+        .th-box{ margin-right:50px; width:64px; height:64px; display:inline-block; }
+        .footer{ width:980px; display:block; margin-right:auto; margin-left:auto; margin-top:30px; }
+        .sidebar-link{ margin-top:6px; }
+        .top_menu_box .navigation{ height:32px !important; }
+
+        .footer .th-container a{
+            color:#fff;
+            width:60px;
+            height:43px;
+            transition:background-position 0.5s ease-in-out;
+            background-position:-47 0px;
+        }
+        .footer .th-container a:hover{
+            transition:background-position 0.5s ease-in-out;
+            background-position:0 -47px;
+        }
+        .footer .th-container a{
+        }
+        .home2{
+            background:url(<?=$this->basePath() . TEMPLATE_PATH?>/images/footericon/min-home.png) 0 0 no-repeat;
+        }
+        .about-us{
+            background:url(<?=$this->basePath() . TEMPLATE_PATH?>/images/footericon/min-about-us.png) 0 0 no-repeat;
+        }
+        .agahi-amlak{
+            background:url(<?=$this->basePath() . TEMPLATE_PATH?>/images/footericon/min-agagi.png) 0 0 no-repeat;
+        }
+        .amlak-mostaghalat{
+            background:url(<?=$this->basePath() . TEMPLATE_PATH?>/images/footericon/min-amlak.png) 0 0 no-repeat;
+        }
+        .tarrahi-site{
+            background:url(<?=$this->basePath(). TEMPLATE_PATH?>/images/footericon/min-web-design.png) 0 0 no-repeat;
+        }
+        .contact-us{
+            background:url(<?=$this->basePath() . TEMPLATE_PATH?>/images/footericon/min-contact-us.png) 0 0 no-repeat;
+        }
+
+        .footermenu{
+            height:105px !important;
+            color:#83ab3f;
+        }
+        .box-th-container{ }
+        .box-footer-menu{ border-top:2px solid #ff1323; margin-top:10px; }
+        #user_popup_container{ position:absolute !important; left:0px; top:0px; }
+        .footermenu .navigation{
+            -webkit-column-count:4;
+            -moz-column-count:4;
+            column-count:4;
+            width:980px;
+        }
+        .footermenu .navigation li{
+            display:inline-block;
+        }
+
+        .footermenu .navigation li a{
+            display:block;
+            line-height:20px;
+            width:200px;
+        }
+
+        /*overwritte*/
+        .user-box{
+            border-radius:6px;
+            color:#343434;
+            float:left;
+        }
+        .admin_link_box{
+            border-radius:6px;
+            display:block;
+            float:left;
+            height:13px;
+            margin-right:3px;
+            vertical-align:middle;
+        }
+
+        #user_popup_container{
+            border-radius:64px;
+            left:17px;
+            position:absolute !important;
+            top:5px;
+        }
+        .box{
+            background:none repeat scroll 0 0 #F5F5F5;
+            border:1px solid #DCDCDC;
+            display:block;
+            padding:6px 10px 6px 10px;
+        }
+        .admin_link_box a{
+            vertical-align:text-top !important;
+        }
+        fieldset{
+            border:1px solid #D9D9D9;
+        }
+
+        #main-menu a{
+            background:none repeat scroll 0 0 #a6bb3a;
+            border-radius:7px;
+            color:#FFFFFF;
+            display:block;
+            font-weight:bold;
+            margin-right:5px;
+            padding:6px;
+            width:100px;
+            font-size:10pt !important;
+        }
+        #main-menu a:hover{
+            background:none repeat scroll 0 0 #879C1B;
+            color:#000000;
+        }
+        .button_search{
+            background:url(<?=$this->basePath() . TEMPLATE_PATH?>/images/search-01.png) 0 0 no-repeat;
+            width:90px;
+            height:27px;
+            display:block;
+        }
+        /*end*/
+
+    </style>
+</head>
+
+<body class="<?= implode(' ', $this->body()->class) ?>">
+<?= $this->body()->getSiteTitle() ?>
+<?= $this->body()->getSiteSubTitle() ?>
+
+<div class="main-body ajami">
+
+    <div class="column header">
+
+
+        <? if (!empty($headerBlock)) { ?>
+            <?= $headerBlock ?>
+        <? } ?>
+
+        <?= $languageSwitcher ?>
+
+        <div class="top_menu_box">
+            <div class="box-top-menu">
+                <?= $topMenuBlock ?>
+            </div>
+            <div id="user_popup_container">
+                <?
+                if (!$user_block) {
+                    ?>
+                    <div class="box user_login_popup" id="user_login_popup">
+                        <?= $user_login_block ?>
+                    </div>
+                    <div class="box user_login_box">
+                        <a id="user_login_link"
+                           href="<?= url('app/user/login') ?>"><span><?= t('Login') ?></span></a>
+                    </div>
+                <?
+                } else {
+                    if (isAllowed(\Application\Module::ADMIN)) {
+                        ?>
+                        <div class="box admin_link_box">
+                            <a href="<?= url('admin') ?>"><span><?= t('Administration') ?></span></a>
+                        </div>
+                    <?
+                    }
+                    echo $user_block;
+                }
+                ?>
+            </div>
+        </div>
+
+        <div class="col-mid-top-header">
+
+            <div class="box-mid-top-header">
+                <div class="mid-top-box-right">
+                    <?= $logo ?>
+                </div>
+                <div class="mid-top-box-left">
+                    <div id="main-menu">
+                        <?= $menu ?>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="column mid-content">
+
+
+        <div class="sidebar">
+
+            <div class="sidebar-link"><img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/taghazaye-melk1.png"
+                                           width="220"
+                                           height="60"/>
+            </div>
+            <div class="sidebar-link"><img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/sepordan1.png"
+                                           width="220" height="60"/>
+            </div>
+            <div class="sidebar-link"><img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/mosharekat1.png"
+                                           width="220" height="60"/>
+            </div>
+
+            <? if (!empty($colRightBlock)) { ?>
+                <div class="column column1">
+                    <?= $colRightBlock ?>
+                </div>
+            <? } ?>
+
+        </div>
+
+        <div class="box-content">
+
+            <!--<div id="breadcrumbs"><?/*= $breadcrumbs */?></div>-->
+
+
+            <div class="box-content_body">
+                <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+
+                <? if (!empty($mainSlider)) { ?>
+                    <!--<div class="box-content-slider">
+                        <div class="main-slider">-->
+                    <?= $mainSlider ?>
+                    <!-- </div>
+                 </div>-->
+                <? } ?>
+
+                <?= $colMidTopBlock ?>
+                <div id="content_body">
+                    <?= $this->content; ?>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+
+        <?= $footerBlock ?>
+        <div class="box-th-container">
+            <div class="th-container">
+                <a href="<?= url('app/front-page') ?>" class="th-box home2"></a>
+                <a href="#" class="th-box amlak-mostaghalat"></a>
+                <a title="iptcms" href="#" class="th-box tarrahi-site"></a>
+                <a href="#" class="th-box agahi-amlak"></a>
+                <a href="#" class="th-box about-us"></a>
+                <a href="#" class="th-box contact-us"></a>
+            </div>
+        </div>
+
+        <div class="box-footer-menu">
+            <? if (!empty($footer_menu)) { ?>
+                <div class="footermenu">
+                    <?= $footer_menu ?>
+                </div>
+            <? } ?>
+
+            <? if (!empty($footer_menu2)) { ?>
+                <div class="footermenu">
+                    <?= $footer_menu2 ?>
+                </div>
+            <? } ?>
+
+            <? if (!empty($footer_menu3)) { ?>
+                <div class="footermenu">
+                    <?= $footer_menu3 ?>
+                </div>
+            <? } ?>
+
+            <? if (!empty($footer_menu4)) { ?>
+                <div class="footermenu">
+                    <?= $footer_menu4 ?>
+                </div>
+            <? } ?>
+        </div>
+
+    </div>
+
+</div>
+
+<!--<div id="bottom-toolbar">
+</div>-->
+<div class="debug">
+    <?= $debugBlock ?>
+</div>
+<?= $this->inlineScript() ?>
+<script type="text/javascript">
+    var c1W = parseInt($('.column1').width());
+    c1W = isNaN(c1W) ? 0 : c1W;
+
+    var c3W = parseInt($('.column3').width());
+    c3W = isNaN(c3W) ? 0 : c3W;
+
+    var c4W = parseInt($('.column4').width());
+    c4W = isNaN(c4W) ? 0 : c4W;
+
+    var c5W = parseInt($('.column5').width());
+    c5W = isNaN(c5W) ? 0 : c5W;
+
+    var leftColumnW = isNaN(c5W) ? c3W + c4W : c5W;
+    var columnsW = c1W + leftColumnW;
+    if (columnsW != 0)
+        columnsW += 15;
+    var main_contentW = parseInt($('.main_content').width());
+    var c2W = main_contentW - columnsW;
+    //console.log(c1W);
+    $('.column2').css({width: c2W});
+    $('.column_top').css({width: main_contentW});
+</script>
+
+</body>
+</html>

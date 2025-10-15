@@ -1,0 +1,164 @@
+<?
+if (isset($this->type) && $this->type)
+    $flag = false;
+else
+    $flag = true;
+
+$columnSizes = $this->columnSizes;
+?>
+<div>
+    <?
+    if (isset($this->user)) {
+        if ($this->user->userId) {
+            $this->headLink()->appendStylesheet($this->basePath() . '/css/user-admin.css');
+            \JQuery\API\JQuery::loadColorBox($this);
+            //only in user profile special button and information in related to user show
+            if ($this->specialInformationShow) {
+                ?>
+                <h3 class="page-title">
+                    <?= sprintf($this->translate("%s's Profile"), "<span class='user-name-title emphasize '>" . getUserDisplayName($this->user) . "</span>") ?>
+                </h3>
+            <? } ?>
+            <div class="clearfix" style="clear:both;">
+                <div class="row">
+                    <? if ($this->specialInformationShow) { ?>
+                        <div class="col-md-3">
+                            <? echo $this->partial('user/user/user-toolbar', array('userId' => $this->user->userId, 'flag' => $flag)); ?>
+                        </div>
+                    <? } ?>
+                    <div class="<? print $this->specialInformationShow ? 'col-md-9' : 'col-md-12' ?>">
+                        <div class="row">
+                            <?
+                            $col = 'col-md-12';
+                            if (!empty($this->user->image)) {
+                                $col = $columnSizes[1];
+                                $file_path = getThumbnail()->thumbnail($this->user->image, 250, 250);
+                                $imageCol = $columnSizes[0];
+                                ?>
+                                <div class="<?= $imageCol ?>">
+                                    <div class="user-profile-image">
+                                        <a class="colorbox" href="<?= $this->basePath() . $this->user->image ?>">
+                                            <img class="img-responsive"
+                                                 src="<?= $this->basePath() . $file_path ?>"
+                                                 alt="<?= getUserDisplayName($this->user) ?>">
+                                        </a>
+                                    </div>
+                                </div>
+                            <? } ?>
+                            <div class="<?= $col ?>">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-condensed ">
+                                        <? if ($this->specialInformationShow) { ?>
+                                            <? if ($this->user->roleName) { ?>
+                                                <tr>
+                                                    <th><?= t('Roles') ?> :</th>
+                                                    <td><?= t($this->user->roleName) ?></td>
+                                                </tr>
+                                            <?
+                                            }
+                                        }
+                                        if ($this->user->email) {
+                                            ?>
+                                            <tr>
+                                                <th><?= $this->translate('Email') ?> :</th>
+                                                <td><?= $this->user->email ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        if ($this->user->phone) {
+                                            ?>
+                                            <tr>
+                                                <th><?= $this->translate('Phone') ?> :</th>
+                                                <td><?= $this->user->phone ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        if ($this->user->mobile) {
+                                            ?>
+                                            <tr>
+                                                <th><?= $this->translate('Mobile') ?> :</th>
+                                                <td><?= $this->user->mobile ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        if ($this->user->firstName) {
+                                            ?>
+                                            <tr>
+                                                <th><?= $this->translate('First Name') ?> :</th>
+                                                <td><?= $this->user->firstName ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        if ($this->user->lastName) {
+                                            ?>
+                                            <tr>
+                                                <th><?= $this->translate('Last Name') ?> :</th>
+                                                <td><?= $this->user->lastName ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        if ($this->user->birthDate) {
+                                            ?>
+                                            <tr>
+                                                <th><?= $this->translate('Age') ?> :</th>
+                                                <td><?= \Localization\API\Date::formatInterval(time() - $this->user->birthDate) ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        if ($this->user->address) {
+                                            ?>
+                                            <tr>
+                                                <th><?= $this->translate('Address') ?> :</th>
+                                                <td><?= $this->user->address ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        if ($this->user->countryTitle || $this->user->stateTitle || $this->user->cityTitle) {
+                                            ?>
+                                            <tr>
+                                                <th><?= $this->translate('Location') ?> :</th>
+                                                <td><?=
+                                                    ($this->user->countryTitle ? $this->user->countryTitle . ', ' : '') .
+                                                    ($this->user->stateTitle ? $this->user->stateTitle . ', ' : '') .
+                                                    ($this->user->cityTitle ? $this->user->cityTitle : '') ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        if ($this->user->aboutMe) {
+                                            ?>
+                                            <tr>
+                                                <th><?= $this->translate('About Me') ?> :</th>
+                                                <td><?= $this->user->aboutMe ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        if ($this->customFields) {
+                                            foreach ($this->customFields as $key => $val) {
+                                                if ($val) {
+                                                    ?>
+                                                    <tr>
+                                                        <th><?= $this->translate($key) ?> :</th>
+                                                        <td><?= $val ?></td>
+                                                    </tr>
+                                                <?
+                                                }
+                                            }
+                                        }
+                                        ?>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <? if ($this->specialInformationShow && $this->has('customer_records')) { ?>
+                <div>
+                    <? print $this->customer_records($this->user->userId); ?>
+                </div>
+            <? } ?>
+        <?
+        }
+    }
+    ?>
+</div>

@@ -1,0 +1,85 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/real-estate.css');
+?>
+
+<div class="box-all-real-estate-agent">
+    <?
+    foreach ($this->select as $row) {
+        if ($row->image)
+            $image = getThumbnail()->resize($row->image, 80, 80); //resize image;
+        else
+            $image = getThumbnail()->resize($this->basePath() . '/images/not-image.png', 80, 80); //resize image;
+        ?>
+
+        <div class="card">
+            <div class="logo_card">
+                <a href="<?= url('app/user/user-profile', array('id' => $row->id)) ?>">
+                    <img src="<?= $image ?>">
+                </a>
+            </div>
+            <div class="title_card">
+                <a href="<?= url('app/user/user-profile', array('id' => $row->id)) ?>">
+                    <h2><?= $row->displayName ?></h2>
+                </a>
+            </div>
+            <div class="information_card">
+                <? if ($row->displayName) { ?>
+                    <div>
+                        <label><?= t('Email') . ' : ' ?></label>
+
+                        <p><?= $row->email ?></p>
+                    </div>
+                <? } ?>
+                <? if ($row->phone) { ?>
+                    <div>
+                        <label><?= t('Phone') . ' : ' ?></label>
+
+                        <p><?= $row->phone ?></p>
+                    </div>
+                <? } ?>
+                <? if ($row->mobile) { ?>
+                    <div>
+                        <label><?= t('Mobile') . ' : ' ?></label>
+
+                        <p><?= $row->mobile ?></p>
+                    </div>
+                <? } ?>
+                <? if ($row->address) { ?>
+                    <div>
+                        <label><?= t('Address') . ' : ' ?></label>
+
+                        <p><?= $row->address ?></p>
+                    </div>
+                <? } ?>
+                <div class="card-date">
+                    <label class="label-date">
+                        <?= t('Last Login') . ' : ' ?>
+                    </label>
+
+                    <p>
+                        <? if ($row->lastLoginDate && !is_null($row->lastLoginDate) && (int)$row->lastLoginDate != 0)
+                            echo $this->date_format($row->lastLoginDate, 4);
+                        else
+                            echo '---------';
+                        ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+    <?
+    }
+    ?>
+    <div style="clear:both"></div>
+    <div class="pager" style="padding-top:12px;">
+        <?
+        /* @var $pages \Zend\Paginator\Paginator */
+        echo $this->paginationControl($this->select,
+            'Sliding',
+            'application/pagination/search.phtml',
+            array(
+                'route' => 'app/real-estate/agent',
+                'route_params' => array()
+            )
+        ); ?>
+    </div>
+</div>

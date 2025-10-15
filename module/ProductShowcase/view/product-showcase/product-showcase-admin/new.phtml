@@ -1,0 +1,83 @@
+<?
+//$this->headScript()->appendFile($this->basePath() . '/js/file.js');
+?>
+<div id="product-item">
+    <h3 class="page-title"><?= t('PS_NEW_PRODUCT_SHOWCASE') ?></h3>
+    <?
+    $form = $this->form;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <div id="category-item-tabs">
+        <ul>
+            <li><a href="#tab-base"><?= t('PS_INFO_BASE') ?></a></li>
+            <li><a href="#tab-image"><?= t('Image') ?></a></li>
+            <li><a href="#tab-fields"><?= t('Fields') ?></a></li>
+        </ul>
+        <div id="tab-base">
+            <div id="base">
+                <?
+                foreach ($form->getElements() as $el) {
+                    ?>
+                    <div class="form_element">
+                        <?= $this->formRow($el); ?>
+                    </div>
+                <?
+                }
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-image">
+            <div id="images">
+                <?
+                if ($form->has('image'))
+                    echo $this->formCollection($form->get('image'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="box-file-collection">
+                <?= $this->fileDisplay($this->imagesFile, 100) ?>
+            </div>
+        </div>
+        <div id="tab-fields">
+            <div id="fields">
+                <?
+                if ($form->has('fields'))
+                    echo $this->formCollection($form->get('fields'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <?
+    echo $this->formCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $('#category-item-tabs').tabs();
+    <?
+//    \Application\API\App::setEditor('itemText',$this);
+    $this->inlineScript()->captureEnd();
+    ?>
+</script>
+<?
+if ($this->hasColorField) {
+    $this->headLink()->appendStylesheet($this->basePath() . '/color-picker/colpick.css');
+    $this->headScript()->appendFile($this->basePath() . '/color-picker/colpick.js');
+    ?>
+    <script>
+        <?$this->inlineScript()->captureStart()?>
+        $('#product-item input[data-type=color]').colpick({
+            onChange: function (hsb, hex, rgb, el, bySetColor) {
+                if (!bySetColor) $(el).val(hex);
+            },
+            onSubmit: function (hsb, hex, rgb, el) {
+                $(el).colpickHide();
+            }
+        });
+        <?$this->inlineScript()->captureEnd()?>
+    </script>
+<? } ?>

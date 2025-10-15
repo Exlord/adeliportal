@@ -1,0 +1,16 @@
+<?
+$form = $this->form;
+?>
+<h3 class="page-title"><?= t('Create/Edit Menu') ?></h3>
+<div class="new-form">
+    <?
+    //    $form->prepare();
+    //    echo $this->form()->openTag($form);
+    //    foreach ($form->getElements() as $el) {
+    //        echo $this->iptformRow($el);
+    //    }
+    //    echo $this->iptFormCollection($form->get('buttons'));
+    //    echo $this->form()->closeTag();
+    print $this->form($this->form);
+    ?>
+</div>

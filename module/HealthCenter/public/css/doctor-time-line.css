@@ -1,0 +1,18 @@
+.doctor-time-line{ overflow:hidden; position:relative; height:310px; }
+.time-line-container{ position:relative; }
+.time-line-wrapper{ position:relative; height:210px; }
+.time-label{ width:30px; height:20px; position:absolute; display:block; text-align:center; vertical-align:middle; }
+.vertical-time-line{ height:100%; width:1px; background:#c4c4c4; position:absolute; top:0; }
+.time-button{ position:absolute; }
+.time-line-wrapper .btn{ font-size:9pt; height:35px;
+    -moz-border-radius:0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.time-line-wrapper .progress{ position:absolute; left:0; width:100%; height:34px; margin:0;
+    -moz-border-radius:0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.time-line-item{ height:100%; width:100%; }
+.doctor-time-line-wrapper{ position:absolute; left:0; top:0;; height:100%; width:100%; }

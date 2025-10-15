@@ -1,0 +1,98 @@
+@font-face{
+    font-family:'BYekan';
+    src:url('/fonts/BYekan.eot?#') format('eot'), /* IE6â€“8 */ url('/fonts/BYekan.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url('/fonts/BYekan.ttf') format('truetype');  /* Saf3â€”5, Chrome4+, FF3.5, Opera 10+ */
+}
+@font-face{
+    font-family:'wYekan';
+    src:url('/fonts/wYekan.eot?#') format('eot'), /* IE6â€“8 */ url('/fonts/wYekan.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url('/fonts/wYekan.ttf') format('truetype');  /* Saf3â€”5, Chrome4+, FF3.5, Opera 10+ */
+}
+*{ direction:rtl; }
+#breadcrumbs ul li a{ padding:5px 20px 6px 10px; float:right; }
+#breadcrumbs ul li a:after{
+    border-right:12px solid #3498db;
+    border-left:none;
+    left:-12px;
+    right:auto;
+}
+#breadcrumbs ul li a.active:after{ border-right-color:#525252; }
+#breadcrumbs ul li a:before{
+    border-right:12px solid #e9e9f0;
+    border-left:none;
+    left:auto; right:0;
+}
+#breadcrumbs ul li:first-child a{
+    -moz-border-bottom-left-radius:0px;
+    -moz-border-bottom-right-radius:5px -moz-border-top-left-radius : 0 px;
+    -moz-border-top-right-radius:5px;
+    -webkit-border-bottom-left-radius:0px;
+    -webkit-border-bottom-right-radius:5px;
+    -webkit-border-top-left-radius:0px;
+    -webkit-border-top-right-radius:5px;
+    border-bottom-left-radius:0px;
+    border-bottom-right-radius:5px;
+    border-top-left-radius:0px;
+    border-top-right-radius:5px;
+    padding-left:0px;
+    padding-right:10px;
+}
+#breadcrumbs ul li:last-child a{
+    -moz-border-top-right-radius:0px;
+    -moz-border-bottom-right-radius:0px;
+    -webkit-border-top-right-radius:0px;
+    -webkit-border-bottom-right-radius:0px;
+    border-top-right-radius:0px;
+    border-bottom-right-radius:0px;
+    -moz-border-top-left-radius:5px;
+    -moz-border-bottom-left-radius:5px;
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-bottom-left-radius:5px;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+}
+#breadcrumbs ul li a:hover:after{ border-right-color:green; }
+#breadcrumbs ul li a.active:hover:after{ border-right-color:#525252; }
+
+.ui-tabs .ui-tabs-nav li{ float:right; }
+.ui-tabs-vertical > .ui-tabs-nav{ float:right; }
+.ui-tabs-vertical > .ui-tabs-panel{ margin-left:0; margin-right:205px; }
+.ui-tabs-vertical > .ui-tabs-nav li{ float:right; clear:left; margin:0 0 .2em -1px; }
+.ui-tabs-vertical > .ui-tabs-nav li.ui-tabs-active{ padding-right:0; padding-left:.2em;
+    border-right:1px solid #dddddd; border-left:none;
+}
+.normal-list ul{ margin-right:20px; margin-left:0; }
+
+#header-tel{ font-family:wYekan; direction:ltr; }
+
+.main-menu ul.navigation li{ float:right; }
+.main-menu ul.navigation li a span{ font-family:wYekan; }
+.main-menu ul.navigation li li a span{ text-align:right; }
+
+#section-2 h2, #section-2 p{ font-family:wYekan; }
+
+#section-3 a{ font-family:wYekan; }
+.digit{ font-family:wYekan; }
+
+/*-----------------------------view projects form-------------------*/
+.view-projects-form{ background:none repeat scroll 0 0 #f5f5f5; margin-top:55px; }
+.view-projects-form .title{ background:none repeat scroll 0 0 #eb6907; font-family:wYekan; font-size:12pt; font-weight:bold; height:40px; padding:10px; width:100%; }
+.view-projects-form .main .tbl{ width:98%; margin-left:auto; margin-right:auto; }
+.view-projects-form .main .tbl td{ padding:10px; border:4px solid #f5f5f5; vertical-align:middle; }
+.view-projects-form .main .tbl .first-row{ background:#e0e0e0; }
+.view-projects-form .main .tbl .second-row{ background:#d5d5d5; }
+.view-projects-form .main .tbl label{ width:200px; font-family:wYekan; margin:0; vertical-align:sub; }
+.view-projects-form .main .tbl p{ font-family:tahoma; margin:0; vertical-align:sub; color:#898989; }
+.view-projects-form .main .tbl .width-200{ width:200px; }
+.view-projects-form .main .tbl .width-250{ width:250px; }
+.view-projects-form .main .tbl .center{ text-align:center; background:#e0e0e0; }
+/*------------------------------------------------------------------*/
+
+.customer_shout_b .title{ color:#000000; font-family:WYekan; font-size:12pt; text-align:right; }
+.customer_shout_b .text{ color:#7e7e7e; font-family:WYekan; font-size:11pt; line-height:26px; padding-left:20px; padding-right:20px; text-align:right; }
+/*------------------------------------------------------------------*/
+
+.articles-intro-list article .article-title{ font-family:BYekan; }
+
+.view_projects_index .view{ float:right !important; }
+
+.customer_shout_b .media, #brands .media{ margin:0 !important; }
+.captcha.form-control{ margin-left:0px; margin-right:10px; }

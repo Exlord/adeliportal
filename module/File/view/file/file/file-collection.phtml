@@ -1,0 +1,12 @@
+<?
+$this->headLink()
+    ->appendStylesheet($this->basePath() . '/css/file-collection.css');
+echo $this->iptFormCollection($this->el);
+if ($this->el->allowAdd()) {
+    ?>
+    <button type="button" name="add_more_file" class="button add_button add_collection_item">
+        <?=$this->translate('Add More File')?>
+    </button>
+<?
+}
+

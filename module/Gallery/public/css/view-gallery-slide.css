@@ -1,0 +1,8 @@
+.gallery-slide .item a.active{ display:block; }
+.gallery-slide .item a{ display:none; width:100%; height:100%; top:0; left:0; position:absolute; }
+.gallery-slide .item{ float:right; margin-right:10px; width:auto; position:relative; }
+.gallery-slide .item .navigation{ display:none; background:#000000; height:20px; width:100%; text-align:center; position:absolute; bottom:1px; }
+.gallery-slide .item .navigation span{ background:url(../images/view-gallery-slide/img-span-inactive.png) no-repeat center center; }
+.gallery-slide .item .navigation span.active,
+.gallery-slide .item .navigation span:hover{ background:url(../images/view-gallery-slide/img-span-active.png) no-repeat center center; }
+.gallery-slide .item .navigation span{ width:12px; height:12px; margin-right:2px; cursor:pointer; display:inline-block; }

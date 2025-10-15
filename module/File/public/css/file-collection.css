@@ -1,0 +1,4 @@
+.collection-item .form_element label{display: block;}
+.collection-item{margin: 0;}
+.collection-item legend{display: none;}
+.collection-item input[type=text]{width: auto !important;}

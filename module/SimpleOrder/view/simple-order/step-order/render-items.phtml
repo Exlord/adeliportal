@@ -1,0 +1,10 @@
+<ul>
+    <?
+    foreach ($this->select as $row) {
+        ?>
+        <li>
+            <? if(isset($row['name'])) echo $row['name']; ?>
+        </li>
+    <?
+    }?>
+</ul>

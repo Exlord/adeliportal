@@ -1,0 +1,20 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?= t('Points') ?>
+        <? if ($this->myPoints) { ?>
+            <small>»</small>
+            <? $class = ($this->myPoints > 0 ? 'success' : ($this->myPoints < 0 ? 'danger' : 'muted')) ?>
+            <small>
+                <span
+                    class="label label-<?= $class ?>">
+                    <?= $this->myPoints ?>
+                </span>
+            </small>
+        <? } ?>
+    </h3>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>

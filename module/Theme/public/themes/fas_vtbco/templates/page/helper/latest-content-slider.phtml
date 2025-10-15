@@ -1,0 +1,47 @@
+<div id="content-slider-<?= $this->blockId ?>" class="content-slider-container ajax-loading">
+        <span class="prev" title="<?= t('Previous') ?>">
+        </span>
+
+    <div class="viewport">
+        <ul class="wrapper">
+            <?
+            foreach ($this->data as $row) {
+                ?>
+                <li class="item">
+                    <a class="<?= $this->titleType ?>"
+                       href="<?= url('app/single-content', array('id' => $row['id'], 'title' => \Application\API\App::prepareUrlString($row['title']))) ?>">
+                        <? if (isset($row['image']) && $row['image']) { ?>
+                            <img src="<?= $row['image'] ?>"
+                                 alt="<?= $row['title'] ?>"  <?= ($this->responsiveImage) ? 'class="img-responsive"' : '' ?>>
+                        <? } ?>
+
+                        <p class="title <?= $this->titleType ?>">
+                            <?= $this->escapeHtml($row['introText']) ?>
+                        </p>
+
+                        <? if ($row['text'] !== false) { ?>
+                            <p class="content"><?= $row['text'] ?></p>
+                        <? } ?>
+                    </a>
+                </li>
+            <?
+            }
+            ?>
+        </ul>
+    </div>
+        <span class="next" title="<?= t('Next') ?>">
+        </span>
+</div>
+<script type="text/javascript">
+    <?$this->inlineScript()->captureStart()?>
+    $(document).ready(function () {
+        $('#content-slider-<?=$this->blockId?>').contentSlider({
+            orientation: '<?=$this->orientation?>',
+            direction: '<?=$this->direction?>',
+            autoscroll: '<?=$this->autoScroll?>',
+            interval: <?=$this->interval?>,
+            speed: <?=$this->speed?>
+        });
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

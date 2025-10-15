@@ -1,0 +1,7 @@
+<p>
+    <?=
+    str_replace(
+        array('__DOCTOR__', '__USER__'),
+        array($this->__DOCTOR__, $this->__USER__),
+        t('__DOCTOR__ has referred __USER__ to you')); ?>
+</p>

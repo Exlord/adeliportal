@@ -1,0 +1,331 @@
+<?
+$this->headLink()
+    ->appendStylesheet($this->basePath() . '/css/real-estate.css');
+
+$this->headScript()
+    ->prependFile($this->basePath() . '/js/geographical.js')
+    // ->prependFile($this->basePath() . '/js/filters.js')
+    ->prependFile($this->basePath() . '/js/real-estate-new.js')
+    ->appendFile($this->basePath() . '/js/real-estate.js');
+
+
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+?>
+
+<div class="main-new-real-estate border_main">
+
+
+<div id="real_estate_form_page">
+<div class="back_loading">
+    <span class="img_loading"></span>
+</div>
+<?
+/* @var $form \Zend\Form\Form */
+$form = $this->form;
+$form->prepare();
+echo $this->form()->openTag($form);
+if (!$this->isRequest) {
+    ?>
+
+    <div class="div-step step1" id="step1">
+        <fieldset class="f_part">
+            <legend>
+                مشخصات ملک
+            </legend>
+            <table class="tbl_part1">
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('stateId')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('cityId')) ?></td>
+                    <td>
+                        <div class="text-new-area">
+                            <?= $this->iptFormRow($form->get('newArea')) ?>
+                        </div>
+                        <div class="select-new-area">
+                            <?= $this->iptFormRow($form->get('areaId')) ?>
+                        </div>
+                        <a href="#open" class="open-new-area" id="openNewArea"
+                           data-id="1"><?= t('realEstate_area_not_found') ?></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('estateType')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('regType')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('expire')) ?></td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <fieldset class="f_part">
+            <legend>
+                مشخصات مالک
+            </legend>
+            <table class="tbl_part2">
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('ownerName')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('ownerEmail')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('ownerPhone')) ?></td>
+                </tr>
+                <tr>
+                    <td> <?= $this->iptFormRow($form->get('ownerMobile')) ?></td>
+                    <td colspan="2"><?= $this->iptFormRow($form->get('addressFull')) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><?= $this->iptFormRow($form->get('addressShort')) ?></td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <fieldset class="f_part">
+            <legend>
+                قیمت
+            </legend>
+            <table class="tbl_part2">
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('totalPrice')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('priceOneMeter')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('rentalPrice')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('mortgagePrice')) ?></td>
+                </tr>
+                <tr>
+                    <?// if (current_user()->id == 1 || current_user()->id == 2){ // baraye melkban?>
+                <tr>
+                    <td colspan="4"><?= $this->iptFormRow($form->get('isSpecial')) ?></td>
+                </tr>
+                <?// } ?>
+                <tr>
+                    <!--                <tr>-->
+                    <!--                    <td colspan="4">-->
+                    <? //= $this->iptFormRow($form->get('showInfo')) ?><!--</td>-->
+                    <!--                </tr>-->
+            </table>
+        </fieldset>
+
+        <div style="clear: both"></div>
+    </div>
+
+    <div class="div-step step2" id="step2">
+        <div class='col-xs-12 base_fields'>
+            <div class='row'>
+                <fieldset class='f_part'>
+                    <legend>
+                        فیلدها
+                    </legend>
+                    <?
+                    /* @var $fieldset \Zend\Form\Fieldset */
+                    $fieldset = $this->form->get('transferFields');
+                    if ($fieldset) {
+                        $fields = $fieldset->getElements();
+                        foreach ($fields as $f) {
+                            ?>
+                            <div class='col-xs-12'>
+                                <?= $this->iptFormRow($f) ?>
+                            </div>
+                        <?
+                        }
+                    } ?>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="div-step step3" id="step3">
+        <div class="col-xs-8 desc_realestate">
+            <div class="row">
+                <fieldset class="f_part">
+                    <legend>
+                        توضیحات بیشتر
+                    </legend>
+                    <div class="margin real_desc">
+                        <?= $this->iptFormRow($form->get('description')) ?>
+                        <? //= $this->iptFormRow($form->get('pm')) ?>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="row">
+                <fieldset class="f_part">
+                    <legend>
+                        تصاویر
+                    </legend>
+                    <?php if (!$this->isRequest): ?>
+                        <div class="margin">
+                            <? if ($this->images)
+                                echo $this->fileDisplay($this->images, $this->maxImage); ?>
+                        </div>
+                        <? if ($form->has('images')) {
+                            if ($images = $form->get('images')) {
+                                ?>
+                                <div class="img_realestate">
+                                    <?= $this->iptFormCollection($images) ?>
+                                </div>
+                            <?
+                            }
+                        } ?>
+                    <?php endif; ?>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    <div class="div-step step4" id="step4">
+        <div class="step4_left">
+            <div>
+                <span id="map_selected_loc"></span>
+            </div>
+            <div id="map" style="width: 200px;height: 200px;">
+                <?= t('Google Maps is not available due to filtering.') ?>
+            </div>
+        </div>
+        <div class="step4_right">
+            <? if ($form->has('captcha')) echo $this->iptFormRow($form->get('captcha')); ?>
+            <div class="new-real-estate-btn">
+                <?= $this->iptFormCollection($this->form->get('buttons')) ?>
+            </div>
+            <span class="back-button" id="back-button" data-id="4"></span>
+        </div>
+
+    </div>
+    <?
+    echo $this->iptFormRow($form->get('googleLatLong'));
+
+} else { // is request
+    ?>
+    <div class="div-step step1 step_request" id="step1">
+
+        <fieldset class="f_part f_request">
+            <legend>
+                مشخصات ملک مورد تقاضا
+            </legend>
+            <table class="tbl_part1">
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('stateId')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('cityId')) ?></td>
+                    <td>
+                        <div class="text-new-area">
+                            <?= $this->iptFormRow($form->get('newArea')) ?>
+                        </div>
+                        <div class="select-new-area">
+                            <?= $this->iptFormRow($form->get('areaId')) ?>
+                        </div>
+                        <a href="#open" class="open-new-area" id="openNewArea"
+                           data-id="1"><?= t('realEstate_area_not_found') ?></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('estateType')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('regType')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('expire')) ?></td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <?
+        $columns = array(
+            array(
+                'title' => 'شرایط مورد تقاضا',
+                'part' => 1,
+                'size' => 12,
+                'items' => array(
+                    'lower_meter' => 12,
+                    'highest_meter' => 12,
+                    'lower_price' => 12,
+                    'highest_price' => 12,
+                    'lower_rahn' => 12,
+                    'highest_rahn' => 12,
+                    'lower_rent' => 12,
+                    'highest_rent' => 12,
+                )
+            ),
+        );
+        $html = '';
+        /* @var $fieldset \Zend\Form\Fieldset */
+        $fieldset = $this->form->get('transferFields');
+        if ($fieldset) {
+            $fields = $fieldset->getElements();
+            foreach ($columns as $col) {
+                $items = '';
+                foreach ($col['items'] as $field => $size) {
+                    $items .= "<div class='col-xs-" . $size . "'>" . $this->iptFormRow($fields[$field]) . "</div>";
+                }
+                $html .= "<div class='col-xs-" . $col['size'] . " div_part_request_p '><div class='row'> <fieldset class='f_part f_request f_r_slider'><legend>" . $col['title'] . "</legend>" . $items . "</fieldset></div></div>";
+            }
+
+            echo $html;
+
+        } ?>
+        <div style="height: 40px; display: block; clear: both;"></div>
+
+
+        <fieldset class="f_part f_request">
+            <legend>
+                مشخصات تقاضا کننده
+            </legend>
+            <table class="tbl_part2">
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('ownerName')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('ownerEmail')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('ownerPhone')) ?></td>
+                </tr>
+                <tr>
+                    <td> <?= $this->iptFormRow($form->get('ownerMobile')) ?></td>
+                    <td colspan="2"><?= $this->iptFormRow($form->get('addressFull')) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="display: none;"><?= $this->iptFormRow($form->get('addressShort')) ?></td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <div class="col-xs-12 desc_realestate">
+            <div class="row">
+                <fieldset class="f_part">
+                    <legend>
+                        توضیحات بیشتر
+                    </legend>
+                    <div class="margin real_desc desc_request">
+                        <?= $this->iptFormRow($form->get('description')) ?>
+                        <? //= $this->iptFormRow($form->get('pm')) ?>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <? if ($form->has('captcha')) echo $this->iptFormRow($form->get('captcha')); ?>
+        <div class="new-real-estate-btn">
+            <?= $this->iptFormCollection($this->form->get('buttons')) ?>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+<?
+}
+?>
+
+<?
+echo $this->form()->closeTag();
+?>
+
+
+</div>
+
+</div>
+
+<script type="text/javascript">
+    <?$this->inlineScript()->captureStart();?>
+    var openNewArea = 1;
+    var isRequest = '<?=$this->isRequest?>';
+    var estateType_regType = <?=$this->estateType_regType?>;
+    var estateType_fields = <?=$this->estateType_fields?>;
+    var statistic_url = '<?=url('app/real-estate/region-statistic')?>';
+    var error_message = '<?= t('error when deleteing file!') ?>';
+
+
+    $('.step2 select').addClass('select2');
+
+    <?$this->inlineScript()->captureEnd();?>
+</script>
+<?
+if (!$this->isRequest) {
+    ?>
+    <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+<? } ?>

@@ -1,0 +1,25 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order.css');
+?>
+<div>
+    <label>
+        <?=t('Payment Code')?>
+    </label>
+    <p>
+        <?=$this->payerId?>
+    </p>
+    <br/>
+    <label>
+        <?=t('Customer Code')?>
+    </label>
+    <p>
+        <?=$this->orderId?>
+    </p>
+    <br/>
+    <label>
+        <?=t('Reg Date')?>
+    </label>
+    <p>
+        <?=$this->time?>
+    </p>
+</div>

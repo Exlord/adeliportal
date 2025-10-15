@@ -1,0 +1,100 @@
+#breadcrumbs{ margin:0 5px; }
+#breadcrumbs ul{ list-style:none; display:inline-table; margin:0; padding:0; }
+#breadcrumbs ul li{ display:inline; }
+#breadcrumbs ul li a{
+    position:relative; font-size:8pt;
+    display:block; float:right; background:#3498db; color:#ffffff; margin:0 2px; padding:5px 20px 6px 10px;
+}
+#breadcrumbs ul li a.active{ background:#525252; color:#ffffff; }
+#breadcrumbs ul li a:after{
+    content:"";
+    border-top:12px solid transparent;
+    border-bottom:12px solid transparent;
+    border-right:12px solid #3498db;
+    position:absolute; left:-12px; top:0;
+    z-index:1;
+}
+#breadcrumbs ul li a.active:after{ border-right-color:#525252; }
+#breadcrumbs ul li a:before{
+    content:"";
+    border-top:12px solid transparent;
+    border-bottom:12px solid transparent;
+    border-right:12px solid #e9e9f0;
+    position:absolute; right:0; top:0;
+}
+#breadcrumbs ul li:first-child a{
+    -moz-border-bottom-right-radius:5px -moz-border-top-right-radius : 5 px;
+    -webkit-border-bottom-right-radius:5px;
+    -webkit-border-top-right-radius:5px;
+    border-bottom-right-radius:5px;
+    border-top-right-radius:5px;
+    padding-right:10px;
+}
+#breadcrumbs ul li:first-child a:before{ display:none; }
+#breadcrumbs ul li:last-child a{
+    -moz-border-top-left-radius:5px;
+    -moz-border-bottom-left-radius:5px;
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-bottom-left-radius:5px;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+}
+#breadcrumbs ul li:last-child a:after{ display:none; }
+#breadcrumbs ul li a:hover{ background:green;
+    -moz-box-shadow:0px 0px 5px -2px #000000;
+    -webkit-box-shadow:0px 0px 5px -2px #000000;
+    box-shadow:0px 0px 5px -2px #000000;
+}
+#breadcrumbs ul li a.active:hover{ background:#525252; }
+#breadcrumbs ul li a:hover:after{ border-right-color:green; }
+#breadcrumbs ul li a.active:hover:after{ border-right-color:#525252; }
+html, body{ height:100%; }
+#body{ position:relative; padding-bottom:70px; min-height:95%; }
+#main_content{ }
+.sticky-bottom{ position:absolute; bottom:0; width:100%; height:60px; }
+body{ background:url(../images/bg_texture.jpg) }
+.my-container{ width:960px; }
+#header{ background:url(../images/header.png) no-repeat top center; height:198px; position:relative; }
+#header .my-container{ position:relative; }
+#header .navbar{ margin-bottom:0; }
+.top-menus{ display:block; margin-top:126px; height:42px; width:100%; }
+.top-menus ul.navigation{ list-style:none; margin:0; padding:0 }
+.top-menus li{ padding:10px 15px; }
+.top-menus li a{ text-decoration:none; color:#af0001; white-space:nowrap; }
+.top-menus li:hover{ background:#af0001; }
+.top-menus li:hover a{ color:#ffffff; }
+.top-menu-1 li{ float:right; }
+.top-menu-2 li{ float:left; }
+#footer-menu ul{ list-style:none; margin:0; padding:0 }
+#footer-menu li{ float:right; padding:10px 11px; }
+#footer-menu li a{ text-decoration:none; color:#b2b2b2; white-space:nowrap; }
+#footer-menu li:hover a{ color:#000000; }
+.language-switcher-box{ position:absolute; top:80px; right:25px; }
+.language-switcher-box ul{ list-style:none; margin:0; padding:0; }
+.language-switcher-box ul li{ float:right; margin:0 5px; border:solid 2px #feffff;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+    -moz-box-shadow:0px 0px 5px -1px #000000;
+    -webkit-box-shadow:0px 0px 5px -1px #000000;
+    box-shadow:0px 0px 5px -1px #000000;
+}
+.language-switcher-box ul li span{ display:none; }
+.language-switcher-box ul li img{ height:32px; width:37px; }
+.slider{ position:relative; }
+.slider .nivo-controlNav{ bottom:5px; left:45%; padding:0 !important; position:absolute; z-index:999; }
+#footer-menu{ background:url(../images/footer-menu-shoadow.png) no-repeat bottom center; }
+.footer{ font-size:90%; }
+#category-list-menu ul{ list-style:none; padding:0; margin:25px 0 0 0; }
+@media (max-width:350px){
+    .top-menus li{ padding:10px 3px; }
+    .top-menus li a{ font-size:12px; }
+}
+@media (max-width:400px){
+    .top-menus li{ padding:10px 3px; }
+    .top-menus li a{ font-size:14px; }
+}
+@media (max-width:480px){
+    .product-view{ padding:60px 20px 20px 20px; }
+}
+.gallery-block .slider{ min-height:200px; }

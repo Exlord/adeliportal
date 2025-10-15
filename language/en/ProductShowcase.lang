@@ -1,0 +1,14 @@
+<?
+return array(
+    'PS_PRODUCT_SHOWCASE' => 'Product Showcase',
+    'PERM_ProductShowcase' => 'Product Showcase',
+    'PS_NEW_PRODUCT_SHOWCASE' => 'New Product Showcase',
+    'PS_NEW_SUCCESS' => 'PS_NEW_SUCCESS',
+    'PS_ALERT_CREATE_CATEGORY' => 'PS_ALERT_CREATE_CATEGORY',
+    'PS_INFO_BASE' => 'PS_INFO_BASE',
+    'PS_NOT_CATEGORIES_ITEM' => 'PS_NOT_CATEGORIES_ITEM',
+    'PS_NOT_ITEMS' => 'PS_NOT_ITEMS',
+    'PS_AD_TO_BUY'=>'PS_AD_TO_BUY',
+    'PS_CART_EMPTY'=>'PS_CART_EMPTY',
+    'PS_NEW_CART_SUCCESS_WITH_CODE'=>'PS_NEW_CART_SUCCESS_WITH_CODE %s',
+);

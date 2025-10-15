@@ -1,0 +1,203 @@
+<?
+
+//$content = \Theme\API\Themes::renderLayout($this);
+
+$topMenu = $this->blocks('top-menu');
+$langSwitcher = $this->blocks('lang-switcher');
+$search = $this->blocks('search');
+$col_custom = $this->blocks('col-custom');
+$news = $this->blocks('col-news');
+$mainSlider = $this->blocks('main-slider');
+$basePath = $this->basePath();
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    );
+if ($direction == 'rtl')
+    $this->headLink()->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-rtl.min.css');
+
+$this->headLink()
+    ->prependStylesheet($basePath . '/select2/select2-bootstrap.css')
+    ->prependStylesheet($basePath . '/select2/select2.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-theme.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap.min.css')
+    ->prependStylesheet($basePath . '/css/base-theme/jquery-ui-1.10.1.custom.min.css')
+    ->prependStylesheet($basePath . '/css/system.css');
+
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    // ->prependFile($basePath . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/js/jquery.hoverIntent.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    )
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/html5shiv.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+
+?>
+
+<!DOCTYPE html>
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+
+    <?= $this->headTitle() ?>
+
+    <?= $this->headMeta() ?>
+
+    <?= $this->headLink(); ?>
+
+    <?= $this->headScript() ?>
+</head>
+
+<div id="container">
+    <div class="my-container top-box">
+        <div class="row">
+            <div class="col-md-12 padding">
+                <div class="bg-header-left-repeat"></div>
+                <div class="bg-header-right-repeat"></div>
+                <div id="header_wrapper">
+                    <? if ($topMenu) { ?>
+                        <div class="top_line"></div>
+                        <div class="box_top_menu">
+                            <?= $topMenu ?>
+                        </div>
+                    <? } ?>
+                    <? if ($langSwitcher) { ?>
+                        <div class="box_lang_switcher">
+                            <?= $langSwitcher ?>
+                        </div>
+                    <? } ?>
+                    <div class="box_login_btn">
+                        <a href="<?= url('app/user/login') ?>">
+                            <?= t('Login') ?>
+                        </a>
+                    </div>
+                    <? if ($search) { ?>
+                        <div class="box_search">
+                            <?= $search ?>
+                        </div>
+                    <? } ?>
+                </div>
+                <div id="main_wrapper">
+                    <?
+                    $fm = $this->flashMessenger()->render();
+                    if (!empty($fm)) {
+                        ?>
+                        <div id="system_messages"><?= $fm; ?></div>
+                    <? } ?>
+                    <? if ($news && $mainSlider && $col_custom) { ?>
+                        <div class="box_news">
+                            <?= $news ?>
+                        </div>
+                        <div class="box_slider">
+                            <!--<div class="img-slider-top"></div>-->
+                            <?= $mainSlider ?>
+                        </div>
+                        <div class="box_info">
+                            <?= $col_custom ?>
+                        </div>
+                    <?
+                    }
+                    if ($this->content) {
+                        ?>
+                        <div style="clear: both"></div>
+                        <div class="box_main_content">
+
+                            <?= $this->content ?>
+                            <div style="clear: both;"></div>
+                        </div>
+                    <? } ?>
+                </div>
+                <div style="clear: both"></div>
+                <!--<div class="sticky-bottom" id="footer_wrapper">
+                    <div class="bg-footer-left-repeat"></div>
+                    <div class="bg-footer-right-repeat"></div>
+
+                    <div class="box-footer">
+                        <div class="img-atrotech-since"></div>
+                        <div class="footer">
+                            <? /*
+                            $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                            $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                            $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                            */
+                ?>
+                            <p align="center">
+                                <? /*= t('APPLICATION_BROWSERS') */ ?>
+                            </p>
+
+                            <p align="center">
+                                <span><? /*= sprintf(t('APPLICATION_RIGHTS'), 'Atrotech Company') */ ?></span>
+                                <span dir="ltr"><? /*= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) */ ?></span>
+                                &nbsp; .
+                                <span><? /*= t('APPLICATION_SUPPORT') */ ?></span> .
+                                <span><? /*= t('APPLICATION_POWERED_BY') */ ?></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="my-container sticky-bottom" id="footer_wrapper">
+        <div class="row">
+            <div class=" col-md-12">
+                <div class="bg-footer-left-repeat"></div>
+                <div class="bg-footer-right-repeat"></div>
+
+                <div class="box-footer">
+                    <div class="img-atrotech-since"></div>
+                    <div class="footer">
+                        <?
+                        $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                        $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                        $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                        ?>
+                        <p align="center">
+                            <?= t('APPLICATION_BROWSERS') ?>
+                        </p>
+
+                        <p align="center">
+                            <span><?= sprintf(t('APPLICATION_RIGHTS'), t('ATROTECH_COMPANY', 'theme')) ?></span>
+                            <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                            &nbsp; .
+                            <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                            <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

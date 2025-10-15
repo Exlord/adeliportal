@@ -1,0 +1,17 @@
+<?$data = $this->data;
+if (is_array($data) && count($data)) {
+    ?>
+    <div id="visits-counts">
+        <div class="table-responsive">
+            <table width="100%" class="table table-striped table-hover table-condensed">
+                <? foreach ($data as $label => $value) { ?>
+                    <tr class="<?= $this->cycle(array("row-odd", "row-even"),'Analyzer')->next() ?> <?= $value['class'] ?>">
+                        <td class="visits-label"><?= $label ?></td>
+                        <td class="visits-value digits comma-separated"><?= $value['count'] * $this->multiplier ?></td>
+                    </tr>
+                <? } ?>
+            </table>
+        </div>
+    </div>
+<?
+}

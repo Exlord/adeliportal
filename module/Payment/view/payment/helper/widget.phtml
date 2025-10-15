@@ -1,0 +1,11 @@
+<?
+//$basePath = $this->basePath() . '/images/dashboard/';
+?>
+<div>
+    <h2><?= t('PAYMENT_FINANCIAL_TRANSACTIONS') ?></h2>
+    <div class="widget-box">
+        <label class="label label-default">
+            <span class="glyphicon glyphicon-usd"><?=sprintf(t('PAYMENT_TRANSACTION_MONEY'),$this->currencyFormat($this->amount)) ?></span>
+        </label>
+    </div>
+</div>

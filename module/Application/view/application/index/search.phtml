@@ -1,0 +1,28 @@
+<?
+if (!$this->search_block()->isLoaded())
+    $this->headLink()->appendStylesheet($this->basePath() . '/css/search.css');
+?>
+<div>
+    <h3 class="page-title">
+        <? if ($this->keyword)
+            echo sprintf(t('Search Result for %s'), "<span class='search-keyword'>" . $this->keyword . "</span>") . ' : ';
+        else
+            echo t('Search');
+        ?>
+    </h3>
+
+    <div class="search-form">
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach ($form->getElements() as $el) {
+            echo $this->iptFormRow($el);
+        }
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+    <div id="search-result">
+        <?= $this->partial('application/index/search-result', array('data' => $this->data)) ?>
+    </div>
+</div>

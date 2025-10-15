@@ -1,0 +1,273 @@
+<?
+$this->headLink()
+    ->appendStylesheet($this->basePath() . '/css/real-estate.css')
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/real-estate-melkyab.css');
+
+$this->headScript()
+    ->prependFile($this->basePath() . '/js/geographical.js')
+    ->prependFile($this->basePath() . '/js/filters.js')
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/real-estate-melkyab.js')
+    ->appendFile($this->basePath() . '/js/real-estate.js');
+
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+?>
+<div class="main-new-real-estate border_main">
+
+<div class="div-step-img">
+    <span class="step-img step1-img" id="stepIMG"></span>
+</div>
+<div id="real_estate_form_page">
+<?
+/* @var $form \Zend\Form\Form */
+$form = $this->form;
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+
+<div class="div-step step1" id="step1">
+
+    <fieldset class="fieldset-admin" style="display:none;">
+        <legend class="legend-admin">
+            <?= $this->translate('Guest Edit Permission') ?>
+        </legend>
+        <div style="display: <? if ($route_prefix != "admin") echo "none" ?>;">
+            <?//= $this->iptFormRow($form->get('allowEdit')) ?>
+        </div>
+        <div id='guest_user_edit'>
+            <?= $this->iptFormRow($form->get('passForEdit')) ?>
+
+        </div>
+
+        <div class="important-div">
+            <span class="important-div-icon"></span>
+
+            <p class="important-div-label"><?= $this->translate('With entering your custom password and phone number and website managers confirmation, you may edit your estate without registration.') ?></p>
+    </fieldset>
+
+    <table cellpadding='2' cellspacing='2' id="real_estate_form" width="700">
+        <tr>
+            <td width="175"><?= $this->iptFormRow($form->get('stateId')) ?></td>
+            <td width="175"><?= $this->iptFormRow($form->get('cityId')) ?></td>
+            <td width="175">
+                <div class="text-new-area">
+                    <?= $this->iptFormRow($form->get('newArea')) ?>
+                </div>
+                <div class="select-new-area">
+                    <?= $this->iptFormRow($form->get('areaId')) ?>
+                </div>
+                <a href="#open" class="open-new-area" id="openNewArea" data-id="1"><?=t('realEstate_area_not_found')?></a>
+            </td>
+            <td width="175"><?= $this->iptFormRow($form->get('expire')) ?></td>
+        </tr>
+        <tr>
+            <td><?= $this->iptFormRow($form->get('ownerName')) ?></td>
+            <td><?= $this->iptFormRow($form->get('ownerPhone')) ?></td>
+            <td> <?= $this->iptFormRow($form->get('ownerMobile')) ?></td>
+            <td><?= $this->iptFormRow($form->get('ownerEmail')) ?></td>
+        </tr>
+        <tr>
+            <td colspan="2"><?= $this->iptFormRow($form->get('addressShort')) ?></td>
+            <td colspan="2"><?= $this->iptFormRow($form->get('addressFull')) ?></td>
+        </tr>
+        <tr>
+            <td><?= $this->iptFormRow($form->get('estateType')) ?></td>
+            <td><?= $this->iptFormRow($form->get('regType')) ?></td>
+            <td><?= $this->iptFormRow($form->get('estateArea')) ?></td>
+            <td id="price_panel">
+                <?= $this->iptFormRow($form->get('priceOneMeter')) ?>
+                <?= $this->iptFormRow($form->get('totalPrice')) ?>
+            </td>
+            <td id="price_panel_2">
+                <?= $this->iptFormRow($form->get('mortgagePrice')) ?>
+                <?= $this->iptFormRow($form->get('rentalPrice')) ?>
+            </td>
+        </tr>
+    </table>
+    <span class="next-button" id="next-button" data-id="1"><?= t('Next Level') ?></span>
+
+</div>
+<div class="div-step step2" id="step2">
+    <?
+    /* @var $fieldset \Zend\Form\Fieldset */
+    if ($this->form->has('transferFields')) {
+        $fieldset = $this->form->get('transferFields');
+        if ($fieldset) {
+            $fields = $fieldset->getElements();
+
+            ?>
+
+            <fieldset id="estate_fields_list" class="fieldset-admin">
+                <legend class="legend-admin">
+                    <?= $this->translate('Details'); ?>
+                </legend>
+                <?
+                $checkboxes = '';
+                $multi_checkboxes_col1 = '';
+                $multi_checkbox_col1 = true;
+                $multi_checkboxes_col2 = '';
+                $radios = '';
+                $text_boxes_col1 = '';
+                $text_boxes_col2 = '';
+                $text_box_col1 = true;
+
+                $builds = array('build_pilot', 'build_floor', 'build_section', 'build_owner_percent', 'build_builder_percent');
+                for ($i = 0; $i < count($builds); $i++) {
+                    $builds[$i] = 'transferFields[' . $builds[$i] . ']';
+                }
+                /* @var $f \Zend\Form\Element */
+                foreach ($fields as $f) {
+                    if (in_array($f->getName(), $builds)) {
+                        continue;
+                    } elseif ($f instanceof \Zend\Form\Element\MultiCheckbox) {
+                        if ($multi_checkbox_col1)
+                            $multi_checkboxes_col1 .= $this->iptFormRow($f);
+                        else
+                            $multi_checkboxes_col2 .= $this->iptFormRow($f);
+                        $multi_checkbox_col1 = !$multi_checkbox_col1;
+                    } elseif ($f instanceof \Zend\Form\Element\Checkbox) {
+                        $checkboxes .= $this->iptFormRow($f);
+                    } elseif ($f instanceof \Zend\Form\Element\Text) {
+                        if ($text_box_col1)
+                            $text_boxes_col1 .= $this->iptFormRow($f);
+                        else
+                            $text_boxes_col2 .= $this->iptFormRow($f);
+                        $text_box_col1 = !$text_box_col1;
+                    }
+                }
+                ?>
+                <div class="check_list">
+                    <?= ($checkboxes) ?>
+                    <? //=$this->iptFormRow($fieldset->get('has_parking'))?>
+                    <? //=$this->iptFormRow($fieldset->get('has_elevator'))?>
+                    <? //=$this->iptFormRow($fieldset->get('cabinet'))?>
+                    <? //=$this->iptFormRow($fieldset->get('can_get_vam'))?>
+                    <? //=$this->iptFormRow($fieldset->get('kolangi'))?>
+                    <? //=$this->iptFormRow($fieldset->get('exchange'))?>
+                </div>
+                <div class="column_2 multi_check_list" style="clear: both;">
+                    <?= $multi_checkboxes_col1 ?>
+                    <? //=$this->iptFormRow($fieldset->get('melk_position'))?>
+                    <? //=$this->iptFormRow($fieldset->get('ensheabat'))?>
+                </div>
+                <div class="column_2 multi_check_list">
+                    <?= $multi_checkboxes_col2 ?>
+                    <? //=$this->iptFormRow($fieldset->get('sanad_type'))?>
+                    <? //=$this->iptFormRow($fieldset->get('melk_usage'))?>
+                </div>
+                <div class="column_2 text_box_list" style="clear: both;">
+                    <?= $text_boxes_col1 ?>
+                    <? //=$this->iptFormRow($fieldset->get('witch_floor'))?>
+                    <? //=$this->iptFormRow($fieldset->get('room_floor_type'))?>
+                    <? //=$this->iptFormRow($fieldset->get('gozar_chand_metry'))?>
+                    <? //=$this->iptFormRow($fieldset->get('heating_system'))?>
+                </div>
+                <div class="column_2 text_box_list">
+                    <?= $text_boxes_col2 ?>
+                    <? //=$this->iptFormRow($fieldset->get('floor_count'))?>
+                    <? //=$this->iptFormRow($fieldset->get('sanad_dong'))?>
+                    <? //=$this->iptFormRow($fieldset->get('room_count'))?>
+                    <? //=$this->iptFormRow($fieldset->get('build_year'))?>
+                </div>
+                <div style="clear: both;"></div>
+                <fieldset class="fieldset-admin">
+                    <legend
+                        class="legend-admin"><?= $this->translate('Construction Partnership Details') ?></legend>
+
+                    <div class="inline_elements" style="clear: both;">
+                        <? //= $this->iptFormRow($fieldset->get('build_pilot')) ?>
+                        <?= $this->iptFormRow($fieldset->get('build_floor')) ?>
+                        <?= $this->iptFormRow($fieldset->get('build_section')) ?>
+                        <div style="clear: both;"></div>
+                        <?= $this->iptFormRow($fieldset->get('build_owner_percent')) ?>
+                        <?= $this->iptFormRow($fieldset->get('build_builder_percent')) ?>
+                        <div style="clear: both;"></div>
+                    </div>
+
+                </fieldset>
+                <div style="clear: both;"></div>
+            </fieldset>
+            <div class="margin">
+                <?= $this->iptFormRow($form->get('description')) ?>
+            </div>
+            <div class="margin">
+                <?= $this->iptFormRow($form->get('pm')) ?>
+            </div>
+        <?
+        }
+    } ?>
+
+    <span class="next-button" id="next-button" data-id="2"><?= t('Next Level') ?></span>
+    <span class="back-button" id="back-button" data-id="2"><?= t('Back Level') ?></span>
+
+</div>
+<div class="div-step step3" id="step3">
+
+    <?php if (!$this->isRequest): ?>
+        <div class="margin">
+            <?= $this->iptFormRow($form->get('isSpecial')) ?>
+        </div>
+        <div class="margin">
+            <?= $this->iptFormRow($form->get('showInfo')) ?>
+        </div>
+        <div class="margin">
+            <? if ($this->images)
+                echo $this->fileDisplay($this->images, $this->maxImage); ?>
+        </div>
+        <? if ($form->has('images')) {
+            if ($images = $form->get('images')) {
+                ?>
+                <div class="margin">
+                    <?= $this->iptFormCollection($images) ?>
+                </div>
+            <?
+            }
+        } ?>
+    <?php endif; ?>
+
+    <?php if (!$this->isRequest) { ?>
+        <a href="#googleMap" id="find-google" class="input-google-map"><?= t('Google Map') ?></a>
+    <? } ?>
+
+    <div id="google_text"><?= $this->google ?></div>
+    <?
+    echo $this->iptFormRow($form->get('googleLatLong'));
+    ?>
+    <div class="captcha-div">
+        <? if ($form->has('captcha')) echo $this->iptFormRow($form->get('captcha')); ?>
+    </div>
+    <div class="new-real-estate-btn">
+        <?= $this->iptFormCollection($this->form->get('buttons')) ?>
+    </div>
+    <?
+    echo $this->form()->closeTag();
+    ?>
+    <span class="back-button" id="back-button" data-id="3"><?= t('Back Level') ?></span>
+</div>
+<div id="map-dialog" style="display: none;">
+    <div>
+        <span>
+            <?= t('To obtain the coordinates of the desired location click on the map.') ?>
+            </span>
+        <span id="map_selected_loc"></span>
+        <input type="button" id="select_return" value="<?= t('Confirm and return') ?>">
+        <input type="button" id="select_cancel" value="<?= t('Close') ?>">
+    </div>
+    <div id="map" style="width: 100%;height: 100%;">
+        <?= t('Google Maps is not available due to filtering.') ?>
+    </div>
+</div>
+
+</div>
+
+</div>
+
+<script type="text/javascript">
+    var openNewArea = 1;
+    var isRequest = '<?=$this->isRequest?>';
+    var estateType_regType = <?=$this->estateType_regType?>;
+    var estateType_fields = <?=$this->estateType_fields?>;
+    var error_message = '<?= t('error when deleteing file!') ?>';
+
+</script>
+<!--<script src="http://maps.google.com/maps/api/js?sensor=true"
+        type="text/javascript"></script>-->

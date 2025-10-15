@@ -1,0 +1,46 @@
+<?
+$basePath = $this->basePath() . '/images/dashboard/';
+?>
+<div>
+    <h2><?= t('Page') ?></h2>
+
+    <div class="widget-box">
+        <a class="button" href="<?= url('admin/page/new') ?>">
+            <img src="<?= $basePath . 'static_page.png' ?>">
+
+            <p><?= t('Add Static Page') ?></p>
+        </a>
+        <a class="button" href="<?= url('admin/content') ?>">
+            <img src="<?= $basePath . 'icon-48-article.png' ?>">
+
+            <p><?= t('Article') ?></p>
+        </a>
+        <a class="button" href="<?= url('admin/content/new') ?>">
+            <img src="<?= $basePath . 'icon-48-article-add.png' ?>">
+
+            <p><?= t('Add Article') ?></p>
+        </a>
+    </div>
+    <table>
+        <? if (isset($this->data[0])) { ?>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/content') ?>"><?= t('page_widget_count_content') ?></a>
+                </td>
+                <td align='center'>
+                    <b class="digit"><?= localizedDigits($this->data[0]) ?></b>
+                </td>
+            </tr>
+        <? } ?>
+        <? if (isset($this->data[1])) { ?>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/page') ?>"><?= t('page_widget_count_staticPage') ?></a>
+                </td>
+                <td align='center'>
+                    <b class="digit"><?= localizedDigits($this->data[1]) ?></b>
+                </td>
+            </tr>
+        <? } ?>
+    </table>
+</div>

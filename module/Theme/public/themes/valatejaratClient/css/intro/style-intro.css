@@ -1,0 +1,28 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+	direction: rtl;
+	padding: 0px;
+	margin: 0px;
+	background-image: url(../../images/intro/bg.jpg);
+	overflow: hidden;
+}
+img{border: none;}
+.slider {
+	background: #fff;
+	width: 669px;
+	height: 363px;
+	margin: 25px auto auto auto;
+	box-shadow: 16px 10px 31px #090909;
+}
+.logo{width: 700px; height: 100px; margin: 15px auto 0px auto;}
+#logo {
+	background-image: url(../../images/intro/logo.png);
+ height: 228px;
+   margin-right: 212px;
+    position: relative;
+    width: 268px;
+    z-index: 999;
+}
+#footer{width: 250px; height: 75px;  margin: 14px auto 5px auto;}
+.btn_footer{width: 95px; height: 43px; margin-right: 15px; float: right;}

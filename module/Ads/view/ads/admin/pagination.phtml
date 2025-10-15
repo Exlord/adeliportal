@@ -1,0 +1,67 @@
+<div>
+
+    <a class="toolbar-button button add_button" href="<?= $this->url('admin/users/role/new-roll') ?>">
+        <?=$this->translate('Add New Role')?>
+    </a>
+
+    <h3 class="page-title">
+        <?=$this->translate('User Roles')?>
+    </h3>
+
+    <div>
+        <?if (count($this->pagination)) { ?>
+            <table width='100%' class="grid" cellspacing='0'>
+                <thead>
+                <tr>
+                    <th width='30px'><?=$this->translate('Id')?></th>
+                    <th class=""><?=$this->translate('Name')?></th>
+                    <th width='10px' align='center'></th>
+                    <th width='10px' align='center' class="last"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?foreach ($this->pagination as $roll) { ?>
+                    <tr class="<?php echo $this->cycle(array("row-odd", "row-even"))->next() ?>">
+                        <td><?=$roll->id?></td>
+                        <td class=""><?=$this->translate($roll->roleName)?></td>
+                        <td align='center'>
+                            <?if ($roll->locked) { ?>
+                                <span class='grid_button locked_button' rel='tooltip'
+                                      title='<?= $this->translate('Locked') ?>'>&nbsp;</span>
+                            <? } else { ?>
+                                <a class='grid_button edit_button' rel='tooltip' title='<?= $this->translate('Edit This Role') ?>'
+                                   href='<?=$this->url(
+                                       'admin/users/role/edit',
+                                       array('id' => $roll->id))?>'>
+                                    &nbsp;
+                                </a>
+                            <? }?>
+                        </td>
+                        <td class="last" align='center'>
+                            <?if ($roll->locked) { ?>
+                                <span class='grid_button locked_button' rel='tooltip'
+                                      title='<?= $this->translate('Locked') ?>'>&nbsp;</span>
+                            <? } else { ?>
+                                <a class='grid_button delete_button' rel='tooltip' title='<?= $this->translate('Delete') ?>'
+                                   href='<?=$this->url(
+                                       'admin/users/role/delete',
+                                       array('id' => $roll->id))?>'>&nbsp;</a>
+                            <? }?>
+                        </td>
+                    </tr>
+                <? }?>
+                </tbody>
+            </table>
+            <div class="pager">
+                <?=$this->paginationControl($this->pagination,
+                    'Sliding',
+                    'application/pagination/search.phtml',
+                    array(
+                        'route' => 'admin/users/role-list',
+                        'route_params' => array()
+                    )
+                ); ?>
+            </div>
+        <? }?>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/__/js/new-pm.js');
+if ($this->userId) {
+    ?>
+
+    <button class="btn btn-default" id="pm_popup_btn">
+        <span class="glyphicon glyphicon-pencil text-danger"></span>
+        <span><?= t('Send PM') ?></span>
+    </button>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 pm_popup" id="pm_popup"></div>
+
+    <script>
+        <?$this->inlineScript()->captureStart();?>
+        var PM = {
+            newUrl: '<?=url('admin/pm/new',array('to'=>$this->userId),array('query'=>array('flagShowBBCode'=>false)))?>',
+            title: '<?=t('PM')?>',
+            msg: '<?=t('Private Message Sent successfully')?>',
+            error:'<?=t('PM_ERROR_NEW')?>',
+            viewType: 'popup'
+        };
+        <?$this->inlineScript()->captureEnd();?>
+    </script>
+<? } ?>

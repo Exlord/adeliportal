@@ -1,0 +1,109 @@
+<?
+$select = $this->select;
+
+foreach ($select as $row) {
+    $className = 'banner-item';
+    $idName = 'banner_item_' . $row['type'] . '_' . $row['groupId'];
+
+    $url = url('app/gallery-counter', array('id' => $row['id'], 'hitsType' => $this->hitsType));
+    $style = '';
+    $styleImg='';
+    if ($this->hitsType == 'app'){
+        $style = 'style="border:none; text-decoration:none; position:absolute; top:0px; left:0px;"';
+        $styleImg = 'style="border:none;"';
+    }
+    $width = 400;
+    $height = 70;
+
+    if ($row['width'])
+        $width = $row['width'];
+
+    if ($row['height'])
+        $height = $row['height'];
+
+
+    if ($row['image']) {
+        ?>
+        <div class="<?= $className ?>" id="<?= $idName ?>">
+            <?
+            if (strpos($row['fileType'], 'flash') == true) {
+                ?>
+                <a target="_blank" href="<?= $url ?>"></a>
+                <script>
+                    flashMovie = $('.gallery-item-flash');
+                    flashMovie.flash(
+                        {
+                            swf: '<?= $row['image'] ?>',
+                            width: <?= $width ?>,
+                            height: <?= $height ?>,
+                            play: true,
+                            flashvars: {
+                                message: 'I come from Flash.'
+                            }
+                        }
+                    );
+                </script>
+
+            <?
+            } elseif (strpos($row['fileType'], 'gif') == true) {
+                ?>
+                <a target="_blank" href="<?= $url ?>" <?= $style ?> >
+                    <img src="<?= $row['image'] ?>" width="<?= $width ?>"
+                         height="<?= $height ?>" >
+                    <span ><?= $row['title'] ?></span>
+                </a>
+            <?
+            } else {
+                $file_path = getThumbnail()->resize($row['image'], $width, $height);
+                ?>
+                <a target="_blank" href="<?= $url ?>" <?= $style ?>>
+                    <img <?=$styleImg?> src="<?= $file_path ?>">
+                    <span><?= $row['title'] ?></span>
+                </a>
+            <?
+            } ?>
+
+
+        </div>
+
+    <?
+    }
+}
+?>
+<script>
+    /*$(document).ready(function () {
+
+    <?// if($selectGallery->reloadType !=0)
+   // { ?>
+     var time =
+    <?//=(int)$selectGallery->reloadType?>*
+     1000;
+     setTimeout(function () {
+     ajaxLoad(time)
+     }, time);
+
+     function ajaxLoad(time) {
+     var data = {};
+     data['groupId'] = '<?//=$this->groupId?>';
+     data['type'] = '<?//=$this->type?>';
+     data['displayType'] = '<?//=$selectGallery->config['displayType']?>';
+     data['hitsType'] = 'web';
+     var IdName = '#<?//=$idName?>';
+     $.ajax({
+     url: '<?//=$this->url?>',
+     type: 'post',
+     data: data,
+     complete: function () {
+     },
+     success: function (data) {
+     setTimeout(function () {
+     ajaxLoad(time)
+     }, time);
+     $(IdName).html(data);
+     }
+     });
+     }
+
+    <?//}?>
+     });*/
+</script>

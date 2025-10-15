@@ -1,0 +1,12 @@
+.Mellat{
+    background: url(../images/BPMLogo.png) no-repeat center center;
+}
+.Saman{
+    background: url(../images/saman.png) no-repeat center center;
+}
+.all-bank-image{
+    width: 80px;
+    height: 90px;
+    display: inline-block;
+    cursor: pointer;
+}

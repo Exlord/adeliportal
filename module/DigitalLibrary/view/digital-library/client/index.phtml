@@ -1,0 +1,16 @@
+<?
+$basePath = $this->basePath();
+$maxPage = $this->paginator->count();
+?>
+<h1 class="page-header">
+    <?= t('Books') ?>
+</h1>
+<div id="books">
+    <div class="row">
+        <?print $this->partial('digital-library/client/list-item', array(
+            'paginator' => $this->paginator,
+            'per_page' => $this->per_page,
+            'fields' => $this->fields
+        ));?>
+    </div>
+</div>

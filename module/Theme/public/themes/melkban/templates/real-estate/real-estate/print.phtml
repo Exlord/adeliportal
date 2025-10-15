@@ -1,0 +1,310 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/real-estate-print-page.css');
+$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/real-estate-print.css', 'print');
+//$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/real-estate-melkyab.css');
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+//----------------------ali
+
+$allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO);
+$allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO);
+if ($this->permission) {
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = true;
+}
+
+//------------------------
+
+$allRegType = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+foreach ($this->item as $row) {
+    $extra_fields = getSM()->get('fields_api')->generate($this->fields, $row);
+
+    if ($row->showInfo && $row->expireShowInfo >= time())
+        $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+
+    if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO) {
+        $owner_details = array(
+            'Name' => $row->ownerName,
+            'Phone' => $row->ownerPhone,
+            'Email' => $row->ownerEmail,
+            'Mobile' => $row->ownerMobile,
+            'Address' => $row->addressFull,
+        );
+    } else {
+        $owner_details = array(
+            'Address' => $row->addressShort,
+            'Name' => $this->defaultAgent->displayName,
+            'Phone' => $this->defaultAgent->phone,
+            'Email' => $this->defaultAgent->email,
+            'Mobile' => $this->defaultAgent->mobile,
+        );
+    }
+
+    if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO && is_array($this->userAgent))
+        $data_row = $this->userAgent;
+    else
+        $data_row = $this->defaultAgent;
+
+    ?>
+    <div class="box-print-form">
+    <div class="title-print">
+        <img src="<?=$this->basePath() . TEMPLATE_PATH .'/images/real-estate/form-03.png'?>" class="img-header-print" height="80">
+    </div>
+    <table class="tbl-view-print">
+    <tr>
+        <td>
+            <label><?= $this->translate('Realty Id'); ?></label>
+
+            <p><?= $row->itemId ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('Owner name'); ?></label>
+
+            <p><?= $owner_details['Name'] ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('Mobile'); ?></label>
+
+            <p><?= $owner_details['Mobile'] ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('Phone'); ?></label>
+
+            <p><?= $owner_details['Phone'] ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('State') ?></label>
+
+            <p><?= $row->stateTitle ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?= $this->translate('City'); ?></label>
+
+            <p><?= $row->cityTitle ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('Region'); ?></label>
+
+            <p><?= $row->areaTitle ?></p>
+        </td>
+        <td colspan="3">
+            <label><?= $this->translate('Address'); ?></label>
+
+            <p><?= $owner_details['Address'] ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_type'); ?></label>
+
+            <p><?if(isset($allRegType[$row->regType])) echo t($allRegType[$row->regType]); ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_reg_type'); ?></label>
+
+            <p><?= $row->estateTypeName ?></p>
+        </td>
+        <td>
+            <label>
+                وضعیت ساختمان
+            </label>
+
+            <p><? if (isset($extra_fields['وضعیت ساختمان'])) echo $extra_fields['وضعیت ساختمان']; ?></p>
+        </td>
+        <td>
+            <label>
+                مساحت زمین
+            </label>
+
+            <p><? if (isset($extra_fields['مساحت زمین'])) echo $extra_fields['مساحت زمین']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_zirbana') ?></label>
+
+            <p><? if (isset($extra_fields['زیربنا'])) echo $extra_fields['زیربنا']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <?if($row->regType==78){?>
+            <td>
+                <label><?= $this->translate('RealEstate_mortgage_price'); ?></label>
+
+                <p><? $this->currencyFormat($row->mortgagePrice) ?></p>
+            </td>
+            <td>
+                <label><?= $this->translate('RealEstate_rental_price') ?></label>
+
+                <p><?= $this->currencyFormat($row->rentalPrice) ?></p>
+            </td>
+        <? }else {?>
+            <td>
+                <label><?= $this->translate('RealEstate_price_one_meter'); ?></label>
+
+                <p><?= $this->currencyFormat($row->priceOneMeter) ?></p>
+            </td>
+            <td>
+                <label><?= $this->translate('RealEstate_total_price'); ?></label>
+
+                <p><?= $this->currencyFormat($row->totalPrice) ?></p>
+            </td>
+        <? } ?>
+        <td>
+            <label>
+                تعداد اتاق خواب
+            </label>
+
+            <p><? if (isset($extra_fields['تعداد اتاق خواب'])) echo $extra_fields['تعداد اتاق خواب']; ?></p>
+        </td>
+        <td>
+            <label>
+                ملک واقع در طبقه
+            </label>
+
+            <p><? if (isset($extra_fields['ملک واقع در طبقه'])) echo $extra_fields['ملک واقع در طبقه']; ?></p>
+        </td>
+        <td>
+            <label>
+                تعداد کل طبقات
+            </label>
+
+            <p><? if (isset($extra_fields['تعداد کل طبقات'])) echo $extra_fields['تعداد کل طبقات']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>
+                تعداد واحد در طبقه
+            </label>
+
+            <p><? if (isset($extra_fields['تعداد واحد در طبقه'])) echo $extra_fields['تعداد واحد در طبقه']; ?></p>
+        </td>
+
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_witch_floor') ?></label>
+
+            <p><? if (isset($extra_fields['مورد در طبقه'])) echo $extra_fields['مورد در طبقه']; ?></p>
+        </td>
+        <td colspan="3">
+            <label>
+                رفاهی
+            </label>
+
+            <p><? if (isset($extra_fields['رفاهی'])) echo $extra_fields['رفاهی']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>
+                نوع سند
+            </label>
+
+            <p><? if (isset($extra_fields['نوع سند'])) echo $extra_fields['نوع سند']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_gozar') ?></label>
+
+            <p><? if (isset($extra_fields['گذر'])) echo $extra_fields['گذر']; ?></p>
+        </td>
+        <td>
+            <label>
+                ماشین رو
+            </label>
+
+            <p><? if (isset($extra_fields['ماشین رو'])) echo $extra_fields['ماشین رو']; ?></p>
+        </td>
+        <td>
+            <label>
+                مجوز ساخت
+            </label>
+
+            <p><? if (isset($extra_fields['مجوز ساخت'])) echo $extra_fields['مجوز ساخت']; ?></p>
+        </td>
+        <td>
+            <label>
+                آشپزخانه
+            </label>
+
+            <p><? if (isset($extra_fields['آشپزخانه'])) echo $extra_fields['آشپزخانه']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_nama') ?></label>
+
+            <p><? if (isset($extra_fields['نما'])) echo $extra_fields['نما']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_room_floor_type') ?></label>
+
+            <p><? if (isset($extra_fields['کف'])) echo $extra_fields['کف']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_wc_service') ?></label>
+
+            <p><? if (isset($extra_fields['سرویس بهداشتی'])) echo $extra_fields['سرویس بهداشتی']; ?></p>
+        </td>
+        <td>
+            <label>
+بدنه کابینت
+            </label>
+
+            <p><? if (isset($extra_fields['بدنه'])) echo $extra_fields['بدنه']; ?></p>
+        </td>
+        <td>
+            <label>
+                نورگیری
+            </label>
+
+            <p><? if (isset($extra_fields['نورگیری'])) echo $extra_fields['نورگیری']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>
+                شرقا
+            </label>
+
+            <p><? if (isset($extra_fields['شرقا'])) echo $extra_fields['شرقا']; ?></p>
+        </td>
+        <td>
+            <label>
+                غربا
+            </label>
+
+            <p><? if (isset($extra_fields['غربا'])) echo $extra_fields['غربا']; ?></p>
+        </td>
+        <td>
+            <label>
+                جنوبا
+            </label>
+
+            <p><? if (isset($extra_fields['جنوبا'])) echo $extra_fields['جنوبا']; ?></p>
+        </td>
+        <td>
+            <label>
+                شمالا
+            </label>
+
+            <p><? if (isset($extra_fields['شمالا'])) echo $extra_fields['شمالا']; ?></p>
+        </td>
+        <td>
+            <label>
+                دیوارکشی
+            </label>
+
+            <p><? if (isset($extra_fields['دیوارکشی'])) echo $extra_fields['دیوارکشی']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5" class="desc-view-print">
+            <label><?= $this->translate('Description') ?></label>
+
+            <p><?= $row->description ?></p>
+        </td>
+    </tr>
+    </table>
+    </div>
+<?
+}
+?>

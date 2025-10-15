@@ -1,0 +1,64 @@
+<?
+if ($this->flagView) {
+    if ($this->error) {
+        ?>
+        <div class="alert alert-danger">
+            <?= t('ADS_CONFIG_ERROR') ?>
+        </div>
+    <?
+    } else {
+        print $this->form($this->form);
+        ?>
+        <script>
+            <?$this->inlineScript()->captureStart();?>
+            $(document).ready(function () {
+
+                $('#filter_fields_config').on('ajaxFormSubmit', function (e) {
+                    $(e.target).data('cancel-submit', true);
+                    var data = $(this).serialize();
+                    var input = $("<input type='hidden' name='data'>").val(data);
+                    var form = $('<form style="display:none" target="_parent"><input type="hidden" name="buttons[submit]" value="1"></form>')
+                        .attr('method', 'post')
+                        .attr('action', $(this).attr('action'));
+                    $(form).append(input).appendTo('body');
+                    $(form).submit();
+                });
+
+            });
+            <?$this->inlineScript()->captureEnd();?>
+        </script>
+    <?
+    }
+} else {
+    if ($this->error) {
+        ?>
+        <div class="alert alert-danger">
+            <?= t('ADS_CONFIG_ERROR') ?>
+        </div>
+    <?
+    } else {
+        ?>
+        <div class="col-md-12">
+            <? foreach ($this->baseType as $row) { ?>
+                <div class="col-md-4">
+                    <a class="ajax_page_load btn btn-default btn-lg btn-block"
+                       href="<?= url('admin/ad/config/filter-fields', array('baseType' => $row['id'])) ?>">
+                        <span><?= $row['name'] ?></span>
+                    </a>
+                </div>
+                <?
+                if ($row['isRequest']) {
+                    ?>
+                    <div class="col-md-4">
+                        <a class="ajax_page_load btn btn-default btn-lg btn-block"
+                           href="<?= url('admin/ad/config/filter-fields', array('baseType' => $row['id'], 'isRequest' => $row['isRequest'])) ?>">
+                            <span><?= t('ADS_REQUEST') . ' ' . $row['name'] ?></span>
+                        </a>
+                    </div>
+                <?
+                }
+            } ?>
+        </div>
+    <?
+    }
+}

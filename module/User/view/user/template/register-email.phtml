@@ -1,0 +1,19 @@
+<div>
+    <h3><?= sprintf(t('You have successfully registered on account in %s'), $this->__SITEURL__) ?></h3>
+    <h4><?= sprintf(t('Welcome Dear %s'), $this->__DISPLAY_NAME__) ?></h4>
+
+    <p>
+        <?= t('Here are your login information') ?> :
+    </p>
+    <table>
+        <tr>
+            <td><?= t('Username') ?></td>
+            <td><?= $this->__USERNAME__ ?></td>
+        </tr>
+        <tr>
+            <td><?= t('Password') ?></td>
+            <td><?= $this->__PASS__ ?></td>
+        </tr>
+    </table>
+    <a href="<?= $this->__URL__ ?>"><?= t('Click here to login to your account') ?></a>
+</div>

@@ -1,0 +1,14 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Workshop'); ?>
+    </h3>
+
+    <div>
+        <? echo($this->form($this->form)); ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    <?\Application\API\App::setEditor('note',$this)?>
+    <?$this->inlineScript()->captureEnd();?>
+</script>

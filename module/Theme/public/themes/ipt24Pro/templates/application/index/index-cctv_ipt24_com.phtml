@@ -1,0 +1,211 @@
+<?
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+$this->headScript()->appendFile($basePath . '/bg/fancyFy.js');
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/front-page.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/front-page-rtl.css');
+$path = $this->basePath() . TEMPLATE_PATH;
+?>
+<style>
+    #itemlist{ height:340px; }
+    #itemdescription{ top:-1em !important; height:60px; }
+    #logo img{ float:left; margin-left:50px; }
+    #btn_tbl_price img{ padding-top:35px; cursor:pointer; }
+    .sub_domain_top_b{ background:none repeat scroll 0 0 #ffffff; border-radius:15px; margin-bottom:20px; margin-top:20px; padding:15px; -moz-box-shadow:0px 0px 5px -2px #000000; -webkit-box-shadow:0px 0px 5px -2px #000000; box-shadow:0px 0px 5px -2px #000000; }
+    .sub_domain_bottom_b{ background:none repeat scroll 0 0 #ffffff; margin:20px 50px; padding:20px; }
+    .sub_domain_middle_b{ padding-top:20px; }
+</style>
+<div class="page-is-loading">
+    <div><?= t('Loading', TEMPLATE_NAME) ?> ...</div>
+</div>
+<div id="fullpage">
+    <div class="section" id="section-1">
+        <div class="fancy-bg"></div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-sm-8 col-sm-offset-2 col-xs-12">
+                <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/logo2.png' ?>" width="190" height="110"
+                     style="position:absolute;z-index:9999;left:20px;top:20px;">
+
+                <div id="main-slider-content">
+                    <?= $this->blocks('sub-top-block') ?>
+                </div>
+            </div>
+
+        </div>
+        <div class="row" id="social-menu">
+            <div class="col-xs-6">
+                <div class="to-right">
+                    <a target="_blank" href="https://www.facebook.com/IPT24">
+                        <img class="img-responsive"
+                             title="FaceBook" rel="tooltip"
+                             alt="FaceBook"
+                             src="<?= $path ?>/images/social/face.png">
+                    </a>
+                    <a target="_blank" href="http://fliker.com">
+                        <img class="img-responsive" title="Fliker"
+                             rel="tooltip" alt="Fliker"
+                             src="<?= $path ?>/images/social/fliker.png">
+                    </a>
+                    <a target="_blank" href="http://gplus.com">
+                        <img class="img-responsive" title="g+"
+                             rel="tooltip" alt="g+"
+                             src="<?= $path ?>/images/social/gplus.png">
+                    </a>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="to-left">
+                    <a target="_blank" href="http://instagram.com/IPT24">
+                        <img class="img-responsive"
+                             title="Instagram" rel="tooltip"
+                             alt="instagram"
+                             src="<?= $path ?>/images/social/instagram.png">
+                    </a>
+                    <a target="_blank" href="https://www.linkedin.com/company/ipt24">
+                        <img class="img-responsive"
+                             title="Linkedin" rel="tooltip" alt="linkedin"
+                             src="<?= $path ?>/images/social/linkdein.png"></a>
+                    <a target="_blank" href="https://twitter.com/IPT24">
+                        <img class="img-responsive"
+                             title="Twitter" rel="tooltip" alt="twitter"
+                             src="<?= $path ?>/images/social/twitter.png"></a>
+                    <a target="_blank" href="http://youtube.com">
+                        <img class="img-responsive" title="Youtube"
+                             rel="tooltip" alt="Youtube"
+                             src="<?= $path ?>/images/social/youtub.png"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="">
+        <div class="fancy-bg"></div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 clarfix">
+                <div id="btn_tbl_price" class="pull-right flip">
+                    <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/sub-domains/button.png' ?>">
+                </div>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <?= $this->blocks('sub-middle-block') ?>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        <div class="bottom-bg row"></div>
+    </div>
+    <div class="section-3-4-bg">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <?= $this->blocks('sub-bottom-block') ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11 col-md-offset-1">
+                <img src="<?= $path ?>/images/barkhi-az-moshtarian.png" class="img-responsive">
+            </div>
+            <div class="col-md-12">
+                <div id="brands">
+                    <?= $this->blocks('brands') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="section-5">
+        <div class="fancy-bg"></div>
+        <div class="row top-bg"></div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12" id="contact-box">
+                <div class="row">
+                    <div class="col-md-8 col-sm-8">
+                        <h3>
+                            <span class="icon icon-address"></span>
+                            تبریز- چایکنار جنوبی- نرسیده به زیرگذر آبرسان- برج L.K.P- طبقه دوم
+                        </h3>
+
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <h3 class="digit">
+                                    <span class="icon icon-phone"></span>
+                                    041-33250011
+                                </h3>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <h3 class="digit">
+                                    <span class="icon icon-fax"></span>
+                                    041-33250010
+                                </h3>
+                            </div>
+                        </div>
+                        <h3 class="email">
+                            <span class="icon icon-email"></span>
+                            info@ipt24.com
+                        </h3>
+
+                        <h2 id="online_support">
+                            <?= \Theme\API\Common::Link(t('Consult with us online', TEMPLATE_NAME), 'http://www.azaript.com/online-support/chat.php', array('target' => '_blank')); ?>
+                        </h2>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <?= $this->quick_send_mail("info@azaript.com") ?>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--[if lt IE 9]>
+<script type="text/javascript">
+    var isIE = true;
+</script>
+<![endif]-->
+<script>
+    <?$this->inlineScript()->captureStart();?>
+
+    $(document).ready(function () {
+
+        $('#btn_tbl_price img').click(function () {
+            $("html,body").animate({scrollTop: $('.sub_domain_bottom_title_b').offset().top - 50}, 1000);
+        });
+
+        var brands = [];
+        $('.content-slider-container .item a img').each(function () {
+            var img = new Image();
+            img.src = $(this).data('img');
+            brands.push(img);
+        });
+        $('.content-slider-container .item a img').hover(function () {
+                var data_img = $(this).data('img');
+                if (data_img) {
+                    var src_img = $(this).attr('src');
+                    $(this).attr('src', data_img);
+                    $(this).data('img', src_img);
+                }
+            },
+            function () {
+                var data_img = $(this).data('img');
+                if (data_img) {
+                    var src_img = $(this).attr('src');
+                    $(this).attr('src', data_img);
+                    $(this).data('img', src_img);
+                }
+            });
+    });
+
+    $(window).load(function () {
+        $('.page-is-loading').fadeOut().remove();
+        var options = {};
+        if (window.isIE)
+            options = {circles: {count: 0}};
+        $('#section-1 .fancy-bg').fancyFyBg(options);
+        var fancyBgOptions = {
+            circles: {count: 0},
+            colors: ['f0ece9', 'eeedeb', 'f0eceb', 'f0ece9']
+        };
+        $('#section-2 .fancy-bg').fancyFyBg(fancyBgOptions);
+        $('#section-5 .fancy-bg').fancyFyBg(fancyBgOptions);
+    });
+    //    $(document).ready(function () {
+    var bodyDirection = '<?=$direction?>';
+    <?$this->inlineScript()->captureEnd();?>
+</script>

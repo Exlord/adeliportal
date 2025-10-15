@@ -1,0 +1,348 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath().TEMPLATE_PATH . '/css/real-estate-print-page.css');
+$this->headLink()->appendStylesheet($this->basePath().TEMPLATE_PATH . '/css/real-estate-print.css', 'print');
+//$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/real-estate-melkyab.css');
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+//----------------------ali
+
+$allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO);
+$allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO);
+if ($this->permission) {
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = true;
+}
+
+//------------------------
+
+
+
+foreach($this->item as $row){
+
+    $extra_fields = $this->filed_api->generate($this->fields, $row);
+
+    if ($row->showInfo && $row->expireShowInfo >= time())
+        $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+
+    if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO) {
+        $owner_details = array(
+            'Name' => $row->ownerName,
+            'Phone' => $row->ownerPhone,
+            'Email' => $row->ownerEmail,
+            'Mobile' => $row->ownerMobile,
+            'Address' => $row->addressFull,
+        );
+    } else {
+        $owner_details = array(
+            'Address' => $row->addressShort,
+            'Name' => $this->defaultAgent->displayName,
+            'Phone' => $this->defaultAgent->phone,
+            'Email' => $this->defaultAgent->email,
+            'Mobile' => $this->defaultAgent->mobile,
+        );
+    }
+
+    if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO && is_array($this->userAgent))
+        $data_row = $this->userAgent;
+    else
+        $data_row = $this->defaultAgent;
+
+    ?>
+    <table class="tbl-view-print">
+    <tr>
+        <td>
+            <label><?= $this->translate('Owner name'); ?></label>
+
+            <p><?= $owner_details['Name'] ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('Mobile'); ?></label>
+
+            <p><?= $owner_details['Mobile'] ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('Phone'); ?></label>
+
+            <p><?= $owner_details['Phone'] ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('Email'); ?></label>
+
+            <p><?= $owner_details['Email'] ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('State') ?></label>
+
+            <p><?= $row->stateTitle ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?= $this->translate('City'); ?></label>
+
+            <p><?= $row->cityTitle ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('Region'); ?></label>
+
+            <p><?= $row->areaTitle ?></p>
+        </td>
+        <td colspan="3">
+            <label><?= $this->translate('Address'); ?></label>
+
+            <p><?= $owner_details['Address'] ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_type'); ?></label>
+
+            <p><?= t(\RealEstate\Model\RealEstateTable::$estateRegType[$row->regType]) ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_reg_type'); ?></label>
+
+            <p><?= $row->estateTypeName ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_position'); ?></label>
+
+            <p><? if (isset($extra_fields['melk_position'])) echo $extra_fields['melk_position']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('real_estate_Meter') ?></label>
+
+            <p><?= $row->estateArea ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_zirbana') ?></label>
+
+            <p><? if (isset($extra_fields['estate_zirbana'])) echo $extra_fields['estate_zirbana']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?= $this->translate('RealEstate_price_one_meter'); ?></label>
+
+            <p><?= $this->currencyFormat($row->priceOneMeter) ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('RealEstate_total_price'); ?></label>
+
+            <p><?= $this->currencyFormat($row->totalPrice) ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('RealEstate_mortgage_price'); ?></label>
+
+            <p><? $this->currencyFormat($row->mortgagePrice) ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('RealEstate_rental_price') ?></label>
+
+            <p><?= $this->currencyFormat($row->rentalPrice) ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_room_count') ?></label>
+
+            <p><? if (isset($extra_fields['room_count'])) echo $extra_fields['room_count']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_floor_count') ?></label>
+
+            <p><? if (isset($extra_fields['floor_count'])) echo $extra_fields['floor_count']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_witch_floor') ?></label>
+
+            <p><? if (isset($extra_fields['witch_floor'])) echo $extra_fields['witch_floor']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_build_year') ?></label>
+
+            <p><? if (isset($extra_fields['build_year'])) echo $extra_fields['build_year']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_room_count') ?></label>
+
+            <p><? if (isset($extra_fields['room_count'])) echo $extra_fields['room_count']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_usage') ?></label>
+
+            <p><? if (isset($extra_fields['melk_usage'])) echo $extra_fields['melk_usage']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_room_floor_type') ?></label>
+
+            <p><? if (isset($extra_fields['room_floor_type'])) echo $extra_fields['room_floor_type']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_gozar') ?></label>
+
+            <p><? if (isset($extra_fields['gozar_chand_metry'])) echo $extra_fields['gozar_chand_metry']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_ensheabat') ?></label>
+
+            <p><? if (isset($extra_fields['ensheabat'])) echo $extra_fields['ensheabat']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_heating_system') ?></label>
+
+            <p><? if (isset($extra_fields['heating_system'])) echo $extra_fields['heating_system']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_has_parking') ?></label>
+
+            <p><? if (isset($extra_fields['has_parking'])) echo $extra_fields['has_parking']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_nama') ?></label>
+
+            <p><? if (isset($extra_fields['estate_nama'])) echo $extra_fields['estate_nama']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_kitchen_service') ?></label>
+
+            <p><? if (isset($extra_fields['kitchen_service'])) echo $extra_fields['kitchen_service']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_wc_service') ?></label>
+
+            <p><? if (isset($extra_fields['wc_service'])) echo $extra_fields['wc_service']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_sanad_type') ?></label>
+
+            <p><? if (isset($extra_fields['sanad_type'])) echo $extra_fields['sanad_type']; ?></p>
+        </td>
+        <td>
+            <label><?= $this->translate('realEstate_print_estate_vam') ?></label>
+
+            <p><? if (isset($extra_fields['estate_vam'])) echo $extra_fields['estate_vam']; ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5" class="desc-view-print">
+            <label><?= $this->translate('Description') ?></label>
+
+            <p><?= $row->description ?></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['shooting_waste']) && $extra_fields['shooting_waste']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_shooting_waste') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['jacuzzi']) && $extra_fields['jacuzzi']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_jacuzzi') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['iPhone_video']) && $extra_fields['iPhone_video']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_iPhone_video') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['barbecue']) && $extra_fields['barbecue']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_barbecue') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['yard']) && $extra_fields['yard']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_yard') ?></label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['estate_water']) && $extra_fields['estate_water']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_water') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['estate_electricity']) && $extra_fields['estate_electricity']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_electricity') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['estate_gas']) && $extra_fields['estate_gas']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_gas') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['estate_phone']) && $extra_fields['estate_phone']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_phone') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['remote_control']) && $extra_fields['remote_control']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_remote_control') ?></label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['central_antenna']) && $extra_fields['central_antenna']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_central_antenna') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['cooler']) && $extra_fields['cooler']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_cooler') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['estate_sauna']) && $extra_fields['estate_sauna']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_sauna') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['has_elevator']) && $extra_fields['has_elevator']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_has_elevator') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['cabinet']) && $extra_fields['cabinet']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_cabinet') ?></label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['estate_fireplace']) && $extra_fields['estate_fireplace']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_fireplace') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['estate_storage']) && $extra_fields['estate_storage']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_storage') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['hidden_light']) && $extra_fields['hidden_light']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_hidden_light') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['estate_painting']) && $extra_fields['estate_painting']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_painting') ?></label>
+        </td>
+        <td>
+            <span
+                class="<? if (isset($extra_fields['estate_lobby']) && $extra_fields['estate_lobby']) echo 'input-checked'; else echo 'input-unchecked'; ?>"></span>
+            <label><?= $this->translate('realEstate_print_estate_lobby') ?></label>
+        </td>
+    </tr>
+    </table>
+<?
+}
+?>

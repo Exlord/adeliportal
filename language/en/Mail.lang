@@ -1,0 +1,4 @@
+<?return array(
+    'PERM_Mail' => 'E-Mails',
+    'MAIL_MSG_FROM_USER'=>'MAIL_MSG_FROM_USER',
+);

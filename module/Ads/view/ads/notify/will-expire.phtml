@@ -1,0 +1,26 @@
+<div>
+    <h2>
+        <?= t('app_hello_dear_user') . ' ' . $this->__NAME__ ?>
+    </h2>
+
+    <p>
+        <?= t('ADS_WILL_EXPIRE') ?>
+    </p>
+
+    <p>
+        <?= t('ADS_CODE') . ' : ' . $this->__AD_CODE__ ?>
+    </p>
+    <? if ($this->__VIEW_LINK__) { ?>
+        <a href="<?= $this->__VIEW_LINK__ ?>">
+            <?= t('ADS_CLICK_FOR_VIEW') ?>
+        </a>
+    <? } ?>
+    <? if ($this->__ADMIN_LINK__) { ?>
+        <a href="<?= $this->__ADMIN_LINK__ ?>">
+            <?= t('ADS_CLICK_FOR_EXTENDED') ?>
+        </a>
+    <? } ?>
+
+    <br>
+    <?= $this->__SITE_URL__ ?>
+</div>

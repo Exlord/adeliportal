@@ -1,0 +1,89 @@
+*{ direction:rtl; }
+#breadcrumbs ul li a{ padding:5px 20px 6px 10px; float:right; }
+#breadcrumbs ul li a:after{
+    border-right:12px solid #3498db;
+    border-left:none;
+    left:-12px;
+    right:auto;
+}
+#breadcrumbs ul li a.active:after{ border-right-color:#525252;}
+#breadcrumbs ul li a:before{
+    border-right:12px solid #e9e9f0;
+    border-left:none;
+    left:auto; right:0;
+}
+#breadcrumbs ul li:first-child a{
+    -moz-border-bottom-left-radius:0px;
+    -moz-border-bottom-right-radius:5px
+    -moz-border-top-left-radius:0px;
+    -moz-border-top-right-radius:5px;
+    -webkit-border-bottom-left-radius:0px;
+    -webkit-border-bottom-right-radius:5px;
+    -webkit-border-top-left-radius:0px;
+    -webkit-border-top-right-radius:5px;
+    border-bottom-left-radius:0px;
+    border-bottom-right-radius:5px;
+    border-top-left-radius:0px;
+    border-top-right-radius:5px;
+    padding-left:0px;
+    padding-right:10px;
+}
+#breadcrumbs ul li:last-child a{
+    -moz-border-top-right-radius:0px;
+    -moz-border-bottom-right-radius:0px;
+    -webkit-border-top-right-radius:0px;
+    -webkit-border-bottom-right-radius:0px;
+    border-top-right-radius:0px;
+    border-bottom-right-radius:0px;
+
+    -moz-border-top-left-radius:5px;
+    -moz-border-bottom-left-radius:5px;
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-bottom-left-radius:5px;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+}
+#breadcrumbs ul li a:hover:after{ border-right-color:green; }
+#breadcrumbs ul li a.active:hover:after{ border-right-color:#525252; }
+
+.ui-tabs .ui-tabs-nav li{float:right;}
+.ui-tabs-vertical > .ui-tabs-nav{float:right;}
+.ui-tabs-vertical > .ui-tabs-panel{margin-left:0;margin-right:205px;}
+.ui-tabs-vertical > .ui-tabs-nav li{ float:right; clear:left; margin:0 0 .2em -1px;}
+.ui-tabs-vertical > .ui-tabs-nav li.ui-tabs-active{ padding-right:0;padding-left:.2em;
+    border-right:1px solid #dddddd;border-left:none;
+}
+.normal-list ul{ margin-right:20px;margin-left:0; }
+.latest_content .block-title{}
+.latest_content .block-content{margin-left: auto; margin-right: 20px; }
+.col_top_menu .navigation li{float: right;}
+.col_top_menu .navigation{margin-right: 30px; width: 300px;}
+#top-middle-col-slider{float: left;}
+.middle_bottom_menu ul li a span{margin-left: auto; margin-right: 10px;}
+.top_menu_block .navigation li{float: right;}
+
+/*----------------------------namayandegan-----------------------------*/
+article .mainDiv{width: 784px; display: block; margin: auto;}
+article .topItemDown{margin-top:10px; background: url(../images/article/arrow-down.png) no-repeat right center ; width: 784px; height: 25px; border: medium none; color: #FFF2F2; cursor: pointer; font: bold 12px; font-family: BYekan; letter-spacing: 0;text-indent: 10px;}
+article .topItemUp{margin-top: 10px; background: url(../images/article/arrow-up.png) no-repeat right center ; width: 784px; height: 25px; border: medium none; color: #FFF2F2; cursor: pointer; font: bold 12px; font-family: BYekan; letter-spacing: 0;text-indent: 10px;}
+article .dropMenu { -moz-border-bottom-colors: none; -moz-border-left-colors: none; -moz-border-right-colors: none; -moz-border-top-colors: none; background-color: #D6DFF7; border-color: #FFFFFF; border-image: none; border-style: solid; border-width: 0 1px 1px; color: #000000; font: bold 11px tahoma,verdana,sans-serif; padding-bottom: 5px; padding-top: 5px; display: none;}
+article .dropMenu .subMenu a{text-decoration: none; margin: 10px; padding: 10px; color: #000000; font-family: BMitra; font-size: 10pt;}
+/*---------------------------------------------------------------------*/
+
+/*--------------------------------org chart ---------------------------*/
+.html_orgChart .wrapper .node span{display: block;}
+/*---------------------------------------------------------------------*/
+
+/*--------------------------------form shekayat------------------------*/
+#dynamic-form #part3{display: none; min-height: 300px; margin-top: 20px;}
+#dynamic-form #part2{display: none; min-height: 300px; margin-top: 20px;}
+#dynamic-form #part1{min-height: 370px; margin-top: 20px;}
+#dynamic-form table td{padding-top: 10px; color: #50281f; direction: ltr; font-family: BYekan; font-size: 10pt; font-weight: normal; text-align: right;}
+#dynamic-form table tr{border-bottom: 1px dotted #DFDFDF; height: 50px;}
+#dynamic-form table td input{float: right;}
+#dynamic-form #buttons_submit {margin: 0 45% 30px 0; background:url(../images/submitForm.png)no-repeat center center; width:69px; height:23px; display:block; text-indent:-120000px; border:none;}
+#dynamic-form span{font-family: BYekan !important; font-size: 10pt;}
+#dynamic-form .dynamic-form-link{display: inline-block;margin: 20px;padding: 5px 30px; float: right;text-decoration: none;}
+#dynamic-form p {margin: 0 !important;}
+/*---------------------------------------------------------------------*/
+

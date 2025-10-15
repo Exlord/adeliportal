@@ -1,0 +1,21 @@
+html, body{ height:auto; }
+.print-toolbar{ position:fixed; top:0; left:0; height:40px; width:100%; z-index:99999; background:#8d521e;
+    border-bottom:solid 1px #afafaf;
+    -moz-box-shadow:0px 1px 4px -2px #000000;
+    -webkit-box-shadow:0px 1px 4px -2px #000000;
+    box-shadow:0px 1px 4px -2px #000000;
+    filter:progid:DXImageTransform.Microsoft.Shadow(strength=1, direction=180, color='#000000');
+    -ms-filter:"progid:DXImageTransform.Microsoft.Shadow(strength = 1, Direction = 180, Color = '#000000')";
+}
+.print-toolbar-content{ display:block; height:30px; margin:5px; }
+.print-content{ margin:45px auto; cursor:move; background:#ffffff; }
+.toolbar-button{ margin-left:5px; }
+.print-content.portrait{ width:21cm; min-height:29.7cm; }
+.print-content.landscape{ width:29.7cm; min-height:21cm; }
+.print-content.portrait .page{ height:29.7cm; width:21cm; }
+.print-content.landscape .page{ width:29.7cm; height:21cm; }
+.print-content{ position:relative; }
+.print-content .pages{ position:absolute; height:100%; width:100%; top:-1px; right:-1px; }
+.print-content .page{ position:relative; border:solid 1px #808080; }
+.print-content .page .page-tag{ position:absolute; top:0; left:0; font-size:8pt; padding:2px; width:60px;
+    height:15px; background:#808080; color:#ffffff; text-align:center; }

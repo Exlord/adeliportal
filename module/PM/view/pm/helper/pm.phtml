@@ -1,0 +1,31 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/__/js/new-pm.js');
+if ($this->userId) {
+    ?>
+    <div class="col-md-12 pm_view_helper">
+        <div class="row">
+            <div class="col-md-12" id="pm_view_helper_desc">
+                <div class="row">
+                    <div class="col-xs-8 col-xs-offset-1 col-sm-8 col-sm-offset-1 col-md-8 col-md-offset-1">
+                        <?=t('PM_VIEW_HELPER_DESC')?>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-default" id="pm_popup_btn">
+                            <span><?= t('Send PM') ?></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xsd-11 col-xs-offset-1 col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1 pm_popup" id="pm_popup"></div>
+        </div>
+    </div>
+    <script>
+        <?$this->inlineScript()->captureStart();?>
+        var PM = {
+            newUrl: '<?=url('admin/pm/new',array('to'=>$this->userId),array('query'=>array('flagShowBBCode'=>false)))?>',
+            title: '<?=t('PM')?>',
+            viewType:'slider'
+        };
+        <?$this->inlineScript()->captureEnd();?>
+    </script>
+<? } ?>

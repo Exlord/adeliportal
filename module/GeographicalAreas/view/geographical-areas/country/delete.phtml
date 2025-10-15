@@ -1,0 +1,15 @@
+<div>
+    <h3><?=sprintf($this->translate('Are you sure you want to delete Country %s with ID:%s ?'),
+        "<em>" . $this->item->CountryTitle . "</em>",
+        "<em>" . $this->item->id . "</em>")?>
+    </h3>
+
+    <div>
+        <form method="post" action="<?=$this->url(
+            'admin/geographical-areas/country/delete',
+            array('id' => $this->item->id, ))?>">
+            <input class="button yes_button" type="submit" name="submit" value="<?=$this->translate('Yes')?>">
+            <input class="button no_button" type="submit" name="cancel" value="<?=$this->translate('No')?>">
+        </form>
+    </div>
+</div>

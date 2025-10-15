@@ -1,0 +1,42 @@
+<? if ($this->payerCode) { ?>
+    <div class="alert alert-success">
+        <?= t('ADS_PAY_SUCCESS') ?>
+    </div>
+    <br/>
+    <div class="alert alert-info">
+        <div>
+            <span><?= t('ADS_PAYMENT_CODE') . ' : ' ?></span>
+            <span><?= $this->payerCode ?></span>
+        </div>
+        <? if ($this->orderCode) { ?>
+            <div>
+                <span><?= t('ADS_CODE') . ' : ' ?></span>
+                <span><?= $this->orderCode ?></span>
+            </div>
+        <? } ?>
+    </div>
+    <?
+    if ($this->notifyTypeR && is_array($this->$notifyId)) {
+        ?>
+        <div>
+            <h2>
+                <?= t('ADS_SEND_NOTIFY_TO_ID') ?>
+            </h2>
+
+            <div>
+                <?
+                foreach ($this->$notifyId as $val) {
+                    ?>
+                    <span class="label label-success">
+                         <?= $val ?>
+                    </span>
+                <?
+                }
+                ?>
+            </div>
+        </div>
+    <?
+    }
+    ?>
+
+<? } ?>

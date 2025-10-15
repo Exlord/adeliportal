@@ -1,0 +1,53 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?= t('Pages') ?>
+    </h3>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+        $('#publishPages').click(function (e) {
+            e.preventDefault();
+
+            var id = [];
+            $('.grid .row_selector:checked').each(function (index, el) {
+                id.push($(el).data('id'));
+            });
+            var url = $(this).attr('href');
+            if (id.length) {
+                System.Pages.requestData['status'] = 1;
+                System.Pages.requestData['id'] = id;
+                System.Pages.requestType = "POST";
+                System.Pages.ajaxLoad(url);
+            }
+            else {
+                System.AjaxMessage('<?=t('No item selected for publishing !')?>');
+            }
+        });
+
+        $('#unpublishPages').click(function (e) {
+            e.preventDefault();
+
+            var id = [];
+            $('.grid .row_selector:checked').each(function (index, el) {
+                id.push($(el).data('id'));
+            });
+            var url = $(this).attr('href');
+            if (id.length) {
+                System.Pages.requestData['status'] = 2;
+                System.Pages.requestData['id'] = id;
+                System.Pages.requestType = "POST";
+                System.Pages.ajaxLoad(url);
+            }
+            else {
+                System.AjaxMessage('<?=t('No item selected for unpublishing !')?>');
+            }
+        });
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

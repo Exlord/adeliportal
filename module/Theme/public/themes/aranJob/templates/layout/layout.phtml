@@ -1,0 +1,214 @@
+<?
+$content = \Theme\API\Themes::renderLayout($this);
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    )
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie8.css',
+        'screen',
+        'lt IE 9'
+    );
+
+if ($direction == 'rtl')
+    $this->headLink()->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-rtl.min.css');
+
+$this->headLink()
+    ->prependStylesheet($basePath . '/select2/select2-bootstrap.css')
+    ->prependStylesheet($basePath . '/select2/select2.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-theme.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/flick/jquery-ui-1.10.4.custom.min.css')
+    ->prependStylesheet($basePath . '/css/system.css');
+
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/select2/select2.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . '/js/jquery-ui-1.10.4.custom.min.js')
+    ->prependFile($basePath . TEMPLATE_PATH . '/js/bootstrap.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    )
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/html5shiv.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+if (SYSTEM_LANG != 'en')
+    $this->headScript()->appendFile($basePath . '/select2/select2_locale_' . SYSTEM_LANG . '.js');
+
+//---------------------------------- BLOCKS -----------------------------------------------//
+$before_main_content = $this->blocks('before_main_content');
+$after_main_content = $this->blocks('after_main_content');
+$header = $this->blocks('header');
+$footer = $this->blocks('footer');
+$col_right = $this->blocks('col_right');
+$col_left = $this->blocks('col_left');
+$col_middle_left = $this->blocks('col_middle_left');
+$main = $this->blocks('main');
+$topMenu = $this->blocks('top_menu');
+$search_slider = $this->blocks('search_slider');
+
+$mainColSize = 12;
+if ($col_left && $col_right)
+    $mainColSize = 6;
+if ($col_right || $col_left)
+    $mainColSize = 9;
+if ($col_left && $col_middle_left)
+    $mainColSize = 6;
+
+?>
+
+<!DOCTYPE html>
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+    <script>
+        $(document).ready(function () {
+            //$.widget.bridge('uibutton', $.ui.button);
+        });
+    </script>
+</head>
+<body>
+<div id="container">
+    <div id="body">
+        <div class="container-fluid main-container">
+            <div class="row">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <div class="row">
+                        <? if ($topMenu) { ?>
+                            <div class="col-xs-6 col-sm-9 col-md-9">
+                                <?= $topMenu ?>
+                            </div>
+                        <? } ?>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <img src="<?= $basePath . TEMPLATE_PATH . '/images/logo.png' ?>" class="img-responsive">
+                        </div>
+                    </div>
+                </div>
+                <? if ($header) { ?>
+                    <div class="col-md-12">
+                        <?= $header ?>
+                    </div>
+                <? } ?>
+
+                <? if ($before_main_content) { ?>
+                    <div class="col-xs-12 col-sm-12 col-md-12 before_main_content">
+                        <?= $before_main_content ?>
+                    </div>
+                <? } ?>
+
+                <? if ($search_slider) { ?>
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="row">
+                            <div
+                                class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 before_main_content">
+                                <?= $search_slider ?>
+                            </div>
+                        </div>
+                    </div>
+                <? } ?>
+
+                <? if ($col_right) { ?>
+                    <div class="col-md-3">
+                        <?= $col_right ?>
+                    </div>
+                <? } ?>
+
+                <div class="col-xs-12 col-sm-12 col-md-<?= $mainColSize ?> ">
+                    <? if ($main) {
+                        echo $main;
+                    } ?>
+                    <?
+                    $fm = $this->flashMessenger()->render();
+                    if (!empty($fm)) {
+                        ?>
+                        <div id="system_messages"><?= $fm; ?></div>
+                    <? } ?>
+                    <div style="clear: both"></div>
+                    <div class="main_content">
+                        <?= $this->content ?>
+                    </div>
+                </div>
+
+                <? if ($col_left) { ?>
+                    <div class="col-xs-12 col-sm-6 col-md-3 m_top_5">
+                        <?= $col_left ?>
+                    </div>
+                <? } ?>
+
+                <? if ($col_middle_left) { ?>
+                    <div class="col-xs-12 col-sm-6 col-md-3 m_top_5">
+                        <?= $col_middle_left ?>
+                    </div>
+                <? } ?>
+
+                <? if ($after_main_content) { ?>
+                    <div class="col-xs-12 col-sm-12 col-md-12 after_main_content">
+                        <?= $after_main_content ?>
+                    </div>
+                <? } ?>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid footer sticky-bottom">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
+                <span class="line_footer"></span>
+            </div>
+            <div class=" col-md-12">
+                <div class="">
+                    <?
+                    $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                    $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    ?>
+                    <!-- <p align="center">
+                        <? /*= t('APPLICATION_BROWSERS') */ ?>
+                    </p>-->
+
+                    <p align="center">
+                        <span><?= sprintf(t('APPLICATION_RIGHTS'), 'بانک اطلاعات مشاغل شمال غرب ایران') ?></span>
+                        <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                        &nbsp; .
+                        <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                        <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<h3 class="page-title"><?= t('Select the Component Type you want to create.') ?></h3>
+<div class="row components-block-list">
+    <?
+    $components = array_chunk($this->components, (int)(count($this->components) / 4) + 1, true);
+    foreach ($components as $list) {
+        ?>
+        <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="list-group">
+                <? foreach ($list as $key => $comp) { ?>
+                    <a class="ajax_page_load list-group-item"
+                       href="<?= url('admin/block/new', array('type' => $key)) ?>">
+                        <h4 class="list-group-item-heading"><?= t($comp['label']) ?></h4>
+
+                        <p class="description list-group-item-text"><?= t($comp['description']) ?></p>
+                    </a>
+                <? } ?>
+            </div>
+        </div>
+    <?
+    }
+    ?>
+</div>

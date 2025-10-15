@@ -1,0 +1,53 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('ADS_CONFIGS'); ?>
+    </h3>
+    <?
+    $form = $this->form;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <div class="alert alert-danger" role="alert"><?=t('ADS_MANAGER_IS_RESPONSIBILITY')?></div>
+    <div id="ads-config-tabs">
+        <ul>
+            <li><a href="#tab-options"><?= t('Options') ?></a></li>
+            <li><a href="#tab-baseType"><?= t('ADS_BASE_TYPE') ?></a></li>
+        </ul>
+        <div id="tab-options">
+            <div id="options">
+                <?
+                if ($form->has('starCount'))
+                    echo $this->formRow($form->get('starCount'));
+                if ($form->has('keywordCount'))
+                    echo $this->formRow($form->get('keywordCount'));
+                if ($form->has('smallImgWidth'))
+                    echo $this->formRow($form->get('smallImgWidth'));
+                if ($form->has('smallImgHeight'))
+                    echo $this->formRow($form->get('smallImgHeight'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-baseType">
+            <div id="baseType">
+                <p class="help-block"><?=t('ADS_BASE_TYPE_DESC')?></p>
+                <?
+                if ($form->has('base_type_ads'))
+                    echo $this->formCollection($form->get('base_type_ads'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <?
+    echo $this->iptFormCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+        $('#ads-config-tabs').tabs();
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

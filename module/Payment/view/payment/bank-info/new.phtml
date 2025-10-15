@@ -1,0 +1,22 @@
+<?
+$form = $this->form;
+?>
+<div class="new-form">
+    <?
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    foreach ($form->getElements() as $el) {
+        echo $this->iptformRow($el);
+    }
+    if ($this->image) {
+        ?>
+        <div>
+            <img src="<?= $this->image ?>">
+            <input type="hidden" name="image" value="<?= $this->image ?>">
+        </div>
+    <?
+    }
+    echo $this->iptFormCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>

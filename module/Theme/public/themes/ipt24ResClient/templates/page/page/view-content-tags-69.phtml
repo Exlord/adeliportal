@@ -1,0 +1,51 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . TEMPLATE_PATH . '/css/page.css');
+$this->headScript()->prependFile($this->basePath() . TEMPLATE_PATH . '/js/page.js');
+$this->headScript()->appendFile($this->basePath() . '/js/jquery.lazyLoad.js');
+
+$page = new \Page\API\Page();
+
+?>
+<h2><?=t('Page_JOB_WEL_DONE_CERTIFICATE')?></h2>
+<br/>
+<div class="view-certificate">
+    <ul class="view-certificate-ul">
+        <?
+        if (!empty($this->paginator)) {
+            foreach ($this->paginator as $row) {
+                $pageImage = unserialize($row['image']);
+                $image = '';
+                if (isset($pageImage['image']))
+                    $image = $pageImage['image'];
+                if (!empty($image))
+                    $image = getThumbnail()->resize($image, 75, 75); //resize image
+                $alt = '';
+                if (isset($pageImage['alt']))
+                    $alt = $pageImage['alt'];
+                $titleImage = '';
+                if (isset($pageImage['title']))
+                    $titleImage = $pageImage['title'];
+
+                $pageRouteParams['id'] = $row['id'];
+                $pageRouteParams['title'] = \Application\API\App::prepareUrlString($row['pageTitle']);
+                ?>
+                <li data-id="<?= $row['id'] ?>">
+                    <div class="certificate-items">
+                        <img class="lazy" data-original="<?= $image ?>" alt="<?= $alt ?>" title="<?= $titleImage ?>"
+                             height="75" width="75">
+                        <noscript>
+                            <img alt="<?= $alt ?>" title="<?= $titleImage ?>" src="<?= $image ?>"
+                                 height="75" width="75">
+                        </noscript>
+                        <a class="link-certificate" href="#"
+                           data-url="<?= url('app/single-content', $pageRouteParams) ?>"><?= $row['pageTitle'] ?></a>
+                    </div>
+                </li>
+            <?
+            }
+        } ?>
+    </ul>
+</div>
+<div style="clear: both"></div>
+
+

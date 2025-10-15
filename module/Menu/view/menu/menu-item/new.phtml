@@ -1,0 +1,136 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/menu.js');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/menu.css');
+?>
+
+<div>
+    <?
+    /* @var $form \Zend\Form\Form */
+    $form = $this->form;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+
+    ?>
+    <h3 class="page-title"><?= t('Create/Edit Menu Item') ?></h3>
+
+    <div id="menu-config-tabs">
+        <ul>
+            <li><a href="#tab-specs"><?= t('Specs') ?></a></li>
+            <li><a href="#tab-mega-menu"><?= t('Mega Menu') ?></a></li>
+            <li><a href="#tab-options-menu"><?= t('Options') ?></a></li>
+        </ul>
+        <div id="tab-specs">
+            <div class="col-md-3" id="specs">
+                <div class="selected-menu-type">
+                    <label><?= t('Menu type') ?></label>
+
+                    <div id="selected-menu-type" class="bg-primary">
+                        <a href="#select-menu-type" id="select-menu-type"
+                           class="btn btn-default btn-xs"
+                           data-icon-p="ui-icon-circle-check"
+                           title="<?= t('Select Menu Type') ?>">
+                            <span class="glyphicon glyphicon-cog"></span>
+                        </a>
+                        <span id="menu-type-content"><?= t('Select Menu Type') ?></span>
+                    </div>
+                </div>
+                <?
+                foreach ($form->getElements() as $el) {
+                    echo $this->formRow($el);
+                }
+
+                if ($this->oldImage) {
+                    ?>
+                    <div>
+                        <a href="#" id="delete_table_image" class="btn btn-default btn-xs" data-id="<?=$this->menuItemId?>">
+                            <span class="glyphicon glyphicon-remove text-danger"></span>
+                        </a>
+                        <img src="<?= $this->oldImage ?>">
+                    </div>
+                <?
+                }
+                ?>
+            </div>
+            <div class="col-md-9" id="menu-type-params">
+                <?
+                echo $this->iptFormCollection($form->get('itemUrlTypeParams'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-mega-menu">
+            <?
+            echo $this->formCollection($form->get('config')->get('megaMenu'));
+            ?>
+        </div>
+        <div id="tab-options-menu">
+            <?
+            echo $this->formCollection($form->get('config')->get('options'));
+            ?>
+        </div>
+    </div>
+    <?
+    echo $this->formCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<div id="menuTypes" style="display:none;height:80%;">
+    <div class="row">
+        <?
+        $menuTypes = array_chunk($this->menuTypes, (int)(count($this->menuTypes) / 3) + 1, true);
+        foreach ($menuTypes as $list) {
+            ?>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="list-group">
+                    <? foreach ($list as $menuType => $params) { ?>
+                        <a class="ajax_page_load list-group-item"
+                           href="#<?= $menuType ?>" data-type="<?= $menuType ?>">
+                            <h4 class="list-group-item-heading"><?= t($params['label']) ?></h4>
+
+                            <p class="description list-group-item-text"><?= t($params['note']); ?></p>
+                        </a>
+                    <? } ?>
+                </div>
+            </div>
+        <?
+        }
+        ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    $('#menu-config-tabs').tabs();
+    MenuTypes.dialog.cancel = '<?=t('Cancel')?>';
+    MenuTypes.resultLabel = '<?=t('Selected Value')?>';
+    MenuTypes.deleteUrl = '<?=url('admin/menu/items/delete-img',array('menuId'=>$this->menuId))?>';
+    MenuTypes.init();
+
+    $(document).ready(function(){
+
+        $('#delete_table_image').click(function(e){
+            e.preventDefault();
+            var tag = $(this);
+            tag.addClass('tiny-ajax-loader');
+            var data = {};
+            data['itemId'] = $(this).data('id');
+            $.ajax({
+                url: MenuTypes.deleteUrl,
+                type: 'POST',
+                data: data,
+                complete: function () {
+                    tag.removeClass('tiny-ajax-loader');
+                },
+                success: function (data) {
+                    if(data.status==1)
+                    {
+                        tag.parent().remove();
+                    }
+                },
+                error: System.AjaxError
+            });
+        });
+
+    });
+
+    <?$this->inlineScript()->captureEnd()?>
+</script>

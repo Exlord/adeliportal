@@ -1,0 +1,50 @@
+<?
+if ($this->flagShowForGuest) {
+    $this->headScript()->prependFile($this->basePath() . '/js/negativeAndPositive.js');
+    $this->headLink()->prependStylesheet($this->basePath() . '/css/rating.css');
+    ?>
+    <div data-id="<?= $this->ei ?>" class="NP-div">
+    <span id="" data-id="1"
+          class="<? if ((int)$this->vote > 0) echo 'np-disabled'; else echo 'negative-and-positive'; ?> icon-plus"></span>
+    <span class="rate-sum-div">
+        <span class="rate-sum"><?= $this->sum ?></span>
+        <!--<br/>
+        <span class="txt-rate-sum"><? /*=t('Vote')*/ ?></span>-->
+    </span>
+
+    <span id="" data-id="-1"
+          class="<? if ((int)$this->vote < 0) echo 'np-disabled'; else echo 'negative-and-positive'; ?> icon-minus"></span>
+    </div>
+    <div id="rating_NP_dialog" style="display: none;">
+        <div class="message-NP-rating" id="message-NP-rating"></div>
+        <div class="ajax-load ing-rating-NP"></div>
+    </div>
+
+    <script>
+        var url_rate_np = '<?=url('app/negative-positive-rate/new')?>';
+        if (typeof NP == 'undefined')
+            var NP = {};
+        NP['<?=$this->ei?>'] = {
+            entityId: '<?=$this->ei?>',
+            entityType: '<?=$this->et?>',
+          //  time: '<?//=time()?>',
+            sum: '<?=$this->sum?>'
+        };
+    </script>
+<?
+} else {
+    ?>
+    <div>
+        <p class="alert alert-danger">
+            <?= t('RATING_LOGIN') ?>
+            <br>
+            <span class="glyphicon glyphicon-user text-primary"></span>
+            <a href="<?= url('app/user/register') ?>"><?= t('APP_CLICK_FOR_REGISTER') ?></a>
+            <br>
+            <span class="glyphicon glyphicon-log-in text-primary"></span>
+            <a href="<?= url('app/user/login') ?>"><?= t('APP_CLICK_FOR_LOGIN') ?></a>
+        </p>
+    </div>
+<?
+}
+?>

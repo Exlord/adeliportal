@@ -1,0 +1,51 @@
+<?
+if ($this->flag == 0){
+$this->headLink()->prependStylesheet($this->basePath() . '/css/news-letter.css');
+$this->headScript()->prependFile($this->basePath() . '/js/news-letter.js');
+?>
+<div id="newsLetter_signUp_form">
+    <? } ?>
+    <div class="flag-messenger">
+        <?
+        if ($this->flag == 1) {
+            ?>
+            <p>
+                <?= t('NewsLetter_SUCCESS_MESSAGE') ?>
+            </p>
+        <?
+        } elseif ($this->flag == 2) {
+            ?>
+            <p>
+                <?= t('NewsLetter_DUPLICATE_EMAIL') ?>
+            </p>
+        <?
+        }
+        ?>
+    </div>
+    <h3 class="page-title">
+        <?= $this->translate('News Letter'); ?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach ($form->getElements() as $el) {
+            echo $this->iptFormRow($el);
+        }
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+    <? if ($this->flag == 0){ ?>
+</div>
+<? } ?>
+
+
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    var NewsLetter = {
+        signUpUrl: '<?=url('app/newsletter-sign-up')?>'
+    };
+    <?$this->inlineScript()->captureEnd();?>
+</script>

@@ -1,0 +1,101 @@
+<?
+if ($this->flagView) {
+    if ($this->error) {
+        ?>
+        <div class="alert alert-danger">
+            <?= t('ADS_CONFIG_ERROR') ?>
+        </div>
+    <?
+    } else {
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        ?>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <?= $this->formRow($form->get('showFields')); ?>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-5">
+                            <a href="#" id="ad_select_link" class="btn btn-default">
+                                <span class="glyphicon glyphicon-hand-left"></span>
+                            </a>
+                            <a href="#" id="ad_remove_link" class="btn btn-default">
+                                <span class="glyphicon glyphicon-hand-right"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <?= $this->formRow($form->get('selectFields')); ?>
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag(); ?>
+        <script>
+            <?$this->inlineScript()->captureStart();?>
+            $(document).ready(function () {
+
+                $('#selectFields option:not(:selected)').each(function () {
+                    $(this).remove();
+                });
+
+                $('#ad_select_link').click(function (e) {
+                    e.preventDefault();
+                    $('#showFields option:selected').each(function (i, selected) {
+                        var val = $(selected).val();
+                        var text = $(selected).text();
+                        $('#selectFields').append('<option selected value="' + val + '">' + text + '</option>');
+                        $(selected).remove();
+                    });
+                });
+                $('#ad_remove_link').click(function (e) {
+                    e.preventDefault();
+                    $('#selectFields option:selected').each(function (i, selected) {
+                        var val = $(selected).val();
+                        var text = $(selected).text();
+                        $('#showFields').append('<option value="' + val + '">' + text + '</option>');
+                        $(selected).remove();
+                    });
+                });
+            });
+            <?$this->inlineScript()->captureEnd();?>
+        </script>
+    <?
+    }
+} else {
+    if ($this->error) {
+        ?>
+        <div class="alert alert-danger">
+            <?= t('ADS_CONFIG_ERROR') ?>
+        </div>
+    <? } else { ?>
+        <div class="col-md-12">
+            <? foreach ($this->baseType as $row) { ?>
+                <div class="col-md-4">
+                    <a class="ajax_page_load btn btn-default btn-lg btn-block"
+                       href="<?= url('admin/ad/config/select-fields', array('baseType' => $row['id'])) ?>">
+                        <span><?= $row['name'] ?></span>
+                    </a>
+                </div>
+                <?
+                if ($row['isRequest']) {
+                    ?>
+                    <div class="col-md-4">
+                        <a class="ajax_page_load btn btn-default btn-lg btn-block"
+                           href="<?= url('admin/ad/config/select-fields', array('baseType' => $row['id'], 'isRequest' => $row['isRequest'])) ?>">
+                            <span><?= t('ADS_REQUEST') . ' ' . $row['name'] ?></span>
+                        </a>
+                    </div>
+                <?
+                }
+            } ?>
+        </div>
+    <?
+    }
+}

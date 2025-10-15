@@ -1,0 +1,564 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/real-estate.css');
+$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/real-estate-2124.css');
+//$this->headScript()->appendFile($this->basePath() . '/js/real-estate-list.js');
+//$this->headScript()->appendFile($this->basePath() . '/js/real-estate-compare.js');
+$this->headScript()->appendFile($this->basePath() . '/js/real-estate-quick-send-mail.js');
+$this->headScript()->appendFile($this->basePath() . '/js/googlemap-in-colorbox.js');
+\JQuery\API\JQuery::loadColorBox($this);
+$google = $this->google;
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+if ($this->item) {
+
+//----------------------ali
+
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO);
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO);
+
+    if (current_user()->id == $this->item->userId)
+        $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+
+    if ($this->permission) {
+        $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+        $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = true;
+    }
+
+
+    $isCurrentUser = isCurrentUser($this->item->userId);
+
+//------------------------
+
+    ?>
+    <div class="col-md-12 box_real_estate_view">
+
+    <div class="r_status_text">
+        <?
+        if ($this->item->isRequest) {
+            ?>
+            <span><?= $this->translate('Requested') ?></span>
+        <?
+        }
+        if ($this->last_visit < $this->item->published) {
+            ?>
+            <span><?= $this->translate('New') ?></span>
+        <?
+        }
+        if ($this->item->status == 3) {
+            ?>
+            <span><?= $this->translate('Transferred') ?></span>
+        <?
+        }
+        if ($this->item->status == 4) {
+            ?>
+            <span><?= $this->translate('RealEstateCanceled') ?></span>
+        <?
+        }
+        if ($this->item->expire < time()) {
+            ?>
+            <span><?= $this->translate('Expired') ?></span>
+        <? } ?>
+    </div>
+
+    <div class="header-content-real-estate">
+        <?
+        if ($route_prefix == 'app')
+            echo $this->add_to_any_helper();
+        ?>
+    </div>
+
+    <div class="header-content-visit-count">
+        <?= t('REALESTATE_COUNT_HITS') . ' : ' . $this->item->viewCounter; ?>
+    </div>
+
+    <!--<div class="header-content-compare">
+            <a class="real-add-to-compare" data-id="<? /*= $this->item->itemId */ ?>"><? /*= t('Compare') */ ?></a>
+        </div>-->
+
+    <? if (!$this->permission) { ?>
+        <div class="header-content-print">
+            <a href="<?= url('app/real-estate/export', array(), array('query' => array('exportType' => 'print', 'exportId' => $this->item->itemId))) ?>"
+               target="_blank" class="real-estate-print-btn"><? //= t('Print this page'); ?></a>
+        </div>
+    <? } ?>
+
+    <div class="col-md-8">
+    <?
+    $allRegType = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+    $reg_type = t($allRegType[$this->item->regType]) . ' ';
+    if ($this->item->isRequest)
+        if ($this->item->regType == 77)
+            $reg_type = 'خرید';
+    $h_regType = '<div class="r_allData_div"><span class="label">نوع ثبت :</span><span class="value">' . $reg_type . '</span></div>';
+    $h_estateType = '<div class="r_allData_div"><span class="label">نوع ملک :</span><span class="value">' . $this->item->estateTypeName . '</span></div>';
+    $h_meter = '';
+    if ($this->item->isRequest) {
+        if (isset($this->fields['کمترین متراژ']) && isset($this->fields['بالاترین متراژ'])) {
+            $h_meter = '<div class="r_allData_div"><span class="label"> متراژ در بازه : </span><span class="value">' . $this->fields['کمترین متراژ'] . ' و  </span><span class="value">' . $this->fields['بالاترین متراژ'] . ' متر  </span></div>';
+        }
+    } else
+        if (isset($this->fields['مساحت زمین']))
+            $h_meter = '<div class="r_allData_div"><span class="label">مساحت زمین : </span><span class="value">' . $this->fields['مساحت زمین'] . ' مترمربع</span></div>';
+        elseif (isset($this->fields['زیربنا']))
+            $h_meter = '<div class="r_allData_div"><span class="label">زیربنا : </span><span class="value">' . $this->fields['زیربنا'] . ' مترمربع</span></div>';
+    $price = 0;
+    $h_rahn = '';
+    $h_ejare = '';
+    $h_totalPrice = '';
+    switch ($this->item->regType) {
+        case 78:
+            $h_rahn = '';
+            if ($this->item->isRequest) {
+                if (isset($this->fields['کمترین رهن']) && isset($this->fields['بالاترین رهن'])) {
+                    $h_rahn = '<div class="r_allData_div price_font"><span class="label"> رهن در بازه : </span><span class="value">' . $this->fields['کمترین رهن'] . ' الی  </span><span class="value">' . $this->fields['بالاترین رهن'] . '  </span></div>';
+                }
+                if (isset($this->fields['کمترین اجاره']) && isset($this->fields['بالاترین اجاره'])) {
+                    $h_ejare = '<div class="r_allData_div price_font"><span class="label"> اجاره در بازه : </span><span class="value">' . $this->fields['کمترین اجاره'] . ' الی  </span><span class="value">' . $this->fields['بالاترین اجاره'] . '  </span></div>';
+                }
+            } else
+                $price = '<div class="r_allData_div price_font"><span class="label">' . t('mortgage') . '</span><span class="value">' . $this->currencyFormat($this->item->mortgagePrice) . '</span></div>' .
+                    '<div class="r_allData_div price_font"><span class="label">' . t('rental') . '</span><span class="value">' . $this->currencyFormat($this->item->rentalPrice) . '</span></div>';
+            break;
+        default:
+            if ($this->item->isRequest) {
+                if (isset($this->fields['کمترین قیمت']) && isset($this->fields['بالاترین قیمت'])) {
+                    $h_totalPrice = '<div class="r_allData_div price_font"><div class="width_290"><span class="up_price"></span><span class="value">' . $this->currencyFormat($this->fields['بالاترین قیمت']) . '</span></div><div class="width_290"><span class="down_price"></span><span class="value">' . $this->currencyFormat($this->fields['کمترین قیمت']) . '</span></div> </div>';
+                }
+            } else
+                $h_totalPrice = '<div class="r_allData_div price_font"><span class="label">' . $this->translate('REALESTATE_TOTAL') . ' : </span><span class="value">' . $this->currencyFormat($this->item->totalPrice) . '</span></div>';
+            break;
+    }
+    ?>
+    <div class="header_view_r">
+        <div class="col-md-2">
+
+            <?
+
+            if (count($this->files)) {
+                $firstImage = null;
+                ?>
+                <div class="popup_box_images">
+                    <div class="title">
+                        برای بزرگ نمایی تصاویر ، بر روی آنها کلیک نمایید .
+                    </div>
+                    <?
+                    $counter = 1;
+                    foreach ($this->files as $value) {
+                        if (file_exists(PUBLIC_PATH . $value)) {
+                            $file_path = getThumbnail()->thumbnail($value, 100, 100);
+                            $file_path_big = getThumbnail()->thumbnail($value, 500, 500);
+                            if ($counter == 1)
+                                $firstImage = '<a class="open_popup_images" href="#"><img src="' . $file_path . '"></a>';
+                            $counter++;
+                            ?>
+                            <a class="colorbox images-real-estate-tbl-link-pic" href="<?= $file_path_big ?>">
+                                <img src="<?= $file_path ?>">
+                            </a>
+                        <?
+                        }
+                    } ?>
+                </div>
+                <?
+                if ($firstImage)
+                    echo $firstImage;
+            } else {
+                ?>
+                <div class="default_empty_images"></div>
+            <?
+            }
+            ?>
+
+        </div>
+        <div class="col-md-5">
+            <?= $h_regType ?>
+            <?= $h_meter ?>
+            <? if ($h_ejare) echo $h_ejare; ?>
+        </div>
+        <div class="col-md-5">
+            <?= $h_estateType ?>
+            <? if ($h_totalPrice) echo $h_totalPrice; ?>
+            <? if ($price) echo $price; ?>
+            <? if ($h_rahn) echo $h_rahn; ?>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+    <fieldset class="f_part_view_right">
+        <legend>
+            مشخصات کلی
+        </legend>
+        <div class="col-md-6">
+            <div class="view_part_f_d">
+                <span class="label"><?= t('State') ?>:</span>
+                <span class="value">
+                    <? if ($this->item->stateTitle) echo $this->item->stateTitle; else echo '-----'; ?>
+                </span>
+            </div>
+            <div class="view_part_f_d">
+                <span class="label"><?= t('Region') ?>:</span>
+                <span class="value">
+                    <? if ($this->item->areaTitle) echo $this->item->areaTitle; else echo '-----'; ?>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="view_part_f_d">
+                <span class="label"><?= t('City') ?>:</span>
+                <span class="value">
+                    <? if ($this->item->cityTitle) echo $this->item->cityTitle; else echo '-----'; ?>
+                </span>
+            </div>
+            <div class="view_part_f_d">
+                <span class="label"><?= t('Address Short') ?>:</span>
+                <span class="value">
+                    <? if ($this->item->addressShort) echo $this->item->addressShort; else echo '-----'; ?>
+                </span>
+            </div>
+        </div>
+    </fieldset>
+
+    <div style="clear:both"></div>
+    <fieldset class="f_part_view_right">
+        <legend>
+            مشخصات جزئی
+        </legend>
+        <?
+        $firstFieldsArray = array(
+            'پلاک' => 'pelak',
+            'تعداد اتاق خواب' => 'c_otagh_khab',
+            'تعداد پارکینگ' => 'c_parking',
+            'سن بنا' => 'senne_bana',
+            'آشپزخانه اپن' => 'kitchen_open',
+            'کابینت' => 'cabinet',
+            'سرویس بهداشتی' => 'service_behdashti',
+            'موقعیت جغرافیایی' => 'm_joghrafiaee',
+            'کف' => 't_kaf',
+            'ملک واقع در طبقه' => 's_m_dar_tabaghe',
+            'تعداد کل طبقات' => 's_m_kolle_tabaghat',
+            'تعداد واحد در طبقه' => 's_m_vahed_dar_tabaghe',
+            'تعداد کل واحدها' => 's_m_kolle_vahedha',
+            'نما' => 's_nama',
+            'وضعیت سکونت' => 'vaziat_sokunat',
+            'نوع سند' => 'sanad',
+            'وام دارد' => 'vam',
+            'انباری' => 'anbari',
+            'بالکن' => 'balkon',
+            'طول بر (متر)' => 'tule_bar',
+            'عرض گذر (متر)' => 'arze_gozar',
+            'اصلاحی (متر)' => 'eslahi',
+            'درصد تراکم' => 'darsad_tarakom',
+            'نوع مجوز' => 'type_mojavez',
+            'وضعیت ساختمان' => 'vaziat_sakhteman',
+            'وضعیت آبرسانی' => 'vaziat_abresani',
+            'وضعیت برق' => 'vaziat_bargh',
+            'تجهیزات' => 'tajhizat',
+            'محصولات' => 'mahsulat',
+            'نوع فعالیت' => 'type_faaliat',
+            'نحوه فروش' => 'type_forush',
+            'ارتفاع (متر)' => 'ertefae',
+            'تعداد تلفن' => 'c_phone',
+            'متراژ بالکن' => 'metraj_balkon',
+            'نوع ویلا' => 'type_vila',
+            'تزئینات' => 'tazeinat',
+        );
+        foreach ($firstFieldsArray as $key => $val) {
+            if (isset($this->fields[$key]) && $this->fields[$key]) {
+                $class_col = 'col-md-6';
+                if ($key == 'تزئینات')
+                    $class_col = 'col-md-12';
+                ?>
+                <div class="<?= $class_col ?>">
+                    <div class="view_part_f_d">
+                        <span class="label"><?= $key ?>:</span>
+                        <span class="value"><?= $this->fields[$key] ?></span>
+                    </div>
+                </div>
+            <?
+            }
+        }
+        ?>
+    </fieldset>
+
+    <fieldset class="f_part_view_right f_emkanat">
+        <legend>
+            امکانات ملک
+        </legend>
+        <?
+        $secondFieldsArray = array(
+            'آب' => 'em_water',
+            'برق' => 'em_bargh',
+            'گاز' => 'em_gaz',
+            'تلفن' => 'em_phone',
+            'استخر' => 'em_estakhr',
+            'چاه عمیق' => 'em_chah',
+            'دوربین مداربسته' => 'em_durbin',
+            'اطفاء حریق' => 'em_etfae_harigh',
+            'شوفاژ' => 'em_shufaj',
+            'کولر' => 'em_kuler',
+            'چیلر' => 'em_chiler',
+            'فن کوئل' => 'em_fankuel',
+            'آیفون تصویری' => 'em_ifon',
+            'پکیج' => 'em_pakeij',
+            'نورمخفی' => 'em_noormakhfi',
+            'ریموت کنترل' => 'em_rimut',
+            'آبگرمکن' => 'em_abgarmkon',
+            'شومینه' => 'em_shumine',
+            'سونا' => 'em_suna',
+            'آنتن مرکزی' => 'em_anten',
+            'حیاط خلوت' => 'em_hayat',
+            'آسانسور' => 'em_asansor',
+            'باربیکیو' => 'em_barbiku',
+            'جکوزی' => 'em_jakuzi',
+            'لابی' => 'em_labi',
+            'فضای سبز' => 'em_fazayesabz',
+            'پنجره دوجداره' => 'em_panjare',
+            'پاسیو' => 'em_pasu',
+            'شوتینگ زباله' => 'em_shuting',
+            'نگهبان - سرایدار' => 'em_negahban',
+        );
+        foreach ($secondFieldsArray as $key => $val) {
+            if (isset($this->fields[$key]) && $this->fields[$key]) {
+                ?>
+                <div class="col-md-3">
+                    <div class="view_part_f_d">
+                        <span class="active_icon"></span>
+                        <span class="label"><?= $key ?></span>
+                    </div>
+                </div>
+            <?
+            }
+        }
+        ?>
+    </fieldset>
+
+
+    <fieldset class="f_part_view_right_orange">
+        <legend>
+            توضیحات ملک
+        </legend>
+        <div class="view_part_f_d">
+            <span class="label"><?= t('Description') ?>:</span>
+                <span class="value">
+                    <? if ($this->item->description) echo $this->item->description; else echo '-----'; ?>
+                </span>
+        </div>
+    </fieldset>
+
+    <fieldset class="f_part_view_right">
+        <legend>
+            موقعیت ملک
+        </legend>
+        <? if ($google) { ?>
+            <table class="footer-agent-tbl">
+                <tr>
+                    <td>
+                        <a class="view-real-estate-google-map"
+                           href='#'>
+                            <img style="color: #000000;"
+                                 alt="<?= t('Please wait ...') ?>"
+                                 src="http://maps.google.com/maps/api/staticmap?center=<?= $google ?>&zoom=14&size=400x200&markers=<?= $google ?>&sensor=false"/>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        <? } else { ?>
+            <div class="default_empty_map"></div>
+        <? } ?>
+    </fieldset>
+    </div>
+
+    <div class="col-md-4">
+        <?
+        if ($this->item->showInfo && $this->item->expireShowInfo >= time())
+            $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+
+        if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO) {
+            $owner_details = array(
+                'Name' => $this->item->ownerName,
+                'Phone' => $this->item->ownerPhone,
+                'Email' => $this->item->ownerEmail,
+                'Mobile' => $this->item->ownerMobile,
+                /* 'real_estate_M' => $this->item->estateArea,
+                 'Address Short' => $this->item->addressShort,*/
+                'Address' => $this->item->addressFull,
+            );
+        } else {
+            $owner_details = array(
+                'Address' => $this->item->addressShort,
+                'Name' => '-----',
+                'Phone' => '-----',
+                'Email' => '-----',
+                'Mobile' => '-----',
+            );
+        }?>
+
+        <fieldset class="f_part_view_left">
+            <legend>
+                اطلاعات تماس
+            </legend>
+            <div class="view_part_f_d">
+                <span class="label"><?= $this->translate('Realty Id'); ?>: </span>
+                <span class="value">
+                   <?= $this->item->itemId; ?>
+                </span>
+            </div>
+            <div class="view_part_f_d">
+                <span class="label"><?= t('Owner name') ?>:</span>
+                <span class="value">
+                    <? if ($owner_details['Name']) echo $owner_details['Name']; else echo '-----'; ?>
+                </span>
+            </div>
+            <div class="view_part_f_d">
+                <span class="label"><?= t('Email') ?>:</span>
+                <span class="value">
+                    <? if ($owner_details['Email']) echo $owner_details['Email']; else echo '-----'; ?>
+                </span>
+            </div>
+            <div class="view_part_f_d">
+                <span class="label"><?= t('Phone') ?>:</span>
+                <span class="value">
+                    <? if ($owner_details['Phone']) echo $owner_details['Phone']; else echo '-----'; ?>
+                </span>
+            </div>
+            <div class="view_part_f_d">
+                <span class="label"><?= t('Mobile') ?>:</span>
+                <span class="value">
+                    <? if ($owner_details['Mobile']) echo $owner_details['Mobile']; else echo '-----'; ?>
+                </span>
+            </div>
+            <div class="view_part_f_d">
+                <span class="label"><?= t('Address') ?>:</span>
+                <span class="value">
+                    <? if ($owner_details['Address']) echo $owner_details['Address']; else echo '-----'; ?>
+                </span>
+            </div>
+        </fieldset>
+
+        <fieldset class="f_part_view_left">
+            <legend>
+                مشاور املاک
+            </legend>
+            <?
+            if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO && $this->userAgent)
+                $data_row = $this->userAgent;
+            else
+                $data_row = $this->defaultAgent;
+            ?>
+            <table class="footer-agent-tbl">
+                <tr>
+                    <td>
+                        <? if (isset($data_row->image) && $data_row->image) {
+                            $image = getThumbnail()->resize($data_row->image, 143, 143); //resize image;
+                        } else {
+                            $image = $this->basePath() . TEMPLATE_PATH . '/images/real-estate/moshaverin-img.png';
+                        } ?>
+                        <img src="<?= $image ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="view_part_f_d">
+                            <span class="label"><?= $this->translate('Name') . ' : ' ?></span>
+                            <span class="value">
+                                <? if (isset($data_row->displayName)) echo $data_row->displayName; else echo '-----'; ?>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="view_part_f_d">
+                            <span class="label"><?= $this->translate('Email') . ' : ' ?></span>
+                            <span class="value">
+                                <? if (isset($data_row->email)) echo $data_row->email; else echo '-----'; ?>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="view_part_f_d">
+                            <span class="label"><?= $this->translate('Mobile') . ' : ' ?></span>
+                            <span class="value">
+                               <? if (isset($data_row->mobile)) echo $data_row->mobile; else echo '-----'; ?>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="view_part_f_d">
+                            <span class="label"><?= $this->translate('Phone') . ' : ' ?></span>
+                            <span class="value">
+                              <? if (isset($data_row->phone)) echo $data_row->phone; else echo '-----'; ?>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <fieldset class="f_part_view_left">
+            <legend>
+                ارسال ایمیل
+            </legend>
+            <?= $this->quick_send_mail($data_row->email) ?>
+        </fieldset>
+
+    </div>
+
+    </div>
+
+    <div style="clear: both"></div>
+
+    <? if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO && $this->userAgent) { ?>
+        <div class="center_co">
+        <span class="label">
+            تلفن های دفتر مرکزی املاک 2124 :
+        </span>
+        <span class="value">
+            <?= $this->defaultAgent->phone . ' , ' ?>
+            <?= $this->defaultAgent->mobile ?>
+        </span>
+        </div>
+    <? } ?>
+
+    <div class="like_realestate">
+        <div class="like_realestate_title">
+            املاک مشابه
+        </div>
+        <?
+        $searchQuery = '';
+        if ($this->item->regType == 77)
+            $searchQuery = 'table[estateType]=' . $this->item->estateType . '&table[stateId]=' . $this->item->stateId . '&table[cityId]=' . $this->item->cityId . '&table[parentAreaId]=&table[totalPrice]=' . ((int)$this->item->totalPrice - 50000000) . '%2C' . ((int)$this->item->totalPrice + 50000000) . '&search=Search';
+        if ($this->item->regType == 78)
+            $searchQuery = 'table[estateType]=' . $this->item->estateType . '&table[stateId]=' . $this->item->stateId . '&table[cityId]=' . $this->item->cityId . '&table[parentAreaId]=&table[mortgagePrice]=' . ((int)$this->item->mortgagePrice - 20000000) . '%2C' . ((int)$this->item->mortgagePrice + 20000000) . '&table[rentalPrice]=' . ((int)$this->item->rentalPrice - 2000000) . '%2C' . ((int)$this->item->rentalPrice + 2000000) . '&search=Search';
+        ?>
+        <?= $this->realestate_list($searchQuery); ?>
+    </div>
+
+    <script type="text/javascript">
+        <?$this->inlineScript()->captureStart();?>
+        var images_title = 'تصاویر ملک';
+        /*var marker_icon = '<?=$this->basePath() . '/images/google-map/marker.png'?>';
+         var googlemap_lat = '<?= $google ?>';*/
+
+        $(document).ready(function () {
+            $('.open_popup_images').click(function (e) {
+                e.preventDefault();
+                $(".popup_box_images").dialog({
+                    resizable: false,
+                    width: 535,
+                    modal: true,
+                    title: images_title
+                });
+
+            })
+        });
+
+        <?$this->inlineScript()->captureEnd();?>
+    </script>
+<?
+
+} else
+    echo $this->general()->noOutPut();
+?>

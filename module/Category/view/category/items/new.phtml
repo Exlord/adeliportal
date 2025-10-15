@@ -1,0 +1,57 @@
+<?
+//$this->headScript()->appendFile($this->basePath() . '/js/file.js');
+?>
+<div>
+    <h3 class="page-title"><?= t('Category Item') ?></h3>
+    <?
+    $form = $this->form;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <div id="category-item-tabs">
+        <ul>
+            <li><a href="#tab-options"><?= t('Options') ?></a></li>
+            <li><a href="#tab-image"><?= t('Image') ?></a></li>
+        </ul>
+        <div id="tab-options">
+            <div id="options">
+                <?
+                foreach ($form->getElements() as $el) {
+                    ?>
+                    <div class="form_element">
+                        <?= $this->iptFormRow($el); ?>
+                    </div>
+                <?
+                }
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-image">
+            <div id="images">
+                <?
+                if ($form->has('image'))
+                    echo $this->formCollection($form->get('image'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="box-file-collection">
+                <?=$this->fileDisplay($this->imagesFile,100)?>
+            </div>
+        </div>
+    </div>
+    <?
+    echo $this->iptFormCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<script>
+    <?
+    $this->inlineScript()->captureStart();
+    ?>
+    $('#category-item-tabs').tabs();
+    <?
+    \Application\API\App::setEditor('itemText',$this);
+    $this->inlineScript()->captureEnd();
+    ?>
+</script>

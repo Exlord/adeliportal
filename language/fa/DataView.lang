@@ -1,0 +1,21 @@
+<?php
+/**
+ * Created by JetBrains PhpStorm.
+ * User: Exlord
+ * Date: 10/14/13
+ * Time: 12:43 PM
+ */
+return array(
+    'Do you confirm deleting this item ?' => 'آیا حذف این آیتم را تایید میکنید ؟',
+    'Confirm Deleting Item(s)' => 'تایید حذف این آیتم(ها)',
+    'At least 1 item should be selected for Delete !' => 'حداقل باید یک آیتم برای حذف انتخاب شده باشد !',
+    'Remove Filters' => 'حذف فیلتر ها',
+    'Click this button to reset all filters and sorting to default state.' =>
+        'برای بازگرداندن فیلتر ها و مرتب سازی به حالت پیشفرض روی این باتن کلیک کنید.',
+    'Search for ' => 'جستجوی ',
+    'Filters' => 'فیلتر ها',
+    'to use columns filters type some characters and then press Enter.' =>
+        'برای استفاده از فیلتر ستون ها بعد از تایپ چند حرف کلید Enter را فشار دهید.',
+    'when using column filters _(single underline) would match any character.' =>
+        'موقع استفاده از فیلتر ستون ها حرف _(یک زیرخط) معادل یک حرف میباشد.',
+);

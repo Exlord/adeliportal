@@ -1,0 +1,47 @@
+<div>
+    <h1 class="page-title"><?= t('Links') ?></h1>
+
+    <div>
+        <?
+        if ($this->cats) {
+            ?>
+            <ul class="links-cats"><?
+            foreach ($this->cats as $cat) {
+                ?>
+                <li><a rel='tooltip'
+                    title="<?=$this->escapeHtml($cat->itemText)?>"
+                    href="<?= url('app/links/category', array('catId' => $cat->id, 'catName' => \Application\API\App::prepareUrlString($cat->itemName))) ?>">
+                    <?= $this->escapeHtml($cat->itemName) ?>
+                </a>
+                </li><?
+            }
+            ?></ul><?
+        }
+        ?>
+        <div style="clear: both;"></div>
+        <?
+        if ($this->links) {
+            ?>
+            <ul class="links-items"><?
+            foreach ($this->links as $link) {
+                if (strpos($link->itemLink, 'http') === false)
+                    $link->itemLink = 'http://' . $link->itemLink;
+                ?>
+                <li><a rel='tooltip'
+                    title="<?= $this->escapeHtml($link->itemTitle) ?>"
+                    href="<?= $link->itemLink ?>">
+                    <?= $this->escapeHtml($link->itemName) ?>
+                </a>
+                </li><?
+            }
+            ?></ul><?
+        }
+        ?>
+        <div style="clear: both;"></div>
+        <?
+
+        if(!$this->cats && !$this->links)
+            echo $this->general()->noOutput();
+        ?>
+    </div>
+</div>

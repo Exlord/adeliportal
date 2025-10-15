@@ -1,0 +1,19 @@
+<?
+$this->headScript()->prependFile($this->basePath() . '/js/quick-send-mail.js');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/mail.css');
+?>
+<div class="div-quick-send-mail" id="divQuickSendMail">
+    <?
+//    $form = $this->form;
+//    $form->prepare();
+//    echo $this->form()->openTag($form);
+//    foreach ($form->getElements() as $el) {
+//        echo $this->iptFormRow($el);
+//    }
+    echo $this->form($this->form,'horizontal');
+    ?>
+    <a class="quick-send-mail-button button" href="#"><?=t('Send')?></a>
+</div>
+<script>
+    var url_quick_send_mail = '<?=url('app/quick-send-mail')?>';
+</script>

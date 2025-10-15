@@ -1,0 +1,89 @@
+*{ direction:ltr; }
+.home-button-box{ float:left; margin-left:5px; margin-right:0; }
+.user-box{ float:right; }
+#admin_nav{ float:left; margin:0 0 0 5px; }
+.user-box .logout{ float:right; margin-left:0; margin-right:5px; }
+#admin_nav li{ float:left; }
+#admin_nav ul ul{ right:auto; left:0; }
+#admin_nav ul ul ul{ right:auto; left:98%; }
+#admin_nav li li.has-child{ border-right:2px solid #008000; border-left:none; }
+
+#breadcrumbs ul li a{ padding:5px 10px 6px 20px; float:left; }
+#breadcrumbs ul li a:after{
+    border-left:12px solid #3498db;
+    border-right:none;
+    right:-12px;
+    left:auto;
+}
+#breadcrumbs ul li a.active:after{ border-left-color:#525252; }
+#breadcrumbs ul li a:before{
+    border-left:12px solid #e9e9f0;
+    border-right:none;
+    right:auto; left:0;
+}
+#breadcrumbs ul li:first-child a{
+    -moz-border-bottom-right-radius:0px;
+    -moz-border-bottom-left-radius:5px;
+    -moz-border-top-right-radius:0px;
+    -moz-border-top-left-radius:5px;
+    -webkit-border-bottom-right-radius:0px;
+    -webkit-border-bottom-left-radius:5px;
+    -webkit-border-top-right-radius:0px;
+    -webkit-border-top-left-radius:5px;
+    border-bottom-right-radius:0px;
+    border-bottom-left-radius:5px;
+    border-top-right-radius:0px;
+    border-top-left-radius:5px;
+    padding-right:0px;
+    padding-left:10px;
+}
+#breadcrumbs ul li:last-child a{
+    -moz-border-top-left-radius:0px;
+    -moz-border-top-right-radius:5px;
+    -moz-border-bottom-left-radius:0px;
+    -moz-border-bottom-right-radius:5px;
+    -webkit-border-top-left-radius:0px;
+    -webkit-border-top-right-radius:5px;
+    -webkit-border-bottom-left-radius:0px;
+    -webkit-border-bottom-right-radius:5px;
+    border-top-left-radius:0px;
+    border-top-right-radius:5px;
+    border-bottom-left-radius:0px;
+    border-bottom-right-radius:5px;
+}
+#breadcrumbs ul li a:hover:after{ border-left-color:green; }
+#breadcrumbs ul li a.active:hover:after{ border-left-color:#525252; }
+
+.footer .powered-by{ margin-right:0; margin-left:15px; }
+.footer .powered-by *{ font-family:Arial, Helvetica, sans-serif; }
+.grid-has-filter-column{ margin-right:0px; margin-left:150px; }
+.grid tbody td{ border-right:1px solid #dcdcdc; border-left:none; }
+.grid td.last, .grid th.last{ border-left:none; border-right:2px solid transparent; }
+.grid td.first, .grid th.first{border-left:2px solid transparent; border-right:none;}
+.grid tbody tr:hover td.first{ border-left:solid 2px cornflowerblue; border-right:none; }
+.grid tbody tr:hover td.last{ border-right:solid 2px cornflowerblue; border-left:none; }
+.toolbar-button{ float:right; }
+.normal-form .form_element input, .normal-form .form_element select{ margin-right:0; margin-left:30px; }
+
+.form_element_description, p.description{ margin-left:20px; margin-right:0; }
+.form_element .ui-spinner{ margin-right:0px; margin-left:30px; }
+.user-profile-image{ float:right; }
+form .column{float:left;}
+.ui-tabs .ui-tabs-nav li{float:left;}
+.ui-tabs-vertical > .ui-tabs-nav{float:left;}
+.ui-tabs-vertical > .ui-tabs-panel{margin-right:0;margin-left:205px;}
+.ui-tabs-vertical > .ui-tabs-nav li{ float:left; clear:right; margin:0 -1px .2em 0;}
+.ui-tabs-vertical > .ui-tabs-nav li.ui-tabs-active{ padding-left:0;padding-right:.2em;
+    border-left:1px solid #dddddd;border-right:none;
+}
+.permissions-table th{text-align:left;}
+.permissions-table td div.indent{border-right:none;border-left:3px dotted #B2B2B2;margin-left:10px;margin-right:0;}
+.permissions-table td div.indent.last{padding:5px 0 5px 20px;}
+.permissions-table .level{border-right:none;border-left:2px solid #B9B9B9;margin-right:0;margin-left:-10px;}
+.permissions-table p.description{margin:0 0 0 30px;}
+.permissions-table td div.indent div.indent{border-left-color:#E81515;}
+.permissions-table td div.indent div.indent div.indent{border-left-color:#2763C0;}
+.permissions-table td div.indent div.indent div.indent div.indent{border-left-color:#48C036;}
+
+.language-switcher-box{float:right;margin-right:5px;margin-left:0;}
+.label{font-weight:bold;line-height:15px;padding:2px 4px;}

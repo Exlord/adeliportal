@@ -1,0 +1,51 @@
+<?
+
+$this->headLink()
+    ->appendStylesheet($this->basePath() . '/css/user.css')
+?>
+<div class="login_page">
+    <?
+    if ($this->error) {
+        foreach ($this->error as $error)
+            echo $this->alert($this->translate($error), 'alert-danger');
+    }
+    ?>
+    <div class="login_block">
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+
+        foreach ($form->getElements() as $el) {
+            if ($el->getName() != 'submit')
+                echo $this->formRow($el);
+        }
+        print $this->formButton($form->get('submit'));
+        ?>
+        <a id="register"
+           class="btn btn-default"
+           data-placement="right"
+           title="<?= $this->translate('Not A member Yet? Sign-up Now !') ?>"
+           href="<?= $this->url('app/user/register') ?>"
+           data-toggle="tooltip">
+            <span class="glyphicon glyphicon-user"></span>
+            <?= $this->translate('Register') ?>
+        </a>
+        <a id="forgot_password"
+           class="btn btn-default"
+           data-toggle="tooltip"
+           data-placement="bottom"
+           title="<?= $this->translate("Can't Remember your Password ? Click here to start password recovery process.") ?>"
+           href="<?= $this->url('app/user/password-recovery') ?>"><?= $this->translate('Forgot Password ?') ?></a>
+        <?
+        echo $this->form()->closeTag();
+
+        ?>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('a,button', 'form[name=login]').tooltip();
+        $('input', 'form[name=login]').tooltip({container: 'body'});
+    });
+</script>

@@ -1,0 +1,26 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('New Workshop Time'); ?>
+    </h3>
+
+    <div class="list-group">
+        <a href="<?= url('admin/educational-center/workshop/class/timetable/new', array('workshop' => $this->workshop, 'class' => $this->class, 'type' => 'single-day')) ?>"
+           class="list-group-item ajax_page_load">
+            <h4 class="list-group-item-heading"><?= t('Single Day') ?></h4>
+
+            <p class="list-group-item-text">
+                <?= t('create a entry in time table for a single specific date from start time to end time') ?>
+            </p>
+        </a>
+        <a href="<?= url('admin/educational-center/workshop/class/timetable/new', array('workshop' => $this->workshop, 'class' => $this->class, 'type' => 'periodic')) ?>"
+           class="list-group-item ajax_page_load">
+            <h4 class="list-group-item-heading"><?= t('Periodic Repeat') ?></h4>
+
+            <p class="list-group-item-text">
+                <?=
+                t('create a entry in time table from start date to end date for selected days of week (saturday, sunday,
+                ...) and from start time to rnd time')?>
+            </p>
+        </a>
+    </div>
+</div>

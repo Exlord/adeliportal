@@ -1,0 +1,56 @@
+*{ direction:ltr; }
+#breadcrumbs ul li a{ padding:5px 10px 6px 20px; float:left; }
+#breadcrumbs ul li a:after{
+    border-left:12px solid #3498db;
+    border-right:none;
+    right:-12px;
+    left:auto;
+}
+#breadcrumbs ul li a.active:after{ border-left-color:#525252; }
+#breadcrumbs ul li a:before{
+    border-left:12px solid #e9e9f0;
+    border-right:none;
+    right:auto; left:0;
+}
+#breadcrumbs ul li:first-child a{
+    -moz-border-bottom-right-radius:0px;
+    -moz-border-bottom-left-radius:5px;
+    -moz-border-top-right-radius:0px;
+    -moz-border-top-left-radius:5px;
+    -webkit-border-bottom-right-radius:0px;
+    -webkit-border-bottom-left-radius:5px;
+    -webkit-border-top-right-radius:0px;
+    -webkit-border-top-left-radius:5px;
+    border-bottom-right-radius:0px;
+    border-bottom-left-radius:5px;
+    border-top-right-radius:0px;
+    border-top-left-radius:5px;
+    padding-right:0px;
+    padding-left:10px;
+}
+#breadcrumbs ul li:last-child a{
+    -moz-border-top-left-radius:0px;
+    -moz-border-top-right-radius:5px;
+    -moz-border-bottom-left-radius:0px;
+    -moz-border-bottom-right-radius:5px;
+    -webkit-border-top-left-radius:0px;
+    -webkit-border-top-right-radius:5px;
+    -webkit-border-bottom-left-radius:0px;
+    -webkit-border-bottom-right-radius:5px;
+    border-top-left-radius:0px;
+    border-top-right-radius:5px;
+    border-bottom-left-radius:0px;
+    border-bottom-right-radius:5px;
+}
+#breadcrumbs ul li a:hover:after{ border-left-color:green; }
+#breadcrumbs ul li a.active:hover:after{ border-left-color:#525252; }
+
+.ui-tabs .ui-tabs-nav li{float:left;}
+.ui-tabs-vertical > .ui-tabs-nav{float:left;}
+.ui-tabs-vertical > .ui-tabs-panel{margin-right:0;margin-left:205px;}
+.ui-tabs-vertical > .ui-tabs-nav li{ float:left; clear:right; margin:0 -1px .2em 0;}
+.ui-tabs-vertical > .ui-tabs-nav li.ui-tabs-active{ padding-left:0;padding-right:.2em;
+    border-left:1px solid #dddddd;border-right:none;
+}
+.language-switcher-box{float:right;margin-right:5px;margin-left:0;}
+.label{font-weight:bold;line-height:15px;padding:2px 4px;}

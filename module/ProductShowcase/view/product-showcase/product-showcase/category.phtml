@@ -1,0 +1,26 @@
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12 ps-tags">
+            <?
+            $tagRouteParams = array();
+            if ($this->selectCatItem)
+                foreach ($this->selectCatItem as $tag) {
+                    $tagRouteParams['tagName'] = \Application\API\App::prepareUrlString($tag->itemName);
+                    $tagRouteParams['tagId'] = $tag->id;
+                    ?>
+                    <div class="ps-tag">
+                        <a href="<?= url('app/product-showcase/list', $tagRouteParams) ?>">
+                            <?= $this->escapeHtml($tag->itemName) ?>
+                        </a>
+                    </div>
+                <?
+                }
+            else{ ?>
+                <div class="alert alert-info">
+                    <?=t('PS_NOT_CATEGORIES_ITEM')?>
+                </div>
+           <? }
+            ?>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,109 @@
+<?
+$content = \Theme\API\Themes::renderLayout($this);
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$bootstrap = $direction == 'rtl' ? '/css/bootstrap.rtl.min.css' : '/css/bootstrap.min.css';
+$basePath = $this->basePath();
+$path = $basePath . TEMPLATE_PATH;
+$this->headLink()
+    ->prependStylesheet(
+        $path . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    )
+    ->prependStylesheet($basePath . '/css/system.css')
+    ->prependStylesheet($basePath . '/css/base-theme/jquery-ui-1.10.1.custom.min.css')
+    ->prependStylesheet($path . $bootstrap)
+    ->prependStylesheet($basePath . '/css/reset.min.css');
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    ->prependFile($basePath . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . '/js/jquery.hoverIntent.min.js')
+    ->prependFile($basePath . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $path . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($path . '/js/template.js');
+
+$block = new \stdClass();
+$block->data = array();
+$block->id = "custom_search";
+$search = $this->search_block($block);
+?>
+<!DOCTYPE html>
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<body>
+<div class="container top-container">
+    <div class="rows">
+        <!--<div id="logo" class="col-md-3 col-sm-4 col-xs-5">
+            <img alt="Urum Novin Yekta" src="<?/*= $path */?>/images/logo1.png" class="img-responsive">
+        </div>-->
+        <div class="col-md-12 col-sm-8 col-xs-7">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="header-email">
+                        <img alt="WhatsApp" title="WhatsApp: +989143415145" src="<?= $path ?>/images/whatsapp.png"/>
+                        <img alt="Viber" title="Viber : +989143415145" src="<?= $path ?>/images/viber.png"/>
+                        <img alt="Skype" title="SKYPE: unyekta" src="<?= $path ?>/images/Skype.png"/>
+                        <span>SKYPE: unyekta </span>
+                        - <span>Viber &amp; WhatsApp: +989143415145</span>
+                        <a href="mailto:info@unyekta.com">info@unyekta.com</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3"><?= $search ?></div>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $content ?>
+<div class="container">
+    <div class="row">
+        <div class="footer col-md-12">
+            <div class="powered-by label">
+                <?
+                $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                ?>
+                <p align="center">
+                    <?= t('APPLICATION_BROWSERS') ?>
+                </p>
+
+                <p align="center">
+                    <span><?= sprintf(t('APPLICATION_RIGHTS'), 'URUM NOVIN YEKTA') ?></span>
+                    <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                    &nbsp; .
+                    <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                    <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/__/js/note.js');
+$this->headLink()->appendStylesheet($this->basePath() . '/__/css/note.css');
+?>
+<script>
+    var NoteDefaults = {
+        entityId: "<?= $this->entityId ?>",
+        entityType: "<?= $this->entityType ?>",
+        id: "<?= $this->id ?>",
+        owner: "<?= getUserDisplayName(current_user()) ?>",
+        template: <?= json_encode($this->template); ?>,
+        newUrl: "<?= url('admin/note/new') ?>",
+        deleteMessage: '<?= t('Do you confirm deleting this note ?') ?>',
+        yes: '<?= t('Yes') ?>',
+        no: '<?= t('No') ?>',
+        closeText: '<?= t('Close') ?>'
+    };
+</script>
+<? if ($this->allowedAdd) { ?>
+    <div class="new-note">
+        <a class="btn btn-default btn-lg" id="add-note">
+            <i class="glyphicon glyphicon-pencil text-success"></i>
+            <?= t('Add note'); ?>
+        </a>
+    </div>
+<? } ?>
+<div id="notes-list" class="">
+    <?if ($this->data && $this->data->count()) {
+        foreach ($this->data as $row) {
+            print $this->partial('note/note', array('row' => $row, 'now' => time()));
+        }
+    }?>
+</div>

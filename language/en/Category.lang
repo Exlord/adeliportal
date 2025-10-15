@@ -1,0 +1,6 @@
+<?return array(
+    'PERM_Category' => 'Categories',
+    'category_widget_count_all'=>'category_widget_count_all',
+    'category_widget_config_label'=>'category_widget_config_label',
+    'CATEGORY_NOT_CATEGORY'=>'CATEGORY_NOT_CATEGORY',
+);

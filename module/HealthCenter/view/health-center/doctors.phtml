@@ -1,0 +1,93 @@
+<div class="doctor-specializations">
+    <h3 class="page-header <? if ($this->type == 'select-for-refer') print 'page-title' ?>">
+        <?
+        print t('Doctors/Counselors');
+        if ($this->spec) {
+            print ' <small>' . t('specialized in') . ' ';
+            print  t($this->spec->itemName) . "</small>";
+            print '<small>' . \Theme\API\Common::Link(
+                    t('All Doctors'),
+                    url('app/health-center/doctors'),
+                    array('class' => array('pull-right flip'))
+                ) . "</small>";
+        }
+        ?>
+    </h3>
+    <?
+    if ($this->type == 'select-for-refer') {
+        ?>
+        <p class="help-block"><?= t('select a doctor to refer this patient too him/her') ?></p>
+    <?
+    }
+
+    if ($this->items && $this->items->count()) {
+        $items = $this->items->toArray();
+        $items = array_chunk($items, (int)(count($items) / 3) + 1, true);
+        ?>
+        <div class="row">
+            <?
+            foreach ($items as $list) {
+                ?>
+                <div class="col-md-4 col-sm-6">
+                    <div class="list-group">
+                        <?
+                        foreach ($list as $row) {
+                            if ($this->type == 'select-for-refer')
+                                $url = url('admin/health-center/doctor-panel/refer',
+                                    array('doctor' => $row['id'], 'patient' => $this->patient));
+                            else
+                                $url = url('app/health-center/doctor', array('id' => $row['id']));
+                            ?>
+                            <a href="<?= $url ?>"
+                               class="list-group-item <? if ($this->type == 'select-for-refer') print 'ajax_page_load' ?>"
+                               data-toggle="tooltip" title="">
+                                <h4 class="list-group-item-heading"><?= getUserDisplayName($row) ?></h4>
+                            </a>
+                            <div class="list-group-item disabled">
+                                <p class="list-group-item-text">
+                                    <?
+                                    print t('Specialized in') . ' : ';
+                                    $itemNames = explode(',', $row['itemNames']);
+                                    $itemIds = explode(',', $row['itemIds']);
+                                    $specs = array();
+                                    foreach ($itemIds as $index => $id) {
+                                        $specText = t($itemNames[$index]);
+                                        if ($this->type == 'select-for-refer')
+                                            $spec_url = '#';
+                                        else
+                                            $spec_url = url('app/health-center/doctors', array(
+                                                'spec' => $id,
+                                                'spec-title' => t($itemNames[$index])));
+
+                                        $specs[] = \Theme\API\Common::Link(
+                                            $specText,
+                                            $spec_url,
+                                            array('class' => array('label label-success'))
+                                        );
+                                    }
+                                    print implode('  ', $specs);
+                                    ?>
+                                </p>
+                            </div>
+                        <?
+                        }
+                        ?>
+                    </div>
+                </div>
+            <?
+            }
+            ?>
+        </div>
+    <?
+    } else {
+        ?>
+        <div class="row">
+            <div class="col-md-12">
+                <?
+                print $this->alert(t('currently there is no item available to show'), 'alert-warning');
+                ?>
+            </div>
+        </div>
+    <?
+    }?>
+</div>

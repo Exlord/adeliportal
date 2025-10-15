@@ -1,0 +1,142 @@
+<div class="workshop-classes">
+    <h3 class="page-header">
+        <?= t('Workshop Classes') ?>
+        <? if ($this->workshop) { ?>
+            <small>»</small>
+            <small>
+                <a href="<?= url('app/workshop', array('workshop' => $this->workshop->id)) ?>">
+                    <?= $this->workshop->title; ?>
+                </a>
+            </small>
+        <? } ?>
+    </h3>
+    <? if ($this->items && $this->items->count()) { ?>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th><?= t('ALL_CLASSES_CLASS_NAME') ?></th>
+                    <th><?= t('Educator') ?></th>
+                    <th><?= t('Price') ?></th>
+                    <th><?= t('Start date') ?></th>
+                    <th><?= t('Capacity') ?></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?
+                $now = time();
+                foreach ($this->items as $row) {
+                    $status = 1;
+                    $trClass = '';
+                    if (has_value($row->firstSession)) {
+                        if (has_value($row->firstSession) && $row->firstSession > $now) {
+                            $status = 1;
+                            $trClass = '';
+                        } elseif ($row->status == '3' || (has_value($row->lastSession) && $row->lastSession < $now)) {
+                            $status = 3;
+                            $trClass = 'warning';
+                        } elseif ($row->status == '2' || (has_value($row->lastSession) && $row->lastSession > $now)) {
+                            $status = 2;
+                            $trClass = 'success';
+                        }
+                    }
+
+                    ?>
+                    <tr class="<?= $trClass ?>">
+                        <td><?= $row->id ?></td>
+                        <td><?= $row->title ?></td>
+                        <td>
+                            <? print \Theme\API\Common::Link(
+                                getUserDisplayName($row),
+                                url('app/user/user-profile', array('id' => $row->educatorId)));
+                            ?>
+                        </td>
+                        <td><?= $this->currency_format($row->price) ?></td>
+                        <td>
+                            <?
+                            if (has_value($row->firstSession)) {
+                                print $this->date_format($row->firstSession, 0, 3);
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <?
+                            $class = 'progress-bar-success';
+                            $capacity = $row->capacity;
+                            $used = $row->usedCapacity;
+                            if ($used > ($capacity / 3))
+                                $class = 'progress-bar-warning';
+                            if ($used > ($capacity / 3) * 2)
+                                $class = 'progress-bar-danger';
+
+                            $percent = (int)($used * 100 / $capacity);
+
+                            //                            $progress = "<div class='progress' title='{$percent}%' style='margin-bottom:0;min-width:100px;'>
+                            //                                              <div class='progress-bar $class progress-bar-striped' role='progressbar' aria-valuenow='{$used}' aria-valuemin='0' aria-valuemax='{$capacity}' style='width: {$percent}%;min-width:30px;'>
+                            //                                               {$used}/{$capacity}
+                            //                                              </div>
+                            //                                            </div>";
+                            ?>
+                            <div class='progress' title='<?= $percent ?>%' style='margin-bottom:0;min-width:100px;'>
+
+                                <div class='progress-bar progress-bar-success progress-bar-striped'
+                                     role='progressbar'
+                                     aria-valuenow='<?= $used ?>' aria-valuemin='0' aria-valuemax='<?= $capacity ?>'
+                                     style='width: <?= $percent ?>%;'>
+                                    <?= $used ?>
+                                </div>
+
+                                <? if ($used > 0) { ?>
+                                    <div class="pull-right flip" style="padding:0 2px;"><?= $capacity - $used ?></div>
+                                <? } ?>
+                            </div>
+                            <?
+
+                            //                            print $progress;
+                            ?>
+                        </td>
+                        <td align="center">
+                            <a href="<?=
+                            url('app/workshop/class',
+                                array('workshop' => $row->workshopId, 'class' => $row->id)) ?>">
+                                <?= t('View Details') ?>
+                            </a>
+                        </td>
+                        <td align="center">
+                            <? if ($row->firstSession > $now || !has_value($row->firstSession)) { ?>
+                                <a href="<?=
+                                url('app/workshop/class/agreement',
+                                    array('workshop' => $row->workshopId, 'class' => $row->id)) ?>">
+                                    <?= t('Register') ?>
+                                </a>
+                            <?
+                            } else {
+                                $class = '';
+                                if (has_value($row->firstSession)) {
+                                    if ($status == 3) {
+                                        $text = t('Finished');
+                                        $class = 'text-muted';
+                                    } elseif ($status == 2) {
+                                        $text = t('Started');
+                                        $class = 'text-success';
+                                    }
+                                    print "<span class='{$class}'>{$text}</span>";
+                                }
+                            } ?>
+                        </td>
+                    </tr>
+                <? } ?>
+                </tbody>
+            </table>
+        </div>
+    <?
+    } else {
+        if ($this->workshop)
+            print $this->alert(t('Currently there are no classes available for this workshop to signup for'), 'alert-warning');
+        else
+            print $this->alert(t('Currently there are no classes available'), 'alert-warning');
+    } ?>
+</div>

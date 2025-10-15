@@ -1,0 +1,377 @@
+<head>
+    <meta content="text/html" charset="utf-8">
+</head>
+<style>
+    body {
+        font-family: tahoma;
+        font-size: 9pt;
+    }
+
+    div#info-personal label {
+        display: inline-block;
+        padding: 9px 0;
+        width: 100px;
+        line-height: 20px;
+        font-family: tahoma;
+        font-weight: bold;
+        color: #a0a0a0;
+    }
+
+    .header-factor {
+        height: 30px;
+        background-color: #0066cc;
+        margin: 0px;
+    }
+
+    .pish-factor-print {
+        border: 1px solid #ccc;
+        background-color: #FDFDFD;
+        margin-left: auto;
+        margin-right: auto;
+        width: 95%;
+    }
+
+    .tbl-pish-fact {
+        width: 100%;
+        margin-top: -7px;
+    }
+
+    .td-pish-factor {
+        width: 38%;
+        font-size: 12px;
+        line-height: 29px;
+    }
+
+    .div-pish-fact-logo {
+        font-family: tahoma;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .lb-info {
+        font-family: tahoma;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 20px;
+        text-align: right;
+        margin-left: 10px;
+        margin-right: 17px;
+        line-height: 30px;
+        direction: rtl;
+        display: inline-block;
+    }
+
+    .sp-info {
+        border: 1px solid #FDFDFD;
+        font-family: tahoma;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 20px;
+        text-align: right;
+        color: #0060c2;
+        margin-left: 10px;
+        line-height: 30px;
+        direction: rtl;
+        display: inline-block;
+        width: auto;
+        margin-right: 10px;
+    }
+
+    .div-payment-form {
+        border: 1px solid #ccc;
+        background: #eeeeee;
+        direction: rtl;
+        margin-right: auto;
+        margin-left: auto;
+        width: 98%;
+    }
+
+    img {
+        border: none;
+    }
+
+    .langCustomer fieldset {
+        border: none;
+    }
+
+    .div-pish-fact-name {
+        font-weight: normal;
+        color: #06C;
+    }
+
+    .tbl-top-show-info {
+        border: 1px solid #ccc;
+        background: #eeeeee;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 8px;
+    }
+
+    .lb-info-big {
+        margin-right: 15px;
+    }
+
+    .lb-lang label {
+        color: #FFF;
+    }
+
+    .div-pish-fact-tracking {
+        width: auto;
+    }
+
+    .lb-info-med {
+        margin-right: 15px;
+        line-height: 40px;
+    }
+
+    .sp-info-big {
+        font-size: 14px;
+        color: #0060C2;
+    }
+
+    .sp-info-tbl {
+        color: #0060C2;
+        font-size: 12px;
+    }
+
+    .lb-item-fact-preview-1 {
+        font-size: 12px;
+        color: #808080;
+        padding-right: 5px;
+        line-height: 20px;
+        background-color: #dddddd;
+    }
+
+    .lb-item-fact-preview-2 {
+        font-size: 12px;
+        color: #808080;
+        padding-right: 5px;
+        line-height: 20px;
+        background-color: #fffacd;
+    }
+
+    .div-item-fact-preview {
+        width: 98%;
+        border: 1px solid #cacaca;
+        border-radius: 5px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .logo-site {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<div id="show-info" style="direction: rtl;">
+<div class="pish-factor-print">
+<div class="header-factor"></div>
+<div class="content-pish-fact">
+<table border="0" class="tbl-pish-fact">
+    <tr>
+        <td class="td-pish-factor">
+            <div class="div-pish-fact-name">
+                شرکت آذر ایده پرداز تبریز            </div>
+            <div class="div-pish-fact-number">
+                شماره فاکتور                1088            </div>
+        </td>
+        <td class="td-pish-factor">
+            <div>
+                <img class="logo-site" src="http://ipt24.ir/clients/ipt24/themes/ipt24client/img/IPT-LOGO-factor.png">
+            </div>
+        </td>
+        <td class="td-pish-factor">
+            <div class="div-pish-fact-tracking">
+                کد پیگیری                BNWX3            </div>
+            <div class="div-pish-fact-date">
+                تاریخ                جمعه,۳۰ مرداد ۱۳۴۹             </div>
+        </td>
+    </tr>
+</table>
+
+<div class="top-show-info">
+    <table class="tbl-top-show-info">
+        <tr>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        نام کامل                     </label>
+            <span class="sp-info-tbl" id="show-namePer">
+                                    </span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        نام شرکت                    </label>
+                    <span class="sp-info-tbl" id="show-nameCompanyPer">
+                                            </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        ایمیل شخصی                     </label>
+                    <span class="sp-info-tbl" id="show-emailPer">
+                                            </span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        تلفن همراه                     </label>
+                    <span class="sp-info-tbl" id="show-mobilePer">
+                                            </span>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<br/>
+
+<div>
+    <label class="lb-info-big">
+        پشتیبانی فنی و به روز رسانی سایت توسط کارشناسان شرکت    </label>
+                    <span class="sp-info-big" id="show-supportPer">
+                        انتخاب نشده است                    </span>
+</div>
+<div>
+    <label class="lb-info-med">
+        سایر امکانات     </label>
+                    <span class="sp-info-big" id="show-others">
+                        مبلغ پیش فاکتور شما به صورت قطعی می باشد                    </span>
+</div>
+<div>
+    <label class="lb-info-med">
+        نام دامنه شما    </label>
+                    <span class="sp-info" id="show-domainName">
+                        انتخاب نشده است                    </span>
+</div>
+
+
+<div class="div-item-fact-preview">
+            <div class='lb-item-fact-preview-1' >
+            ساخت تبلیغات بنری فلش در پانل مدیریت برای نمایش در باکس های تبلیغاتی سایت        </div>
+            <div class='lb-item-fact-preview-2' >
+            جستجوی تخصصی در اخبار ، ارشیو اخبار ، عناوین ، خلاصه و متن اخبار شخصی        </div>
+            <div class='lb-item-fact-preview-1' >
+            تنظیم استایل ها و فرمت های نمایش عنوان ، خلاصه و متن مطالب        </div>
+            <div class='lb-item-fact-preview-2' >
+            گزارشگیری و یا نمایش امار میزان بازدید هر مطلب        </div>
+            <div class='lb-item-fact-preview-1' >
+            نمایش ارشیو مطالب بر روی تقویم جاری و سال های گذشته        </div>
+            <div class='lb-item-fact-preview-2' >
+            اسلایدشو عکس های مربوط به یک مطلب        </div>
+            <div class='lb-item-fact-preview-1' >
+            انتساب مطلب فارسی با همان مطلب در بخش انگلیسی یا زبان های دیگر و بالعکس        </div>
+            <div class='lb-item-fact-preview-2' >
+            مشخص کردن دستی ارتباط مطالب با یکدیگر        </div>
+            <div class='lb-item-fact-preview-1' >
+            ارائه نسخه چاپی Print friendly از متن کامل مطلب        </div>
+            <div class='lb-item-fact-preview-2' >
+            امتیاز دهی و نمایش رنک کاربران به هر عنوان        </div>
+            <div class='lb-item-fact-preview-1' >
+            ایجاد و ویرایش یا حذف و انتقال دسته مطالب        </div>
+            <div class='lb-item-fact-preview-2' >
+            تعریف فرم دریافت مطلب برای استفاده از مطالب نویسندگان افتخاری        </div>
+            <div class='lb-item-fact-preview-1' >
+            امکان دریافت اتوماتیک سرتیتر و خلاصه اخبار از RSS دیگر منابع خبری        </div>
+            <div class='lb-item-fact-preview-2' >
+            راه اندازی تلویزیون اینترنتی برای پوشش رویدادهای تصویری با پلیر مخصوص پخش فیلم        </div>
+            <div class='lb-item-fact-preview-1' >
+            گروه بندی اعضا و مشخص کردن مجوزهای مشاهده مطالب و دسته های مطالب به گروه های عضویت        </div>
+            <div class='lb-item-fact-preview-2' >
+            مشخص کردن سطح عضویت مثلا طلایی،نقره ای و برنز و ارائه سطوح گوناگون خدمات به اعضا        </div>
+            <div class='lb-item-fact-preview-1' >
+            ارتباط اعضا با صاحب سایت و یا در صورت مجوز مدیر ، ارتباط اعضا با یکدیگر        </div>
+            <div class='lb-item-fact-preview-2' >
+            انتساب تگ به هر خبر،عکس ویا هر قلم اطلاعاتی دیگر و نمایش اقلام مرتبط با تگ در صفحه ظاهری آن        </div>
+            <div class='lb-item-fact-preview-1' >
+            معرفی جدیدترین مطالب به روبات های کش کننده گوگل برای پوشش بهتر و سریعتر روی محتوا        </div>
+            <div class='lb-item-fact-preview-2' >
+            بهینه سازی صفحه هر مطلب و دسته های مطالب برای موتورهای جستجو توسط مدیر        </div>
+            <div class='lb-item-fact-preview-1' >
+            تطبیق ادرس های سایت قبلی با آدرس های همان مطالب در سایت جدید برای از بین نرفتن جایگاه گوگلی        </div>
+            <div class='lb-item-fact-preview-2' >
+            نمایش باکس های اطلاعاتی خودکار بروزشونده مانند باکس آب و هوا، اوقات شرعی ، نرخ ارز و ...        </div>
+            <div class='lb-item-fact-preview-1' >
+            راه اندازی بخش تخصصی دانلود        </div>
+            <div class='lb-item-fact-preview-2' >
+            راه اندازی ساب پرتال بصورت ساب دامینی از سایت اصلی        </div>
+            <div class='lb-item-fact-preview-1' >
+            رصد دیگر منابع اطلاعاتی و دریافت اتوماتیک مطالب،عکس ها،فیلم ها و متن کامل اخبار        </div>
+            <div class='lb-item-fact-preview-2' >
+            ارسال ایمیل های مناسبتی ، تبلیغاتی و خبری مبتنی بر موضوعات مورد علاقه کاربران        </div>
+            <div class='lb-item-fact-preview-1' >
+            کامنت گذاری کاربران بر روی هر خبر و انتشار کامنت ها بعد از تایید توسط مدیر        </div>
+            <div class='lb-item-fact-preview-2' >
+            مدیریت حق انتشار،تولید،مشاهده،خواندن،ارسال نظر،خروج از انتشار،ویرایش،انتقال مطالب و...        </div>
+            <div class='lb-item-fact-preview-1' >
+            ثبت و نمایش تاریخ و محدوده تاریخی انتشار خبر        </div>
+            <div class='lb-item-fact-preview-2' >
+            آرشیو اتوماتیک خبر بعد از اتمام تاریخ نمایش و آرشیو و پیمایش و یا جستجوی بایگانی خبرها        </div>
+            <div class='lb-item-fact-preview-1' >
+            گزارشات کامل از آمار بازدید و تعداد ویزیت مطالب و گزاراشات پیشرفته از مکان و زمان و زبان بازدیدکنندگان و ...        </div>
+    </div>
+
+
+<div>
+    <label class="lb-info-med">
+        جمع قیمت آیتم ها    </label>
+                    <span class="sp-info" id="show-resultPrice">
+                        <input type='hidden' id='resultPrice' value='31000' >                    </span>
+    <label class="rial">
+        ریال    </label>
+</div>
+
+<div>
+    <label class="lb-info-med">
+        جمع قیمت زبان ها    </label>
+                    <span class="sp-info" id="show-resultPriceLang">
+                         <input type='hidden' id='resultPriceLang' value='0' >                    </span>
+    <label class="rial">
+        ریال    </label>
+</div>
+<div>
+    <label class="lb-info-med">
+        جمع کل قیمت    </label>
+                    <span class="sp-info" id="show-sumResultPrice">
+                         <input type='hidden' id='sumResultPrice' value='31000' >                    </span>
+    <label class="rial">
+        ریال    </label>
+</div>
+<div>
+    <label class="lb-info-med">
+        نوع پرداخت    </label>
+    <span class="sp-info">
+      در محل    </span>
+
+
+</div>
+
+</div>
+<div class="header-factor"></div>
+</div>
+<div class="div-links-footer">
+    
+    <a class="prew" target="_blank" href="http://www.ipt24.ir/clients/ipt24/files/onlineorders/pages/BNWX3.html"></a>
+    <a class="print" href="javascript:window.print()"></a>
+</div>
+<script>
+
+    function insertcomma2(vals) {
+        var regex = /(\d)((\d{3},?)+)$/;
+        while (regex.test(vals)) {
+            vals = vals.replace(regex, '$1,$2');
+        }
+        return vals;
+    }
+    document.getElementById('show-resultPrice').innerHTML=insertcomma2(document.getElementById('resultPrice').value);
+    document.getElementById('show-sumResultPrice').innerHTML=insertcomma2(document.getElementById('sumResultPrice').value);
+    document.getElementById('show-resultPriceLang').innerHTML=insertcomma2(document.getElementById('resultPriceLang').value);
+
+</script>

@@ -1,0 +1,46 @@
+<ul class="latest-content orientation-<?= $this->orientation ?>">
+    <? foreach ($this->data as $row) {
+        if (isset($row['link']) && $row['link'])
+            $url = $row['link'];
+        else
+            $url = url('app/single-content', array('id' => $row['id'], 'title' => \Application\API\App::prepareUrlString($row['title'])));
+        ?>
+        <li class="item">
+            <a class="<?= $this->titleType ?>"
+               href="<?= $url ?>">
+                <?
+                if ($this->showImage) {
+                    if (isset($row['baseImage']) && $row['baseImage']) {
+                        ?>
+                        <img
+                            src="<? if (isset($row['baseImage']['image']) && $row['baseImage']['image']) echo $row['baseImage']['image']; ?>"
+                            alt="<? if (isset($row['baseImage']['alt']) && $row['baseImage']['alt']) echo $this->escapeHtml($row['baseImage']['alt']); ?>"
+                            title="<? if (isset($row['baseImage']['title']) && $row['baseImage']['title']) echo $this->escapeHtml($row['baseImage']['title']); ?>"
+                            <? if ((int)$this->responsiveImage) {
+                                echo 'class="img-responsive"';
+                            } ?>>
+                    <? } else { ?>
+                        <div class="empty-img"></div>
+                    <?
+                    }
+                } ?>
+                <? if ((int)$this->customType != 2) { ?>
+                    <? if ($row['title'] && $this->showTitle) { ?>
+                        <div class="title <?= $this->titleType ?>">
+                            <?= t($this->escapeHtml($row['title'])) ?>
+                        </div>
+                    <? } ?>
+                    <? if ($this->showHits) { ?>
+                        <div class="hits"><?= $row['hits'] ?></div>
+                    <? } ?>
+                    <? if ($this->showPublished) { ?>
+                        <div class="publishUp"><?=$this->dateFormat(
+                                (int)$row['publishUp']
+                            );?></div>
+                    <? } ?>
+                <? } ?>
+            </a>
+        </li>
+    <?
+    } ?>
+</ul>

@@ -1,0 +1,311 @@
+<?
+\JQuery\API\JQuery::loadColorBox($this);
+use Localization\API\Date;
+
+$this->headLink()->prependStylesheet($this->basePath() . '/__/css/ads.css');
+$flagShowAllInfo = $this->flagShowAllInfo;
+
+if ($this->select) {
+    $select = $this->select;
+    if ($select->expireDate < time() && !$this->showStatusType) {
+        ?>
+        <div class="alert alert-danger">
+            <?= t('ADS_YOUR_AD_EXPIRED') ?>
+        </div>
+    <?
+    } else {
+
+        if (isAllowed(\Ads\Module::APP_AD_VIEW_ALL_INFO))
+            $flagShowAllInfo = true;
+        if ($this->baseTypeAmountAllInfo <= 0)
+            $flagShowAllInfo = true;
+
+
+        $fieldsData = getSM()->get('fields_api')->generate($this->fields, (array)$select);
+        ?>
+        <div class="col-xs-12 col-sm-12 col-md-12 box_view_ads_3000_0">
+        <? if ($select->expireDate < time()) { ?>
+            <div class="col-md-12 ads_expired">
+                <div class="alert alert-info">
+                    <?= t('ADS_YOUR_AD_EXPIRED') ?>
+                </div>
+            </div>
+            <br>
+        <? } ?>
+        <fieldset class="f_view">
+            <legend>
+                مشخصات آگهی
+            </legend>
+            <!--<div class="add_to_eny">
+                <? /*
+                echo $this->add_to_any_helper();
+                */
+            ?>
+            </div>-->
+
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-md-9">
+                        <h4 class="a_title"><?= $select->title ?></h4>
+                    </div>
+
+                    <div style="clear:both"></div>
+                    <div>
+                        <span class="a_label"><?= t('Name') . ' : ' ?></span>
+
+            <span
+                class="a_text"><?= $select->name; ?></span>
+                    </div>
+                    <div>
+                        <span class="a_label"><?= t('State') . ' : ' ?></span>
+
+            <span
+                class="a_text"><?= $select->stateTitle; ?></span>
+                    </div>
+                    <div>
+                        <span class="a_label"><?= t('City') . ' : ' ?></span>
+
+            <span
+                class="a_text"><?= $select->cityTitle; ?></span>
+                    </div>
+                    <div>
+                        <span class="a_label"><?= t('Address') . ' : ' ?></span>
+
+            <span
+                class="a_text"><? if ($flagShowAllInfo) echo $select->address; else echo t('ADS_LIMITED_SHOW') ?></span>
+                    </div>
+                    <div>
+                        <span class="a_label"><?= t('Mobile') . ' : ' ?></span>
+
+            <span
+                class="a_text"><? if ($flagShowAllInfo) echo $select->mobile; else echo t('ADS_LIMITED_SHOW') ?></span>
+                    </div>
+                    <div>
+                        <span class="a_label"><?= t('Email') . ' : ' ?></span>
+
+                <span
+                    class="a_text"><? if ($flagShowAllInfo) echo $select->mail; else echo t('ADS_LIMITED_SHOW') ?></span>
+                    </div>
+                    <div>
+                        <span class="a_label"><?= t('Phone') . ' : ' ?></span>
+
+                <span
+                    class="a_text"><? if ($flagShowAllInfo) echo $select->fax; else echo t('ADS_LIMITED_SHOW') ?></span>
+                    </div>
+                    <? if ($select->link) { ?>
+                        <div>
+                            <span class="a_label"><?= t('ADS_LINK') . ' : ' ?></span>
+
+                            <a href="<?= $select->link ?>"><?= $select->link ?></a>
+                        </div>
+
+                    <? } ?>
+                    <div>
+                        <span class="a_label"><?= t('ADS_REG_DATE') . ' : ' ?></span>
+
+                        <span class="a_text"><?= $this->dateFormat($select->createDate, 2) ?></span>
+                    </div>
+                    <? if ($select->expireDate) { ?>
+                        <div>
+                            <span class="a_label"><?= t('ADS_TIME_REMAINING') . ' : ' ?></span>
+                <span class="a_text"><? $timeRemaining = 0;
+                    if (time() < $select->expireDate) echo Date::formatInterval($select->expireDate - time()); ?></span>
+                        </div>
+                    <? } ?>
+                    <?
+                    if ($this->category && isset($this->category[$select->entityId])) {
+                        ?>
+                        <div>
+                            <span class="a_label"><?= t('ADS_CATEGORIES') . ' : ' ?></span>
+                            <?
+                            foreach ($this->category[$select->entityId] as $key => $val) {
+                                ?>
+                                <a href="<?= url('app/ad/list', array('baseType' => $select->baseType, 'isRequest' => $select->regType, 'baseTitle' => $this->baseTypeMachineName), array('query' => array('table' => array('category' => $val)))) ?>"><?= $val ?></a> |
+                            <?
+                            }
+                            ?>
+                        </div>
+                    <?
+                    }
+                    ?>
+                    <?
+                    if ($this->keywords && isset($this->keywords[$select->entityId])) {
+                        ?>
+                        <div>
+                            <span class="a_label"><?= t('ADS_KEYWORDS') . ' : ' ?></span>
+                            <?
+                            foreach ($this->keywords[$select->entityId] as $key => $val) {
+                                ?>
+                                <a href="<?= url('app/ad/list', array('baseType' => $select->baseType, 'isRequest' => $select->regType, 'baseTitle' => $this->baseTypeMachineName), array('query' => array('table' => array('keyword' => $val)))) ?>"><?= $val ?></a> |
+                            <?
+                            } ?>
+                        </div>
+                    <?
+                    }
+                    ?>
+                    <? if ($fieldsData) {
+                        foreach ($fieldsData as $key => $val) {
+                            ?>
+                            <div>
+                                <span class="a_label"><?= $key ?> : </span>
+                                <span class="a_text"><?= $val ?></span>
+                            </div>
+                        <?
+                        }
+                    }?>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-12 text_center">
+                        <?= getSM('ads_api')->createViewStarRate($this->starCount, $select->starCount); ?>
+                    </div>
+                    <?
+                    $width = 250;
+                    $height = 165;
+                    $fPath = '';
+                    if ($select->smallImage) {
+                        $dataImages = unserialize($select->smallImage);
+                        if (isset($dataImages['fPath']) && $dataImages['fPath'])
+                            $fPath = $dataImages['fPath'];
+                    } else
+                        $fPath = $this->basePath() . '/__/images/notImage100_100.png';
+                    $imageUrl = getThumbnail()->resize($fPath, $width, $height); //resize image
+                    ?>
+                    <img class="media-object" src="<?= $imageUrl ?>" alt="<?= $select->title ?>">
+                </div>
+            </div>
+
+
+        </fieldset>
+
+        <? if ($select->text) { ?>
+            <fieldset class="f_view">
+                <legend>
+                    توضیحات
+                </legend>
+                <div style="text-align:justify;">
+                    <span class="a_label"><?= t('Description') . ' : ' ?></span>
+
+                    <span class="a_text"><?= nl2br($select->text) ?></span>
+                </div>
+            </fieldset>
+        <? } ?>
+
+        <? if ($this->selectImage->count()) { ?>
+            <fieldset class="f_view">
+                <legend>
+                    تصاویر
+                </legend>
+                <div class="col-md-12">
+                    <div>
+                        <?
+                        foreach ($this->selectImage as $row) {
+                            if ($row->fPath)
+                                $fPathImg = $row->fPath;
+                            else
+                                $fPathImg = $this->basePath() . '/__/images/notImage100_100.png';
+                            $imageUrl = getThumbnail()->resize($fPathImg, 100, 100); //resize image
+                            $href = $fPathImg;
+                            ?>
+                            <div class="col-md-3">
+                                <a class="colorbox" href="<?= $href ?>">
+                                    <img src="<?= $imageUrl ?>" width="100"
+                                         style="display: block; margin: auto;" height="100"
+                                         title="<?= $row->fTitle ?>"
+                                         alt="<?= $row->fAlt ?>">
+                                </a>
+                            </div>
+                        <?
+                        }
+                        ?>
+                    </div>
+                </div>
+            </fieldset>
+
+        <? } ?>
+        <div style="clear:both"></div>
+        <br>
+        <!--show all info-->
+        <? if ($this->baseTypeAmountAllInfo > 0 && !$flagShowAllInfo) {
+            //Payment
+            $paymentParams = array(
+                'amount' => $this->baseTypeAmountAllInfo,
+                'email' => current_user()->email,
+                'comment' => 'Pay For View All Data Ad',
+                'validate' => array(
+                    'route' => 'app/ad/view-data-validate',
+                    'params' => array(
+                        'id' => $select->adId,
+                        'entityType' => 'ads_' . $select->baseType . '_' . $select->regType,
+                        'userId' => current_user()->id,
+                    ),
+                )
+            );
+            $paymentParams = serialize($paymentParams);
+            $paymentParams = base64_encode($paymentParams);
+            ?>
+            <? if (current_user()->id == 0) { ?>
+                <div class="col-md-12">
+                    <p class="alert alert-danger">
+                        <?= t('ADS_ATTENTION_BUY_SHOW_INFO_GUEST_OR_MEMBER') ?>
+                    </p>
+
+                    <p class="alert alert-info">
+                        <? //= t('ADS_FOR_VIEW_PAYMENT_LOGIN') ?>
+                        <a href="<?= url('app/user/register') ?>"><?= t('ADS_CLICK_FOR_REGISTER') ?></a>
+                        <a href="<?= url('app/user/login') ?>"><?= t('ADS_CLICK_FOR_LOGIN') ?></a>
+                    </p>
+                </div>
+            <? } ?>
+            <div class="col-md-12">
+                <a href="<?= url('app/payment', array(), array('query' => array('routeParams' => $paymentParams))) ?>">
+                    <button type="button" class="btn btn-default">
+                        <?= sprintf(t('ADS_VIEW_DATA_PRICE'), $this->currencyFormat($this->baseTypeAmountAllInfo)) ?>
+                    </button>
+                </a>
+            </div>
+            <?
+            //end
+        } ?>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 box_view_1000_0_count">
+            <div class="col-xs-12 col-sm-4 col-md-4 margin_top">
+                <span class="glyphicon glyphicon-comment text-info"></span>
+                <?
+                $countHits = 0;
+                if ($select->hits)
+                    $countHits = $select->hits;
+                echo sprintf(t('ADS_COUNT_HITS'), $countHits);
+                ?>
+            </div>
+
+            <div class="col-xs-12 col-sm-4 col-md-4 margin_top">
+                <?
+                echo $this->add_to_any_helper();
+                ?>
+            </div>
+
+            <? if ($select->showPm && ($this->showStatusType == 1 || $select->expireDate > time())) { ?>
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <?= $this->pm($select->userId) ?>
+                </div>
+            <? } ?>
+        </div>
+
+        <div style="clear:both"></div>
+    <?
+    }
+} else {
+    ?>
+    <div class="alert alert-danger">
+        <?= t('ADS_NOT_FOUND') ?>
+    </div>
+<?
+}
+?>
+
+
+
+

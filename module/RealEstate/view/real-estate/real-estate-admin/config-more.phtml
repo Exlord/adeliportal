@@ -1,0 +1,211 @@
+<div>
+    <a class="toolbar-button btn btn-default ajax_page_load"
+       href="<?= $this->url('admin/real-estate/config') ?>">
+        <i class="glyphicon glyphicon-cog"></i>
+        <?= $this->translate('Initial Settings') ?>
+    </a>
+
+    <h3 class="page-title">
+        <?= $this->translate('RealEstate Settings'); ?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+
+        $real_estate_config = $this->form;
+
+        $estateType = $real_estate_config->estateType;
+        $regType = $real_estate_config->regType;
+        $estateType_regType = $real_estate_config->get('estateType_regType');
+        $estateType_regType = $estateType_regType->getFieldsets();
+        //var_dump($estateType_regType[15][1]);
+        foreach ($estateType_regType as $key => $regTypes) {
+            $estateType_regType[$key] = $regTypes->getElements();
+        }
+        //  var_dump($estateType_regType);
+
+
+        echo $this->iptFormRow($form->get('defaultAgent'));
+        ?>
+        <!--  <div class="fieldset_list">
+            <? /*=$this->iptFormCollection($real_estate_config->get('estateType_regType'));*/ ?>
+        </div>-->
+        <div style="clear: both;"></div>
+        <fieldset class="">
+            <legend>
+                <?= $this->translate('Enabled Fields') ?>
+            </legend>
+            <p class="form_element_description"><?= $this->translate('Enabled fields for Estate Types . The Selected Fields will be enabled') ?></p>
+
+            <?
+            $estateType_fields = $real_estate_config->get('estateType_fields');
+            $estateTypes = $estateType_fields->getFieldsets();
+            if (count($estateTypes)) {
+                ?>
+
+                <div id="fields_tabs">
+                    <ul>
+                        <? foreach ($estateTypes as $key => $estateTT) { // start tabs headers ( state types)
+
+                            ?>
+                            <li><a href="#fields_tabs<?= $key ?>"><?= $this->translate($estateTT->getLabel()) ?> </a>
+                            </li>
+                        <? } ?>
+                    </ul>
+                    <?
+                    if ($this->emptyFields) {
+                        foreach ($estateTypes as $key => $estateTT) { // start tabs contents
+                            $regTypes = $estateTT->getFieldsets();
+
+                            ?>
+
+                            <div id="fields_tabs<?= $key ?>">
+                                <?
+                                $table_header = '<th></th>';
+                                $table_content = '';
+                                $rows = array();
+                                foreach ($regTypes as $regKey => $regTT) {
+                                    $ch = $this->formCheckbox($estateType_regType[$key][$regKey]);
+                                    $ch .= $this->formElementErrors($estateType_regType[$key][$regKey]);
+                                    //$this->translate($regTT->getLabel()) .
+                                    $table_header .= "<th> " . $ch . "</th>"; // header tabs contents
+                                    foreach ($regTT->getElements() as $elKey => $element) {
+
+                                        $rows[$key][$element->getLabel()][] = $element; // element contents
+                                    }
+                                }
+                                ?>
+                                <table class="grid" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <?= $table_header ?> <!-- print header-->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?
+                                    foreach ($rows[$key] as $label => $elements) {
+                                        echo "<tr><td>" . $label . "</td>";
+                                        foreach ($elements as $el) {
+                                            echo "<td align='center'>" . $this->formCheckbox($el) . $this->formElementErrors($el) . "</td>"; // print elements
+                                        }
+                                        echo "</tr/>";
+                                    }
+
+                                    ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        <?
+
+                        }
+                    } else {
+                        ?>
+
+                        <p class="description">
+                            <a href="<?= url('admin/fields') ?>">
+                                <?= t('Fields not found . please for create new fields clicked') ?>
+                            </a>
+                        </p>
+
+                    <?
+                    }
+                    ?>
+                </div>
+
+            <?
+            } else {
+                ?>
+
+                <p class="description">
+                    <a href="<?= url('admin/category') ?>">
+                        <?= t('Estate type not found . please for create new estate type clicked') ?>
+                    </a>
+                </p>
+
+            <?
+            }
+            ?>
+
+
+        </fieldset>
+
+        <div style="clear: both;"></div>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<style type="text/css">
+    .fieldset_list fieldset{
+        float:right;
+    }
+
+    .form_element.checkbox label{
+        width:121px;
+    }
+
+    .column{
+        float:right;
+    }
+
+    .multi_checkbox label{
+        float:right;
+        margin:1px;
+        width:170px;
+        display:block;
+    }
+</style>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    $(document).ready(function () {
+        $("#fields_tabs").tabs();
+
+        $('th input[type=checkbox]').each(function () {
+            var isChecked = $(this).is(':checked');
+            var index = $(this).closest('th').index() + 1;
+            var element = $('td:nth-child(' + index + ' ) input ', $(this).closest('table'));
+            if (isChecked == false) {
+                element.removeAttr('checked').prop('checked', isChecked);
+                element.attr('disabled', true);
+            }
+        });
+
+        $('#real_estate_config_more').on('ajaxFormSubmit', function (e) {
+            $(e.target).data('cancel-submit', true);
+            var data = $(this).serialize();
+            var input = $("<input type='hidden' name='data'>").val(data);
+            var form = $('<form style="display:none" target="_parent"><input type="hidden" name="buttons[submit]" value="1"></form>')
+                .attr('method', 'post')
+                .attr('action', $(this).attr('action'));
+            $(form).append(input).appendTo('body');
+            $(form).submit();
+        });
+        $('#real_estate_config_more').submit(function (e) {
+
+
+//
+        });
+
+        $('th input[type=checkbox]').change(function () {
+            var isChecked = $(this).is(':checked');
+            var index = $(this).closest('th').index() + 1;
+            var element = $('td:nth-child(' + index + ' ) input ', $(this).closest('table'));
+            //console.log(element);
+            if (isChecked == true) {
+                element.removeAttr('disabled').prop('checked', isChecked);
+            }
+            else {
+                element
+                    .removeAttr('checked')
+                    .prop('checked', isChecked)
+                    .attr('disabled', true);
+            }
+        });
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

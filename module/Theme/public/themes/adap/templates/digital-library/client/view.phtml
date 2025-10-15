@@ -1,0 +1,143 @@
+<?
+$basePath = $this->basePath();
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/book-view.css');
+$files = null;
+if ($this->files)
+    $files = $this->files->toArray();
+?>
+<div id="book">
+    <div class="col-right pull-right">
+        <div role="tabpanel">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#details" aria-controls="details" role="tab"
+                       data-toggle="tab">
+                        مشخصات
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#sections" aria-controls="sections" role="tab"
+                       data-toggle="tab">
+                        جلد ها
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="details">
+                    <?
+                    $image = null;
+                    $alt = '';
+                    $imageTitle = '';
+                    if (isset($this->data['book_image'])) {
+                        $image = @unserialize($this->data['book_image']);
+                        unset($this->data['book_image']);
+                    }
+                    if ($image) {
+                        $alt = $image['alt'];
+                        $imageTitle = $image['title'];
+                        $image = getThumbnail()->thumbnail($image['path'], 85, 120); //resize image
+                    } else
+                        $image = '';
+
+                    $book_summery = $this->data['book_summery'];
+                    unset($this->data['book_summery']);
+                    ?>
+
+                    <div class="image">
+                        <img src="<?= $image ?>" alt="<?= $alt ?>" title="<?= $imageTitle ?>">
+                    </div>
+                    <h4 class="media-heading book-title">
+                        <?= $this->escapeHtml($this->data['title']) ?>
+                    </h4>
+
+                    <div class="item-details">
+                        <?
+                        $fieldsApi = getSM()->get('fields_api');
+                        $fieldsData = $fieldsApi->generate($this->fields, $this->data);
+                        foreach ($fieldsData as $key => $val) {
+                            ?>
+                            <div class="detail-row">
+                                <span class="item-label"><?= $key ?> :</span>
+                                <span class="item-value"><?= nl2br($val) ?></span>
+                            </div>
+                        <?
+                        }
+                        ?>
+                    </div>
+                    <div id="summery">
+                        <div class="title pull-right">
+                            چکیده
+                        </div>
+                        <div class="border clearfix"></div>
+                        <div class="arrow"></div>
+                        <div class="text clearfix">
+                            <?= nl2br($this->escapeHtml($book_summery)); ?>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="sections">
+                    <?
+                    if ($files) {
+                        foreach ($files as $f) {
+                            ?>
+                            <div class="section-row clearfix">
+                                <?= $f['title'] ?>
+                                <a href="<?= url('app/pf-ddl', array('file' => $f['id'])) ?>"
+                                   class="btn btn-default btn-xs pull-left"
+                                   title="<?= t('Download') ?>"
+                                   data-toggle="tooltip"
+                                   data-placement="bottom">
+                                    <span class="glyphicon glyphicon-download-alt"></span>
+                                </a>
+                                <a href=""
+                                   data-url="<?= url('app/pf-r', array('file' => $f['id'])) ?>"
+                                   class="btn btn-default btn-xs pull-left read-book"
+                                   title="<?= t('Read this book now', TEMPLATE_NAME) ?>"
+                                   data-toggle="tooltip"
+                                   data-placement="bottom">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </a>
+                            </div>
+                        <?
+                        }
+                    }
+                    ?>
+                    <script>
+                        $(function () {
+                            $('#sections [data-toggle="tooltip"]').tooltip()
+                        })
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-left pull-left" id="reader">
+        <div class="header">
+            <?print $this->blocks('books_list_top')?>
+        </div>
+        <div class="body">
+            <?
+            if ($files) {
+                $fileToOpen = array_shift($files);
+                ?>
+                <iframe id="readerIFrame" width="100%" height="100%"
+                        src="<?= url('app/books/viewer', array('fileId' => $fileToOpen['id']), array('fragment' => 'locale=fa')) ?>">
+                </iframe>
+            <?
+            }
+            ?>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.read-book').click(function (e) {
+            e.preventDefault();
+            var PDFView = document.getElementById('readerIFrame').contentWindow.PDFView;
+            if (PDFView != 'undefined')
+                PDFView.open($(this).data('url'));
+        });
+        $('button[name=search]').tooltip();
+    });
+</script>

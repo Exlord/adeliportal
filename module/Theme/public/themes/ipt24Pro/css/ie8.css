@@ -1,0 +1,4 @@
+#section-2 a div.images:after, .main-menu ul.navigation li a:after{ display:none !important; }
+#section-2 a:hover div.images:after, .main-menu ul.navigation > li > a:hover:after{ display:none !important; }
+.sticky-header{ top:30px; }
+.sticky-header.compact{ top:0 !important; }

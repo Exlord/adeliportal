@@ -1,0 +1,10 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/payment.css');
+?>
+<?= $this->form; ?>
+<p>
+    در حال انتقال به سایت بانک ... لطفا منتظر بمانید ...
+</p>
+<script type="text/javascript">
+    document.getElementById("bank-form").submit();
+</script>

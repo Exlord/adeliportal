@@ -1,0 +1,714 @@
+<?
+$this->headLink()
+    ->appendStylesheet($this->basePath() . '/css/real-estate.css');
+
+$this->headScript()
+    ->prependFile($this->basePath() . '/js/geographical.js')
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/real-estate/real-estate.js')
+    ->appendFile($this->basePath() . '/js/real-estate.js');
+
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+
+/* @var $fieldset \Zend\Form\Fieldset */
+$fieldset = $this->form->get('transferFields');
+if ($fieldset)
+    $fields = $fieldset->getElements();
+else
+    $fields = null;
+?>
+
+<div class="main-new-real-estate border_main">
+
+
+<div id="real_estate_form_page">
+<div class="back_loading">
+    <span class="img_loading"></span>
+</div>
+<?
+/* @var $form \Zend\Form\Form */
+$form = $this->form;
+$form->prepare();
+echo $this->form()->openTag($form);
+if (!$this->isRequest) {
+    ?>
+
+    <div class="div-step step1" id="step1">
+        <span class="logo_step1"></span>
+
+        <fieldset class="help_step">
+            <legend>
+                راهنمای مرحله
+            </legend>
+            <div class="content_help">
+                <ul>
+                    <li>
+                        پر کردن موارد ستاره دار الزامی می باشد .
+                    </li>
+                    <li>
+                        برای نوشتن خلاصه آدرس پس از نام شهر خود ، اسم منطقه اصلی که خواهان ثبت ملک هستید را وارد نمایید
+                        .
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+        <div style="clear: both"></div>
+        <fieldset class="f_part">
+            <legend>
+                مشخصات ملک
+            </legend>
+            <table class="tbl_part1">
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('stateId')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('cityId')) ?></td>
+                    <td>
+                        <div class="text-new-area">
+                            <?= $this->iptFormRow($form->get('newArea')) ?>
+                        </div>
+                        <div class="select-new-area">
+                            <?= $this->iptFormRow($form->get('areaId')) ?>
+                        </div>
+                        <a href="#open" class="open-new-area" id="openNewArea"
+                           data-id="1"><?= t('realEstate_area_not_found') ?></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('estateType')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('regType')) ?></td>
+                    <td>
+                        <?
+                        if (isset($fields['sanad']))
+                            echo $this->iptFormRow($fields['sanad']);
+                        ?>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <fieldset class="f_part">
+            <legend>
+                مشخصات مالک
+            </legend>
+            <table class="tbl_part2">
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('ownerName')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('addressFull')) ?></td>
+                    <td><?
+                        if (isset($fields['pelak']))
+                            echo $this->iptFormRow($fields['pelak']);
+                        ?></td>
+                </tr>
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('ownerPhone')) ?> </td>
+                    <td><?= $this->iptFormRow($form->get('ownerMobile')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('ownerEmail')) ?></td>
+                    <td colspan="2" style="display: none"><?= $this->iptFormRow($form->get('addressShort')) ?></td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <br/>
+        <span class="next-button" id="next-button" data-id="1"></span>
+    </div>
+
+    <div class="div-step step2" id="step2">
+        <span class="logo_step2"></span>
+
+        <fieldset class="help_step">
+            <legend>
+                راهنمای مرحله
+            </legend>
+            <div class="content_help">
+                <ul>
+                    <li>
+                        پر کردن موارد ستاره دار الزامی می باشد .
+                    </li>
+                    <li>
+                        برای نوشتن خلاصه آدرس پس از نام شهر خود ، اسم منطقه اصلی که خواهان ثبت ملک هستید را وارد نمایید
+                        .
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+        <div style="clear: both"></div>
+
+        <?
+        $columns = array(
+            array(
+                'title' => 'امکانات ملک',
+                'part' => 1,
+                'size' => 12,
+                'items' => array(
+                    'zirbana' => 4,
+                    'type_faaliat' => 4,
+                    'type_forush' => 4,
+                    'masahate_zamin' => 4,
+                    'type_mojavez' => 4,
+                    //  'sanad' => 4,
+                    'c_otagh_khab' => 4,
+                    'type_vila' => 4,
+                    's_m_kolle_tabaghat' => 4,
+                    's_m_kolle_vahedha' => 4,
+                    's_m_dar_tabaghe' => 4,
+                    's_m_vahed_dar_tabaghe' => 4,
+                    's_nama' => 4,
+                    'tule_bar' => 4,
+                    'ertefae' => 4,
+                    'arze_gozar' => 4,
+                    'eslahi' => 4,
+                    'darsad_tarakom' => 4,
+                    'senne_bana' => 4,
+                    'vaziat_sokunat' => 4,
+                    'm_joghrafiaee' => 12,
+
+                )
+            ),
+            array(
+                'title' => 'قیمت',
+                'size' => 12,
+                'part' => 2,
+                'items' => array(
+                    'priceOneMeter' => 6,
+                    'totalPrice' => 6,
+                    'mortgagePrice' => 6,
+                    'rentalPrice' => 6,
+                )
+            ),
+            array(
+                'title' => 'وضعیت کارخانه ',
+                'size' => 12,
+                'part' => 3,
+                'items' => array(
+                    'vaziat_sakhteman' => 4,
+                    'vaziat_abresani' => 4,
+                    'vaziat_bargh' => 4,
+                    'tajhizat' => 4,
+                    'mahsulat' => 4,
+                )
+            ),
+            array(
+                'title' => 'سرویس',
+                'size' => 12,
+                'part' => 4,
+                'items' => array(
+                    'cabinet' => 4,
+                    't_kaf' => 4,
+                    'service_behdashti' => 4,
+                    'tazeinat' => 12,
+                )
+            ),
+            array(
+                'title' => 'سرویس',
+                'size' => 12,
+                'part' => 6,
+                'items' => array(
+                    'vam' => 2,
+                    'anbari' => 2,
+                    'balkon' => 2,
+                    'kitchen_open' => 2,
+                    'c_parking' => 3,
+                )
+            ),
+            array(
+                'title' => 'امکانات',
+                'size' => 12,
+                'part' => 5,
+                'items' => array(
+                    'em_water' => 3,
+                    'em_bargh' => 3,
+                    'em_gaz' => 3,
+                    'em_phone' => 3,
+                    'em_estakhr' => 3,
+                    'em_chah' => 3,
+                    'em_durbin' => 3,
+                    'em_etfae_harigh' => 3,
+                    'em_shufaj' => 3,
+                    'em_kuler' => 3,
+                    'em_chiler' => 3,
+                    'em_fankuel' => 3,
+                    'em_ifon' => 3,
+                    'em_pakeij' => 3,
+                    'em_noormakhfi' => 3,
+                    'em_rimut' => 3,
+                    'em_abgarmkon' => 3,
+                    'em_shumine' => 3,
+                    'em_suna' => 3,
+                    'em_anten' => 3,
+                    'em_hayat' => 3,
+                    'em_asansor' => 3,
+                    'em_barbiku' => 3,
+                    'em_jakuzi' => 3,
+                    'em_labi' => 3,
+                    'em_fazayesabz' => 3,
+                    'em_panjare' => 3,
+                    'em_pasu' => 3,
+                    'em_shuting' => 3,
+                    'em_negahban' => 3,
+                )
+            ),
+            /*array(
+                'title' => 'توضیحات',
+                'size' => 12,
+                'part' => 6,
+                'items' => array(
+                    'description' => 12,
+                )
+            ),*/
+        );
+        $html = '';
+
+        if ($fields) {
+            foreach ($columns as $col) {
+                $items = '';
+                foreach ($col['items'] as $field => $size) {
+                    if ($field == 'priceOneMeter' || $field == 'totalPrice' || $field == 'mortgagePrice' || $field == 'rentalPrice')
+                        $items .= "<div class='col-xs-" . $size . "'>" . $this->iptFormRow($form->get($field)) . "</div>";
+                    else
+                        $items .= "<div class='col-xs-" . $size . "'>" . $this->iptFormRow($fields[$field]) . "</div>";
+                }
+                $html .= "<div class='col-xs-" . $col['size'] . " div_part" . $col['part'] . " base_fields'><div class='row'> <fieldset class='f_part'><legend>" . $col['title'] . "</legend>" . $items . "</fieldset></div></div>";
+            }
+
+            echo $html;
+
+
+            if ($this->form->has('transferFields')) {
+
+                $fieldsName = array(
+                    'zirbana',
+                );
+
+            }
+        } ?>
+        <div style="height: 40px; display: block; clear: both;"></div>
+        <span class="next-button" id="next-button" data-id="2"></span>
+        <span class="back-button" id="back-button" data-id="2"></span>
+
+    </div>
+
+    <div class="div-step step3" id="step3">
+        <span class="logo_step3"></span>
+
+
+        <fieldset class="help_step">
+            <legend>
+                راهنمای مرحله
+            </legend>
+            <div class="content_help">
+                <ul>
+                    <li>
+                        در صورتیکه ملک شما حاوی موارد خاصی می باشد ، در قسمت توضیحات وارد نمایید .
+                    </li>
+                    <li>
+                        حداکثر حجم تصویر آپلودی 1 مگابایت می باشد .
+                    </li>
+                    <li>
+                        حداکثر رزولوشن تصویر 2000*2000 می باشد .
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+        <div style="clear: both"></div>
+
+        <div class="col-xs-6 desc_realestate">
+            <div class="row">
+                <fieldset class="f_part">
+                    <legend>
+                        توضیحات بیشتر
+                    </legend>
+                    <div class="margin real_desc">
+                        <?= $this->iptFormRow($form->get('description')) ?>
+                        <? //= $this->iptFormRow($form->get('pm')) ?>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="col-xs-6">
+            <div class="row">
+                <fieldset class="f_part">
+                    <legend>
+                        موقعیت ملک
+                    </legend>
+                    <div>
+                        <span id="map_selected_loc"></span>
+                    </div>
+                    <div id="map" style="width: 100%;height: 100%;">
+                        <?= t('Google Maps is not available due to filtering.') ?>
+                    </div>
+                    <?
+                    echo $this->iptFormRow($form->get('googleLatLong'));
+                    ?>
+                </fieldset>
+            </div>
+        </div>
+
+        <!--        <div class="col-xs-12 padding_bottom">-->
+        <!--            <div class="row">-->
+        <!--                --><?php //if (!$this->isRequest): ?>
+        <!--                    <div class="margin">-->
+        <!--                        --><? //= $this->iptFormRow($form->get('isSpecial')) ?>
+        <!--                    </div>-->
+        <!--                    <div class="margin">-->
+        <!--                        --><? //= $this->iptFormRow($form->get('showInfo')) ?>
+        <!--                    </div>-->
+        <!--                --><?php //endif; ?>
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <div class="col-xs-12">
+            <div class="row">
+                <fieldset class="f_part">
+                    <legend>
+                        تصاویر
+                    </legend>
+                    <?php if (!$this->isRequest): ?>
+                        <div class="margin">
+                            <? if ($this->images)
+                                echo $this->fileDisplay($this->images, $this->maxImage); ?>
+                        </div>
+                        <? if ($form->has('images')) {
+                            if ($images = $form->get('images')) {
+                                ?>
+                                <div class="img_realestate">
+                                    <?= $this->iptFormCollection($images) ?>
+                                </div>
+                            <?
+                            }
+                        } ?>
+                    <?php endif; ?>
+                </fieldset>
+            </div>
+        </div>
+
+        <div style="height: 40px; display: block; clear: both;"></div>
+        <span class="next-button" id="next-button" data-id="3"></span>
+        <span class="back-button" id="back-button" data-id="3"></span>
+    </div>
+
+    <div class="div-step step4" id="step4">
+        <span class="logo_step4"></span>
+
+        <div class="col-xs-12">
+            <div class="row">
+                <fieldset class="f_part">
+                    <legend>
+                        ثبت نهایی
+                    </legend>
+                    <div class="final_part_text">
+                        با تشکر از زمانی که صرف ثبت فایل خود نموده اید .
+                    </div>
+                    <div class="final_part_text">
+                        کاربر گرامی در ذیل مختصری از اطلاعات ملک خود را میبینید . لطفا در صورت مغایرت با بازگشت به مراحل
+                        قبل نسبت به اصلاح آن اقدام نمایید .
+                    </div>
+                    <table class="final_part_tbl">
+                        <thead>
+                        <tr>
+                            <td>
+                                <span class="label">
+                                    نوع ملک
+                                </span>
+                            </td>
+                            <td>
+                                <span class="label">
+نوع معامله
+                                </span>
+                            </td>
+                            <td>
+                                <span class="label">
+زیربنا
+                                </span>
+                            </td>
+                            <td>
+                                <span class="label">
+مساحت
+                                </span>
+                            </td>
+                            <td>
+                                <span class="label">
+شهر
+                                </span>
+                            </td>
+                            <td>
+                                <span class="label">
+منطقه
+                                </span>
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <span class="value txt_1">----</span>
+                            </td>
+                            <td>
+                                <span class="value txt_2">----</span>
+                            </td>
+                            <td>
+                                <span class="value txt_3">----</span>
+                            </td>
+                            <td>
+                                <span class="value txt_4">----</span>
+                            </td>
+                            <td>
+                                <span class="value txt_5">----</span>
+                            </td>
+                            <td>
+                                <span class="value txt_6">----</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div style="clear:both"></div>
+                    <div class="col-xs-12 padding_bottom">
+                        <div class="row">
+                            <?php if (!$this->isRequest): ?>
+                                <div class="margin">
+                                    <?= $this->iptFormRow($form->get('isSpecial')) ?>
+                                    <div class="col-md-4">
+                                        <?= $this->iptFormRow($form->get('expire')) ?>
+                                    </div>
+                                </div>
+                                <!--<div class="margin">
+                                            <? /*= $this->iptFormRow($form->get('showInfo')) */ ?>
+                                        </div>-->
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+        </div>
+
+        <? if ($form->has('captcha')) echo $this->iptFormRow($form->get('captcha')); ?>
+        <div class="new-real-estate-btn">
+            <?= $this->iptFormCollection($this->form->get('buttons')) ?>
+        </div>
+        <span class="back-button" id="back-button" data-id="4"></span>
+    </div>
+<?
+
+
+} else { // is request
+    ?>
+    <div class="div-step step1 step_request" id="step1">
+       <!-- <span class="logo_step_request"></span>-->
+
+        <fieldset class="help_step">
+            <legend>
+                راهنمای مرحله
+            </legend>
+            <div class="content_help">
+                <ul>
+                    <li>
+                        در صورتیکه ملک شما حاوی موارد خاصی می باشد ، در قسمت توضیحات وارد نمایید .
+                    </li>
+                    <li>
+                        حداکثر حجم تصویر آپلودی 1 مگابایت می باشد .
+                    </li>
+                    <li>
+                        حداکثر رزولوشن تصویر 2000*2000 می باشد .
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+        <div style="clear: both"></div>
+
+        <fieldset class="f_part f_request">
+            <legend>
+                مشخصات ملک مورد تقاضا
+            </legend>
+            <table class="tbl_part1">
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('stateId')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('cityId')) ?></td>
+                    <td>
+                        <div class="text-new-area">
+                            <?= $this->iptFormRow($form->get('newArea')) ?>
+                        </div>
+                        <div class="select-new-area">
+                            <?= $this->iptFormRow($form->get('areaId')) ?>
+                        </div>
+                        <a href="#open" class="open-new-area" id="openNewArea"
+                           data-id="1"><?= t('realEstate_area_not_found') ?></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('estateType')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('regType')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('expire')) ?></td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <?
+        $columns = array(
+            array(
+                'title' => 'شرایط مورد تقاضا',
+                'part' => 1,
+                'size' => 12,
+                'items' => array(
+                    'lower_meter' => 12,
+                    'highest_meter' => 12,
+                    'lower_price' => 12,
+                    'highest_price' => 12,
+                    'lower_rahn' => 12,
+                    'highest_rahn' => 12,
+                    'lower_rent' => 12,
+                    'highest_rent' => 12,
+                )
+            ),
+        );
+        $html = '';
+        /* @var $fieldset \Zend\Form\Fieldset */
+        $fieldset = $this->form->get('transferFields');
+        if ($fieldset) {
+            $fields = $fieldset->getElements();
+            foreach ($columns as $col) {
+                $items = '';
+                foreach ($col['items'] as $field => $size) {
+                    /* if ($field == 'priceOneMeter' || $field == 'totalPrice' || $field == 'mortgagePrice' || $field == 'rentalPrice')
+                         $items .= "<div class='col-xs-" . $size . "'>" . $this->iptFormRow($form->get($field)) . "</div>";
+                     else*/
+                    $items .= "<div class='col-xs-" . $size . "'>" . $this->iptFormRow($fields[$field]) . "</div>";
+                }
+                $html .= "<div class='col-xs-" . $col['size'] . " div_part_request_p '><div class='row'> <fieldset class='f_part f_request f_r_slider'><legend>" . $col['title'] . "</legend>" . $items . "</fieldset></div></div>";
+            }
+
+            echo $html;
+
+        } ?>
+        <fieldset class="f_part f_request">
+            <legend>
+                مشخصات تقاضا کننده
+            </legend>
+            <table class="tbl_part2">
+                <tr>
+                    <td><?= $this->iptFormRow($form->get('ownerName')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('ownerEmail')) ?></td>
+                    <td><?= $this->iptFormRow($form->get('ownerPhone')) ?></td>
+                </tr>
+                <tr>
+                    <td> <?= $this->iptFormRow($form->get('ownerMobile')) ?></td>
+                    <td colspan="2" style="display:none;"><?= $this->iptFormRow($form->get('addressFull')) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="display: none;"><?= $this->iptFormRow($form->get('addressShort')) ?></td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <div class="col-xs-12 desc_realestate">
+            <div class="row">
+                <fieldset class="f_part">
+                    <legend>
+                        توضیحات بیشتر
+                    </legend>
+                    <div class="margin real_desc desc_request">
+                        <?= $this->iptFormRow($form->get('description')) ?>
+                        <? //= $this->iptFormRow($form->get('pm')) ?>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <? if ($form->has('captcha')) echo $this->iptFormRow($form->get('captcha')); ?>
+        <div class="new-real-estate-btn">
+            <?= $this->iptFormCollection($this->form->get('buttons')) ?>
+        </div>
+        <div style="clear: both"></div>
+        <!--<span class="next-button" id="next-button" data-id="1"></span>-->
+    </div>
+<?
+}
+?>
+
+<?
+echo $this->form()->closeTag();
+?>
+
+
+</div>
+
+</div>
+
+<script type="text/javascript">
+    <?$this->inlineScript()->captureStart();?>
+    var openNewArea = 1;
+    var isRequest = '<?=$this->isRequest?>';
+    var estateType_regType = <?=$this->estateType_regType?>;
+    var estateType_fields = <?=$this->estateType_fields?>;
+    var statistic_url = '<?=url('app/real-estate/region-statistic')?>';
+    var error_message = '<?= t('error when deleteing file!') ?>';
+
+
+    $('.step2 select').addClass('select2');
+
+    if ($('#real_state_form').find('.f_r_slider').length > 0) {
+        var flagShowEl = true;
+        $('.f_r_slider input').each(function () {
+            if (flagShowEl) {
+                var min = 0;
+                var max = 1000000;
+                var step = 10000;
+                var el = $(this);
+                var idName = $(el).attr('id');
+                switch (idName) {
+                    case 'transferFields_lower_meter':
+                        min = 0;
+                        max = 100000;
+                        break;
+                    case 'transferFields_lower_price':
+                        min = 0;
+                        max = 1000000000000;
+                        break;
+                    case 'transferFields_lower_rahn':
+                        min = 0;
+                        max = 10000000000;
+                        break;
+                    case 'transferFields_lower_rent':
+                        min = 0;
+                        max = 1000000000;
+                        break;
+                }
+                var slider = $("<div></div>")
+                    .attr('id', $(el).attr('id') + '_slider')
+                    .slider({
+                        range: true,
+                        min: min,
+                        max: max,
+                        step: step,
+                        values: [ min, max ],
+                        slide: function (event, ui) {
+                            $(el).val(ui.values[0]);
+                            $('#' + idName.replace('lower', 'highest')).val(ui.values[1]);
+                            $(el).siblings('.price_from').html(insertcomma(ui.values[0].toString()));
+                            $(el).siblings('.price_to').html(insertcomma(ui.values[1].toString()));
+                        }
+                    }).insertAfter(el);
+                var values = $(el).hide().val().split(',');
+                var text = $(el).siblings('label').text();
+                $(el).siblings('label').html(text.replace('کمترین', ''));
+
+                if (values.length == 2) {
+                    $(slider).slider("values", 0, values[0]);
+                    $(slider).slider("values", 1, values[1]);
+                }
+                $("<div class='price_from pull-right flip'></div>").insertAfter(slider).html(insertcomma($(slider).slider("values", 0).toString()));
+                $("<div class='price_to pull-left flip'></div>").insertAfter(slider).html(insertcomma($(slider).slider("values", 1).toString()));
+                $(el).parent().addClass('clearfix');
+                $(el).hide().val($(slider).slider("values", 0));
+                $('#' + idName.replace('lower', 'highest')).val($(slider).slider("values", 1)).parent().parent().hide();
+                flagShowEl = false;
+            } else {
+                flagShowEl = true;
+            }
+        });
+    }
+
+    <?$this->inlineScript()->captureEnd();?>
+</script>
+<?
+if (!$this->isRequest) {
+    ?>
+    <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+<? } ?>

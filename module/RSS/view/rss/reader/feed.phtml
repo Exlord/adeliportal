@@ -1,0 +1,11 @@
+<ul>
+    <?
+    foreach ($this->data['entries'] as $feed) {
+        ?>
+        <li>
+            <a href="<?= $feed['link'] ?>"><?= $feed['title'] ?></a>
+        </li>
+    <?
+    }
+    ?>
+</ul>

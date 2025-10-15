@@ -1,0 +1,32 @@
+<?
+$basePath = $this->basePath() . '/images/dashboard/';
+?>
+<div>
+    <h2><?= t('Category') ?></h2>
+    <? if(isAllowed(\Page\Module::ADMIN_PAGE_WIDGET)) { ?>
+    <div class="widget-box">
+        <a class="button"  href="<?=url('admin/category')?>" >
+            <img src="<?=$basePath.'icon-48-category.png'?>">
+            <p><?=t('Categories')?></p>
+        </a>
+        <a class="button"  href="<?=url('admin/category/new')?>" >
+            <img src="<?=$basePath.'icon-48-category-add.png'?>">
+            <p><?=t('Add Category')?></p>
+        </a>
+    </div>
+    <table>
+        <tr>
+            <td>
+                <a href="<?=url('admin/category')?>" ><?= t('category_widget_count_all') ?></a>
+            </td>
+            <td align='center'>
+                <b class="digit"><?= localizedDigits($this->data['count']) ?></b>
+            </td>
+        </tr>
+    </table>
+    <? } else { ?>
+        <div class="widget-access-denied">
+            <?=t('Dear user, your access is limited by the webmaster.')?>
+        </div>
+ <? } ?>
+</div>

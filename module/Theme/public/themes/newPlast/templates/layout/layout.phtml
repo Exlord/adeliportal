@@ -1,0 +1,281 @@
+<?
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    )
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie8.css',
+        'screen',
+        'lt IE 9'
+    );
+
+if ($direction == 'rtl')
+    $this->headLink()->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-rtl.min.css');
+
+$this->headLink()
+    ->prependStylesheet($basePath . '/select2/select2-bootstrap.css')
+    ->prependStylesheet($basePath . '/select2/select2.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-theme.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap.min.css')
+    ->prependStylesheet($basePath . '/css/system.css');
+
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/select2/select2.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . TEMPLATE_PATH . '/js/bootstrap.min.js')
+
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    )
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/html5shiv.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+
+//---------------------------------- BLOCKS -----------------------------------------------//
+$before_main_content = $this->blocks('before_main_content');
+$after_main_content = $this->blocks('after_main_content');
+$header = $this->blocks('header');
+$footer = $this->blocks('footer');
+$col_right = $this->blocks('col_right');
+$col_left = $this->blocks('col_left');
+$topMenu = $this->blocks('top_menu');
+$col_news = $this->blocks('col_news');
+$col_product = $this->blocks('col_product');
+$col_message = $this->blocks('col_message');
+$col_customer = $this->blocks('col_customer');
+$footer_contact = $this->blocks('footer_contact');
+$siteTitle = $this->body()->getSiteTitle();
+$siteSubTitle = $this->body()->getSiteSubTitle();
+
+$mainColSize = 12;
+if ($col_left && $col_right)
+    $mainColSize = 6;
+if ($col_right || $col_left)
+    $mainColSize = 9;
+
+
+$flashMS = trim($this->flashMessenger()->render());
+$userLoginBlock = $this->user_login_block();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+<body id="page-top" class="<?= implode(' ', $this->body()->class) ?>">
+<div id="body">
+    <!-- Intro Section -->
+    <section id="header" class="header-section">
+        <div class="container with_950">
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="#" class="logo">
+                        <img src="<?= $basePath . TEMPLATE_PATH . '/images/logo1.png' ?>">
+                    </a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <? if ($topMenu) { ?>
+                    <div class="collapse navbar-collapse navbar-left flip col-md-9">
+                        <? print $topMenu; ?>
+                    </div>
+                <? } ?>
+                <div class="col-lg-12">
+                    <? if (!empty($siteTitle)) echo $siteTitle; ?>
+                    <? if (!empty($siteSubTitle)) echo $siteSubTitle; ?>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="main_content" class="main_content">
+        <div class="container with_950">
+            <div class="row">
+
+                <? if ($before_main_content) { ?>
+                    <div class="col-md-12 before_main_content">
+                        <?= $before_main_content ?>
+                    </div>
+                <? } ?>
+
+                <? if (!empty($flashMS)) { ?>
+                    <div class="col-xs-12">
+                        <div id="system_messages"> <?= $flashMS ?></div>
+                    </div>
+                <? } ?>
+
+                <div class="col-md-12 slider_bk"></div>
+
+                <? if ($col_news) { ?>
+                    <div class="col-md-5 box_news">
+                        <div class="col-md-12 box_title">
+                            <span class="news_logo"></span>
+                            <span class="news_title">
+                                آخرین اخبار و اطلاعیه ها
+                            </span>
+                        </div>
+                        <div class="col-md-12 zero_padding">
+                            <?= $col_news ?>
+                        </div>
+                    </div>
+                <? } ?>
+
+                <? if ($col_product) { ?>
+                    <div class="col-md-7">
+                        <div class="row box_product">
+                            <div class="col-md-12 box_title">
+                                <span class="product_logo"></span>
+                            <span class="product_title">
+برخی از محصولات
+                            </span>
+                            </div>
+                            <div class="col-md-12 zero_padding">
+                                <?= $col_product ?>
+                            </div>
+                        </div>
+                    </div>
+                <? } ?>
+
+                <? if ($col_left) { ?>
+                    <div class="col-md-3">
+                        <?= $col_left ?>
+                    </div>
+                <? } ?>
+
+                <div class="col-md-<?= $mainColSize ?>">
+                    <?= $this->content ?>
+                </div>
+
+                <? if ($col_right) { ?>
+                    <div class="col-md-3">
+                        <?= $col_right ?>
+                    </div>
+                <? } ?>
+
+                <div class="col-md-12 box_message">
+                    <div class="row">
+                        <div class="bg_message">
+                            <span class="text">
+                                <? if ($col_message) { ?>
+                                    <?= $col_message ?>
+                                <? } ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div class="col-md-8 box_customer">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <span class="icon_customer"></span>
+                        </div>
+                        <div class="col-md-3 title">
+                            برخی از مشتریان ما :
+                        </div>
+                        <div class="col-md-8">
+                            <? /* if ($col_customer) { */ ?>
+                                <? /*= $col_customer */ ?>
+                            <? /* } */ ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <span class="img_contact"></span>
+                </div>-->
+                <div class="col-md-12 box_menu_contact">
+                    <? if ($after_main_content) { ?>
+                        <div class="col-md-12 after_main_content">
+                            <?= $after_main_content ?>
+                        </div>
+                    <? } ?>
+
+                    <div class="col-md-12 box_contact_phone">
+                        <? if ($footer_contact) { ?>
+                            <div class="col-md-12">
+                                <?= $footer_contact ?>
+                            </div>
+                        <? } ?>
+                        <!--<div class="row">
+                            <div class="col-md-6 box_phone">
+                           <span class="title">
+                               تلفن تماس :
+                           </span>
+                            <span class="text">
+                                041-34215890
+                            </span>
+                            </div>
+                            <div class="col-md-6 box_fax">
+                           <span class="title">
+فکس :
+                           </span>
+                            <span class="text">
+                                041-34215889
+                            </span>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="footer" class="container-fluid footer sticky-bottom">
+        <div class="row">
+            <div class="container width_950 zero_padding">
+                <div class=" col-md-12 zero_padding">
+                    <div class="">
+                        <?
+                        $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                        $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                        $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                        ?>
+                        <!-- <p align="center">
+                        <? /*= t('APPLICATION_BROWSERS') */ ?>
+                    </p>-->
+
+                        <p align="center">
+                            <span><?= sprintf(t('APPLICATION_RIGHTS'), 'نیوپلاست') ?></span>
+                            <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                            &nbsp; .
+                            <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                            <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+    </section>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

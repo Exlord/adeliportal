@@ -1,0 +1,76 @@
+<?
+$scripts = $this->form->extraScripts;
+if (count($scripts)) {
+    foreach ($scripts as $sc) {
+        if (strpos($sc, 'http') === false)
+            $sc = $this->basePath() . $sc;
+        $this->headScript()->appendFile($sc);
+    }
+}
+$scripts = $this->form->extraInlineScripts;
+if (count($scripts)) {
+    foreach ($scripts as $sc) {
+        if (strpos($sc, 'http') === false)
+            $sc = $this->basePath() . $sc;
+        $this->inlineScript()->appendFile($sc);
+    }
+}
+$styles = $this->form->extraStyles;
+if (count($styles)) {
+    foreach ($styles as $s) {
+        if (strpos($s, 'http') === false)
+            $s = $this->basePath() . $s;
+        $this->headLink()->appendStylesheet($s);
+    }
+}
+?>
+
+<style>
+    .ui-tooltip{
+        max-width:350px;
+    }
+</style>
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Blocks'); ?>
+    </h3>
+
+    <p class="description">
+        <?= t('Here you can create new blocks or edit the old ones.') ?>
+    </p>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        ?>
+        <fieldset class="column" style="position:relative;">
+            <legend><?= t('Specs') ?></legend>
+
+            <div class="form_element text">
+                <label for="title">
+                    <?= t('Block Type') ?>
+                </label>
+                <input type="text" value="<?= t($this->label) ?>" class="disabled" readonly="readonly"></div>
+            <?
+            foreach ($form->getElements() as $el) {
+                echo $this->iptFormRow($el);
+            }
+            ?>
+        </fieldset>
+        <div class="column" id="block-config-data">
+            <?
+            foreach ($form->getFieldsets() as $el) {
+                if ($el->getName() != 'buttons')
+                    echo $this->iptFormCollection($el);
+            }
+            ?>
+        </div>
+        <div style="clear: both;"></div>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>

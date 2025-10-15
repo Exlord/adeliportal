@@ -1,0 +1,59 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/comment.css');
+$this->headScript()->prependFile($this->basePath() . '/js/comment.js');
+?>
+<div id="comments-wrapper">
+    <h3><?=t('Comments')?></h3>
+    <a id="openComment" class="open-comment new-reply"  href="#commnet"><?= t('New Comment') ?></a>
+    <div id="comments" style="display: none;"></div>
+    <div id="new-comments" style="display:none;"></div>
+    <div class="footer-wrapper">
+        <a id="openComment" class="open-comment new-reply"  href="#commnet"><?= t('New Comment') ?></a>
+        <a id="load-more-comments" class="load-more-comments"><?=t("See more comments")?></a>
+    </div>
+</div>
+<div id="comment_dialog" style="display: none;">
+    <div class="message" id="message" style="display: none"></div>
+    <div class="ajax-loading" id="comment-form"></div>
+</div>
+<div id="comment_dialog_delete" style="display: none;">
+    <div class="message-delete" id="message-delete"><?= t('Are you sure?') ?></div>
+    <div class="ajax-loading-delete" id="comment-form-delete"></div>
+</div>
+<script>
+    var Comment = {
+        url: '<?=url('app/comment/new')?>',
+        urlShowComment: '<?=url('app/comment')?>',
+        urlDeleteComment: '<?=url('app/comment/delete')?>',
+        urlEditComment: '<?=url('app/comment/edit')?>',
+        typeComment: '<?=$this->typeComment?>',
+        commentStatus: '<?=$this->commentStatus?>',
+        closedShow: '<?=$this->closedShow?>',
+        title: '<?=t('New Comment')?>',
+        noComment: '<?=t('No comments for this entry.')?>',
+        timeOut: '<?=t('Please wait a minute.')?>',
+        entityId: '<?=$this->ei?>',
+        entityType: '<?=$this->et?>',
+        yes: '<?=t('Yes')?>',
+        no: '<?=t('No')?>',
+        cancel: '<?=t('Cancel')?>',
+        edit: '<?=t('Edit')?>',
+        titleDelete: '<?=t('Delete')?>',
+        saveBTN: '<?=t('Save')?>',
+        notLogin: '<?=t('You must be logged in to comment your user panel.')?>',
+        success: '<?=t('Your information was successfully Saved')?>',
+        error: '<?=t('Error . Please Try Again')?>',
+        confirmMessage: '<?=t('Your comment After the confirm  by webmaster will be published.')?>',
+        count: '<?=$this->count?>',
+        countShowComment: '<?=$this->countShowComment?>',
+        errorDelete: '<?=t('The message has been deleted by an administrator or user site')?>',
+        /*title_rate: '<?//=t('Rating')?>',
+        success_rate: '<?//=t('Select Your Success')?>',
+        error1_rate: '<?//=t('For a new choice, please wait 5 minutes')?>',
+        error2_rate: '<?//=t('To select, please enter your User Panel')?>',
+        url_rate_np: '<?//=url('app/negative-positive-rate/new')?>',*/
+        current_user_id: '<?=$this->$questStatus?>',
+        startOffset : 0
+    };
+    var Reply = {};
+</script>

@@ -1,0 +1,11 @@
+#menu-type-params fieldset{ display:none; }
+#selected-menu-type{ padding:5px; cursor:pointer; }
+#selected-menu-type a{ }
+#selected-menu-type > span#menu-type-content{ padding:0 5px; }
+.data-loader{ max-height:200px; }
+.data-view{ padding:3px; background:#dcdcdc; }
+.data-view .content{ color:darkgreen; }
+.ui-widget-content a:hover{ color:#808080; }
+.ui-autocomplete-loading{
+    background:url(../images/ajax_loader_tiny.gif) no-repeat left center;
+}

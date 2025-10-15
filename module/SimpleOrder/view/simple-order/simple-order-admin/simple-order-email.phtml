@@ -1,0 +1,45 @@
+<table style="width:400px; border:1px solid #cccccc;">
+    <tr style="text-align:center; border-bottom:1px dotted #cccccc;">
+        <td style="border-left:1px solid #cccccc; padding:5px;">
+            <?= t('Name') ?>
+        </td>
+        <td>
+            <?= $this->__NAME__ ?>
+        </td>
+    </tr>
+    <tr style="text-align:center; border-bottom:1px dotted #cccccc;">
+        <td style="border-left:1px solid #cccccc; padding:5px;">
+            <?= t('Mobile') ?>
+        </td>
+        <td>
+            <?= $this->__MOBILE__ ?>
+        </td>
+    </tr>
+    <tr style="text-align:center; border-bottom:1px dotted #cccccc;">
+        <td style="border-left:1px solid #cccccc; padding:5px;">
+            <?= t('Email') ?>
+        </td>
+        <td>
+            <?= $this->__EMAIL__ ?>
+        </td>
+    </tr>
+    <tr style="text-align:center; border-bottom:1px dotted #cccccc;">
+        <td style="border-left:1px solid #cccccc; padding:5px;">
+            <?= t('Description') ?>
+        </td>
+        <td>
+            <?= $this->__DESCRIPTION__ ?>
+        </td>
+    </tr>
+    <tr style="text-align:center;">
+        <td style="border-left:1px solid #cccccc; padding:5px;">
+            <?= t('application_label_reg_date') ?>
+        </td>
+        <td>
+            <?=$this->dateFormat(
+                (int)$this->__CREATED__
+            );?>
+        </td>
+    </tr>
+</table>
+<?= $this->__ITEMS__ ?>

@@ -1,0 +1,23 @@
+<?
+$data = $this->data;
+if ($data) {
+    ?>
+    <ul>
+        <?
+        foreach ($data as $val) {
+            ?>
+             <li>
+                 <div>
+                     <a class="ajax_submit" href="<?=url('admin/news-letter/config/more',array('api'=>$val['apiName'],'namespace'=>$val['namespace']))?>" ><?=t($val['displayName'])?></a>
+                     <p class="form_element_description"><?=t($val['desc'])?></p>
+                 </div>
+
+             </li>
+        <? } ?>
+    </ul>
+<?
+} else { ?>
+   <p>
+       <?=t('NewsLetter_config_noModule')?>
+   </p>
+<?}

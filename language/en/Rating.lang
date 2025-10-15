@@ -1,0 +1,6 @@
+<? return array(
+    'PERM_Rating' => 'Rating',
+    'Rating_nothingVoted'=>'Nothing Voted',
+    'RATING_NP_GUEST_SHOW'=>'RATING_NP_GUEST_SHOW',
+    'RATING_LOGIN'=>'RATING_LOGIN',
+);

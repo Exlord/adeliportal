@@ -1,0 +1,14 @@
+<?
+return array(
+    'PERM_Note' => 'یادداشت',
+    'NOTE' => 'یادداشت',
+    'NOTE_VISIBILITY' => 'قابلیت دید',
+    'Add note' => 'افزودن یادداشت',
+    'NOTE_VISIBILITY_PRIVATE' => 'خصوصی (فقط خودم)',
+    'NOTE_VISIBILITY_AUTH' => 'افراد دارای مجوز',
+    'NOTE_VISIBILITY_PUBLIC' => 'عمومی',
+    'note saved successfully' => 'یادداشت با موفقیت ذخیره شد',
+    'Written by' => 'نوشته شده توسط',
+    'Do you confirm deleting this note ?' => 'آیا حذف این یادداشت را تایید میکنید ؟',
+    'Notes' => 'یادداشت ها',
+);

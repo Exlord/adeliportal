@@ -1,0 +1,119 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/styleonlineorders.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order-client.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/reveal.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/system.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css');
+$this->headScript()
+    ->prependFile($this->basePath() . '/js/system.js')
+    ->prependFile($this->basePath() . '/js/forms.js')
+    ->prependFile($this->basePath() . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($this->basePath() . '/js/jquery-1.9.1.min.js')
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/template.js')
+    ->prependFile($this->basePath() . '/js/jquery.ui.datepicker-cc.all.min.js')
+    ->prependFile($this->basePath() . '/js/jquery.reveal.js')
+    ->prependFile($this->basePath() . '/js/jquery.min.js');
+
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle($this->translate('The Order Design Website| Ideh Pardaz Tabriz Company')) ?>
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+        <?= $this->headLink() ?>
+        <?= $this->headScript() ?>
+
+    </head>
+
+<body>
+
+<div class="main_content">
+    <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+<?
+if ($this->params['typePayment'] != 2) { ?>
+    <div class="main-div">
+        <div class="logo-site" >
+            <img src="http://ipt24.ir/images/IPT-LOGO-factor.png">
+        </div>
+        <div class="title-site">
+            www.azaript.com
+        </div>
+
+        <div class="div-final-part-order">
+            با تشکر از حسن انتخاب شما ، کد رهگیری شما به شرح ذیل می باشد .
+            <br/>
+            کد رهگیری :
+            <?=$this->params['refCode'];?>
+        </div>
+        <div class="footer-btn">
+            <div class="btn1">
+                <form method="post" target="_blank" action="<?= url('app/online-orders/order-print'); ?>">
+                    <input type="hidden" value="<?= $this->params['id'] ?>" name="id">
+                    <input type="submit" class="submit-prew-form" name="sb-print" value="مشاهده / چاپ پیش فاکتور">
+                </form>
+            </div>
+            <div class="btn2">
+                <a target="_blank" class="link-home-online-order" href="http://ipt24.com/fa/online-orders">
+                    ورود به بخش سفارش آنلاین
+                </a>
+            </div>
+            <div class="btn3">
+                <a target="_blank" class="link-home-azaript" href="http://ipt24.com">
+                    ورود به سایت اصلی
+                </a>
+            </div>
+        </div>
+    </div>
+<?
+} else {
+    ?>
+    <div class="main-div">
+        <div class="logo-site">
+            <img src="http://ipt24.ir/images/IPT-LOGO-factor.png">
+        </div>
+        <div class="title-site">
+            www.azaript.com
+        </div>
+
+        <div class="div-final-part-order">
+            با تشکر از حسن انتخاب شما ، کد رهگیری شما به شرح ذیل می باشد .
+        </div>
+        <div class="div-final-part-order">
+            کد پیگیری :
+            <?=$this->params['refCode'];?>
+            <br/>
+            جمع مبلغ فاکتور :
+            <?=$this->params['sumResultPrice'];?>
+            <br/>
+            <input type="button" value="enter the Bank"/>
+        </div>
+        <div class="footer-btn">
+            <div class="btn1">
+                <form target="_blank" method="post" action="<?= url('app/online-orders/order-print'); ?>">
+                    <input type="submit" class="submit-prew-form" name="sb-print" value="مشاهده / چاپ پیش فاکتور">
+                    <input type="hidden" value="<?= $this->params['id'] ?>" name="id">
+                </form>
+            </div>
+            <div class="btn2">
+                <a target="_blank" class="link-home-online-order" href="http://ipt24.com/fa/online-orders">
+                    ورود به بخش سفارش آنلاین
+                </a>
+            </div>
+            <div class="btn3">
+                <a target="_blank" class="link-home-azaript" href="http://ipt24.com">
+ورود به سایت اصلی
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+<? } ?>
+
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

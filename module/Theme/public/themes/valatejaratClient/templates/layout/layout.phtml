@@ -1,0 +1,180 @@
+<?
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+
+
+$this->headLink()
+    ->prependStylesheet($this->basePath() . '/css/system.css')
+    ->prependStylesheet($this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css');
+
+$this->headLink()
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/style-rtl.css');
+if ($direction == 'ltr')
+    $this->headLink()
+        ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/style-ltr.css');
+
+
+$this->headScript()
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/template.js')
+    ->prependFile($this->basePath() . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($this->basePath() . '/js/system.jquery.ui.js')
+    ->prependFile($this->basePath() . '/js/system.js')
+    ->prependFile($this->basePath() . '/js/jquery-swfobject-plugin.js')
+    ->prependFile($this->basePath() . '/js/forms.js')
+    ->prependFile($this->basePath() . '/js/jquery.transit.min.js')
+    ->prependFile($this->basePath() . '/js/general-client.js')
+    ->prependFile($this->basePath() . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($this->basePath() . '/js/jquery-1.9.1.min.js');
+
+
+$column_right_blocks = '';
+$has_column_right = strlen(trim($column_right_blocks));
+
+$mid_col_class = '';
+
+
+if ($has_column_right)
+    $mid_col_class = 'two_columns';
+
+/*$user_block = $this->user_logged_in_block();
+if (!$user_block) {
+    $user_login_block = $this->blocks('user-popup');
+}*/
+
+$logo_block = $this->blocks('logo');
+$top_menu_block = $this->blocks('top-menu');
+$footer_menu_block = $this->blocks('footer-menu');
+$col_mid_top_block = $this->blocks('col-mid-top');
+$col_mid_bottom_block = $this->blocks('col-mid-bottom');
+$footer = $this->blocks('footer');
+$header = $this->blocks('header');
+$contentSlider = $this->blocks('contentSlider');
+$aboutUs = $this->blocks('aboutUs');
+
+$languageSwitcher = $this->langSwitcher(null,true);
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<body>
+<div id="header">
+    <?= $this->body()->getSiteTitle() ?>
+    <?= $this->body()->getSiteSubTitle() ?>
+    <?= $header ?>
+    <div id="logo">
+        <?= $logo_block ?>
+    </div>
+    <!--#search-->
+</div>
+<!--#header-->
+<div id="menu">
+    <div class="top_menu_box">
+        <?= $top_menu_block ?>
+    </div>
+    <div class="language-switcher">
+        <?= $languageSwitcher ?>
+    </div>
+</div>
+<!--#menu-->
+<div id="main">
+    <div id="content_body" class="box">
+        <?= $col_mid_top_block ?>
+        <br/>
+
+        <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+        <?= $this->content; ?>
+        <br/>
+        <?= $col_mid_bottom_block ?>
+        <br/>
+        <div>
+            <div id="row-content-slider">
+                <?=$contentSlider?>
+            </div>
+            <div id="row-about-us">
+                <?=$aboutUs?>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+</div>
+
+<!--#main-->
+<div id="footer">
+    <div id="footer_top"></div>
+    <!--#footer_top-->
+    <div id="footer_gab">
+        <div id="information_conect">
+            <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/information.png">
+
+            <p>
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/cellphone.png">
+                <span class="span-phone-end"> - 4</span>
+                <span class="span-phone"> 04114403271</span>
+            </p>
+
+            <p>
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/post.png">
+                <span class="span-phone">info@vtbco.com</span>
+            </p>
+
+            <p>
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/home.png">
+                <span class="span-phone">
+                    <?= t('KIMYA building No.8, Corner Ashkan Alley, Khatib St., Rahahan St., Tabriz, Iran') ?>
+                </span>
+            </p>
+
+        </div>
+        <!--#information_conect-->
+        <div id="quick_links">
+            <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/link_footer.png">
+
+            <?= $footer_menu_block ?>
+        </div>
+        <!--#quick_links-->
+        <div id="news">
+            <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/news_title.png">
+
+            <p><?= t('in the newsletter company vala tejarat sign up') ?></p>
+
+            <p><?= t('Email') ?></p>
+            <?= $this->newsletterSignUp(); ?>
+        </div>
+        <!--#news-->
+
+    </div>
+    <!--#footer_gab-->
+    <div class="copy-right">
+        <div class="powered-by label">
+            <?
+            $startYear = mktime(0, 0, 0, 6, 0, 2012);
+            $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+            $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+            ?>
+            <p align="center">
+                <?= t('APPLICATION_BROWSERS') ?>
+            </p>
+
+            <p align="center">
+                <span><?= sprintf(t('APPLICATION_RIGHTS'), 'Vala Tejarat Behparvar Co') ?></span>
+                <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                &nbsp; .
+                <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                <span><?= t('APPLICATION_POWERED_BY') ?></span>
+            </p>
+        </div>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+<!--#footer-->
+</body>
+</html>
+

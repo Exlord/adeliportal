@@ -1,0 +1,13 @@
+<?return array(
+    'Book' => 'کتاب',
+    'Books' => 'کتاب ها',
+    'New Book Created Successfully' => 'کتاب جدید با موفقیت ساخته شد.',
+    'No books found !' => 'کتابی پیدا نشد !',
+    'Click here to Search' => 'برای جستجو اینجا کلیک کنید',
+    'Book Title' => 'عنوان کتاب',
+    'Access Denied' => 'دسترسی ممکن نیست',
+    'you are not authorized to read this book' => 'شما اجازه خواندن این کتاب را ندارید',
+    '%s or %s to read this book' => '%s یا %s تا بتوانید این کتاب را بخوانید',
+    'File not found' => 'فایل پیدا نشد',
+    'the requested book cannot be found' => 'کتاب درخواست شده یافت نشد',
+);

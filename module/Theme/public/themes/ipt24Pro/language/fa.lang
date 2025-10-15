@@ -1,0 +1,19 @@
+<?
+return array(
+    'Click here to view job samples' => 'برای مشاهده نمونه کارها کلیک کنید',
+    'Confidently place your order' => 'با اطمینان سفارش خود را ثبت کنید',
+    'Loading' => 'در حال بارگزاری',
+    'Why we are trusted by our customers ?' => 'چرا مورد اعتماد مشتریان هستیم ؟',
+    'Consult with us online' => 'با ما به صورت آنلاین مشاوره کنید',
+    'Azar Ideh Parda Tabriz' => "آذر ایده پرداز تبریز",
+    'Internet Advertising' => 'تبلیغات اینترنتی',
+    'Programming' => 'برنامه نویسی',
+    'Web Application Development' => 'طراحی نرم افزار های تحت وب',
+    'Site Optimization' => 'بهینه سازی سایت',
+    'Hosting and Domains' => 'هاست و دامنه',
+    'Site Design' => 'طراحی سایت',
+    'Multimedia Design' => 'طراحی مالتی مدیا',
+    'Products' => 'محصولات شرکت',
+    'Security Cams' => 'نصب دوربین مدار بسته',
+    'Graphic' => 'طراحی گرافیک و چاپ',
+);

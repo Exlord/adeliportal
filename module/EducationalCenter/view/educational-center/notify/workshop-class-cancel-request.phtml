@@ -1,0 +1,6 @@
+<p>
+    <?= sprintf(t('your request to cancel %s has been send for the administration'), $this->__WORKSHOP_CLASS_URL__) ?>
+</p>
+<?if (has_value($this->__WORKSHOP_CLASS_CANCEL_REASON__))
+    print $this->__WORKSHOP_CLASS_CANCEL_REASON__;
+?>

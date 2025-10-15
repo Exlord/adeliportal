@@ -1,0 +1,191 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Real Estate'); ?>
+    </h3>
+
+
+    <div class="top-menu-list-real-estate">
+        <?
+            foreach ($this->pagination as $row) {
+                var_dump($row);
+                die;
+                if ($row->isSpecial && $row->expireSpecial >= time())
+                    $specialClass = 'div-special-real-estate';
+                else
+                    $specialClass = '';
+                ?>
+                <fieldset class="<?= $specialClass ?> fieldset-view-real-estate">
+                    <? if ($route_prefix == 'admin') { ?>
+                        <legend><?= $this->translate('Realty Id') ?> : <?= $row->itemId ?></legend>
+                    <?
+                    }
+                    $extra_fields = $this->filed_api->generate($this->fields, $row);
+                    $has_command = true;
+                    $item_class = array();
+                    $item_class[] = $row->isRequest ? 'real-estate-request' : 'real-estate-transfer';
+                    $item_class[] = $this->last_visit < $row->published ? 'real-estate-is-new' : '';
+                    $item_class[] = $row->status == 1 ? '' : 'real-estate-not-approved';
+                    $regTypeArray = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+                    $reg_type_class = strtolower(str_replace(' ', '-', $regTypeArray[$row->regType]));
+                    $reg_type = $this->translate($regTypeArray[$row->regType]);
+                    $estate_type = $row->estateTypeName;
+                    $meter = $row->estateArea . ' ' . $this->translate('real_estate_Meter');
+                    $title = \Application\API\App::prepareUrlString($reg_type . ' ' . $estate_type . ' ' . $meter);
+                    $price = 0;
+
+                    switch ($row->regType) {
+                        case 1:
+                        case 3:
+                        case 4:
+                            $price = '<span class="price">' . $this->currencyFormat($row->totalPrice) . '</span>';
+                            break;
+                        case 2:
+                            $price = '<span class="mortgage">&nbsp;' . $this->translate('mortgage') .
+                                '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->mortgagePrice) . '</span>&nbsp;' .
+                                $this->translate('and') . '&nbsp;<span class="rental">&nbsp;' . $this->translate('rental') .
+                                '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->rentalPrice) . '</span>';
+                            break;
+                    }
+
+                    $isCurrentUser = isCurrentUser($row->userId);
+
+                    $item_class = implode(' ', $item_class);
+
+                    ?>
+                    <div class="real-estate-item <?= $item_class ?> ">
+
+                        <div class="real-estate-content-area">
+
+                            <div class="real-estate-content<?= $has_command ? ' has-command' : '' ?>">
+                                <?
+                                if ($row->isRequest) {
+                                    echo '<span class="is-request-overlay"></span>';
+                                }
+                                if ($this->last_visit < $row->published) {
+                                    echo '<span class="is-new-overlay"></span>';
+                                }
+                                if (!$row->status == 1) {
+                                    echo '<span class="is-not-approved-overlay"></span>';
+                                }
+                                if ($row->status == 3) {
+                                    echo '<span class="is-transferred-overlay"></span>';
+                                }
+                                if ($row->status == 4) {
+                                    echo '<span class="is-canceled-overlay"></span>';
+                                }
+                                ?>
+                                <div class="view-real-estate-content-right">
+                                    <?
+                                    $image = explode(',', $row->fPath);
+                                    if (is_array($image) && isset($image[0]) && !empty($image[0]))
+                                        $imageUrl = getThumbnail()->resize($image[0], 100, 100); //resize image
+                                    else
+                                        $imageUrl = getThumbnail()->resize($this->basePath() . '/images/not-image.png', 100, 100); //resize image;
+                                    ?>
+                                    <img src="<?= $imageUrl ?>" width="100" height="100">
+                                </div>
+                                <div class="view-real-estate-content-middle">
+                                    <a href="<?= $this->url($route_prefix . '/real-estate/view', array('id' => $row->itemId, 'title' => $title)) ?>">
+
+                                            <span
+                                                class="reg-type reg-type-<?= $reg_type_class ?>"><?= $reg_type ?></span>
+                                        <span class="estate-type"><?= $estate_type ?></span>
+                            <span class="location">
+                                <?= t('in') . ' ' . $row->stateTitle . ' - ' . $row->cityTitle ?></span>
+                                    </a>
+
+                                    <div class="view-real-estate-content-price">
+                                        <?if ($row->estateArea) {
+                                            ?>
+                                            <span class="estate-area">
+                                        <?= $meter ?></span>
+                                            <sup class="super">(<?= $this->translate('real_estate_M') ?>)</sup>
+                                        <? } ?>
+                                        &nbsp;<span class="sell-for"><?= $this->translate('real_estate_sell_for') ?>
+                                            :</span>&nbsp;
+                                        <?= $price ?>
+                                    </div>
+                                    <? if ($row->isRequest) { ?>
+                                        <span class="is-request">
+                                    <span><?= $this->translate('Requested') ?></span>
+                                </span>
+                                    <? } ?>
+                                    <? if ($row->expire < time()) { ?>
+                                        <span class="is-expired">
+                                    <span><?= $this->translate('Expired') ?></span>
+                                </span>
+                                    <? } ?>
+                                    <? if ($this->last_visit < $row->published) { ?>
+                                        <span class="is-new">
+                                    <span><?= $this->translate('New') ?></span>
+                                </span>
+                                    <? } ?>
+                                    <? if ($row->status == 0) { ?>
+                                        <span class="is-not-approved">
+                                    <span><?= $this->translate('Not Approved') ?></span>
+                                </span>
+                                    <? } ?>
+                                </div>
+                                <div class="view-real-estate-content-left">
+                                    <div class="div-detail-contact view-real-estate-content-left-div-default">
+                                        <a target="_blank"
+                                           href="<?= $this->url($route_prefix . '/real-estate/view', array('id' => $row->itemId, 'title' => $title)) ?>">
+                                            <?= t('View details and contact') ?>
+                                        </a>
+                                    </div>
+                                    <?
+                                    //payment for realestate
+                                    if ($route_prefix == 'app' && !$isCurrentUser && !$this->isExport) {
+                                        $paymentParams = array(
+                                            'amount' => $this->homeInfoCost,
+                                            'email' => $row->ownerEmail,
+                                            'comment' => 'Pay For Buying a Home Information',
+                                            'validate' => array(
+                                                'route' => 'app/real-estate/view-all-info-estate',
+                                                'params' => array(
+                                                    'id' => $row->itemId,
+                                                ),
+                                            )
+                                        );
+                                        $paymentParams = serialize($paymentParams);
+                                        $paymentParams = base64_encode($paymentParams);
+                                        ?>
+                                        <div class="div-payer-home view-real-estate-content-left-div-default">
+                                            <a class="payer-home"
+                                               href="<?= url('app/payment', array(), array('query' => array('routeParams' => $paymentParams))) ?>">
+                                                <?= $this->translate('Purchase Information') ?>
+                                            </a>
+                                        </div>
+                                    <?
+                                    } ?>
+                                    <div class="div-date-time view-real-estate-content-left-div-default">
+                               <span class="date-time">
+                                <?=
+                                t('Reg Date') . " : " . $this->dateFormat($row->created);
+                                ?>
+                                </span>
+                                    </div>
+                                    <?
+                                    if ($row->status == 3) {
+                                        echo '<span class="is-transferred"><span>' . $this->translate('Transferred') . '</span></span>';
+                                    }
+                                    if ($row->status == 4) {
+                                        echo '<span class="is-canceled"><span>' . $this->translate('RealEstateCanceled') . '</span></span>';
+                                    }
+                                    ?>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </fieldset>
+
+            <?
+            }
+     //   } else {
+            echo $this->general()->noOutPut();
+    //    } ?>
+    </div>
+</div>

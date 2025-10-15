@@ -1,0 +1,65 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/lib/ckeditor/ckeditor.js');
+?>
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Create/Edit Template'); ?>
+    </h3>
+
+    <p class="description">
+        <?= t('Create or edit email and sms templates.') ?>
+    </p>
+
+    <div>
+        <?
+        //        $form = $this->form;
+        //        $form->prepare();
+        //        echo $this->form()->openTag($form);
+        //        foreach ($form->getElements() as $el) {
+        //            echo $this->iptFormRow($el);
+        //        }
+        echo $this->form($this->form);
+        ?>
+        <div>
+<!--            <a href="#toggle-editor" id="toggle-editor" class="btn btn-default">--><?//= t('Toggle Editor') ?><!--</a>-->
+            <fieldset>
+                <legend>
+                    <?= t('Placeholders') ?>
+                </legend>
+                <?
+                $placeholders = array();
+                foreach ($this->placeholders as $group => $ph) {
+                    $item = array('data' => $group);
+                    foreach ($ph as $key => $note) {
+                        $item['children'][] = $key . "<br/>" . "<p class='description'>" . t($note) . "</p>";;
+                    }
+                    $placeholders[] = $item;
+                }
+                echo(\Theme\API\Common::ItemList($placeholders));
+                ?>
+            </fieldset>
+        </div>
+        <?
+        //        echo $this->iptFormCollection($form->get('buttons'));
+        //        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    var templates_editor_enabled = false;
+    $(document).ready(function () {
+        $('body').on('click', '#toggle-editor', function (e) {
+            e.preventDefault();
+            if (templates_editor_enabled) {
+                CKEDITOR.instances['format'].destroy();
+                templates_editor_enabled = false;
+            }
+            else {
+                templates_editor_enabled = true;
+                CKEDITOR.replace('format', {language: '<?=SYSTEM_LANG ?>', skin: 'moonocolor'});
+            }
+        });
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

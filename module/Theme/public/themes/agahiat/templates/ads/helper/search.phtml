@@ -1,0 +1,524 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/__/js/ads_search.js');
+$this->headScript()->appendFile($this->basePath() . '/js/geographical.js');
+
+$form = $this->form;
+$form->prepare();
+$table = $form->get('table');
+$field = null;
+if ($form->has('field'))
+    $field = $form->get('field');
+echo $this->form()->openTag($form);
+?>
+
+<div class="col-xs-12 col-sm-12 col-md-12">
+
+<? if ($field->has('c_t_typecars')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 box_type_cars">
+        <?
+        $field->get('c_t_typecars')->setLabel("");
+        echo $this->formRow($field->get('c_t_typecars'));
+        ?>
+    </div>
+<? } ?>
+
+<? if ($field->has('c_r_typecars')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 box_type_cars">
+        <?
+        $field->get('c_r_typecars')->setLabel("");
+        echo $this->formRow($field->get('c_r_typecars'));
+        ?>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_t_regtype')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_t_regtype')->getLabel());
+                $field->get('r_t_regtype')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('r_t_regtype')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_t_estatetype')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_t_estatetype')->getLabel());
+                $field->get('r_t_estatetype')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('r_t_estatetype')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_r_regtype')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_r_regtype')->getLabel());
+                $field->get('r_r_regtype')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('r_r_regtype')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_r_estatetype')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_r_estatetype')->getLabel());
+                $field->get('r_r_estatetype')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('r_r_estatetype')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($table->has('stateId')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($table->get('stateId')->getLabel());
+                $table->get('stateId')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($table->get('stateId')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($table->has('cityId')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($table->get('cityId')->getLabel());
+                $table->get('cityId')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($table->get('cityId')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($table->has('address')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t('Region');
+                $table->get('address')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($table->get('address')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_r_mantaghe')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_r_mantaghe')->getLabel());
+                $field->get('r_r_mantaghe')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('r_r_mantaghe')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_t_roomcount')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3 col-md-3 zero_padding label">
+                <?
+                echo t($field->get('r_t_roomcount')->getLabel());
+                $field->get('r_t_roomcount')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-9 col-md-9 ">
+                <? echo $this->formRow($field->get('r_t_roomcount')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_r_roomcount')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3 col-md-3 zero_padding label">
+                <?
+                echo t($field->get('r_r_roomcount')->getLabel());
+                $field->get('r_r_roomcount')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-9 col-md-9 ">
+                <? echo $this->formRow($field->get('r_r_roomcount')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('c_t_brand')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('c_t_brand')->getLabel());
+                $field->get('c_t_brand')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('c_t_brand')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('c_r_brand')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('c_r_brand')->getLabel());
+                $field->get('c_r_brand')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('c_r_brand')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('c_t_model')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('c_t_model')->getLabel());
+                $field->get('c_t_model')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('c_t_model')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('c_r_model')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('c_r_model')->getLabel());
+                $field->get('c_r_model')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('c_r_model')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+
+<? if ($field->has('c_t_year')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('c_t_year')->getLabel());
+                $field->get('c_t_year')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('c_t_year')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('c_r_sall')) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo 'سال';
+                $field->get('c_r_sall')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 ">
+                <? echo $this->formRow($field->get('c_r_sall')); ?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<div class="col-xs-12 col-sm-12 col-md-12 blue_line2"></div>
+
+<? if ($field->has('r_t_totalprice')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 search_hidden_el">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_t_totalprice')->getLabel());
+                $field->get('r_t_totalprice')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('r_t_totalprice')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                <?=t(getCurrency())?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_r_price')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 search_hidden_el">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_r_price')->getLabel());
+                $field->get('r_r_price')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('r_r_price')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                <?=t(getCurrency())?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_t_rahn')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 search_hidden_el">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_t_rahn')->getLabel());
+                $field->get('r_t_rahn')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('r_t_rahn')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                <?=t(getCurrency())?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_r_rahn')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 search_hidden_el">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_r_rahn')->getLabel());
+                $field->get('r_r_rahn')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('r_r_rahn')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                <?=t(getCurrency())?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_t_ejare')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 search_hidden_el">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_t_ejare')->getLabel());
+                $field->get('r_t_ejare')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('r_t_ejare')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                <?=t(getCurrency())?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_r_ejare')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 search_hidden_el">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_r_ejare')->getLabel());
+                $field->get('r_r_ejare')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('r_r_ejare')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                <?=t(getCurrency())?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_t_meter')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_t_meter')->getLabel());
+                $field->get('r_t_meter')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('r_t_meter')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                مترمربع
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('r_r_masahat')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('r_r_masahat')->getLabel());
+                $field->get('r_r_masahat')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('r_r_masahat')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                مترمربع
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('c_t_price')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('c_t_price')->getLabel());
+                $field->get('c_t_price')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('c_t_price')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                <?=t(getCurrency())?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+<? if ($field->has('c_r_price')) { ?>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2 zero_padding label">
+                <?
+                echo t($field->get('c_r_price')->getLabel());
+                $field->get('c_r_price')->setLabel("");
+                ?>
+            </div>
+            <div class="col-xs-9 col-sm-7 col-md-7 ">
+                <? echo $this->formRow($field->get('c_r_price')); ?>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 zero_padding ">
+                <?=t(getCurrency())?>
+            </div>
+        </div>
+    </div>
+<? } ?>
+
+</div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <?
+    $form->get('search')->setLabel("");
+    echo $this->formRow($form->get('search'));
+    ?>
+</div>
+<div style="clear:both"></div>
+<?
+echo $this->form()->closeTag();
+?>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+
+        $('input[name="table[category]"]').select2({
+            minimumInputLength: 2,
+            maximumSelectionSize: 1,
+            multiple: true,
+            ajax: {
+                type: 'POST',
+                url: '<?=url('admin/category/items/search',array('catId'=>$this->catId))?>',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        q: term, //search term
+                        page_limit: 10, // page size
+                        page: page,// page number
+                        type: 1//id=itemName
+                    };
+                },
+                results: function (data, page) {
+                    console.log(data);
+                    var more = (page * 10) < data.total;
+                    return {results: data.items, more: more};
+                }
+            }
+        });
+
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

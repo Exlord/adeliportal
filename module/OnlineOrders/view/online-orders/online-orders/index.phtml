@@ -1,0 +1,1258 @@
+
+<?
+$basePath = $this->basePath();
+$this->headScript()->appendFile($basePath . '/js/jquery.ui.datepicker-cc.js');
+if (SYSTEM_LANG == 'fa')
+    $this->headScript()->appendFile($basePath . '/js/jquery.ui.datepicker-cc-fa.js');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/styleonlineorders.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order-client.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/reveal.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/system.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css');
+$this->headScript()
+    ->prependFile($this->basePath() . '/js/system.js')
+    ->prependFile($this->basePath() . '/js/forms.js')
+    ->prependFile($this->basePath() . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($this->basePath() . '/js/jquery-1.9.1.min.js')
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/template.js')
+    // ->prependFile($this->basePath() . '/js/jquery.ui.datepicker-cc.all.min.js')
+    ->prependFile($this->basePath() . '/js/jquery.reveal.js')
+    ->prependFile($this->basePath() . '/js/jquery.min.js');
+
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('The Order Design Website| Ideh Pardaz Tabriz Company')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+
+</head>
+<?
+
+$dataGroups = $this->dataGroups;
+$dataItems = $this->dataItems;
+$dataLangs = $this->dataLangs;
+$dataGroupsLevel = $this->dataGroupsLevel;
+$langPercent = $this->langPercent;
+$supportPercent = $this->supportPercent;
+?>
+<style>
+    @font-face{
+        font-family:acmesai;
+        src:url(<?=$this->basePath() ?>/font/acmesai.TTF);
+    }
+
+    .img-reset{
+        background:url("<?=$this->basePath() ?>/images/ref.png");
+        width:15px;
+        height:17px;
+        border:none;
+        cursor:pointer;
+    }
+
+
+</style>
+<body>
+
+<div class="main_content">
+<div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+
+
+<!-- ----------------------------------->
+
+
+<!--<img src="<? /*= TEMPLATE_PATH */ ?>/img/logo.png" class="logopng">-->
+<img src="<?= $this->basePath() ?>/images/ricon.png" class="ricon">
+
+<div class="main-order">
+<form id="customer_form" name="customer_form" method="post" action="">
+<input type="text" id="pageNum" value="0" style="display: none;">
+<input type="text" id="price-admin-domain" value="0" style="display: none;">
+<input type="text" id="groupId" name="idGroup" value="" style="display: none">
+<input type="text" id="langPercent" value="<?= $langPercent ?>" style="display: none;">
+<input type="text" id="supportPercent" value="<?= $supportPercent ?>" style="display: none;">
+<input id="date" type="hidden" value="<?= time() ?>" name="date">
+<input id="date" type="hidden" value="<?= $_SESSION['captcha_code'] ?>" name="CID">
+
+
+<div class="wellcome" id="wellcome">
+    <div class="div-wellcome">
+        <img src="<?= $this->basePath() ?>/images/header-01.png" class="header">
+        <br/>
+        <label class="txt1">
+            به بخش سفارش آنلاین شرکت آذر ایده پرداز تبریز خوش آمدید
+        </label>
+        <br/>
+        <label class="txt2">
+            مفتخریم خدماتی به زیبایی چشمانتان ارائه دهیم
+        </label>
+        <br/>
+        <input class="btn-start" type="button" value="برای ورود کلیک کنید" id="btn1">
+    </div>
+</div>
+
+
+<div class="groups-page1-order">
+    <div class="div-groups">
+        <?
+        foreach ($dataGroups as $link1_1) {
+            ?>
+            <input id="showLang<?= $link1_1['id'] ?>" type="hidden" value="<?= $link1_1['groupShowLang'] ?>">
+            <input id="showSupport<?= $link1_1['id'] ?>" type="hidden" value="<?= $link1_1['groupShowSupport'] ?>">
+            <?
+            if ($link1_1['groupLevel'] == '0') {
+                $path = $link1_1['imageIcon'];
+                ?>
+                <span class="grouplink-page1"
+                      style="background-image:url('<?= $path ?>'); width: 240px; height: 360px; "
+                      data-tooltip="<?= $link1_1['groupDesc'] ?>" id="<?= $link1_1['id'] ?>"></span>
+            <?
+            }
+        } ?>
+    </div>
+</div>
+
+
+<div class="groups-page2-order">
+    <div class="div-groups">
+        <?
+        foreach ($dataGroupsLevel as $row) {
+            ?>
+            <div class="groups-page2-div" id="groups-page2-div<?= $row ?>">
+                <?
+                foreach ($dataGroups as $link2_1) {
+
+                    if ($link2_1['groupLevel'] == '1' && $link2_1['groupParentId'] == $row) {
+                        $path = $link2_1['imageIcon'];
+                        $path = getThumbnail()->resize($link2_1['imageIcon'], 140, 200);;
+                        ?>
+                        <a id="<?= $link2_1['id'] ?>" class="grouplink-page2" href="#">
+                            <img id="<?= $link2_1['id'] ?>" data-tooltip="<?= $link2_1['groupDesc'] ?>"
+                                 src="<?= $path ?>">
+                        </a>
+                        <!-- <input type="button" class=""
+                                   style="background-image:url('<? /*= $path */ ?>'); width: 140px; height: 200px; display:inline-block"
+                                   title="<? /*= $link2_1['groupDesc'] */ ?>" id="<? /*= $link2_1['id'] */ ?>">-->
+                    <?
+                    }
+                }
+                ?>
+            </div>
+
+        <? } ?>
+    </div>
+
+</div>
+
+
+<div class="items-order">
+    <?
+    foreach ($dataItems as $row) {
+        foreach ($row as $value) {
+            ?>
+            <div id="Item<?= $value['id'] ?>" class="reveal-modal">
+                <?= $value['itemDescMore'] ?>
+                <a class="close-reveal-modal">&#215;</a>
+            </div>
+        <?
+        }
+    }
+    ?>
+    <?
+    foreach ($dataItems as $keyitems => $rowItems) {
+
+        ?>
+        <div class="items-div-order" id="items-div-order<?= $keyitems ?>">
+            <fieldset name="Customer<?= $keyitems ?>" class="itemCustomer">
+                <legend>
+                    <?= $this->translate('Items'); ?>
+                </legend>
+                <?  foreach ($rowItems as $valueItems) {
+                    if ($valueItems['groupId'] == $keyitems) {
+                        switch ($valueItems['itemActive']) {
+                            case 0 : // ejaze entekhab darad
+                                if ($valueItems['itemType'] == 1) {
+                                    ?>
+
+                                    <div class="form_element text div-item-inactive div-item-inactive-color">
+                                        <label for="itemCustomer_<?= $valueItems['id'] ?>">
+                                            <label class="lb-item lb-item-inactive"
+                                                   data-tooltip="<?= $valueItems['itemDesc'] ?>"><?= $valueItems['itemName'] ?>
+                                                <a href="#" class="big-link"
+                                                   data-reveal-id="Item<?= $valueItems['id'] ?>">
+                                                    <?= t('Description') ?>
+                                                </a>
+                                            </label>
+                                            <span class="sp-item"><?= $valueItems['itemPrice'] ?></span>
+                                            <? if (!empty($valueItems['itemPrice'])) { ?>
+                                                <span class="sp-item-toman"><?= t('Toman') ?></span>
+                                            <? } ?>
+                                        </label>
+                                        <input type="text" class="el-tx"
+                                               name="itemCustomer<?= $keyitems ?>[<?= $valueItems['id'] ?>]"
+                                               id="itemCustomer_<?= $valueItems['id'] ?>" value="0">
+                                    </div>
+
+                                <?
+                                } else {
+                                    ?>
+
+                                    <div class="form_element checkbox div-item-inactive div-item-inactive-color">
+                                        <label for="itemCustomer_<?= $valueItems['id'] ?>">
+                                            <label class="lb-item lb-item-inactive"
+                                                   data-tooltip="<?= $valueItems['itemDesc'] ?>"><?= $valueItems['itemName'] ?>
+                                                <a href="#" class="big-link"
+                                                   data-reveal-id="Item<?= $valueItems['id'] ?>">
+                                                    <?= t('Description') ?>
+                                                </a>
+                                            </label>
+                                            <span class="sp-item"><?= $valueItems['itemPrice'] ?></span>
+                                            <? if (!empty($valueItems['itemPrice'])) { ?>
+                                                <span class="sp-item-toman"><?= t('Toman') ?></span>
+                                            <? } ?>
+                                        </label>
+                                        <input type="hidden" value="0" name="itemCustomer[<?= $valueItems['id'] ?>]">
+                                        <input id="itemCustomer_<?= $valueItems['id'] ?>" class="el-ch" type="checkbox"
+                                               value="1"
+                                               name="itemCustomer<?= $keyitems ?>[<?= $valueItems['id'] ?>]">
+                                    </div>
+
+                                <?
+                                }
+                                break;
+                            case 1 :
+                                if ($valueItems['itemType'] == 1) {
+                                    ?>
+
+                                    <div class="form_element text div-item-active div-item-active-color">
+                                        <label for="itemCustomer_<?= $valueItems['id'] ?>">
+                                            <label class="lb-item lb-item-active"
+                                                   data-tooltip="<?= $valueItems['itemDesc'] ?>"><?= $valueItems['itemName'] ?>
+                                                <a href="#" class="big-link"
+                                                   data-reveal-id="Item<?= $valueItems['id'] ?>">
+                                                    <?= t('Description') ?>
+                                                </a>
+                                            </label>
+                                            <span class="sp-item"><?= $valueItems['itemPrice'] ?></span>
+                                            <? if (!empty($valueItems['itemPrice'])) { ?>
+                                                <span class="sp-item-toman"><?= t('Toman') ?></span>
+                                            <? } ?>
+                                        </label>
+                                        <input id="itemCustomer_<?= $valueItems['id'] ?>" class="el-tx-hide" type="text"
+                                               value="1" readonly="readonly"
+                                               name="itemCustomer<?= $keyitems ?>[<?= $valueItems['id'] ?>]">
+                                    </div>
+
+
+                                <?
+                                } else {
+                                    ?>
+
+                                    <div class="form_element checkbox div-item-active div-item-active-color">
+                                        <label for="itemCustomer_<?= $valueItems['id'] ?>">
+                                            <label class="lb-item lb-item-active"
+                                                   data-tooltip="<?= $valueItems['itemDesc'] ?>"><?= $valueItems['itemName'] ?>
+                                                <a href="#" class="big-link"
+                                                   data-reveal-id="Item<?= $valueItems['id'] ?>">
+                                                    <?= t('Description') ?>
+                                                </a>
+                                            </label>
+                                            <span class="sp-item"><?= $valueItems['itemPrice'] ?></span>
+                                            <? if (!empty($valueItems['itemPrice'])) { ?>
+                                                <span class="sp-item-toman"><?= t('Toman') ?></span>
+                                            <? } ?>
+                                        </label>
+                                        <input type="hidden" value="0" name="itemCustomer[<?= $valueItems['id'] ?>]">
+                                        <input id="itemCustomer_<?= $valueItems['id'] ?>" class="el-ch-hide"
+                                               type="checkbox" checked="checked" value="1"
+                                               name="itemCustomer<?= $keyitems ?>[<?= $valueItems['id'] ?>]">
+                                    </div>
+
+                                <?
+                                }
+                                break;
+                        }
+
+
+                    }
+                    ?>
+
+                <? } ?>
+                <input type="hidden" id="priceItem<?= $keyitems ?>"
+                       value="<?= $dataGroups[$valueItems['groupId']]['groupPrice'] ?>">
+                <input type="hidden" id="priceLang<?= $keyitems ?>" value="0">
+                <input type="hidden" id="priceSum<?= $keyitems ?>"
+                       value="<?= $dataGroups[$valueItems['groupId']]['groupPrice'] ?>">
+                <a class="link_pop_up" href="#">Get Page</a>
+            </fieldset>
+        </div>
+    <?
+    }
+    ?>
+    <br/><br/><br/>
+
+</div>
+
+
+<div id="langs" class="langs">
+    <div class="langCustomer">
+        <fieldset name="langCustomer">
+            <legend>
+                <?= $this->translate('Languages'); ?>
+            </legend>
+            <?
+            foreach ($dataLangs as $valueLangs) {
+                ?>
+                <label class="lb-lang-inactive">
+                    <span><?= $valueLangs['langName'] ?></span>
+                    <input type="hidden" value="0" name="langCustomer[<?= $valueLangs['id'] ?>]">
+                    <input class="el-lang" type="checkbox" name="langCustomer[<?= $valueLangs['id'] ?>]">
+                </label>
+            <? } ?>
+        </fieldset>
+        <br/>
+    </div>
+
+
+    <div id="div-support-per">
+        <div class="form_element checkbox">
+            <label for="supportPer">
+                <?= $this->translate('Technical support and updates to the site by experts to participate'); ?>
+            </label>
+            <input type="hidden" value="0" name="supportPer">
+            <input id="supportPer" type="checkbox" value="1" name="supportPer">
+        </div>
+        <br/>
+    </div>
+
+    <label
+        class="notice-lang"><?=
+        sprintf($this->translate('Note: Cost per language is %s of the total project cost'),
+            "<em class='percent'>" . $langPercent . "</em>")?></label>
+    <label class="notice-support"><?=
+        sprintf($this->translate('Note: Cost per Support is %s of the total project cost'),
+            "<em class='percent'>" . $supportPercent . "</em>")?></label>
+
+
+    <div id="info-personal">
+        <br/>
+        <br/>
+        <fieldset class="info-personal">
+            <div class="div-content-order">
+                <div class="form_element text">
+                    <label for="namePer">
+                        <?= $this->translate('Personal Name'); ?>
+                    </label>
+                    <input id="namePer" class="el-per-txt" type="text" value="" name="namePer">
+                </div>
+                <div class="form_element text">
+                    <label for="nameCompanyPer">
+                        <?= $this->translate('Company Name'); ?>
+                    </label>
+                    <input id="nameCompanyPer" class="el-per-txt" type="text" value="" name="nameCompanyPer">
+                </div>
+                <div class="form_element text">
+                    <label for="emailPer">
+                        <?= $this->translate('Email'); ?>
+                    </label>
+                    <input id="emailPer" class="el-per-txt" type="text" value="" name="emailPer">
+                </div>
+                <div class="form_element text">
+                    <label for="phonePer">
+                        <?= $this->translate('Phone'); ?>
+                    </label>
+                    <input id="phonePer" class="el-per-txt" type="text" value="" name="phonePer">
+                </div>
+                <div class="form_element text">
+                    <label for="mobilePer">
+                        <?= $this->translate('Mobile'); ?>
+                    </label>
+                    <input id="mobilePer" class="el-per-txt" type="text" value="" name="mobilePer">
+                </div>
+                <div class="form_element textarea">
+                    <label for="others">
+                        <?= $this->translate('Other Facilities'); ?>
+                    </label>
+                    <textarea id="others" class="el-per-txt-area" rows="4" cols="100" name="others"></textarea>
+                </div>
+                <div class="form_element textarea">
+                    <label for="addressPer">
+                        <?= $this->translate('Address'); ?>
+                    </label>
+                    <textarea id="addressPer" class="el-per-txt-area" rows="4" cols="100" name="addressPer"></textarea>
+                </div>
+                <div class="form_element textarea">
+                    <label for="commentPer">
+                        <?= $this->translate('Comment'); ?>
+                    </label>
+                    <textarea id="commentPer" class="el-per-txt-area" rows="4" cols="100" name="commentPer"></textarea>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <br/><br/><br/>
+
+</div>
+
+
+<div id="show-info" class="pishFact">
+<div class="pish-factor">
+<div class="header-factor"></div>
+<div class="content-pish-fact">
+    <table border="0" class="tbl-pish-fact">
+        <tr>
+            <td class="td-pish-factor">
+                <div class="div-pish-fact-name">
+                    <?= $this->translate('Azar Ideh Pardaz Tabriz Company'); ?>
+                </div>
+                <div class="div-pish-fact-number">
+                    <?= t('Factor Number'); ?>
+                    <input type="hidden" name="factorNumber"
+                           value="<?= $this->factorNumber ?>"/><?= $this->factorNumber ?>
+                </div>
+            </td>
+            <td class="td-pish-factor">
+                <div class="div-pish-fact-logo">
+
+                </div>
+            </td>
+            <td class="td-pish-factor">
+                <div class="div-pish-fact-tracking">
+                    <?= t('Reference Number'); ?>
+                    <input type="hidden" name="refCode" value="<?= $this->refCode ?>"/><?= $this->refCode ?>
+                </div>
+                <div class="div-pish-fact-date">
+                    <?= t('Date'); ?>
+                    <?
+                    echo $this->dateFormat(
+                        time()
+                    );
+                    ?>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="top-show-info">
+        <table class="tbl-top-show-info">
+            <tr>
+                <td>
+                    <div>
+                        <label class="lb-info">
+                            <?= t('Personal Name'); ?>
+                        </label>
+            <span class="sp-info-tbl" id="show-namePer">
+                    </span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <label class="lb-info">
+                            <?= t('Company Name'); ?>
+                        </label>
+                    <span class="sp-info-tbl" id="show-nameCompanyPer">
+                    </span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="lb-info">
+                            <?= t('Email'); ?>
+                        </label>
+                    <span class="sp-info-tbl" id="show-emailPer">
+                    </span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <label class="lb-info">
+                            <?= t('Mobile'); ?>
+                        </label>
+                    <span class="sp-info-tbl" id="show-mobilePer">
+                    </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <br/>
+
+    <div>
+        <label class="lb-info-big">
+            <?= t('Technical support and updates to the site by experts to participate'); ?>
+        </label>
+                    <span class="sp-info-big" id="show-supportPer">
+                    </span>
+    </div>
+    <div>
+        <label class="lb-info-med">
+            <?= t('Other Facilities'); ?>
+        </label>
+                    <span class="sp-info-big" id="show-others">
+                    </span>
+    </div>
+    <div>
+        <label class="lb-info-med">
+            <?= t('Your Domain Name'); ?>
+        </label>
+                    <span class="sp-info" id="show-domainName">
+                    </span>
+    </div>
+    <div>
+        <label class="lb-info-med">
+            <?= t('Total cost of Items'); ?>
+        </label>
+                    <span class="sp-info" id="show-resultPrice">
+                    </span>
+        <label class="rial">
+            <?= t('Toman'); ?>
+        </label>
+    </div>
+
+    <div>
+        <label class="lb-info-med">
+            <?= t('Total price languages'); ?>
+        </label>
+                    <span class="sp-info" id="show-resultPriceLang">
+                    </span>
+        <label class="rial">
+            <?= t('Toman'); ?>
+        </label>
+    </div>
+    <div>
+        <label class="lb-info-med">
+            <?= t('The total price'); ?>
+        </label>
+                    <span class="sp-info" id="show-sumResultPrice">
+                    </span>
+        <label class="rial">
+            <?= t('Toman'); ?>
+        </label>
+    </div>
+    <div>
+        <label class="lb-info-med">
+            <?= $this->translate('Type of payment'); ?>
+        </label>
+        <select class="sp-info-select" name="typePayment" id="typePayment">
+            <option value="0"><?= $this->translate('In Place'); ?></option>
+            <option value="1"><?= $this->translate('Card To Card'); ?></option>
+            <option value="2"><?= $this->translate('Online'); ?></option>
+            <option value="3"><?= $this->translate('Cash to Bank Account'); ?></option>
+        </select>
+
+        <div class="div-payment-form" style="display: none;" id="cardNumber-form">
+            <label class="lb-info-med">
+                <?= $this->translate('Account Number'); ?>
+            </label>
+            <select class="selec-form-payment" name="infoPayment1">
+                <option value=""><?= $this->translate('Choose'); ?></option>
+                <?
+                foreach ($this->selectAccount as $row) {
+                    $txtAccount = $row->bankName . "،" . $row->nameAndFamily . "، " . $this->translate('Card Number') . "  :" . $row->cardNumber . "، " . $this->translate('Sheba Number') . " " . $row->shebaNumber;
+                    $txtAccount2[$row->ID] = $row->bankName . "،" . $row->nameAndFamily . "،  " . $this->translate('Account Number') . " :" . $row->accountNumber . "، " . $this->translate('Sheba Number') . " " . $row->shebaNumber;
+                    ?>
+                    <option value="<?= $txtAccount ?>"><?= $txtAccount ?></option>
+                <? } ?>
+            </select>
+            <br/>
+            <label class="lb-info-big">
+                <?= $this->translate('Last four digits of the card number'); ?>
+            </label>
+            <input class="sp-info" type="text" name="end4CardNumber">
+            <br/>
+            <label class="lb-info-med">
+                <?= $this->translate('Date and time deposit'); ?>
+            </label>
+            <input class="sp-info-pay" type="text" name="datePayment1" id="datePayment1">
+
+        </div>
+
+        <div class="div-payment-form" style="display: none;" id="accountNumber-form">
+            <label class="lb-info-med">
+                <?= $this->translate('Account Number'); ?>
+            </label>
+            <select class="selec-form-payment" name="infoPayment2">
+                <option value=""><?= $this->translate('Choose'); ?></option>
+                <?
+                foreach ($txtAccount2 as $row) {
+                    ?>
+                    <option value="<?= $row ?>"><?= $row ?></option>
+                <? } ?>
+            </select>
+            <br/>
+            <label class="lb-info-med">
+                <?= $this->translate('Serial pay'); ?>
+            </label>
+            <input class="sp-info-seryal" type="text" name="seryalPayment">
+            <br/>
+            <label class="lb-info-med">
+                <?= $this->translate('Date and time deposit'); ?>
+            </label>
+            <input class="sp-info-pay" type="text" name="datePayment2" id="datePayment2">
+        </div>
+
+    </div>
+</div>
+<div class="header-factor"></div>
+</div>
+<div class="form-submit">
+    <div class="div-captcha">
+        <label class="captcha-form"><?= $this->captcha ?></label>
+        <input type="button" class="img-reset" id="changeCaptcha">
+        <input type="text" name="captcha">
+    </div>
+    <input id="submit-create" class="button-submit-form" type="submit" value="" name="submit-create">
+</div>
+<br/><br/><br/>
+</div>
+
+
+<!-- bottom fixed page------------------------------------------------------------------------ -->
+<div class="bottomRow" align="center" style="display: none">
+    <input id="prev" class="prev" type="button" value="" style="display: none;">
+        <span class="bottom-price-input">
+             <span class="footer-span-price">
+                <label for="resultPrice">
+                    <?= $this->translate('Total cost of Items'); ?>
+                </label>
+                <input id="resultPrice" class="inpt-price" type="text" value="" name="resultPrice" readonly="readonly">
+             </span>
+             <span class="footer-span-price">
+                <label for="resultPriceLang">
+                    <?= $this->translate('Total price languages'); ?>
+                </label>
+                <input id="resultPriceLang" class="inpt-price" type="text" value="" name="resultPriceLang"
+                       readonly="readonly">
+             </span>
+             <span class="footer-span-price">
+                <label for="sumResultPrice">
+                    <?= $this->translate('The total price'); ?>
+                </label>
+                <input id="sumResultPrice" class="inpt-price" type="text" value="" name="sumResultPrice"
+                       readonly="readonly">
+                <label>
+                    <?= $this->translate('Toman'); ?>
+                </label>
+             </span>
+         </span>
+    <input id="next" class="next" type="button" value="">
+</div>
+<!------------------------------------------------------------------------------------------------------------>
+</form>
+
+
+</div>
+
+<!--  ------------------------------------>
+
+</div>
+<div id="dialog" style="display: none;">
+    <span id="resultConfirm"></span>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>
+<script>
+$(document).ready(function () {
+
+    $('.link_pop_up').click(function (e) {
+        e.preventDefault();
+
+        var fieldsets = $(this).parent();
+        fieldsets.children('div').each(function () {
+            $(this).find('.big-link').remove();
+            $(this).find('.el-ch').remove();
+            $(this).find('.el-ch-hide').remove();
+            $(this).find('.el-tx').remove();
+            $(this).find('.el-tx-hide').remove();
+        });
+        fieldsets.find('input').remove();
+        fieldsets.find('legend').remove();
+        fieldsets.find('.link_pop_up').remove();
+        var pagehtml = '<html><head><meta charset="utf-8"></head><style>div{border-bottom: 1px dashed #999999;font-family: tahoma;font-size: 10pt;height: 37px;margin: 20px;position:relative;}div label{width:100%; display:block;}div label label{width:auto; display:block; float:right;}.sp-item{position:absolute; left:50px;}.sp-item-toman{position:absolute; left:0;}</style><body>';
+        var data = {};
+        data['html'] = pagehtml + fieldsets.html() + '</body></html>';
+        $.ajax({
+            url: '<?=url("app/online-orders/out-put")?>',
+            type: 'POST',
+            data: data,
+            complete: function () {
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    var aTag = '<a href="'+data.url+'" target="_blank" >Click To Open Page</a> '
+                    fieldsets.append(aTag)
+                }
+            }
+        });
+    });
+
+    $("body").css("overflow", "hidden");
+
+    var hpage = parseInt($(window).height());
+    var xpage = parseInt($(window).width());
+
+    var xGroup = 0;
+    var xGroupTree = -xpage;
+    var xItems = xGroupTree - xpage;
+    var xLangs = xItems - xpage;
+    var xFactor = xLangs - xpage;
+
+
+    $('.wellcome').width(xpage);
+    $('.wellcome').height(hpage);
+    $('.groups-page1-order').width(xpage);
+    $('.groups-page1-order').height(hpage);
+    $('.groups-page2-order').width(xpage);
+    $('.groups-page2-order').height(hpage);
+    $('.items-order').width(xpage);
+    $('.items-order').height(hpage);
+    $('.langs').width(xpage);
+    $('.langs').height(hpage);
+    $('.pishFact').width(xpage);
+    $('.pishFact').height(hpage);
+
+
+    $('.wellcome').css({top: 0, left: 0, position: 'absolute'});
+    $('.groups-page1-order').css({top: hpage, left: 0, position: 'absolute'});
+    $('.groups-page2-order').css({top: hpage, left: xGroupTree, position: 'absolute'});
+    $('.items-order').css({top: hpage, left: xItems, position: 'absolute'});
+    $('.langs').css({top: hpage, left: xLangs, position: 'absolute'});
+    $('.pishFact').css({top: hpage, left: xFactor, position: 'absolute'});
+
+
+    $('.langCustomer').each(function () {
+        $(this).find("label").addClass('lb-lang-inactive');
+    });
+
+    $('.notice-lang').hide();
+    $('.notice-support').hide();
+
+    var w = $("#content_body").width();
+    $(".bottomRow").css({width: w});
+
+
+    $("#sumResultPrice").attr('readonly', 'readonly');
+    $("#resultPriceLang").attr('readonly', 'readonly');
+    $("#resultPrice").attr('readonly', 'readonly');
+
+
+    $('#submit-create').click(function () {
+        $('#resultPrice').val(removecomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(removecomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(removecomma($('#resultPriceLang').val()));
+        var field = "items-div-order" + $('#groupId').val();
+        $('.items-order').children().each(function () {
+            if ($(this).attr("id") != field) {
+                $(this).html('');
+            }
+        });
+    });
+
+
+    $('.el-ch').change(function () {
+        $('#resultPrice').val(removecomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(removecomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(removecomma($('#resultPriceLang').val()));
+        var itemPrice;
+        var sumPrice;
+        if (!$(this).attr("checked")) {
+            itemPrice = parseInt($(this).siblings('label').children('span').html());
+            sumPrice = parseInt($('#resultPrice').val());
+            $('#resultPrice').val(itemPrice + sumPrice);
+            $('#sumResultPrice').val(itemPrice + sumPrice);
+            $(this).attr("checked", "checked");
+            $(this).parent().removeClass('div-item-inactive').removeClass('div-item-inactive-color');
+            $(this).parent().addClass('div-item-active').addClass('div-item-checked');
+            $(this).parent().find('.lb-item').removeClass('lb-item-inactive').addClass('lb-item-checked');
+        }
+        else {
+            itemPrice = parseInt($(this).siblings('label').children('span').html());
+            sumPrice = parseInt($('#resultPrice').val());
+            $('#resultPrice').val(sumPrice - itemPrice);
+            $('#sumResultPrice').val(sumPrice - itemPrice);
+            $(this).removeAttr("checked");
+            $(this).parent().removeClass('div-item-active').removeClass('div-item-checked');
+            $(this).parent().find('.lb-item').removeClass('lb-item-checked').addClass('lb-item-inactive');
+            $(this).parent().addClass('div-item-inactive').addClass('div-item-inactive-color');
+        }
+
+        $('#resultPrice').val(insertcomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(insertcomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(insertcomma($('#resultPriceLang').val()));
+
+
+    });
+
+
+    $('.el-tx').focus(function () {
+        $('#resultPrice').val(removecomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(removecomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(removecomma($('#resultPriceLang').val()));
+
+        var txtPrice;
+        var itemPrice;
+        var sumPrice;
+        //
+        if ($(this).val() == "")
+            txtPrice = 0;
+        else
+            txtPrice = parseInt($(this).val());
+        $(this).val(0);
+        itemPrice = parseInt($(this).siblings('label').find('.sp-item').html());
+        sumPrice = parseInt($('#resultPrice').val());
+
+        $('#resultPrice').val(sumPrice - (txtPrice * itemPrice));
+        $('#sumResultPrice').val(sumPrice - (txtPrice * itemPrice));
+        // $(this).val("");
+
+        $(this).parent().removeClass('div-item-active').removeClass('div-item-checked');
+        $(this).parent().find('.lb-item').removeClass('lb-item-checked').addClass('lb-item-inactive');
+        $(this).parent().addClass('div-item-inactive').addClass('div-item-inactive-color');
+
+        /* $(this).parent().removeClass('div-item-active');
+         $(this).parent().addClass('div-item-inactive');*/
+
+        $('#resultPrice').val(insertcomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(insertcomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(insertcomma($('#resultPriceLang').val()));
+    });
+
+    $('.el-tx').change(function () {
+        $('#resultPrice').val(removecomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(removecomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(removecomma($('#resultPriceLang').val()));
+
+        var txtPrice;
+        var itemPrice;
+        var sumPrice;
+
+        if ($(this).val() != "") {
+            txtPrice = parseInt($(this).val());
+
+            itemPrice = parseInt($(this).siblings('label').children('span').html());
+            sumPrice = parseInt($('#resultPrice').val());
+            $('#resultPrice').val((txtPrice * itemPrice) + sumPrice);
+            $('#sumResultPrice').val((txtPrice * itemPrice) + sumPrice);
+
+            $(this).parent().removeClass('div-item-inactive').removeClass('div-item-inactive-color');
+            $(this).parent().addClass('div-item-active').addClass('div-item-checked');
+            $(this).parent().find('.lb-item').removeClass('lb-item-inactive').addClass('lb-item-checked');
+
+            /*$(this).parent().removeClass('div-item-inactive');
+             $(this).parent().addClass('div-item-active');*/
+        }
+
+        $('#resultPrice').val(insertcomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(insertcomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(insertcomma($('#resultPriceLang').val()));
+
+    });
+
+
+    $('.el-lang').change(function () {
+        $('#resultPrice').val(removecomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(removecomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(removecomma($('#resultPriceLang').val()));
+
+        var itemPrice;
+        var langPercent;
+        var sumresult;
+        var sumPrice;
+        var pishFact;
+        if (!$(this).attr("checked")) {
+            pishFact = parseInt($('#sumResultPrice').val());
+            sumresult = parseInt($('#resultPrice').val());
+            langPercent = parseInt($('#langPercent').val());
+            itemPrice = (sumresult * langPercent) / 100;
+            sumPrice = parseInt($('#resultPriceLang').val());
+            $('#resultPriceLang').val(itemPrice + sumPrice);
+            $('#sumResultPrice').val(itemPrice + pishFact);
+            $(this).attr("checked", "checked");
+            $(this).parent().removeClass('lb-lang-inactive');
+            $(this).parent().addClass('lb-lang');
+
+            var countLangChecked = 0;
+            $('.langCustomer .lb-lang').each(function () {
+                countLangChecked += 1;
+            });
+
+            if (countLangChecked > 0)
+                $('.notice-lang').show();
+            else
+                $('.notice-lang').hide();
+        }
+        else {
+            pishFact = parseInt($('#sumResultPrice').val());
+            sumresult = parseInt($('#resultPrice').val());
+            langPercent = parseInt($('#langPercent').val());
+            itemPrice = (sumresult * langPercent) / 100;
+            sumPrice = parseInt($('#resultPriceLang').val());
+            $('#resultPriceLang').val(sumPrice - itemPrice);
+            $('#sumResultPrice').val(pishFact - itemPrice);
+            $(this).removeAttr("checked");
+            $(this).parent().removeClass('lb-lang');
+            $(this).parent().addClass('lb-lang-inactive');
+
+            var countLangChecked2 = 0;
+            $('.langCustomer .lb-lang').each(function () {
+                countLangChecked2 += 1;
+            });
+
+            if (countLangChecked2 > 0)
+                $('.notice-lang').show();
+            else
+                $('.notice-lang').hide();
+        }
+
+        $('#resultPrice').val(insertcomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(insertcomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(insertcomma($('#resultPriceLang').val()));
+    });
+
+
+    $('#supportPer').change(function () {
+        $('#resultPrice').val(removecomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(removecomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(removecomma($('#resultPriceLang').val()));
+
+        var itemPrice;
+        var supportPercent;
+        var sumresult;
+        var pishFact;
+        if (!$(this).attr("checked")) {
+            pishFact = parseInt($('#sumResultPrice').val());
+            sumresult = parseInt($('#resultPrice').val());
+            supportPercent = parseInt($('#supportPercent').val());
+            itemPrice = (sumresult * supportPercent) / 100;
+            $('#sumResultPrice').val(itemPrice + pishFact);
+            $('.notice-support').show();
+            $(this).attr("checked", "checked");
+            $(this).parent().addClass('lb-lang');
+        }
+        else {
+            pishFact = parseInt($('#sumResultPrice').val());
+            sumresult = parseInt($('#resultPrice').val());
+            supportPercent = parseInt($('#supportPercent').val());
+            itemPrice = (sumresult * supportPercent) / 100;
+            $('#sumResultPrice').val(pishFact - itemPrice);
+            $('.notice-support').hide();
+            $(this).removeAttr("checked");
+            $(this).parent().removeClass('lb-lang');
+        }
+
+        $('#resultPrice').val(insertcomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(insertcomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(insertcomma($('#resultPriceLang').val()));
+
+    });
+
+
+    $('.el-ch-hide').each(function () {
+        $(this).parent().addClass('div-item-active');
+    });
+    $('.el-tx-hide').each(function () {
+        $(this).parent().addClass('div-item-active');
+    });
+    $('.el-ch').each(function () {
+        $(this).parent().addClass('div-item-inactive');
+    });
+    $('.el-tx').each(function () {
+        $(this).parent().addClass('div-item-inactive');
+    });
+
+
+    $('.grouplink-page1').click(function () {
+        $('.groups-page2-div').each(function () {
+            $(this).hide();
+        });
+        var idGroups1 = $(this).attr('id');
+        $('.ricon').show();
+        $('#groups-page2-div' + idGroups1).show();
+        if (typeof $('#groups-page2-div' + idGroups1) != 'undefined')
+            $('html, body').animate({scrollLeft: xGroupTree}, 2000);
+        else {
+            $('.items-div-order').each(function () {
+                $(this).hide();
+            });
+
+            var showLang = parseInt($('#showLang' + idGroups1).val());
+            if (showLang == 1)
+                $('.langCustomer').show();
+            else
+                $('.langCustomer').hide();
+
+            var showSupport = parseInt($('#showSupport' + idGroups1).val());
+            if (showSupport == 1)
+                $('#div-support-per').show();
+            else
+                $('#div-support-per').hide();
+
+
+            $('#items-div-order' + idGroups1).show();
+            $('#groupId').val(idGroups1);
+            $('#resultPrice').val($('#priceItem' + idGroups1).val());
+            $('#sumResultPrice').val($('#priceSum' + idGroups1).val());
+            $('#resultPriceLang').val($('#priceLang' + idGroups1).val());
+            $('#resultPrice').val(insertcomma($('#resultPrice').val()));
+            $('#sumResultPrice').val(insertcomma($('#sumResultPrice').val()));
+            $('#resultPriceLang').val(insertcomma($('#resultPriceLang').val()));
+            if (parseInt($('#sumResultPrice').val()) == 0)
+                $('.bottom-price-input').hide();
+            else
+                $('.bottom-price-input').show();
+
+
+            $('#prev').hide();
+            $('#next').show();
+            $('.bottomRow').fadeIn(2000);
+            $('html, body').animate({scrollLeft: xItems}, 1500);
+        }
+
+    });
+
+
+    $('.grouplink-page2').click(function (e) {
+        e.preventDefault();
+        var idGroups2 = $(this).attr('id');
+        $('#groupId').val(idGroups2);
+
+        var showLang = parseInt($('#showLang' + idGroups2).val());
+        if (showLang == 1)
+            $('.langCustomer').show();
+        else
+            $('.langCustomer').hide();
+
+        var showSupport = parseInt($('#showSupport' + idGroups2).val());
+        if (showSupport == 1)
+            $('#div-support-per').show();
+        else
+            $('#div-support-per').hide();
+
+
+        $('.items-div-order').each(function () {
+            $(this).hide();
+        });
+        $('#items-div-order' + idGroups2).show();
+
+        $('#resultPrice').val($('#priceItem' + idGroups2).val());
+        $('#sumResultPrice').val($('#priceSum' + idGroups2).val());
+        $('#resultPriceLang').val($('#priceLang' + idGroups2).val());
+        $('#resultPrice').val(insertcomma($('#resultPrice').val()));
+        $('#sumResultPrice').val(insertcomma($('#sumResultPrice').val()));
+        $('#resultPriceLang').val(insertcomma($('#resultPriceLang').val()));
+
+        if (parseInt($('#sumResultPrice').val()) == 0)
+            $('.bottom-price-input').hide();
+        else
+            $('.bottom-price-input').show();
+
+        $('#prev').hide();
+        $('#next').show();
+        $('.bottomRow').fadeIn(2000);
+        $('html, body').animate({scrollLeft: xItems}, 2000);
+    });
+
+
+    $('#btn1').click(function () {
+        $('html, body').animate({scrollTop: hpage}, 2000);
+    });
+
+
+    $('#next').click(function () {
+        switch (parseInt($('#pageNum').val())) {
+            case 0 :
+                $('#prev').fadeIn(200);
+                $('#pageNum').val('1');
+                $('html, body').animate({scrollLeft: xLangs}, 2000);
+                break;
+            /* case -1 :
+             $('#pageNum').val('2');
+             $('#langs').animate({width: '0', height: '0', opacity: '0'});
+             setTimeout("$('#langs').hide()", 500);
+             $('#reg-domains-div').fadeIn('slow');
+             break;*/
+            case 1 :
+                $('#show-namePer').html($('#namePer').val());
+                $('#show-nameCompanyPer').html($('#nameCompanyPer').val());
+                $('#show-emailPer').html($('#emailPer').val());
+                $('#show-mobilePer').html($('#mobilePer').val());
+                $('.domainType').val(0);
+                $('#next').fadeOut(200);
+                if ($('#supportPer').attr('checked') == "checked")
+                    $('#show-supportPer').html('<?=$this->translate('Selection');?>');
+                else
+                    $('#show-supportPer').html('<?=$this->translate('No Selection');?>');
+                if ($('#others').val())
+                    $('#show-others').html('<?=$this->translate('Because the other features of your invoice amount is not conclusive');?>');
+                else
+                    $('#show-others').html('<?=$this->translate('The final invoice amount is');?>');
+                var domainName = '';
+                /*if ($('#tx-free-domain').val()) {
+                 domainName = $('#tx-free-domain').val();
+                 if ($('#price-admin-domain').val()) {
+                 reduceAdminDomainPrice();
+                 }
+                 }
+                 else if ($('#tx-my-domain').val()) {
+                 domainName = $('#tx-my-domain').val();
+                 if ($('#price-admin-domain').val()) {
+                 reduceAdminDomainPrice();
+                 }
+                 }
+                 else {
+                 $('.rd-domain').each(function () {
+                 if ($(this).attr('checked') == "checked") {
+                 domainName = $(this).val();
+                 $('.domainType').val(1);
+                 }
+                 })
+                 }*/
+                if (domainName == '')
+                    domainName = '<?=$this->translate('No Selection');?>';
+                $('#show-domainName').html(domainName);
+                $('#show-resultPrice').html($('#resultPrice').val());
+                $('#show-sumResultPrice').html($('#sumResultPrice').val());
+                $('#show-resultPriceLang').html($('#resultPriceLang').val());
+                $('#pageNum').val('2');
+                $('html, body').animate({scrollLeft: xFactor}, 2000);
+                break;
+
+        }
+    });
+
+
+    $('#prev').click(function () {
+        switch (parseInt($('#pageNum').val())) {
+            case 1 :
+                $('#prev').fadeOut(200);
+                $('.el-lang').each(function () {
+                    $(this).removeAttr("checked");
+                    $(this).parent().removeClass('lb-lang');
+                });
+                $('#supportPer').removeAttr("checked");
+                $('#supportPer').parent().removeClass('lb-lang');
+                $('#sumResultPrice').val($('#resultPrice').val());
+                $('#resultPriceLang').val(0);
+                $('#pageNum').val('0');
+                $('html, body').animate({scrollLeft: xItems}, 2000);
+                break;
+            /*case -2 :
+             $('#pageNum').val('1');
+             $('#langs').show();
+             $('#langs').animate({width: '100%', height: '100%', opacity: '100'});
+             $('#reg-domains-div').hide();
+             break;*/
+            case 2 :
+                $('#next').fadeIn(200);
+                $('#pageNum').val('1');
+                $('html, body').animate({scrollLeft: xLangs}, 2000);
+                break;
+        }
+    });
+
+
+    $('.ricon').click(function () {
+        $('html, body').animate({scrollLeft: 0}, 'slow');
+        $(this).hide();
+        $('.bottomRow').hide();
+        $('.el-lang').each(function () {
+            $(this).removeAttr("checked");
+            $(this).parent().removeClass('lb-lang');
+            $(this).parent().addClass('lb-lang-inactive');
+        });
+        $('#supportPer').removeAttr("checked");
+        $('#supportPer').parent().removeClass('lb-lang');
+        $('#supportPer').parent().addClass('lb-lang-inactive');
+        $('#sumResultPrice').val($('#resultPrice').val());
+        $('#resultPriceLang').val(0);
+        $('#pageNum').val('0');
+        $('.notice-lang').hide();
+        $('.notice-support').hide();
+        $('.el-ch').each(function () {
+            $(this).removeAttr("checked");
+            $(this).parent().removeClass('div-item-active');
+            $(this).parent().addClass('div-item-inactive');
+        });
+        $('.el-tx').each(function () {
+            $(this).val(0);
+            $(this).parent().removeClass('div-item-active');
+            $(this).parent().addClass('div-item-inactive');
+        });
+    });
+
+
+    $('#typePayment').change(function () {
+        switch (parseInt($(this).val())) {
+            case 0 :
+                $('#cardNumber-form').slideUp(1000);
+                $('#accountNumber-form').slideUp(1000);
+                break;
+            case 1 :
+                $('#cardNumber-form').slideDown(1000);
+                $('#accountNumber-form').slideUp(1000);
+                break;
+            case 2:
+                $('#cardNumber-form').slideUp(1000);
+                $('#accountNumber-form').slideUp(1000);
+                break;
+            case 3 :
+                $('#cardNumber-form').slideUp(1000);
+                $('#accountNumber-form').slideDown(1000);
+                break;
+        }
+    });
+
+    /*
+
+    <?
+        //$imgCalendar = "/clients/" . ACTIVE_SITE . "/themes/ipt24client/img/calendar.png";
+    ?>
+     $("#datePayment1").datepicker({
+     showOn: 'button',
+     buttonImage: '
+    <?//=$imgCalendar?>',
+     buttonImageOnly: true
+     });
+
+     $("#datePayment2").datepicker({
+     showOn: 'button',
+     buttonImage: '
+    <?//=$imgCalendar?>',
+     buttonImageOnly: true
+     });
+     */
+
+
+    $('#changeCaptcha').click(function () {
+        var url = '<?=$this->routeChangeCaptcha?>';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: '',
+            complete: function () {
+
+            },
+            success: function (data) {
+                $('.captcha-form').html(data);
+            }
+        });
+    });
+
+    $('.big-link').click(function () {
+        var x = $(this).position();
+        var left = (xpage / 2) - 250;
+        $('.reveal-modal').css({top: parseInt(x.top), left: left});
+    });
+
+
+});
+</script>

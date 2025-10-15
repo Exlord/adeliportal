@@ -1,0 +1,12 @@
+<h1 style="text-align:center" align="center">
+    <?= t('Access Denied') ?>
+</h1>
+<p align="center">
+    <?= t('you are not authorized to read this book') ?>
+</p>
+<p align="center">
+    <?= sprintf(t('%s or %s to read this book'),
+        \Theme\API\Common::Link(t('LOGIN_LINK'), url('app/user/login', array(), array('query' => array('redirect' => urlencode(getSM('Request')->getRequestUri())))), array('target' => '_parent')),
+        \Theme\API\Common::Link(t('REGISTER_LINK'), url('app/user/register', array(), array('query' => array('redirect' => urlencode(getSM('Request')->getRequestUri())))), array('target' => '_parent'))
+    ) ?>
+</p>

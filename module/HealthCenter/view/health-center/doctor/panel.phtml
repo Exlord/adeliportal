@@ -1,0 +1,162 @@
+<div>
+    <h3 class="page-title">
+        <?= t('My Panel') ?>
+    </h3>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <a class="btn btn-default btn-lg ajax_page_load"
+               href="<?= url('admin/health-center/doctor-panel/my-reservations') ?>">
+                <span class="glyphicon glyphicon-star grid-icon text-primary"></span>
+                <?= t('My Reservations') ?>
+            </a>
+
+            <a class="btn btn-default btn-lg ajax_page_load"
+               href="<?= url('admin/health-center/doctor-panel/my-patients') ?>">
+                <span class="glyphicon glyphicon-user grid-icon text-primary"></span>
+                <?= t('My Patients') ?>
+            </a>
+            <!--            <script>-->
+            <!--                var TimeLineDefaults = {resources: {}};-->
+            <!--                TimeLineDefaults.reservable = false;-->
+            <!--                TimeLineDefaults.resources.reserveTitle = '--><? //=t('Reservable')?><!--';-->
+            <!--                TimeLineDefaults.resources.reservedTitle = '--><? //=t('Reserved')?><!--';-->
+            <!--                TimeLineDefaults.resources.startedTitle = '--><? //=t('Current Session')?><!--';-->
+            <!--                TimeLineDefaults.resources.finishedTitle = '--><? //=t('Not Reserved')?><!--';-->
+            <!--                TimeLineDefaults.resources.visitedTitle = '--><? //=t('Visited')?><!--';-->
+            <!--                if (window.TimeLines)-->
+            <!--                    TimeLines.init1();-->
+            <!--            </script>-->
+            <!--            --><? //
+            //            $this->headScript()->appendFile($this->basePath() . '/js/doctor-time-line.js');
+            //            $this->headLink()->appendStylesheet($this->basePath() . '/css/doctor-time-line.css');
+            //
+            ?>
+            <!--            <div>-->
+            <!--                <div id="doctor-timetable">-->
+            <!--                    <div class="doctor-time-line clearfix">-->
+            <!--                        <div class="doctor-time-line-wrapper clearfix">-->
+            <!--                            --><? //= $this->data ?>
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <?
+            $currentVisit = null;
+            $nextVisit = null;
+
+            $headers = array(t('Name'), t('Time'), t('Status'), '');
+            $rows = array();
+            $now = time();
+            if ($this->todayReserves && $this->todayReserves->count()) {
+                foreach ($this->todayReserves as $dataRow) {
+                    $row = array(
+                        'data' => array(
+                            getUserDisplayName($dataRow),
+                            dateFormat($dataRow['start'], -1, 3)
+                        )
+                    );
+                    $row['data'][2] = '';
+                    $row['data'][3] = '';
+                    $row['data'][4] = \Theme\API\Common::Link(
+                        t('HC_DOCTOR_PATIENT_RECORDS'),
+                        url('admin/health-center/doctor-panel/patient',
+                            array('patient' => $dataRow['userId'], 'resId' => $dataRow['id'])),
+                        array('class' => 'ajax_page_load')
+                    );
+
+                    switch ($dataRow['status']) {
+                        case '0':
+                            $row['data'][2] = "<span class='glyphicon glyphicon-question-sign text-muted grid-icon' title='" . t('Not Finalized') . "'></span>";
+                            break;
+                        case '1':
+                            $row['data'][2] = "<span class='glyphicon glyphicon-info-sign text-primary grid-icon' title='" . t('Reserved') . '/' . t('Not Visited') . "'></span>";
+                            $row['data'][3] = \Theme\API\Common::Link(t('HC_DOCTOR_VISIT'), url('admin/health-center/doctor-panel/visit',
+                                    array('patient' => $dataRow['userId'], 'resId' => $dataRow['id'])),
+                                array(
+                                    'class' => 'ajax_page_load',
+                                    'title' => t('HC_DOCTOR_VISIT'),
+                                ));
+
+
+                            // current visit has been set so the first reserve is the next one
+                            if ($nextVisit == null && (($currentVisit != null) || $dataRow['start'] > $now)) {
+                                $nextVisit = $dataRow;
+                                $row['class'][] = 'info';
+                            }
+
+                            //current time is between start and end of this reserve
+                            if ($dataRow['start'] <= $now && $dataRow['end'] >= $now) {
+                                $currentVisit = $dataRow;
+                                $class = 'success';
+                                $row['class'][] = 'success';
+                            }
+
+                            break;
+                        case '2':
+                            $row['data'][2] = "<span class='glyphicon glyphicon-exclamation-sign text-danger grid-icon' title='" . t('Failed Reservation') . "'></span>";
+                            break;
+                        case '3':
+                            $row['data'][2] = "<span class='glyphicon glyphicon-remove-circle text-warning grid-icon' title='" . t('Cancel Request') . "'></span>";
+                            break;
+                        case '4':
+                            $row['data'][2] = "<span class='glyphicon glyphicon-ban-circle text-warning grid-icon' title='" . t('Canceled') . "'></span>";
+                            break;
+                        case '5':
+                            $row['data'][2] = "<span class='glyphicon glyphicon-ok text-success grid-icon' title='" . t('Visited') . "'></span>";
+                            break;
+
+                    }
+                    $rows[] = $row;
+                }
+            }
+            ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><?= t('Current Visit') ?></div>
+                        <div class="panel-body">
+                            <? if ($currentVisit) { ?>
+                                <h4 class=""><?= getUserDisplayName($currentVisit) ?></h4>
+                                <small class="pull-left flip"
+                                       dir="rtl"><?= dateFormat($currentVisit['start'], -1, 3) ?></small>
+                            <?
+                            } else
+                                print $this->alert(t('There is no active visit'), 'alert-info last-alert');
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><?= t('Next Visit') ?></div>
+                        <div class="panel-body">
+                            <? if ($nextVisit) { ?>
+                                <h4 class=""><?= getUserDisplayName($nextVisit) ?></h4>
+                                <small class="pull-left flip"
+                                       dir="rtl"><?= dateFormat($nextVisit['start'], -1, 3) ?></small>
+                                <small class="pull-right flip"
+                                       dir="rtl"><?= \Localization\API\Date::formatInterval($nextVisit['start'] - $now) ?></small>
+                            <?
+                            } else
+                                print $this->alert(t('There is no more visits for today'), 'alert-info last-alert');
+                            ?>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <h4><?= t("Today's Reservations") ?></h4>
+
+            <div class="table-responsive">
+                <?
+                print \Theme\API\Table::Table($headers, $rows, array(
+                    'class' => 'table table-striped table-hover'
+                ), $this->alert('There is no reservations for today', 'alert-info'));
+                ?>
+            </div>
+        </div>
+    </div>
+</div>

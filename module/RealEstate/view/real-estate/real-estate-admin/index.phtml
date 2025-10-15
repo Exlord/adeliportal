@@ -1,0 +1,24 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/real-estate-admin.css');
+$this->headScript()->prependFile($this->basePath() . '/js/real-estate-admin.js')
+?>
+<div id="realEstateListAdmin">
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?=t('Real Estate')?>
+    </h3>
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>
+<div class="real-estate-admin-view-popup" style="display:none;">
+
+</div>
+<script>
+    var realEstate = {
+        'exportRoute': '<?=url('app/real-estate/export')?>',
+        'exportWordRoute': '<?=url('admin/real-estate/list')?>',
+        'updateRoute': '<?=url('admin/real-estate/update')?>',
+        'addMessage': '<?=t('At least 1 item should be selected !')?>'
+    }
+</script>

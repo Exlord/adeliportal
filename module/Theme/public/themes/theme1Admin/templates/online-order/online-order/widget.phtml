@@ -1,0 +1,28 @@
+<?php
+/**
+ * Created by JetBrains PhpStorm.
+ * User: Exlord
+ * Date: 10/21/13
+ * Time: 10:25 AM
+ */
+?>
+
+<div id="online-order-widget">
+    <div class="real-estate-widget-header">
+        <label class="real-estate-widget-header-text">
+            <?= t('Online Order') ?>
+        </label>
+    </div>
+    <? if(isAllowed(\OnlineOrder\Module::ADMIN_ONLINE_ORDER_WIDGET)){ ?>
+    <table cellspacing="0" cellpadding="0" border="0" class="real-estate-widget-tbl">
+        <tr class="real-estate-widget-tbl-tr1">
+            <td class="real-estate-widget-tbl-td-title"><a class="real-estate-widget-tbl-td-title-links" href="<?=url('admin/online-order/orders')?>" ><?= t('Number of all not approve orders') ?></a></td>
+            <td class="real-estate-widget-tbl-td-content"><b class="digit"><?= localizedDigits($this->data['count']) ?></b></td>
+        </tr>
+    </table>
+    <? } else { ?>
+        <div class="widget-access-denied real-estate-widget-tbl">
+            <?=t('Dear user, your access is limited by the webmaster.')?>
+        </div>
+  <? } ?>
+</div>

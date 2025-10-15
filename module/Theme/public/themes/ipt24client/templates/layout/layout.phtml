@@ -1,0 +1,175 @@
+<?
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+
+$this->headLink()
+    ->prependStylesheet($this->basePath() . '/css/system.css')
+    ->prependStylesheet($this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css');
+
+$this->headLink()
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/style.css')
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/pages.css')
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/comment.css')
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/rating.css');
+
+$this->headScript()
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/template.js')
+    ->prependFile($this->basePath() . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($this->basePath() . '/js/system.jquery.ui.js')
+    ->prependFile($this->basePath() . '/js/system.js')
+    ->prependFile($this->basePath() . '/js/forms.js')
+    ->prependFile($this->basePath() . '/js/jquery.transit.min.js')
+    ->prependFile($this->basePath() . '/js/general-client.js')
+    ->prependFile($this->basePath() . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($this->basePath() . '/js/jquery-1.9.1.min.js');
+
+
+$column_right_blocks = '';
+$has_column_right = strlen(trim($column_right_blocks));
+
+$mid_col_class = '';
+
+
+if ($has_column_right)
+    $mid_col_class = 'two_columns';
+
+$user_block = $this->user_logged_in_block();
+if (!$user_block) {
+    $user_login_block = $this->blocks('user-popup');
+}
+
+$headerBlock = $this->blocks('header');
+$topMenuBlock = $this->blocks('top-menu');
+
+$colRightBlock = $this->blocks('col-right');
+$hasRightColumn = !empty($colRightBlock);
+
+$debugBlock = $this->blocks('debug');
+$colMidTopBlock = $this->blocks('col-mid-top');
+
+$colLeftTopBlock = $this->blocks('col-left-top');
+$colLeftLeftBlock = $this->blocks('col-left-left');
+$colLeftRightBlock = $this->blocks('col-left-right');
+$hasLeftBlock = (!empty($colLeftTopBlock) || !empty($colLeftLeftBlock) || !empty($colLeftRightBlock));
+$footerBlock = $this->blocks('footer');
+
+$languageSwitcher = $this->langSwitcher(null);
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('IPT System Server Management')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+
+</head>
+<body class="<?= implode(' ', $this->body()->class) ?>">
+<div>
+    <?= $headerBlock ?>
+</div>
+<div class="main_content">
+    <div class="column_top">
+        <div id="user_popup_container">
+            <?
+            if (!$user_block) {
+                ?>
+                <div class="box user_login_popup" id="user_login_popup">
+                    <?= $user_login_block ?>
+                </div>
+                <div class="box user_login_box">
+                    <a id="user_login_link" href="<?= url('app/user/login') ?>"><span><?= t('Login') ?></span></a>
+                </div>
+            <?
+            } else {
+                if (isAllowed(\Application\Module::ADMIN)) {
+                    ?>
+                    <div class="box admin_link_box">
+                        <a href="<?= url('admin') ?>"><span><?= t('Administration') ?></span></a>
+                    </div>
+                <?
+                }
+                echo $user_block;
+            }
+            ?>
+        </div>
+        <?= $languageSwitcher ?>
+        <div class="box top_menu_box">
+            <?= $topMenuBlock ?>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="clear: both;"></div>
+    <div class="column-mid">
+        <? if (!empty($colRightBlock)) { ?>
+            <div class="column column1">
+                <?= $colRightBlock ?>
+            </div>
+        <? } ?>
+
+        <div class="column column2">
+            <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+            <?= $colMidTopBlock ?>
+            <div id="content_body" class="box">
+                <?= $this->content; ?>
+            </div>
+        </div>
+
+        <? if (!empty($colLeftTopBlock)) { ?>
+            <div class="column column5">
+                <?= $colLeftTopBlock ?>
+            </div>
+        <? } ?>
+
+        <? if (!empty($colLeftLeftBlock)) { ?>
+            <div class="column column3">
+                <?= $colLeftLeftBlock ?>
+            </div>
+        <? } ?>
+
+        <? if (!empty($colLeftRightBlock)) { ?>
+            <div class="column column4">
+                <?= $colLeftRightBlock ?>
+            </div>
+        <? } ?>
+    </div>
+    <div style="clear: both;"></div>
+    <div class="column footer">
+        <?= $footerBlock ?>
+    </div>
+</div>
+<div id="bottom-toolbar">
+
+</div>
+<div class="debug">
+    <?= $debugBlock ?>
+</div>
+<?= $this->inlineScript() ?>
+<script type="text/javascript">
+    var c1W = parseInt($('.column1').width());
+    c1W = isNaN(c1W) ? 0 : c1W;
+
+    var c3W = parseInt($('.column3').width());
+    c3W = isNaN(c3W) ? 0 : c3W;
+
+    var c4W = parseInt($('.column4').width());
+    c4W = isNaN(c4W) ? 0 : c4W;
+
+    var c5W = parseInt($('.column5').width());
+    c5W = isNaN(c5W) ? 0 : c5W;
+
+    var leftColumnW = isNaN(c5W) ? c3W + c4W : c5W;
+    var columnsW = c1W + leftColumnW;
+    if (columnsW != 0)
+        columnsW += 15;
+    var main_contentW = parseInt($('.main_content').width());
+    var c2W = main_contentW - columnsW;
+    //console.log(c1W);
+    $('.column2').css({width: c2W});
+    $('.column_top').css({width: main_contentW});
+</script>
+</body>
+</html>

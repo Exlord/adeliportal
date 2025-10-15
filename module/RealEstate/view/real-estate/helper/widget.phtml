@@ -1,0 +1,78 @@
+<?php
+/**
+ * Created by JetBrains PhpStorm.
+ * User: Exlord
+ * Date: 10/21/13
+ * Time: 10:25 AM
+ */
+$basePath = $this->basePath() . '/images/dashboard/';
+?>
+<div>
+    <h2><?= t('Real Estate') ?></h2>
+        <div class="widget-box">
+            <a class="button" href="<?= url('admin/real-estate/new-transfer') ?>">
+                <img src="<?= $basePath . 'sabte-vagozari-melk.png' ?>">
+
+                <p><?= t('New Estate Transfer') ?></p>
+            </a>
+            <a class="button" href="<?= url('admin/real-estate/new-request') ?>">
+                <img src="<?= $basePath . 'sabte-darkhast-melk.png' ?>">
+
+                <p><?= t('New Estate Request') ?></p>
+            </a>
+        </div>
+        <table>
+            <tr>
+                <td><a href="<?= url('admin/real-estate') ?>"><?= t('Number of all RealEstates') ?></a></td>
+                <td><b class="digit"><?= localizedDigits($this->data['count']['all']) ?></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/real-estate', array(), array('query' => array('grid_filter_isRequest' => 1))) ?>"><?= t('Number of all Requested Estates') ?></a>
+                </td>
+                <td><b class="digit"><?= localizedDigits($this->data['count']['requested']) ?></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/real-estate', array(), array('query' => array('grid_filter_status' => 0))) ?>"><?= t('Number of Not Approved RealEstates') ?></a>
+                </td>
+                <td><b class="digit"><?= localizedDigits($this->data['count']['not_approved']) ?></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/real-estate', array(), array('query' => array('grid_filter_status' => 1))) ?>"><?= t('Number of Approved RealEstates') ?></a>
+                </td>
+                <td><b class="digit"><?= localizedDigits($this->data['count']['approved']) ?></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/real-estate', array(), array('query' => array('grid_filter_status' => 2))) ?>"><?= t('Number of Archived RealEstates') ?></a>
+                </td>
+                <td><b class="digit"><?= localizedDigits($this->data['count']['archived']) ?></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/real-estate', array(), array('query' => array('grid_filter_status' => 3))) ?>"><?= t('Number of Transferred RealEstates') ?></a>
+                </td>
+                <td><b class="digit"><?= localizedDigits($this->data['count']['transferred']) ?></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/real-estate', array(), array('query' => array('grid_filter_status' => 4))) ?>"><?= t('Number of Canceled RealEstates') ?></a>
+                </td>
+                <td><b class="digit"><?= localizedDigits($this->data['count']['canceled']) ?></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/real-estate', array(), array('query' => array('grid_filter_status' => 5))) ?>"><?= t('Number of Deleted RealEstates') ?></a>
+                </td>
+                <td><b class="digit"><?= localizedDigits($this->data['count']['deleted']) ?></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="<?= url('admin/real-estate', array(), array('query' => array('grid_filter_isSpecial' => 1))) ?>"><?= t('Number of Special RealEstates') ?></a>
+                </td>
+                <td><b class="digit"><?= localizedDigits($this->data['count']['special']) ?></b></td>
+            </tr>
+        </table>
+</div>

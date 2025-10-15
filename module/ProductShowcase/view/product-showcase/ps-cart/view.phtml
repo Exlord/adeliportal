@@ -1,0 +1,9 @@
+<?
+if($this->select)
+{
+    echo $this->psCart(unserialize($this->select->psData),0);
+    foreach($this->select as $val)
+    {
+        echo $val.'<br/>';
+    }
+}

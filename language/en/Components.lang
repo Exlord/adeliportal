@@ -1,0 +1,4 @@
+<?return array(
+    'PERM_Components' => 'Components',
+    'COMPONENT_DISABLE_ALL' => 'Disable All',
+);

@@ -1,0 +1,171 @@
+<?
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+
+$this->headLink()
+    ->prependStylesheet($this->basePath() . '/css/system.css')
+    ->prependStylesheet($this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css');
+
+$this->headLink()
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/style.css')
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/user-view.css')
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/stylemain.css');
+
+$this->headScript()
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/template.js')
+    ->prependFile($this->basePath() . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($this->basePath() . '/js/system.jquery.ui.js')
+    ->prependFile($this->basePath() . '/js/system.js')
+    ->prependFile($this->basePath() . '/js/forms.js')
+    ->prependFile($this->basePath() . '/js/jquery.transit.min.js')
+    ->prependFile($this->basePath() . '/js/general-client.js')
+    ->prependFile($this->basePath() . '/js/jquery-swfobject-plugin.js')
+    ->prependFile($this->basePath() . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($this->basePath() . '/js/jquery-1.9.1.min.js');
+
+
+$column_right_blocks = '';
+$has_column_right = strlen(trim($column_right_blocks));
+
+$mid_col_class = '';
+
+
+if ($has_column_right)
+    $mid_col_class = 'two_columns';
+
+$user_block = $this->user_logged_in_block();
+if (!$user_block) {
+    $user_login_block = $this->blocks('user-popup');
+}
+
+$colRight = $this->blocks('col-right');
+$topMenu = $this->blocks('top-menu');
+$colMidTop = $this->blocks('col-mid-top');
+$header = $this->blocks('header', null);
+$colLeft = $this->blocks('col-left');
+
+$breadcrumbs = $this->breadcrumb();
+?>
+<?php echo $this->doctype(); ?>
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <link href="<?= $this->basePath() . TEMPLATE_PATH ?>/images/favicon.ico.gif" rel="SHORTCUT ICON">
+    <?php echo $this->headTitle($this->translate('Irans Database Systems and Real Estate')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<body class="<?= implode(' ', $this->body()->class) ?>">
+<div class="main_content">
+    <div id="user_popup_container">
+        <?
+        if (!$user_block) {
+            ?>
+            <div class="box user_login_popup" id="user_login_popup">
+                <?= $user_login_block ?>
+            </div>
+            <div class="box user_login_box">
+                <a id="user_login_link"
+                   href="<?= url('app/user/login') ?>"><span><?= t('Login') . ' / ' . t('Register') ?></span></a>
+            </div>
+        <?
+        } else {
+            if (isAllowed(\Application\Module::ADMIN)) {
+                ?>
+                <div class="box admin_link_box">
+                    <a href="<?= url('admin') ?>"><span><?= t('Administration') ?></span></a>
+                </div>
+            <?
+            }
+            echo $user_block;
+        }
+        ?>
+    </div>
+    <div class="column_top">
+        <div class="box top_menu_box">
+            <?= $topMenu ?>
+        </div>
+
+        <div style="clear: both;"></div>
+    </div>
+    <div style="clear: both;"></div>
+    <br/>
+
+
+    <div class="column column1">
+        <?= $colRight ?>
+    </div>
+    <div class="column column2">
+        <div class="column2-col-mid-top"><?= $colMidTop ?></div>
+        <div class="box column2-header"><?= $header ?></div>
+
+        <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+        <div id="content_body" class="box">
+            <div id="breadcrumbs"><?= $breadcrumbs ?></div>
+            <?= $this->content; ?>
+        </div>
+
+    </div>
+
+    <div class="column column3">
+        <!--<a class="qr-code" href="#QRCode"></a>-->
+        <?= $colLeft ?>
+    </div>
+
+    <div id="main-icon">
+        <div class="icon-mid-bottom">
+            <a href="#"> <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/icon5.png"></a>
+            <a href="#"> <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/icon4.png"></a>
+            <a href="#"> <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/icon3.png"></a>
+            <a href="#"> <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/icon2.png"></a>
+            <a href="#"><img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/icon1.png"></a>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    <br/><br/><br/><br/>
+</div>
+
+<div id="bottom-toolbar">
+
+    <div id="footer">
+        <div id="foot">
+            <ul id="link">
+                <li id="f_homeli"><a title="<?= t('Home Page') ?>" href="<?= url('app') ?>" id="f_home"></a>
+                </li>
+                <li><a title="<?= t('Search') ?>" href="<?= url('app/real-estate') ?>" id="f_search"></a></li>
+                <li><a title="<?= t('Agent User List') ?>" href="<?= url('app/real-estate/real-estate-agent') ?>"
+                       id="f_moshaverin"></a></li>
+                <li><a title="<?= t('Ads System') ?>" target="_blank" href="http://www.ads.samanmelk.com/"
+                       id="f_agahi"></a></li>
+                <li><a title="<?= t('Real Estate') ?>" target="_blank" href="<?= url('app/real-estate') ?>"
+                       id="f_estate"></a></li>
+                <li><a title="<?= t('Online Order') ?>" target="_blank" href="<?= url('app/online-order') ?>"
+                       id="f_web_design"></a></li>
+                <!--<li><a title="<?/*= t('Contact Us') */?>" href="<?/*= url('app/real-estate/contact-us') */?>"
+                       id="f_contact"></a></li>-->
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!--<div id="bottom-toolbar">
+    <div class="bottom_menu">
+        <?//= $this->menuBlock('bottom_menu') ?>
+    </div>
+</div>-->
+<?= $this->inlineScript() ?>
+<script type="text/javascript">
+    var c1W = parseInt($('.column1').width());
+    var c3W = parseInt($('.column3').width());
+    var main_contentW = parseInt($('.main_content').width());
+    var c2W = main_contentW - (c1W + c3W) - 80;
+    $('.column2').css({'width': c2W});
+</script>
+<!-- Iran Web Festival -->
+<script>var _mxvtmw_position = 'left', _mxvtmw_domain = 'samanmelk.com'</script>
+<script src="http://iwfcdn.iranwebfestival.com/js/mx.vtmw.min.js?24290" async="async"></script>
+<!-- Iran Web Festival -->
+</body>
+</html>

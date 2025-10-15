@@ -1,0 +1,15 @@
+<?
+return array(
+    'PERM_PhoneBook' => 'دفترچه تلفن',
+   'Phone Book'=>'دفترچه تلفن',
+    'Send Email'=>'ارسال ایمیل',
+    'Word Export'=>'خروجی word',
+    'Error message, please try again'=>'خطا در ارسال ، لطفا مجددا تلاش نمایید',
+    'At least 1 item should be selected for send !'=>'حداقل باید یک آیتم برای ارسال انتخاب شده باشد !',
+    'Choose your desired format'=>'قالب مورد نظر خود را انتخاب کنید',
+    'None'=>'هیچکدام',
+    'Phone Book Section'=>'بخش دفترچه تلفن',
+    'Send Sms'=>'ارسال پیامک',
+    'Word export for all'=>'خروجی word برای همه',
+    'Print all'=>'چاپ همه',
+);

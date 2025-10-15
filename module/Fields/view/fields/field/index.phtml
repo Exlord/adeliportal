@@ -1,0 +1,28 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?= $this->translate('Fields'); ?>
+    </h3>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="well well-sm">
+            <div>
+                <span class='glyphicon glyphicon-th-list text-primary grid-icon'></span> :
+                <?= t("This field belongs to a collection") ?>
+            </div>
+            <div>
+                <span class='glyphicon glyphicon-asterisk text-danger grid-icon'></span> :
+                <?= t("This fields value is required") ?>
+            </div>
+            <div>
+                <span class='glyphicon glyphicon-asterisk text-danger grid-icon'></span> :
+                <?= t("This fields value cannot be empty") ?>
+            </div>
+        </div>
+    </div>
+</div>

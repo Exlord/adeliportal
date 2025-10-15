@@ -1,0 +1,51 @@
+<h2 class="page-header"><?= t('Workshops') ?></h2>
+<div class="workshop-list ">
+    <? if ($this->items && $this->items->count()) { ?>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th><?= t('Workshop') ?></th>
+                    <th width="150px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?
+                foreach ($this->items as $row) {
+                    ?>
+                    <tr>
+                        <td>
+                            <a href="<?= url('app/workshop', array('workshop' => $row->id)) ?>">
+                                <?= $row->title ?>
+                            </a>
+                            <? if (has_value($row->itemName)) { ?>
+                                <small>»</small>
+                                <small class="text-muted"><?= $row->itemName ?></small>
+                            <? } ?>
+                             <span class="badge"> <?=$row->code?> </span>
+                        </td>
+                        <td align="center">
+                            <a href="<?= url('app/workshop/classes', array('workshop' => $row->id)) ?>"><?= t('View Classes') ?></a>
+                        </td>
+                    </tr>
+                <?
+                }
+                ?>
+                </tbody>
+            </table>
+
+            <div class="pager">
+                <?
+                print $this->paginationControl($this->items,
+                    'Sliding',
+                    'application/pagination/search.phtml', array(
+                        'route' => 'app/workshops',
+                    ));
+                ?>
+            </div>
+        </div>
+    <?
+    } else {
+        print $this->alert(t('Currently there are no workshops to signup for.'), 'alert-warning');
+    }?>
+</div>

@@ -1,0 +1,61 @@
+<script>
+    var TimeLineDefaults = {resources: {}};
+    TimeLineDefaults.reservable = true;
+    TimeLineDefaults.resources.reserveTitle = '<?=t('Reserve')?>';
+    TimeLineDefaults.resources.reservedTitle = '<?=t('Reserved')?>';
+    TimeLineDefaults.resources.startedTitle = '<?=t('Started')?>';
+    TimeLineDefaults.resources.finishedTitle = '<?=t('Finished')?>';
+</script>
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/doctor-time-line.js');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/doctor-time-line.css');
+?>
+<div class="doctor-profile">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading"><?= t('Profile') ?></div>
+                <div class="panel-body">
+                    <?= $this->user_info($this->id, array('col-md-5', 'col-md-7')); ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <?= $this->rating_average($this->id, 'hc_doctor',true) ?>
+            <div class="panel panel-default">
+                <div class="panel-heading"><?= t('Specializations') ?></div>
+                <div class="panel-body">
+                    <?if ($this->specs) {
+                        $specs = array();
+                        foreach ($this->specs as $row) {
+                            $specs[] = \Theme\API\Common::Link(
+                                t($row['itemName']),
+                                url('app/health-center/doctors', array(
+                                    'spec' => $row['itemId'],
+                                    'spec-title' => t($row['itemName']))),
+                                array('class' => array('label label-success'))
+                            );
+                        }
+                        print implode('  ', $specs);
+                    }?>
+                </div>
+            </div>
+        </div>
+        <? if ($this->transferFrom) { ?>
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <?=
+                    sprintf(t('Select a new session to transfer your reservation(%s) to'),
+                        dateFormat($this->transferFrom['start'], 0, 3)) ?>
+                </div>
+            </div>
+        <? } ?>
+        <div class="col-md-12">
+            <div class="doctor-time-line">
+                <div class="doctor-time-line-wrapper">
+                    <?= $this->data ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,197 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/realestate_search.js');
+$this->headScript()->appendFile($this->basePath() . '/js/geographical.js');
+?>
+<div class="box_real_main_search">
+    <?
+    $form = $this->form;
+    $form->prepare();
+    $table = $form->get('table');
+    $field = $form->get('field');
+    echo $this->form()->openTag($form);
+    ?>
+    <? if ($table->has('estateType')) { ?>
+        <div class="s_estateType base_div_s"><?= $this->formRow($table->get('estateType')) ?></div>
+    <? } ?>
+    <? if ($table->has('stateId')) { ?>
+        <div class="s_stateId base_div_s"><?= $this->formRow($table->get('stateId')) ?></div>
+    <? } ?>
+    <? if ($table->has('cityId')) { ?>
+        <div class="s_cityId base_div_s"><?= $this->formRow($table->get('cityId')) ?></div>
+    <? } ?>
+    <? if ($table->has('parentAreaId')) { ?>
+        <div class="s_areaId base_div_s"><?= $this->formRow($table->get('parentAreaId')) ?></div>
+    <? } ?>
+    <? if ($table->has('userId')) { ?>
+        <div class="s_userId base_div_s"><?= $this->formRow($table->get('userId')) ?></div>
+    <? } ?>
+    <? if ($table->has('regType')) { ?>
+        <div class="s_regType base_div_s"><?= $this->formRow($table->get('regType')) ?></div>
+    <? } ?>
+    <? if ($field->has('masahate_zamin')) { ?>
+        <div class="s_masahate_zamin base_div_s"><?= $this->formRow($field->get('masahate_zamin')) ?></div>
+    <? } ?>
+    <? if ($field->has('c_otagh_khab')) { ?>
+        <div class="s_c_otagh_khab base_div_s"><?= $this->formRow($field->get('c_otagh_khab')) ?></div>
+    <? } ?>
+    <? if ($field->has('senne_bana')) { ?>
+        <div class="s_senne_bana base_div_s"><?= $this->formRow($field->get('senne_bana')) ?></div>
+    <? } ?>
+    <div class="clear_both"></div>
+    <? if ($table->has('totalPrice')) { ?>
+        <div class="s_totalPrice base_div_s"><?= $this->formRow($table->get('totalPrice')) ?></div>
+    <? } ?>
+    <? if ($table->has('mortgagePrice')) { ?>
+        <div class="s_mortgagePrice base_div_s"><?= $this->formRow($table->get('mortgagePrice')) ?></div>
+    <? } ?>
+    <? if ($table->has('rentalPrice')) { ?>
+        <div class="s_rentalPrice base_div_s"><?= $this->formRow($table->get('rentalPrice')) ?></div>
+    <? } ?>
+
+    <? if ($field->has('zirbana')) { ?>
+        <div class="s_zirbana base_div_s"><?= $this->formRow($field->get('zirbana')) ?></div>
+    <? } ?>
+    <? if ($table->has('isRequest')) { ?>
+        <div class="s_isRequest base_div_s"><?= $this->formRow($table->get('isRequest')) ?></div>
+    <? } ?>
+
+    <? if ($field->has('s_m_dar_tabaghe')) { ?>
+        <div class="s_s_m_dar_tabaghe base_div_s"><?= $this->formRow($field->get('s_m_dar_tabaghe')) ?></div>
+    <? } ?>
+    <? if ($field->has('s_m_kolle_tabaghat')) { ?>
+        <div class="s_s_m_kolle_tabaghat base_div_s"><?= $this->formRow($field->get('s_m_kolle_tabaghat')) ?></div>
+    <? } ?>
+    <? if ($field->has('s_m_vahed_dar_tabaghe')) { ?>
+        <div
+            class="s_s_m_vahed_dar_tabaghe base_div_s"><?= $this->formRow($field->get('s_m_vahed_dar_tabaghe')) ?></div>
+    <? } ?>
+    <? if ($field->has('s_m_kolle_vahedha')) { ?>
+        <div class="s_s_m_kolle_vahedha base_div_s"><?= $this->formRow($field->get('s_m_kolle_vahedha')) ?></div>
+    <? } ?>
+    <? if ($field->has('tule_bar')) { ?>
+        <div class="s_s_m_kolle_vahedha base_div_s"><?= $this->formRow($field->get('tule_bar')) ?></div>
+    <? } ?>
+    <? if ($field->has('arze_gozar')) { ?>
+        <div class="s_s_m_kolle_vahedha base_div_s"><?= $this->formRow($field->get('arze_gozar')) ?></div>
+    <? } ?>
+    <? if ($field->has('c_parking')) { ?>
+        <div class="s_s_m_kolle_vahedha base_div_s"><?= $this->formRow($field->get('c_parking')) ?></div>
+    <? } ?>
+    <?
+    echo $this->formRow($form->get('search'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+
+        $('.s_regType input').change(function () {
+            onFilterRegTypeChangedSearch($(this).val());
+        });
+
+        if ($('.col_middle').find('.latest_real_estate_b').length > 0) {
+            $('.s_regType').prepend("<span class='search_line'></span>");
+            $('.s_regType .form-group .radio').each(function () {
+                $(this).append("<span class='arrow'></span>");
+            });
+        }
+
+        if ('.s_regType') {
+            $('.s_regType .form-group div ').first().children('label').addClass('label_active');
+            $('.s_regType .form-group div ').first().children('span').addClass('span_active');
+            $('.s_mortgagePrice').hide();
+            $('.s_rentalPrice').hide();
+        }
+
+        $('.s_regType .form-group div ').click(function () {
+            if ($('.col_middle').find('.latest_real_estate_b').length > 0) {
+                $('.s_regType .form-group div label ').removeClass('label_active');
+                $('.s_regType .form-group div span ').removeClass('span_active');
+                $(this).children('label').addClass('label_active');
+                $(this).children('span').addClass('span_active');
+                if (parseInt($(this).children().children().val()) == 2) {
+                    $('.s_mortgagePrice').show();
+                    $('.s_rentalPrice').show();
+                    $('.s_totalPrice').hide();
+                } else {
+                    $('.s_mortgagePrice').hide();
+                    $('.s_rentalPrice').hide();
+                    $('.s_totalPrice').show();
+                }
+            }
+        });
+
+        $('.s_regType .select2').change(function () {
+            if ($('.col_middle').find('.latest_real_estate_b').length < 1) {
+                onFilterRegTypeChangedSearch($(this).val());
+            }
+        });
+
+
+        $('.s_estateType .select2').change(function () {
+            if ($('.col_middle').find('.latest_real_estate_b').length < 1) {
+                onFilterEstateTypeChangedSearch($(this).val());
+            }
+        });
+
+
+    });
+    function onFilterRegTypeChangedSearch(el) {
+        switch (parseInt(el)) {
+            case 78 :
+                $('#mortgagePrice').parent().parent().show();
+                $('#rentalPrice').parent().parent().show();
+                $('#priceOneMeter').parent().parent().hide();
+                $('#totalPrice').parent().parent().hide();
+                break;
+            default :
+                $('#mortgagePrice').parent().parent().hide();
+                $('#rentalPrice').parent().parent().hide();
+                $('#priceOneMeter').parent().parent().show();
+                $('#totalPrice').parent().parent().show();
+                break
+        }
+    }
+    function onFilterEstateTypeChangedSearch(el) {
+        $('.s_masahate_zamin').show();
+        $('.s_senne_bana').show();
+        $('.s_c_otagh_khab').show();
+        $('.s_zirbana').show();
+        switch (parseInt(el)) {
+            case 94 :
+            case 45:
+                $('.s_masahate_zamin').hide();
+                $('.s_senne_bana').hide();
+                break;
+            case 92 :
+            case 84:
+                $('.s_masahate_zamin').hide();
+                // $('.s_senne_bana').hide();
+                $('.s_c_otagh_khab').hide();
+                break;
+            case 83:
+                $('.s_masahate_zamin').hide();
+                $('.s_senne_bana').hide();
+                break;
+            case 87:
+                $('.s_masahate_zamin').hide();
+                break;
+            case 85:
+            case 86:
+            case 93:
+                $('.s_zirbana').hide();
+                $('.s_c_otagh_khab').hide();
+                $('.s_senne_bana').hide();
+                break;
+        }
+    }
+
+    $(window).bind("load", function () {
+        if ($('.col_middle').find('.latest_real_estate_b').length < 1){
+            onFilterEstateTypeChangedSearch($('.s_estateType .select2 :selected').val());
+            $('.advanced_search_b').slideDown(800);
+        }
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

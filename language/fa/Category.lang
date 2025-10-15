@@ -1,0 +1,47 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Exlord
+ * Date: 11/23/13
+ * Time: 3:39 PM
+ */
+return array(
+    'PERM_Category' => 'دسته بندی ها',
+    'Categories' => 'دسته بندی ها',
+    'New Category' => 'دسته بندی جدید',
+    'Edit/Create Category' => 'ساخت/ویرایش دسته بندی',
+    'Category Name' => 'نام دسته بندی',
+    'Category Machine Name' => 'نام ماشینی دسته بندی',
+    'Is Enabled ?' => 'فعال است ؟',
+    'Category Description' => 'توضیحات دسته بندی',
+    'View and Edit This Categories Items' => 'مشاهده و ویرایش آیتم های این دسته بندی',
+    'Are you sure you want to delete Category %s with ID:%s ?' => 'آیا اطمینان به حذف دسته بندی %s با کد: %s دارید ؟',
+    'Category Item Parent' => 'سرگروه این دسته بندی',
+    'Category Item Name' => 'نام آیتم دسته بندی',
+    'Item Description' => 'توضیحات آیتم',
+    'New Category Item' => 'آیتم جدید دسته بندی',
+    'Items for category' => 'آیتم ها برای دسته بندی',
+    'Are you sure you want to delete Category item %s with ID:%s ?' => 'آیا اطمینان به حذف آیتم دسته بندی %s با کد: %s دارید ؟',
+    'Return to this Categories Items Page' => 'بازگشت به صفحه آیتم های این دسته بندی',
+    "You are viewing this Item's sub-items" => 'شما در حال مشاهده زیرشاخه های این آیتم هستید',
+    "View sub-items for this Item" => 'مشاهده زیرشاخه هاهی این آیتم',
+    'View and Edit This Items Sub-Items' => 'مشاهده و ویرایش زیرشاخه های این آیتم',
+    "New Category created Successfully" => 'دسته بندی جدید با موفقیت ساخته شد',
+    'View' => 'مشاهده',
+    'Category List' => 'لیست دسته بندی ها',
+    'Category Section' => 'بخش دسته بندی ها',
+    'Items List' => 'لیست آیتم ها',
+    'Items Section' => 'بخش آیتم ها',
+    'PERM_Links' => 'لینک ها',
+    'new' => 'جدید',
+    'edit' => 'ویرایش',
+    'items' => 'آیتم ها',
+    'Uncategorised' => 'دسته بندی نشده',
+    'category_widget_count_all' => 'تعداد کل دسته بندی ها',
+    'category_widget_config_label' => 'ابزار دسته بندی',
+    'CATEGORY_NOT_CATEGORY'=>'دسته بندی برای نمایش وجود ندارد .',
+    'Category Items'=>'آیتم های دسته بندی',
+    'translate category items'=>'ترجمه آیتم های دسته بندی',
+    'Category name'=>'نام دسته بندی',
+    'Show Category List'=>'نمایش لیست دسته بندی ها',
+);

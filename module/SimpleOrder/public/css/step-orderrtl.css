@@ -1,0 +1,27 @@
+.step-order-header{text-align: right; padding-right: 10px;}
+.step-order-content .col-button{float: left;}
+.step-order-content .col-button a{background:url(../../../Theme/public/themes/msacompany/images/msa/StartpageButtonBG_RTL.png) no-repeat center center; }
+.step-order-content .col-button h3{padding: 5px 10px 0 0;}
+.step-order-content .col-button p{padding: 0 10px 0 0;}
+.step-order-content{background-position: right;}
+.step-order-header h2{font-family: BYekan; font-size: 27pt;}
+.step-order-header h3, .step-order-content .col-button h3, .col1 h3{font-family: BYekan; font-size: 18pt;}
+.step-order-header p{font-family: BMitra;}
+.step1-next-level , .step2-next-level ,.step3-next-level ,.step4-next-level,.step5-next-level{background: url(../../../Theme/public/themes/msacompany/images/msa/DTCSelectButtonBG_RTL.png) no-repeat center center; float: left;}
+.col1{float: right; padding-right: 10px;}
+.col2{float: left;}
+.step1-next-level h3 ,.step2-next-level h3 ,.step3-next-level h3 , .step4-next-level h3,.step5-next-level h3{margin-left: 0; margin-right: 20px; text-align: right;}
+.step-order-nav .end-inactive{background: url(../../../Theme/public/themes/msacompany/images/msa/ButtonBar_Separator_NormalNormal_RTL.png) no-repeat center center;}
+.step-order-nav .start-active{background: url(../../../Theme/public/themes/msacompany/images/msa/ButtonBar_Separator_StartActive_RTL.png) no-repeat center center; margin-right: -5px; margin-left: -4px;}
+.step-order-nav .end-active{background: url(../../../Theme/public/themes/msacompany/images/msa/ButtonBar_Separator_ActiveNormal_RTL.png) no-repeat center center; margin-right: -4px;}
+.step-order-nav span label{min-width: 90px;padding: 0;text-align: center;}
+.step-order-nav .main-inactive p{margin:4px 5px 0 0;}
+.step-order-nav .main-active label, .step-order-nav .main-active p{padding: 0px;}
+.step-order-nav .home{background: url(../../../Theme/public/themes/msacompany/images/msa/ButtonBar_Start_RTL.png) no-repeat center center;}
+.main-step3 .col1 , .main-step5 .col1{float: left;}
+.box-step3-order-tabs .ui-tabs-nav li ,.box-step6-order-tabs .ui-tabs-nav li{border-top-right-radius: 0;}
+.main-step6 fieldset{border: none;}
+.main-step6 .col1{border-left: 1px solid #ECECEC;}
+.step-order-nav{margin-top: 30px;}
+.main-step6 .col2 .info-orders{ float: right; width: 48%; margin-right: 10px;}
+.main-step6 .col2 .img-orders{border-right: 1px dotted #CCCCCC;}

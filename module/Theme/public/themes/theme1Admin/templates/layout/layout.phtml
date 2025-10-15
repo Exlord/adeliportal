@@ -1,0 +1,183 @@
+<?
+use Localization\View\Helper\DateFormat;
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+
+$styles = array();
+if ($direction == 'ltr')
+    $styles[] = $this->basePath() . TEMPLATE_PATH . '/css/style-ltr.css';
+$styles[] = $this->basePath() . TEMPLATE_PATH . '/css/forms.css';
+$styles[] = $this->basePath() . TEMPLATE_PATH . '/css/style.css';
+$styles[] = $this->basePath() . '/css/system.css';
+$styles[] = $this->basePath() . '/css/online-order.css';
+$styles[] = $this->basePath() . '/css/phonebook.css';
+$styles[] = $this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css';
+
+foreach ($styles as $st) {
+    $this->headLink()->prependStylesheet($st);
+}
+
+$scripts = array(
+    '/js/system.jquery.ui.buttons.js',
+    '/js/system.jquery.ui.js',
+    TEMPLATE_PATH . '/js/system-ui.js',
+    '/js/general.js',
+    '/js/system.js',
+    '/js/forms.js',
+    '/js/jquery.hoverIntent.min.js',
+    '/js/jquery.cookie.js',
+    '/js/jquery.transit.min.js',
+  //  '/js/jquery.ui.datepicker-cc.js',
+ //   '/js/jquery.ui.datepicker-cc-fa.js',
+    '/js/jquery-ui-1.10.1.custom.min.js',
+    '/js/calendar.js',
+    '/js/jquery.address-1.6.min.js',
+    '/js/jquery-1.9.1.min.js');
+foreach ($scripts as $sc) {
+    $this->headScript()->prependFile($this->basePath() . $sc);
+
+}
+$admin_menu = trim($this->navigation()
+    ->menu('admin_menu')
+    ->setMaxDepth(1)
+    ->setUlClass('navigation')
+    ->renderMenu());
+$breadcrumbs = trim($this->navigation()
+    ->breadcrumbs('admin_menu')
+    ->setMinDepth(0)
+    ->setPartial('application/index/admin-breadcrumbs')
+    ->render());
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('Irans Database Systems and Real Estate')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+
+</head>
+<body>
+
+<? if ($admin_menu) { ?>
+    <div id="admin_nav">
+        <a href="#open" class="admin_nav_link admin-nav-open"></a>
+        <?= $admin_menu; ?>
+    </div>
+<? } ?>
+
+<div class="top-menu">
+    <div class="top-menu-left">
+        <a href="<?= url('app/user/logout') ?>" title="<?= t('Logout') ?>" class="logout top-menu-icon"></a>
+        <span class="mid-line top-menu-icon"></span>
+        <a href="" title="<?= t('Refresh') ?>" class="site-refresh top-menu-icon"></a>
+        <span class="mid-line top-menu-icon"></span>
+        <a target="_blank" href="http://webmail.samanmelk.com" title="<?= t('Web Mail') ?>"
+           class="web-mail top-menu-icon"></a>
+        <span class="mid-line top-menu-icon"></span>
+        <a target="_blank" href="http://www.panelesms.com/MyLogin.aspx?ReturnUrl=%2f" title="<?= t('Sms Panel') ?>"
+           class="sms-panel top-menu-icon"></a>
+        <span class="mid-line top-menu-icon"></span>
+        <a href="<?= url('admin') ?>" title="<?= t('Home Manage') ?>" class="home-admin top-menu-icon"></a>
+        <span class="mid-line top-menu-icon"></span>
+        <a target="_blank" href="<?= url('app/front-page') ?>" title="<?= t('Display Web Site') ?>"
+           class="home-client top-menu-icon"></a>
+        <span class="mid-line top-menu-icon"></span>
+    </div>
+    <div class="top-menu-right">
+        <label class="label-date">
+            <?= t('Today') ?>
+        </label>
+
+        <p class="date">
+            <?= $this->date_format(time()); ?>
+        </p>
+        <label class="label-date">
+            <?= t('Last Login Date') ?>
+        </label>
+
+        <p class="date">
+            <? if (current_user()->lastLoginDate && !is_null(current_user()->lastLoginDate))
+                echo $this->date_format(current_user()->lastLoginDate, 0);
+            else
+                echo $this->date_format(current_user()->loginDate, 0);
+            ?>
+        </p>
+    </div>
+
+</div>
+<div class="top-menu-welcome">
+    <div class="top-menu-welcome-text">
+        <a href="<?= url('admin/users/view', array('id' => current_user()->id)) ?>"><?= current_user()->username; ?></a>
+        <?= " , " . t('Welcome') ?>
+    </div>
+</div>
+<? //= $this->user_logged_in_block(); ?>
+<? //=$this->langSwitcher();?>
+<div class="admin_main_content <?= !$admin_menu ? 'no_sidebar' : '' ?>">
+    <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+    <? if ($breadcrumbs) { ?>
+        <div id="breadcrumbs">
+            <?= $breadcrumbs; ?>
+        </div>
+    <? } ?>
+
+    <div class="column-mid">
+        <div id="content_body">
+            <?= $this->content; ?>
+        </div>
+    </div>
+
+</div>
+<!-- <div class="footer">
+        <p class="powered-by">
+            <? /*
+            $startYear = mktime(0, 0, 0, 6, 0, 2012);
+            $startYear = $this->dateFormat($startYear, DateFormat::YEAR_ONLY);
+            $nowYear = $this->dateFormat(time(), DateFormat::YEAR_ONLY);
+            */
+?>
+            <span
+                dir="rtl"><? /*= sprintf(t('Powered by %sIPT System%s'), "<a href='http://iptcms.com'>", "</a>") */ ?></span>
+            <span dir="ltr"><? /*= sprintf(t('&copy; %s-%s'), $startYear, $nowYear) */ ?></span>
+        </p>
+    </div>-->
+<?= $this->inlineScript() ?>
+
+</body>
+</html>
+<script>
+    var window_height = $(window).height();
+    if (window_height < 600)
+        window_height = 600;
+    $('body').css({height: window_height});
+    // $('.admin_main_content').css({width: $('body').width()});
+    $('.top-menu').css({width: $('body').width() - 300});
+    /* System.Pages.Messages = {
+     online: '<?//=t('This page has just been loaded and is online')?>',
+     offline: '<?//=t('This page has been loaded from the cache and has not been reloaded in more than %s minutes')?>',
+     cached: '<?//=t('This page has been loaded from cache')?>',
+     reload: '<?//=t('Click here to reload this page')?>',
+     lastPage: '<?//=t('Click here To reload the last page you visited.')?>'
+     };*/
+    $(document).ready(function () {
+        $(document).on('beforePageLoad', function () {
+            $("html, body").animate({ scrollTop: 0 }, 600);
+        });
+
+        $('.admin_nav_link').click(function () {
+            if (parseInt($('#admin_nav').css('right')) == -200){
+                $('.admin_nav_link').removeClass('admin-nav-open').addClass('admin-nav-close')
+                $('#admin_nav').animate({right: 0}, 200);
+            }
+            else{
+                $('.admin_nav_link').removeClass('admin-nav-close').addClass('admin-nav-open')
+                $('#admin_nav').animate({right: -200}, 200);
+            }
+        });
+
+    });
+</script>

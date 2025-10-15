@@ -1,0 +1,67 @@
+<?
+$userProfile = $this->user_info($this->userId, array('col-md-12', 'col-md-12'));
+$user = \User\API\User::$LatestUser;
+$isSelf = ($this->userId == current_user()->id);
+?>
+<div id="patient-profile">
+    <h3 class="page-title">
+<!--        --><?//= t('Panel') ?><!-- »-->
+        <?= getUserDisplayName($user) ?>
+    </h3>
+
+    <div class="row">
+        <div class="col-md-9 com-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <?= t('Workshop Signup Form') ?>
+                    <? if ($isSelf) { ?>
+                        <a class="btn btn-default btn-xs pull-right flip ajax_page_load"
+                           href="<?= url('admin/educational-center/edit-signup-form', array('id' => $this->userId)) ?>">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            <?= t('Edit') ?>
+                        </a>
+                    <? } ?>
+                </div>
+                <div class="panel-body">
+                    <?
+                    if ($this->workshop_signup_form && is_array($this->workshop_signup_form) && count($this->workshop_signup_form)) {
+                        ?>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover table-condensed ">
+                                <?
+                                foreach ($this->workshop_signup_form as $key => $value) {
+                                    ?>
+                                    <tr>
+                                        <th><?= t($key) ?></th>
+                                        <td><?= $value ?></td>
+                                    </tr>
+                                <?
+                                }
+                                ?>
+                            </table>
+                        </div>
+                    <?
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 com-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <?= t('Personal Info') ?>
+                    <? if ($isSelf) { ?>
+                        <a class="btn btn-default btn-xs pull-right flip ajax_page_load"
+                           href="<?= url('admin/users/view', array('id' => $this->userId)) ?>">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            <?= t('Edit') ?>
+                        </a>
+                    <? } ?>
+                </div>
+                <div class="panel-body">
+                    <?= $userProfile ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

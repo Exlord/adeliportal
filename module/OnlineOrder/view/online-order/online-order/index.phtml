@@ -1,0 +1,200 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order.css');
+$groups = array_keys($this->groups);
+$items = $this->items;
+$count = $this->count;
+$config = $this->config;
+?>
+
+<div class="online-order-main">
+    <div class="online-order-page-1">
+        <? if (!current_user()->id) { ?>
+            <h2>
+                در صورتی که در این سایت عضو هستید ، ابتدا وارد اکانت خود شوید و بعد اقدام به انجام سفارش خود کنید
+            </h2>
+        <? } ?>
+        <div class="div-main-free online-order-all-categori-image">
+            <div class="all-content">
+                <p>
+                    <?
+                    foreach ($items[1] as $row) {
+                        echo ". " . $row . "<br/>";
+                    }?>
+                    <a href="#next" data-id="<?= $groups[0] ?>" data-count="<?= $count[1] ?>"
+                       class="online-order-next-icon online-order-next-prev"></a>
+                </p>
+
+            </div>
+        </div>
+        <div class="div-main-bronze online-order-all-categori-image">
+            <div class="all-content">
+                <p>
+                    <?foreach ($items[2] as $row) {
+                        echo ". " . $row . "<br/>";
+                    }?>
+                </p>
+                <a href="#next" data-id="<?= $groups[1] ?>" data-count="<?= $count[2] ?>"
+                   class="online-order-next-icon online-order-next-prev"></a>
+                <span class="price">
+                    <?
+                    if(isset($config['priceBronze']) && $config['priceBronze'])
+                        echo $this->currencyFormat($config['priceBronze']);
+                    else
+                        echo 'قیمتی ثبت نشده است .';
+                    ?>
+                </span>
+            </div>
+        </div>
+        <div class="div-main-silver online-order-all-categori-image">
+            <div class="all-content">
+                <p>
+                    <?foreach ($items[3] as $row) {
+                        echo ". " . $row . "<br/>";
+                    }?>
+                </p>
+                <a href="#next" data-id="<?= $groups[2] ?>" data-count="<?= $count[3] ?>"
+                   class="online-order-next-icon online-order-next-prev"></a>
+                <span class="price">
+                    <?
+                    if(isset($config['priceSilver']) && $config['priceSilver'])
+                        echo $this->currencyFormat($config['priceSilver']);
+                    else
+                        echo 'قیمتی ثبت نشده است .';
+                    ?>
+                </span>
+            </div>
+        </div>
+        <div class="div-main-gold online-order-all-categori-image">
+            <div class="all-content">
+                <p>
+                    <?foreach ($items[4] as $row) {
+                        echo ". " . $row . "<br/>";
+                    }?>
+                </p>
+                <a href="#next" data-id="<?= $groups[3] ?>" data-count="<?= $count[4] ?>"
+                   class="online-order-next-icon online-order-next-prev"></a>
+                <span class="price">
+                    <?
+                    if(isset($config['priceGold']) && $config['priceGold'])
+                        echo $this->currencyFormat($config['priceGold']);
+                    else
+                        echo 'قیمتی ثبت نشده است .';
+                    ?>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="online-order-page-2">
+        <div>
+            <h3 class="page-title">
+                <?= $this->translate('Online Order'); ?>
+            </h3>
+            <br/>
+            <div>
+                <?
+                $form = $this->form;
+                $form->prepare();
+                echo $this->form()->openTag($form);
+                echo $this->iptFormRow($form->get('id'));
+                ?>
+                <input type="hidden" value="" name="groupId" id="groupId">
+                <?
+                echo $this->iptFormRow($form->get('name'));
+                echo $this->iptFormRow($form->get('company'));
+                echo $this->iptFormRow($form->get('email'));
+                echo $this->iptFormRow($form->get('phone'));
+                echo $this->iptFormRow($form->get('mobile'));
+                echo $this->iptFormRow($form->get('address'));
+                echo $this->iptFormRow($form->get('comment'));
+                echo $this->iptFormRow($form->get('others'));
+                ?>
+                <div class="form_element text sub-domain">
+                    <label for="others"><?= t('Sub Domain Name') ?></label>
+                    <span>www.</span>
+                    <input type="text" name="subDomain" id="subDomain" value="" class="online-order-domain-input">
+                    <span>.melkyab.org</span>
+
+                    <p class="form_element_description"><?= t('If you want to use your own personal domain name, please do not enter the sub domain name') ?></p>
+                </div>
+                <?
+                echo $this->iptFormCollection($form->get('domains'));
+                echo '<br/><br/>'; ?>
+                <div class="captcha-div">
+                    <?= $this->iptFormRow($form->get('captcha')) ?>
+                    <span class="reload-captcha" id="refreshcaptcha" ></span>
+                </div>
+                <?
+                echo $this->iptFormCollection($form->get('buttons'));
+                echo $this->form()->closeTag();
+                ?>
+            </div>
+        </div>
+        <a href="#prev" data-id="2" class="online-order-prev-icon online-order-next-prev"></a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+        $('.online-order-next-icon').click(function () {
+            var tag = $(this);
+            var count = parseInt(tag.data('count'));
+            //alert(count);
+            for (var i = 0; i < count; i++) {
+                $('#domains_add_more_select_option').click();
+            }
+            $('#groupId').val(tag.data('id'));
+            $('.online-order-page-1').fadeOut(500, function () {
+                $('.online-order-page-2').fadeIn(1000);
+            })
+        });
+
+
+        $('.online-order-prev-icon').click(function () {
+            $('.collection-container').each(function () {
+                $(this).children('#domain').remove();
+            })
+            $('.online-order-page-2').fadeOut(500, function () {
+                $('.online-order-page-1').fadeIn(1000);
+            })
+        });
+
+        $('body').on('change', '.online-order-domain-input', function () {
+            var tag = $(this);
+            tag.addClass('ajax-loading-inline');
+            var data = {};
+            data['domainName'] = tag.val();
+            $.ajax({
+                url: '<?=url('app/online-order/check-domain')?>',
+                type: 'POST',
+                data: data,
+                complete: function () {
+                    tag.removeClass('ajax-loading-inline');
+                },
+                success: function (data) {
+                    if (data.status) {
+                        tag.removeClass('online-order-domain-input-error');
+                        tag.addClass('online-order-domain-input-done');
+                    }
+                    else {
+                        tag.removeClass('online-order-domain-input-done');
+                        tag.addClass('online-order-domain-input-error');
+                    }
+
+                },
+                error: System.AjaxError
+            });
+        });
+
+        $('#buttons_submit').click(function (e) {
+            // console.log();
+            if ($('.online-order-domain-input-error').length) {
+                System.AjaxMessage('<?=t('Error : Please Check Your Domain')?>');
+                e.preventDefault();
+            }
+        });
+
+
+    });
+</script>

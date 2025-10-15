@@ -1,0 +1,20 @@
+<? if (count($this->data)) { ?>
+    <ul class="search-result">
+        <? foreach ($this->data as $module => $items) { ?>
+            <li class="category col-md-4">
+                <span class="category-title"><?= t($module) ?></span>
+                <ul class="items">
+                    <? foreach ($items as $item) { ?>
+                        <li class="item"><?= $item ?></li>
+                    <? } ?>
+                </ul>
+            </li>
+        <? } ?>
+    </ul>
+<?
+} else {
+    ?>
+    <div class="col-md-12"><?
+    echo($this->general()->MSG(t('No result Found !')));
+    ?></div><?
+} ?>

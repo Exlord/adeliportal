@@ -1,0 +1,260 @@
+.div-step-img{ margin-bottom:10px; }
+.step-img{ width:572px; height:49px; display:block; margin-left:auto; margin-right:auto; }
+.step1-img{ background:url(../images/marahel-sepordan-melk.jpg) no-repeat center center; }
+.step2-img{ background:url(../images/marahel-sepordan-melk2.jpg) no-repeat center center; }
+.step3-img{ background:url(../images/marahel-sepordan-melk3.jpg) no-repeat center center; }
+.main-new-real-estate{ background:#ffffff; width:95%; margin-right:auto; margin-left:auto; padding:5px 5px 50px 5px; }
+.div-step{ color:#311807; margin-top:30px; }
+.step1{ display:block; }
+.step2{ display:none; }
+.step3{ display:none; }
+.next-button{ background:url(../images/next.png); cursor:pointer; display:block; float:left; margin-left:20px; padding:5px; text-align:center; width:63px; height:24px; margin-top:10px; text-indent:-9999px; }
+.back-button{ background:none repeat scroll 0 0 #DCDCDC; border-radius:5px; cursor:pointer; display:block; float:right; margin-right:20px; padding:4px; text-align:center; width:60px; margin-top:10px; }
+.border_main{ border:1px solid #a5a5a5; !important }
+.div-step fieldset legend{ color:#919191; margin-bottom:10px; }
+.div-step fieldset{ padding:5px; }
+.div-step label{ font-size:11pt !important; margin-bottom:5px; margin-left:7px; }
+input, select, textarea{ font-size:10pt !important; font-family:tahoma; }
+.important-div{ clear:both; }
+.important-div-icon{ background:url(../images/real-estate-melkyab/important-icon.png) no-repeat center center; width:20px; height:20px; display:inline-block; margin-left:5px; margin-right:5px; margin-bottom:10px; vertical-align:middle; }
+.important-div-label{ display:inline-block; font-family:tahoma !important; font-size:8pt !important; margin-bottom:10px; vertical-align:middle; }
+.margin{ margin:5px; }
+.new-real-estate-btn{ width:230px; display:block; margin-right:auto; }
+.error{ border:1px solid #ff6262; background:#ffdde8; }
+.multi_check_list fieldset legend{ position:inherit !important; width:auto !important; }
+.images-real-estate-tbl-td-title, .fields-real-estate-tbl-title{ background:#c0c0c0 !important; border-radius:0px; !important; color:#6666 !important; }
+.images-real-estate-tbl-td-value, .fields-real-estate-tbl-value{ border:1px solid #ececec !important; background:#d7d6d6 !important; color:#5f5f5f !important;
+    border-radius:10px; }
+.footer-agent-tbl-td-title{
+    color:#030;
+    background:#f0c9a8 !important;
+    border-radius:0px !important; }
+.footer-agent-tbl-td-value{
+    border:1px solid #ececec !important;
+    background:none repeat scroll 0% 0% #f8e3d3 !important;
+    color:#6d6d6d !important;
+    border-radius:28px;
+}
+
+.view-real-estate-content-right{ width:110px; display:inline-block; vertical-align:top; margin-right:2px; margin-top:3px; }
+.view-real-estate-content-middle{ width:400px; display:inline-block; vertical-align:top; line-height:36px; margin-top:11px; }
+.view-real-estate-content-left{ width:172px; display:inline-block; vertical-align:top; }
+.real-estate-item .date-time{ float:none; font-family:tahoma !important; font-size:8pt !important; }
+.view-real-estate-content-left-div-default{ width:100%; display:inline-block; margin-top:12px; }
+.payer-home{ float:right; border:none; padding:0px; margin:0px; }
+.div-date-time{ }
+.div-payer-home{ }
+.div-detail-contact{ }
+.real-estate-item{ border-top:1px solid #cccccc; border-bottom:1px solid #bababa; min-height:100px; border-left:1px solid #cccccc; border-right:1px solid #cccccc; border-radius:5px; background:#ffffff; }
+.real-estate-item:hover{ background:#ffffdd; }
+.fieldset-view-real-estate{ border:none; width:730px; height:110px; }
+#real_estate_search form{ width:542px; }
+#real_estate_search #search{ border:none; }
+.view-real-estate-content-left-div-default a{ color:#2d6aff; }
+.spinner-new{ width:101px !important; }
+.box-all-real-estate-agent{ display:inline; margin:0px; }
+.single-real-estate-agent{ display:inline-flex; }
+
+/*------------------------------latest real estate --------------------*/
+.tabs-latest-reg-type ul{ padding:0px !important; background:none !important; border:none !important; display:block !important; width:auto !important; right:-20px !important; }
+.tabs-latest-reg-type ul li{ margin:0px !important; padding:0px !important; border:none !important; background:none !important; }
+.tabs-latest-reg-type ul li:hover{ border:none !important; background:none !important; }
+.tabs-latest-reg-type ul li a:hover{ border:none !important; }
+.tabs-latest-reg-type ul li a{ padding:0px !important; }
+.tabs-latest-reg-type ul li a.active{ padding:0px !important; }
+.tabs-latest-reg-type-div table{ color:#000000; font-family:Tahoma; font-size:8pt; font-weight:normal; list-style-type:none; text-align:right; border-spacing:3px; border-collapse:separate; }
+.tabs-latest-reg-type-div table thead > tr{ background:#d8d8d8; }
+.tabs-latest-reg-type-div table thead tr > th{ text-align:center;  font-family: tahoma;  font-size: 7pt; }
+.tabs-latest-reg-type-div table tbody > tr{ text-align:center; }
+.tabs-latest-reg-type-div table tbody tr td > a{ width:100% !important; display:block !important; }
+.tabs-reg-type-div-table-tbody-tr0{ background:#fcfcfc; }
+.tabs-reg-type-div-table-tbody-tr1{ background:#eaeaea; }
+.tabs-reg-type-div-table-tbody-tr0:hover, .tabs-reg-type-div-table-tbody-tr1:hover{ background:#fffacd; }
+#tabsLatestEstateType > ul{ background:#ececec !important; border-right:none; border-left:none; border-top:none; }
+#tabsLatestEstateType > ul > li > a{ color:#6d6d6d !important; padding:0px 31px 0px 0px !important;
+    margin-left:20px;
+    font-size:12px;
+    font-family:BYekan; }
+#tabsLatestEstateType > ul > li{ border-top-left-radius:5px; border-top-right-radius:5px; padding-left:5px; padding-right:5px; }
+#tabsLatestEstateType > ul > li:hover{ background:#ffffff !important; border-top:1px solid #c1c1c1 !important; border-left:1px solid #c1c1c1 !important; border-right:1px solid #c1c1c1 !important; border-radius:5px !important; }
+.froosh a.ui-tabs-anchor{ background:url(../images/tem_colored-18.png) no-repeat center center; width:30px; height:88px; display:block }
+.ui-state-active.froosh a.ui-tabs-anchor{ background:url(../images/tem_colored-19.png) no-repeat center center; width:30px; height:88px; display:block }
+.rahn a.ui-tabs-anchor{ background:url(../images/tem_colored-20.png) no-repeat center center; width:30px; height:88px; display:block }
+.ui-state-active.rahn a.ui-tabs-anchor{ background:url(../images/tem_colored-21.png) no-repeat center center; width:30px; height:88px; display:block }
+#tabsLatestEstateType{ border:none !important; background:#ffffff !important; position:relative;
+    right:-10px; }
+#tabsLatestEstateType div{ padding:0px 20px 0px 10px !important; }
+.tabs-latest-reg-type{ border:none !important; }
+.corner-title{ background:no-repeat center center; width:25px; height:197px; display:block; position:absolute; left:-16px; top:20px; z-index:999999; }
+/*------------------------------------- end -----------------------------*/
+
+/*---------------------------------- real estate agent -------------------------*/
+.card{
+    float:right;
+    height:175px;
+    margin:5px 0 0 2px;
+    padding:10px;
+    position:relative;
+    width:335px;
+    border:1px solid #ccc;
+    background:#fbfbfb;
+}
+.logo_card{
+    height:83px;
+    margin-left:5px;
+    padding:2px;
+    width:83px;
+    position:absolute;
+    left:0px;
+}
+.title_card{
+    margin-top:7px;
+    max-height:30px;
+    text-align:right;
+}
+.card-date{
+    max-height:30px;
+    text-align:right;
+}
+.title_card h2{ float:right; color:#09c; margin-top:-3px; font-family:BYekan !important; font-size:10pt !important; }
+.text_card{
+    float:right;
+    line-height:180%;
+    margin:5px 0 0;
+    text-align:right;
+    width:120px;
+}
+.text_card p{ text-align:right; }
+.information_card{
+    clear:both;
+    line-height:160%;
+    padding-top:0px;
+    text-align:right;
+}
+.information_card p{ display:inline; font-family:BYekan !important; font-size:10pt !important; }
+.information_card label{ display:inline; font-family:BYekan !important; font-size:8pt !important; }
+.card-date label{ display:inline; font-family:tahoma !important; font-size:7pt !important; }
+.card-date p{display:inline; }
+
+/*------------------------------------------ end -------------------------------*/
+.theme-default .nivo-controlNav{ bottom:0; left:45%; position:absolute !important; z-index:9999; }
+.slider-wrapper{ position:relative !important; }
+
+.tabs-latest-reg-type-div p{ display:block; margin-left:auto; margin-right:auto; width:150px; padding-top:30px; }
+
+#real_estate_form_page #real_estate_form{ width:680px !important; }
+#real_estate_form_page select{ width:160px !important; }
+#addressShort, #addressFull{ width:325px !important; }
+#real_estate_form_page input[type="text"]{ width:155px; padding:3px 0; margin:0px; }
+.text_box_list input{display:list-item;}
+#real_estate_form tr{ min-height:30px; }
+#real_estate_form_page #real_estate_form td{ padding:10px 0px !important; }
+.spinner-new{ width:155px !important; }
+.placeholder-text{ font-size:11pt !important; }
+.header-content-visit-count{
+    font-size:9pt;
+    width: 125px;
+}
+.real-estate-print-btn{
+    position:absolute;
+    top:-30px;
+}
+.popup-send-mail{
+    background:url(../images/email.png) !important;
+    display:block;
+    width:91px;
+    height:28px;
+    position:absolute;
+    top:-1px;
+}
+
+.a2a_default_style{ margin:13px auto;}
+.text-new-area{ display:none; }
+#login label{display:none;}
+#login span{font-family:tahoma;}
+#forgot_password .ui-state-hover{background:none;}
+#login .text span{display:none;}
+#username{background:url(../images/login-user2.png) no-repeat scroll right center #FFFFFF; height: 19px; margin: 2px auto; padding: 2px; width: 160px; text-align:left; display:block;}
+#password{background: url(../images/login-pass2.png) no-repeat scroll right center #FFFFFF; height: 19px; margin: 0px auto 3px auto;padding: 2px; width: 160px; text-align:left; display:block;}
+.login_page .login_block .form_element{padding:0px !important; margin:0px !important;}
+.login_page .login_block{width:180px !important;}
+.login-date {text-align:center; font-family:tahoma; font-size:9pt; margin-top:5px;}
+.login_page .login_block #forgot_password span{font-size:8pt !important;}
+.login_page .login_block #forgot_password{margin-top:0px !important;}
+#forgot_password:hover{background:#F7F7F7 !important; border:none !important; color:#666666 !important; }
+#search:hover{ background:url(../images/search-01.png) 0 0 no-repeat !important; width:90px; height:27px; display:block;margin-bottom:7px; border:none !important;}
+.latest-address{text-align:right; padding-right:5px;}
+.required {color: #CC0000; position: relative; top: -3px; vertical-align: top;}
+.view-fields legend span , .view-images legend span{
+    background: url(../images/real-estate-melkyab/home.png) no-repeat scroll 95% 7px #CEC8B5;
+    border-radius: 5px 5px 0 0;
+    padding: 5px 30px 2px 20px;
+}
+.view-others legend span{
+    background: url(../images/real-estate-melkyab/i-icon-additionafeatures.png) no-repeat scroll 95% 7px #CEC8B5;
+    border-radius: 5px 5px 0 0;
+    padding: 5px 30px 2px 20px;
+}
+.view-agent legend span{
+    background: url(../images/login-user2.png) no-repeat scroll 95% 7px #CEC8B5;
+    border-radius: 5px 5px 0 0;
+    padding: 5px 30px 2px 20px;
+}
+.view-location legend span{
+    background: url(../images/real-estate-melkyab/i-icon-propertymap.png) no-repeat scroll 95% 7px #CEC8B5;
+    border-radius: 5px 5px 0 0;
+    padding: 5px 30px 2px 20px;
+}
+.home{position:relative; top:-13px;}
+.view-fields legend , .view-images legend , .view-others legend ,.view-agent legend , .view-location legend{ padding:0px 10px 0px 0px;}
+.view-fields , .view-images , .view-others , .view-agent , .view-location{border-top: 2px solid #CEC8B5;border-bottom:none; border-right:none; border-left: none; margin-top:30px; display:block}
+.view-img{background: url(../images/real-estate-melkyab/tick_arrow.png) no-repeat center center; width:14px; height:13px; display:inline-block; margin:4px; vertical-align:middle;}
+.view-img-others{background: url(../images/real-estate-melkyab/i-bullet-archive.png) no-repeat center center; width:5px; height:8px; display:inline-block; margin:4px; vertical-align:middle;}
+.fields-real-estate-tbl tr {border-bottom: 1px dotted #DBD7C6; list-style: none outside none;}
+.fields-real-estate-tbl span , .footer-agent-tbl span {font-family: tahoma; font-size: 9pt;}
+.view-img-agent{width:90px; float:right; display:inline-block;}
+#quick_send_mail .captcha-box { display: block; text-align: left;}
+#quick_send_mail .captcha-box > img { width: 165px;}
+#quick_send_mail .captcha-box input {display: block; margin-right: auto; width: 160px;}
+#divQuickSendMail .required{display:none;}
+#divQuickSendMail .form_element input , #divQuickSendMail .form_element textarea{float:left; width:160px;}
+#divQuickSendMail .form_element label{width:auto; font-family:BYekan;}
+#divQuickSendMail{width:230px;}
+.quick-send-mail-button { background: none repeat scroll 0 0 #CC764C; color:#ffffff; border-radius:3px; display: block; margin: 3px auto; text-align: center;  width: 50px;}
+.view-real-estate-google-map.cboxElement { display: block; margin: auto; width: 400px;}
+.pelak{background:url(../images/pelak.png) no-repeat right center; width:57px; height:80px; display:block;}
+.pelak .code { color: #FFFFFF; display: block; font-size: 29pt; text-align:center; margin-top: 25px;}
+.pelak .label {color: #FFFFFF; text-align:center; display:block;}
+.special-title-real-estate-tbl td {font-size: 13pt;}
+.content-agent-real-estate{padding-top:7px;}
+.box.user-box > a { color: #666666 !important; text-decoration:none;}
+.ui-tabs .ui-tabs-nav li{float:right;}
+.search-form { margin-top: 12px;}
+.user-profile-image{position:absolute; left:40px; top:100px;}
+.view-user-info{ border-spacing: 0; display: block; padding-top: 40px; width: 430px; margin-right:20px;}
+.view-user-info tbody tr{border-bottom: 1px dotted #DBD7C6; list-style: none outside none;}
+.view-user-info tbody tr td{font-family: BYekan; font-size: 10pt; min-width:90px;}
+.box-view-user-info{background: none repeat scroll 0 0 #FBFBFB; border: 1px solid #CCCCCC; min-height:300px;}
+.user-name-title{font-family:BYekan; font-size:13pt;}
+.box-view-user-info .page-title{ color: #8B0000; font-family: BYekan; font-size: 10pt; left: 25px; margin: 0; position: absolute; top: 70px; width: 250px; text-align:center; }
+.view-user-info img { vertical-align: bottom;}
+#allSearch{width:auto; position: absolute; right: 215px; top: 47px;}
+.inline-search-form form label{display:none;}
+.a2a_menu a span, .a2a_tabs .a2a_tab_selected span{font-family:tahoma;}
+.a2a_tabs a span, .a2a_tabs div span{font-family:tahoma;}
+div.a2a_menu_powered_by{font-family:tahoma;}
+.gallery-block img{display:block; margin:auto;}
+.inline-search-form { padding: 13px;}
+.view-projects article > div{display:none; bottom:7px;}
+
+.content-slider-container .item a{margin-right:10px;}
+.inline-search {
+    font-size: 8pt !important;
+}
+
+.inline-search-form .inline-search{width: 113px;}
+#real_estate_form_page .buttons_submit-new{display: none;}
+
+.new-real-estate-btn #buttons_submit-new{display: none;}
+.new-real-estate-btn #buttons_submit .ui-icon{display: none;}
+.new-real-estate-btn #buttons_submit ,.new-real-estate-btn .ui-state-hover{background: url(../images/sabte_melk_01.png) no-repeat center center !important; width: 151px; height: 36px; display: block; border: none; text-indent: -1000000px;}

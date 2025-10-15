@@ -1,0 +1,112 @@
+.dropcontainer_demo2 {
+	position:absolute;
+	font-size: 11px;
+	color: #777;
+    left: 0;
+    top: 25px;
+    z-index: 999999;
+	} 
+
+.trigger_demo2 {
+	color: #777;
+	padding: 3px 10px;
+	font-size: 11px;
+	width: 170px;
+    height: 25px;
+	background: #fff url(../../images/drop-down/down.png) 0 center no-repeat;
+	display: inline-block;
+	border: 1px solid #ccc;
+    border-radius: 8px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease; 
+	transition: all 0.5s ease;
+    text-decoration: none;
+    float: left;
+    z-index: 99;
+	}
+
+.trigger_demo2:hover {
+	color: #777;
+	background: #f1fff8 url(../../images/drop-down/down.png) 0 center no-repeat;
+    text-decoration: none;
+	}
+
+.activetrigger_demo2 {
+	color: #777;
+	padding: 3px 10px;
+	font-size: 11px;
+	width: 170px;
+    height: 25px;
+	background: #f5f5f5 url(../../images/drop-down/up.png) 0 center no-repeat;
+	display: inline-block;
+	border: 1px solid #ccc;
+    border-radius: 8px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+    float: left;
+	}
+
+.activetrigger_demo2:hover {
+	background: #f5f5f5 url(../../images/drop-down/up.png) 0 center no-repeat;
+	color: #777;
+	}
+
+.activetrigger_demo2:active {
+	background: #f5f5f5 url(../../images/drop-down/up.png) 0 center no-repeat;
+	color: #777;
+	}
+
+.dropcontainer_demo2 ul {
+	font-size: 11px;
+	border: 1px solid #ccc;
+	border-top: none;
+	background: #fff;
+	list-style-type: none;
+	padding: 3px 10px;
+	margin: 0;
+	width: 170px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+    z-index: 999999;
+	}
+
+.dropcontainer_demo2 ul li {
+	padding: 5px;
+	-webkit-transition: all 0.5s ease; 
+	-moz-transition: all 0.5s ease; 
+	-o-transition: all 0.5s ease; 
+	transition: all 0.5s ease;
+    z-index: 999999;
+	}
+
+.dropcontainer_demo2 ul li:hover {
+	background: #f5f5f5;
+	outline: none;
+	}
+
+.dropcontainer_demo2 ul li:first-child {
+	display: none;
+	}
+
+.dropcontainer_demo2 ul li:last-child {
+	border-bottom: none;
+	}
+
+.dropdownhidden_demo2 {
+	display: none;
+	}
+
+.dropdownvisible_demo2 {
+	height: auto;
+	}
+
+.dropdownvisible_demo2 {
+	height: 200px;
+	overflow-y: scroll;
+	}

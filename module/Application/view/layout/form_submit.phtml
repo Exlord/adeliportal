@@ -1,0 +1,9 @@
+<div>
+    <?
+    $inlineScript = $this->inlineScript()->toString();
+    $fm = $this->flashMessenger()->render();
+    ?>
+    <input type="hidden" id="inlineScriptContainer" value="<?= $this->escapeHtmlAttr(trim($inlineScript)) ?>">
+    <input type="hidden" id="flashMessengerContainer" value="<?= $this->escapeHtmlAttr(trim($fm)) ?>">
+    <?= $this->content ?>
+</div>

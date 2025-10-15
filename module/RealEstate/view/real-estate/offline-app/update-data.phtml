@@ -1,0 +1,7 @@
+<?
+if ($this->xml){
+    echo $this->xml;
+}
+else {
+    echo $this->general()->ERROR(t('Downloading the updated data for the offline application is not available to public.'));
+}

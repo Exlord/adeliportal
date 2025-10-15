@@ -1,0 +1,11 @@
+<? return array(
+    'Domain Default Route' => 'مسیر پیشفرض دامنه ها',
+    'Create/Edit Domains' => 'ساخت و ویرایش دامنه',
+    'PERM_Domain' => 'دامنه ها',
+    'Domains' => 'دامنه ها',
+    'Display in Domains'=>'نمایش در دامنه ها',
+    'Available Languages'=>'زبان های موجود',
+    'full (sub)domain name without www, including the extension.<br/>exp: mysite.com , sub1.mysite.com ...'=>'نام تمام زیر دامنه ها بدون www و شامل پسوند <br/> بعنوان مثال: mysite.com , sub1.mysite.com',
+    'this content will only be displayed in the selected domains<br/> none selected == All'=>'این مطلب فقط در دامنه های انتخابی نمایش داده می شوند .<br/> در صورت خالی بودن در تمام دامنه ها نمایش داده می شوند .',
+    'this content will only be available in the selected languages<br/> none selected == All'=>'این مطلب فقط در زبان های انتخابی فعال می باشد . <br/> در صورت خالی بودن در تمام زبان ها فعال خواهد بود .',
+);

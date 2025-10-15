@@ -1,0 +1,19 @@
+<?$breadcrumbs = trim($this->navigation()
+    ->breadcrumbs('admin_menu')
+    ->setMinDepth(0)
+    ->setPartial('application/index/admin-breadcrumbs')
+    ->render());
+$headLink = $this->headLink()->toString();
+$headScript = $this->headScript()->toString();
+$inlineScript = $this->inlineScript()->toString();
+$fm = $this->flashMessenger()->render();
+$json = array(
+    'breadcrumbs' => $breadcrumbs,
+    'css' => $headLink,
+    'js' => $headScript,
+    'inlineJs' => $inlineScript,
+    'fm' => $fm,
+    'content' => $this->content
+);
+?>
+var data = <?echo(json_encode($json));?>;

@@ -1,0 +1,256 @@
+<div id="comment_<?= $this->row['id'] ?>" class="comment-div back-comment-1">
+<?
+
+if (current_user()->id) {
+    ?>
+    <?= $this->negative_positive($this->row['id'],  \Comment\Module::ENTITY_TYPE) ?>
+<? } ?>
+<div class="comment-header">
+    <a class="comment-username" href="<?= url('app/user/user-profile', array('id' => $this->row['userId'])) ?>">
+        <?= $this->escapeHtml($this->row['name']) ?>
+    </a>
+    <span class="line"> | </span>
+    <span class="comment-date"> <?= $this->dateFormat($this->row['created']) ?></span>
+</div>
+<a href="#toggle" class="slide-toggle-icon attach-open-icon" title="<?=t('Open/Close')?>" rel="tooltip"></a>
+
+<div class="main-content-comments">
+<?
+if (!empty($this->row['image'])) {
+    $file_path_resize = getThumbnail()->thumbnail($this->row['image'], 80, 80);
+    $file_path_base = $this->basePath() . $this->row['image'];
+} else {
+    $file_path_resize = getThumbnail()->thumbnail($this->basePath() . '/images/not-image.png', 80, 80);
+    $file_path_base = $this->basePath() . '/images/not-image.png';
+}
+?>
+<div class="comment-image">
+    <a class="colorbox" href="<?= $file_path_base ?>">
+        <img class="img-comment-image" src="<?= $file_path_resize ?>" alt="">
+    </a>
+</div>
+
+
+<p class="comment-body" id="comment_content_<?= $this->row['id'] ?>">
+    <?= $this->escapeHtml($this->row['comment']) ?>
+</p>
+
+<div style="clear: both"></div>
+<?
+if ($this->questStatus) {
+    ?>
+    <div class="comment-buttons">
+        <a href="#reply" id="newReply" class="new-reply" data-id="<?= $this->row['id'] ?>"><?= t('Reply') ?></a>
+        <?
+        if ((isAllowed(\Comment\Module::APP_COMMENT_EDIT) && current_user()->id == $this->row['userId']) || isAllowed(\Comment\Module::APP_COMMENT_EDIT_ALL)) {
+            if ($this->editTime == 0 || (int)$this->row['created'] + $this->editTime > time()) {
+                ?>
+                <a href="#edit" id="open_edit_comment_text" class="edit-comment-text"
+                   data-id="<?= $this->row['id'] ?>"><?= t('Edit') ?></a>
+            <?
+            }
+        }
+        if ((isAllowed(\Comment\Module::APP_COMMENT_DELETE) && current_user()->id == $this->row['userId']) || isAllowed(\Comment\Module::APP_COMMENT_DELETE_ALL)) {
+            if ($this->deleteTime == 0 || (int)$this->row['created'] + $this->deleteTime > time()) {
+                ?>
+                <a href="#delete" id="delete_comment" class="delete-comment"
+                   data-id="<?= $this->row['id'] ?>"><?= t('Delete') ?></a>
+            <?
+            }
+        }
+        ?>
+    </div>
+<?
+} else {
+    ?>
+    <div class="user-register">
+        <?= t('You must be logged in to comment your user panel.') ?>
+        <a target="_blank" href="<?= url('app/user/register') ?>">
+            <?= t('Click here to Login/register') ?>
+        </a>
+    </div>
+<? } ?>
+<div class="comment-level2 ">
+    <?
+    foreach ($this->dataTwoLevel as $row2) {
+        if ($row2['parentId'] == $this->row['id']) {
+            ?>
+            <div id="comment_<?= $row2['id'] ?>" class="comment-div back-comment-2">
+                <?
+                if (current_user()->id) {
+                    ?>
+                    <?= $this->negative_positive($row2['id'],  \Comment\Module::ENTITY_TYPE) ?>
+                <? } ?>
+                <div class="comment-header">
+                    <a class="comment-username"
+                       href="<?= url('app/user/user-profile', array('id' => $row2['userId'])) ?>">
+                        <?= $this->escapeHtml($row2['name']) ?>
+                    </a>
+                    <span class="line"> | </span>
+                    <span class="comment-date"> <?= $this->dateFormat($row2['created']) ?></span>
+                </div>
+                <a href="#toggle" class="slide-toggle-icon attach-open-icon" title="<?=t('Open/Close')?>" rel="tooltip"></a>
+
+                <div class="main-content-comments">
+                    <?
+                    if (!empty($row2['image'])) {
+                        $file_path_resize = getThumbnail()->thumbnail($row2['image'], 80, 80);
+                        $file_path_base = $this->basePath() . $row2['image'];
+                    } else {
+                        $file_path_resize = getThumbnail()->thumbnail($this->basePath() . '/images/not-image.png', 80, 80);
+                        $file_path_base = $this->basePath() . '/images/not-image.png';
+                    }
+                    ?>
+                    <div class="comment-image">
+                        <a class="colorbox" href="<?= $file_path_base ?>">
+                            <img class="img-comment-image" src="<?= $file_path_resize ?>" alt="">
+                        </a>
+                    </div>
+
+
+                    <p class="comment-body" id="comment_content_<?= $row2['id'] ?>">
+                        <?= $this->escapeHtml($row2['comment']) ?>
+                    </p>
+
+                    <div style="clear: both"></div>
+                    <?
+                    if ($this->questStatus) {
+                        ?>
+                        <div class="comment-buttons">
+                            <a href="#reply" id="newReply" class="new-reply"
+                               data-id="<?= $row2['id'] ?>"><?= t('Reply') ?></a>
+                            <?
+                            if ((isAllowed(\Comment\Module::APP_COMMENT_EDIT) && current_user()->id == $this->row['userId']) || isAllowed(\Comment\Module::APP_COMMENT_EDIT_ALL)) {
+                                if ($this->editTime == 0 || (int)$row2['created'] + $this->editTime > time()) {
+                                    ?>
+                                    <a href="#edit" id="open_edit_comment_text" class="edit-comment-text"
+                                       data-id="<?= $row2['id'] ?>"><?= t('Edit') ?></a>
+                                <?
+                                }
+                            }
+                            if ((isAllowed(\Comment\Module::APP_COMMENT_DELETE) && current_user()->id == $this->row['userId']) || isAllowed(\Comment\Module::APP_COMMENT_DELETE_ALL)) {
+                                if ($this->deleteTime == 0 || (int)$row2['created'] + $this->deleteTime > time()) {
+                                    ?>
+                                    <a href="#delete" id="delete_comment" class="delete-comment"
+                                       data-id="<?= $row2['id'] ?>"><?= t('Delete') ?></a>
+                                <?
+                                }
+                            }
+                            ?>
+                        </div>
+                    <? } else { ?>
+                        <div class="user-register">
+                            <?= t('You must be logged in to comment your user panel.') ?>
+                            <a target="_blank" href="<?= url('app/user/register') ?>">
+                                <?= t('Click here to Login/register') ?>
+                            </a>
+                        </div>
+                    <? } ?>
+                    <div class="comment-level3">
+                        <?
+                        foreach ($this->dataThreeLevel as $row3) {
+                            if ($row3['parentId'] == $row2['id']) {
+                                ?>
+                                <div id="comment_<?= $row3['id'] ?>" class="comment-div back-comment-1">
+                                    <?
+                                    if (current_user()->id) {
+                                        ?>
+                                        <?= $this->negative_positive($row3['id'],  \Comment\Module::ENTITY_TYPE) ?>
+                                    <? } ?>
+                                    <div class="comment-header">
+                                        <a class="comment-username"
+                                           href="<?= url('app/user/user-profile', array('id' => $row3['userId'])) ?>">
+                                            <?= $this->escapeHtml($row3['name']) ?>
+                                        </a>
+                                        <span class="line"> | </span>
+                                        <span class="comment-date"> <?= $this->dateFormat($row3['created']) ?></span>
+                                    </div>
+                                    <a href="#toggle" class="slide-toggle-icon attach-open-icon" title="<?=t('Open/Close')?>" rel="tooltip"></a>
+
+                                    <div class="main-content-comments">
+                                        <?
+                                        if (!empty($row3['image'])) {
+                                            $file_path_resize = getThumbnail()->thumbnail($row3['image'], 80, 80);
+                                            $file_path_base = $this->basePath() . $row3['image'];
+                                        } else {
+                                            $file_path_resize = getThumbnail()->thumbnail($this->basePath() . '/images/not-image.png', 80, 80);
+                                            $file_path_base = $this->basePath() . '/images/not-image.png';
+                                        }
+                                        ?>
+                                        <div class="comment-image">
+                                            <a class="colorbox" href="<?= $file_path_base ?>">
+                                                <img class="img-comment-image" src="<?= $file_path_resize ?>" alt="">
+                                            </a>
+                                        </div>
+
+
+                                        <p class="comment-body" id="comment_content_<?= $row3['id'] ?>">
+                                            <?= $this->escapeHtml($row3['comment']) ?>
+                                        </p>
+
+                                        <div style="clear: both"></div>
+                                        <?
+                                        if ($this->questStatus) {
+                                            ?>
+                                            <div class="comment-buttons">
+                                                <a href="#reply" id="newReply" class="new-reply"
+                                                   data-id="<?= $row3['id'] ?>"><?= t('Reply') ?></a>
+                                                <?
+                                                if ((isAllowed(\Comment\Module::APP_COMMENT_EDIT) && current_user()->id == $this->row['userId']) || isAllowed(\Comment\Module::APP_COMMENT_EDIT_ALL)) {
+                                                    if ($this->editTime == 0 || (int)$row3['created'] + $this->editTime > time()) {
+                                                        ?>
+                                                        <a href="#edit" id="open_edit_comment_text"
+                                                           class="edit-comment-text"
+                                                           data-id="<?= $row3['id'] ?>"><?= t('Edit') ?></a>
+                                                    <?
+                                                    }
+                                                }
+                                                if ((isAllowed(\Comment\Module::APP_COMMENT_DELETE) && current_user()->id == $this->row['userId']) || isAllowed(\Comment\Module::APP_COMMENT_DELETE_ALL)) {
+                                                    if ($this->deleteTime == 0 || (int)$row3['created'] + $this->deleteTime > time()) {
+                                                        ?>
+                                                        <a href="#delete" id="delete_comment" class="delete-comment"
+                                                           data-id="<?= $row3['id'] ?>"><?= t('Delete') ?></a>
+                                                    <?
+                                                    }
+                                                }
+                                                if ($row3['count']) {
+                                                    ?>
+                                                    <a href="#replies" data-id="<?= $row3['id'] ?>" class="replies">
+                                                        <?= t('Replies') ?>
+                                                        ( <span class="count-reply"><?= $row3['count'] ?></span> )
+                                                    </a>
+                                                <?
+                                                }
+                                                if ($row3['count']) {
+                                                    ?>
+                                                    <div style="display: none" id="showReply<?= $row3['id'] ?>"
+                                                         class="show-reply"></div>
+                                                <?
+                                                }
+                                                ?>
+                                            </div>
+                                        <? } else { ?>
+                                            <div class="user-register">
+                                                <?= t('You must be logged in to comment your user panel.') ?>
+                                                <a target="_blank" href="<?= url('app/user/register') ?>">
+                                                    <?= t('Click here to Login/register') ?>
+                                                </a>
+                                            </div>
+                                        <? } ?>
+                                    </div>
+                                </div>
+                            <?
+                            }
+                        } ?>
+
+                    </div>
+                </div>
+            </div>
+        <?
+        }
+    } ?>
+
+</div>
+</div>
+
+</div>

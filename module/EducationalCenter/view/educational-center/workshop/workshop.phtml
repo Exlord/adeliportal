@@ -1,0 +1,16 @@
+<div class="workshop">
+    <? if (isset($this->error)) {
+        print $this->alert($this->error, 'alert-danger');
+    } else {
+        ?>
+        <h2 class="page-header clearfix">
+            <span class="pull-left flip"><?= $this->item->title ?></span>
+            <? if (!empty($this->item->itemName)) { ?>
+                 <small><?= $this->item->itemName ?></small>
+            <? } ?>
+             <small class="pull-left flip">&nbsp;&nbsp;<small class="text-muted"><?= $this->item->code ?></small></small>
+        </h2>
+        <p><?= $this->item->note ?></p>
+        <?= $this->classes; ?>
+    <? } ?>
+</div>

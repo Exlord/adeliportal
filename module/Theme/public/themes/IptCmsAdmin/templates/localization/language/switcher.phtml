@@ -1,0 +1,70 @@
+<div class="language-switcher-navbar pull-right flip header-navbar">
+    <ul class="nav navbar-nav">
+        <?
+        $current_lang = null;
+        $lang_text = '';
+        /* @var $MvcEvent \Zend\Mvc\MvcEvent */
+        $MvcEvent = getSM('Application')->getMvcEvent();
+
+        $route = 'app';
+        $params = array();
+        $options = array();
+        if ($MvcEvent) {
+            /* @var $routeMatch \Zend\Mvc\Router\Http\RouteMatch */
+            $routeMatch = $MvcEvent->getRouteMatch();
+            if ($routeMatch) {
+                $route = $routeMatch->getMatchedRouteName();
+                $params = $routeMatch->getParams();
+                $options['query'] = (array)getSM('Request')->getQuery();
+            }
+        }
+        $basePath = $this->basePath();
+        $lang__img = "<img src='%s' alt='%s' class='%s'/>";
+        $dropdown_item = '<li class="language-item">
+                            <a href="%s" title="%s">
+                                <div class="media">
+                                    <span class="pull-left">%s</span>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">%s</h4>
+                                        <span class="text-muted">%s</span>
+                                     </div>
+                                </div>
+                            </a>
+                         </li>';
+        $lang_dropdown = '<ul class="dropdown-menu flip languages-container"><li><ul class="menu">%s</ul></li></ul>';
+        $lang_dropdown_text = "";
+
+        foreach ($this->languages as $lang) {
+            $params['lang'] = $lang['langSign'];
+            $href = url($route, $params, $options, true);
+            $src = $basePath . '/images/flags/' . $lang['langSign'] . '.png';
+            $alt = $lang['langName'];
+            $img = sprintf($lang__img, $src, $alt, 'media-object');
+            $heading = $lang['langName'];
+            $text = $lang['title'];
+
+            if ($lang['langSign'] != SYSTEM_LANG) {
+                $lang_dropdown_text .= sprintf($dropdown_item, $href, $text, $img, $heading, $text);
+            } else {
+                $current_lang = $lang;
+            }
+        }
+        $lang_dropdown_text = sprintf($lang_dropdown, $lang_dropdown_text);
+
+        $src = $basePath . '/images/flags/' . $current_lang['langSign'] . '.png';
+        $img = sprintf($lang__img, $src, $current_lang['langName'], 'media-object');
+        ?>
+        <li class="dropdown language-switcher-menu">
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#" title="<?=t("Click here to change system's language",TEMPLATE_NAME)?>">
+                <div class="media">
+                    <span class="pull-left"><?=$img?></span>
+
+                    <div class="media-body">
+                        <h5 class="media-heading"><?=$current_lang['langName']?></h5>
+                    </div>
+                </div>
+            </a>
+            <?= $lang_dropdown_text ?>
+        </li>
+    </ul>
+</div>

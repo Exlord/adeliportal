@@ -1,0 +1,66 @@
+<style>
+    .footer-content{ position:relative; font-family:tahoma !important; }
+    #footer p{ }
+    #footer-ipt-logo{ position:absolute; left:0; bottom:24px display : none; padding:10px 10px 7px 10px; background:#e8e7e8;
+        border:solid 1px #dbdbe1;
+        width:290px; height:68px;
+        -moz-border-radius:10px;
+        -webkit-border-radius:10px;
+        border-radius:10px;
+        white-space:nowrap;
+    }
+    #footer-ipt-logo a.link{ background:#0072b9; color:white; padding:5px; font-weight:bold;
+        font-size:10pt;
+        -moz-border-radius:20px;
+        -webkit-border-radius:20px;
+        border-radius:20px;
+    }
+    #footer-ipt-logo a.link:hover{ background:#ff4001; }
+    #footer-ipt-logo a:hover{ text-decoration:none; }
+    #footer-ipt-logo img{ width:90px; }
+    #footer-logo{ display:inline-block; position:relative; height: }
+</style>
+
+<section id="footer" class="container footer sticky-bottom">
+    <div class="row">
+        <div class=" col-md-12">
+            <div class="footer-content container">
+                <div align="center">
+                    <span><?= sprintf(t('APPLICATION_RIGHTS'), $this->company) ?></span>
+                    .
+                    <span><?= t('APPLICATION_SUPPORT') ?></span>
+
+                    <div id="footer-logo">
+                        <a href="http://www.ipt24.com/fa" target="_blank">
+                            <img src="http://ipt24.com/img/ipt24.png"
+                                 alt="طراحی سایت , طراحی پورتال سازمانی , طراحی سیستم فروش اینترنتی"
+                                 width="50" height="25" longdesc="http://ipt24.com">
+                        </a>
+
+                        <div id="footer-ipt-logo">
+                            <a href="http://www.ipt24.com/fa" target="_blank">
+                                <img src="http://ipt24.com/img/ipt24_com.png"
+                                     alt="طراحی سایت , طراحی پورتال سازمانی , طراحی سیستم فروش اینترنتی"
+                                     longdesc="http://ipt24.com">
+                            </a>
+                            <a class="link" href="http://ipt24.com/price-inquiry" target="_blank">
+                                سفارش طراحی وب سایت
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $('#footer-logo').hover(
+            function () {
+                $('#footer-ipt-logo').show();
+            }, function () {
+                $('#footer-ipt-logo').hide();
+            }
+        );
+    });
+</script>

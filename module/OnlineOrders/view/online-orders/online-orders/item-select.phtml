@@ -1,0 +1,256 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order-admin.css');
+
+$this->headScript()->appendFile($this->basePath() . '/lib//tinymce/tinymce.js');
+//$this->headScript()->appendFile($this->basePath() . '/lib/ckeditor/ckeditor.js');
+$formGroup = $this->formGroup;
+$viewPage = $this->viewPage;
+?>
+<style>
+    .item-radio fieldset{
+        direction: ltr;
+    }
+    .div-new-item {
+        width: auto;
+        padding: 10px;
+        text-align: right;
+        line-height: 30px;
+        display: none;
+        border: 1px solid #139ff7;
+        border-radius: 4px;
+        background-color: #fcf8e3;
+        left: 50px;
+        top: 60px;
+        position: absolute;
+    }
+
+    .div-edit-item {
+        width: auto;
+        padding: 10px;
+        text-align: right;
+        line-height: 30px;
+        display: none;
+        border: 1px solid #139ff7;
+        border-radius: 4px;
+        background-color: #fcf8e3;
+        left: 30px;
+        position: absolute;
+    }
+
+    .group-list-item {
+        width: 300px;
+        padding: 5px;
+        color: #003C7D;
+        font-family: tahoma;
+        font-size: 14px;
+        margin: 10px;
+    }
+
+    .div-group-list-item {
+        border: 1px solid #cacaca;
+        border-radius: 3px;
+        background-color: #fafafa;
+        width: 400px;
+        position: absolute;
+        margin: 10px;
+    }
+
+    #submit-show {
+        margin-right: 45%;
+    }
+    .header-item-select{
+        height: 100px;
+        border: 1px solid #C6C6E7;
+        background-color: #FEFEDB;
+        border-radius: 5px;
+    }
+    .div-group-list-item label{
+        margin: 10px;
+    }
+    .div-group-list-item button{
+        margin-bottom: 5px;
+    }
+    #btnCreateItems{
+        margin: 10px;
+    }
+    .btnEditItems{
+        background-image: url(<?=$this->basePath() ?>/images/plus-icon1.png);
+        border: none;
+        border-radius: 5px;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+    }
+    .btnEditItems1{
+        background-image: url(<?=$this->basePath() ?>/images/min-icon.png);
+        border: none;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+</style>
+<div class="header-item-select">
+    <div class="div-group-list-item">
+        <?
+        $formGroup->prepare();
+        echo $this->form()->openTag($formGroup);
+        foreach ($formGroup->getElements() as $el) {
+            echo $this->iptformRow($el);
+        }
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+    <?
+    if ($viewPage == 1) {
+    $select = $this->select;
+    $formNew = $this->formNew;
+    $formEdit = $this->formEdit;
+
+    ?>
+
+    <div>
+        <a id="btnCreateItems"
+           class="toolbar-button button add_button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-secondary"
+           href="#" role="button" aria-disabled="false">
+            <span class="ui-button-text"><?=t('New Item')?></span>
+            <span class="ui-button-icon-secondary ui-icon ui-icon-plus"></span>
+        </a>
+
+        <br/><br/>
+
+        <div class="div-new-item" id="createItemsTab" style="display: none;">
+            <?
+            $formNew->prepare();
+            echo $this->form()->openTag($formNew);
+            echo $this->iptFormRow($formNew->get('id'));
+            echo $this->iptFormRow($formNew->get('itemName'));
+            echo $this->iptFormRow($formNew->get('itemDesc'));
+            echo $this->iptFormRow($formNew->get('itemDescMore'));
+            echo $this->iptFormRow($formNew->get('itemPrice')); ?>
+            <div class="item-radio"><?=$this->iptFormRow($formNew->get('itemType'))?></div>
+            <?=$this->iptFormRow($formNew->get('itemActive'))?>
+            <?
+            echo $this->iptFormRow($formNew->get('itemPosition'));
+            echo $this->iptFormRow($formNew->get('groupId'));
+            echo $this->iptFormRow($formNew->get('csrf_items_form'));
+            echo $this->iptFormRow($formNew->get('submit-create'));
+            echo $this->form()->closeTag();
+            ?>
+        </div>
+    </div>
+</div>
+<br/><br/>
+    <table align=center class="tbl-data-grid" style="width: 100%">
+        <thead>
+        <tr align=center>
+            <th><?=t('Rows');?></th>
+            <th style="text-align: right;"><?=t('Item Name');?></th>
+            <th style="text-align: right;"><?=t('Description');?></th>
+            <th><?=t('Price');?></th>
+            <th><?=t('Type');?></th>
+            <th><?=t('Active');?></th>
+            <th><?=t('Position');?></th>
+            <th><?=t('Operations');?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?
+        $j = 1;
+        $countClass = 1;
+        foreach ($select as $row) {
+            if ($countClass == 0) {
+                $class = "class='tbl-data-grid-tr-1'";
+                $countClass = 1;
+            } else {
+                $class = "class='tbl-data-grid-tr-2'";
+                $countClass = 0;
+            }
+
+            ?>
+            <tr align="center" <?=$class?>>
+                <td><?=$j?></td>
+                <td style="width: 30%; font-size: 10px; text-align: right;"><?=$row->itemName?></td>
+                <td style="width: 30%; font-size: 10px; text-align: right;"><?=$row->itemDesc?></td>
+                <td><?=$row->itemPrice?></td>
+                <td><?=\OnlineOrders\API\API::checkOrText($row->itemType)?></td>
+                <td><?=\OnlineOrders\API\API::yesOrNo($row->itemActive)?></td>
+                <td><?=$row->itemPosition?></td>
+                <td width="100"><input type="button" class="btnEditItems" value="" id="<?= $row->id ?>">
+
+                    <div class="div-edit-item" id="div-edit-item-<?= $row->id ?>">
+                        <?
+                        $formEdit->setData($row);
+                        $formEdit->prepare();
+                        echo $this->form()->openTag($formEdit);
+                        echo $this->iptFormRow($formEdit->get('id'));
+                        echo $this->iptFormRow($formEdit->get('itemName'));
+                        echo $this->iptFormRow($formEdit->get('itemDesc'));
+                        ?>
+                        <div class="form_element textarea">
+                            <label for="itemDesc"><?=t('More Description');?></label>
+                            <textarea id="itemDescMore<?=$row->id?>" name="itemDescMore" class="editor-edit-items">
+                                <?=$row->itemDescMore ?>
+                            </textarea>
+                        </div>
+                        <?
+                        echo $this->iptFormRow($formEdit->get('itemPrice')); ?>
+                       <div class="item-radio"><?=$this->iptFormRow($formEdit->get('itemType'))?></div>
+                       <?=$this->iptFormRow($formEdit->get('itemActive'))?>
+                        <?
+                        echo $this->iptFormRow($formEdit->get('itemPosition'));
+                        echo $this->iptFormRow($formEdit->get('groupId'));
+                        echo $this->iptFormRow($formEdit->get('csrf_items_form'));
+                        echo $this->iptFormRow($formEdit->get('submit-edit'));
+                        echo $this->iptFormRow($formEdit->get('submit-delete'));
+                        echo $this->form()->closeTag();
+                        ?>
+                    </div>
+                </td>
+            </tr>
+            <?
+            $j++;
+        }
+        ?>
+        </tbody>
+    </table>
+<?
+}
+else {
+    ?>
+    </div>
+<? } ?>
+<script>
+    $(document).ready(function () {
+
+        $('#btnCreateItems').click(function () {
+            $('#createItemsTab').slideToggle(1000);
+        });
+
+        $('.btnEditItems').click(function () {
+            var iditem = $(this).attr('id');
+            var x = $(this).position();
+            $(this).toggleClass('btnEditItems1');
+            $('#div-edit-item-' + iditem).css({top: (x.top) + 30});
+            $('#div-edit-item-' + iditem).slideToggle(1000);
+        });
+
+        $('.editor-edit-items').each(function(){
+         var id = $(this).attr("id");
+        // CKEDITOR.replace(id, {language: '<?//=SYSTEM_LANG ?>',skin:'moonocolor'});
+
+            tinymce.init({
+                selector: "textarea#"+id,
+                theme: "modern",
+               // plugins: "link,advlist,anchor,autolink,autoresize,autosave,bbcode,code,charmap,compat3x,contextmenu,directionality,emoticons,example,example_dependency,fullpage,fullscreen,hr,image,importcss,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,spellchecker,tabfocus,table,template,textcolor,visualchars,wordcount",
+                plugins: "link,image,media,preview,print,table",
+                link_list: [
+                    {title: 'www.azaript.com', value: 'http://www.azaript.com'}
+                    ]
+            });
+         });
+
+    });
+
+</script>

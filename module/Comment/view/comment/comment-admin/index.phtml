@@ -1,0 +1,18 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?
+        if($this->title)
+          echo t('Comments')." ".t('Page')." : ".base64_decode($this->title);
+        else
+          echo t('Comments');
+        ?>
+    </h3>
+    <div>
+        <?= $this->grid ?>
+    </div>
+    <div id="comment_dialog-admin" style="display: none;">
+        <div class="message-admin" id="message-admin" style="display: none"></div>
+        <div class="ajax-loading-admin" id="comment-form-admin" ></div>
+    </div>
+</div>

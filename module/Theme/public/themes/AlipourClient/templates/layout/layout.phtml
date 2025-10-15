@@ -1,0 +1,172 @@
+<?
+//$content = \Theme\API\Themes::renderLayout($this);
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$bootstrap = $direction == 'rtl' ? '/css/bootstrap.rtl.min.css' : '/css/bootstrap.min.css';
+$basePath = $this->basePath();
+$path = $basePath . TEMPLATE_PATH;
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    )
+    ->prependStylesheet($basePath . '/css/system.css')
+    ->prependStylesheet($basePath . '/css/base-theme/jquery-ui-1.10.1.custom.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . $bootstrap)
+    ->prependStylesheet($basePath . '/css/reset.min.css');
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    ->prependFile($basePath . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+
+$menuBlock = $this->blocks('col-topmenu');
+$menu1Block = $this->blocks('col-menu1');
+$sliderBlock = $this->blocks('col-slider');
+$newsBlock = $this->blocks('col-news');
+?>
+
+<!DOCTYPE html>
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<body>
+<div id="container">
+    <div class="container container-header">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 bg-header">
+                <img src="<?= $path . '/images/header2.jpg' ?>" class="img-responsive">
+            </div>
+        </div>
+    </div>
+    <div class="container container-topMenu">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 box-menu">
+                <?
+                if ($menu1Block) {
+                    ?>
+                    <div class="box-top-menu1">
+                        <?= $menu1Block ?>
+                    </div>
+                <?
+                }
+                ?>
+                <?
+                if ($menuBlock) {
+                    ?>
+                    <span class="menu-nav-bar-side-left menu-nav-bar-side"></span>
+                    <div class="box-top-menu">
+                        <?= $menuBlock ?>
+                    </div>
+                    <span class="menu-nav-bar-side-right menu-nav-bar-side"></span>
+                <?
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="container container-slider">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 box-slider">
+                <?
+                if ($sliderBlock) {
+                    ?>
+                    <div class="box-top-menu">
+                        <?= $sliderBlock ?>
+                    </div>
+                <?
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+    <?
+    if ($content) {
+        ?>
+        <div class="container container-body">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="box-main-body">
+                        <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+                        <?= $content ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?
+    }
+    ?>
+    <!--<div id="body">
+        <? /*= $content */ ?>
+    </div>-->
+    <div class="container container-news">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 box-news">
+                <?
+                if ($newsBlock) {
+                    ?>
+                    <span class="news-nav-bar-side-left news-nav-bar-side"></span>
+                    <div class="box-top-news">
+                        <?= $newsBlock ?>
+                    </div>
+                    <span class="news-nav-bar-side-right news-nav-bar-side"></span>
+                <?
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="container footer">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="box-footer">
+                    <?
+                    $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                    $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    ?>
+                    <p align="center">
+                        <?= t('APPLICATION_BROWSERS') ?>
+                    </p>
+
+                    <p align="center">
+                        <span><?= sprintf(t('APPLICATION_RIGHTS'), 'آقای حسین علی پور') ?></span>
+                        <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                        &nbsp; .
+                        <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                        <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

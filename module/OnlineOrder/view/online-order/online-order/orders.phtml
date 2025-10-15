@@ -1,0 +1,60 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?=t('Orders')?>
+    </h3>
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>
+
+
+<div class="extension-order-order" style="display: none;" id="extension-order-order">
+    <label><?= t('Are you sure you want to extend an order?') ?></label>
+    <span class="loading-extension-order"></span>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-extension').click(function (e) {
+            var id = $(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().prev().html();
+            e.preventDefault();
+            $("#extension-order-order").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                title: '<?=t('Extending Order')?>',
+                close: function (event, ui) {
+                    $(this).dialog("destroy");
+                    $("#extension-order-order").hide();
+                },
+                buttons: [
+                    {
+                        text: '<?=t('Yes')?>',
+                        icons: { primary: "ui-icon-check"},
+                        click: function () {
+                            var dialog = $(this);
+                            var data = {};
+                            data['id'] = id;
+                            var url = '<?=url('admin/online-order/orders/extension',array('id'=>'__ID__'))?>';
+                            url = url.replace('__ID__',id);
+                            dialog.dialog("destroy");
+                            $("#extension-order-order").hide();
+                            window.open(url,"_blank");
+                        }
+                    },
+                    {
+                        text: '<?=t('Cancel')?>',
+                        icons: { primary: "ui-icon-closethick"},
+                        click: function () {
+                            $(this).dialog("destroy");
+                            $("#extension-order-order").hide();
+                        }
+                    }
+                ]
+            });
+
+        });
+    });
+</script>

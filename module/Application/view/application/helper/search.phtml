@@ -1,0 +1,27 @@
+<div class="inline-search-form">
+    <form method="post" action="<?= url('app/search') ?>" class="form-inline" role="form">
+        <div class="form-group">
+            <label><?= t('Search') ?></label>
+
+            <div class="input-group">
+                <input id="search-input-<?= $this->id ?>" type="text" name="keyword" placeholder="<?= t('Search') ?>"
+                       class="inline-search form-control">
+            </div>
+            <button type="submit" name="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>
+                    <span class="button-text">
+                        <?= t('Search') ?>
+                    </span>
+            </button>
+            <span class="search-indicator"></span>
+        </div>
+    </form>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    Search.url = '<?=url('app/search')?>';
+    Search.instances['<?=$this->id?>'] = {position: <?=$this->position?>, cache: {}, initiated: false};
+    Search.langDirection = '<?=t('lang_direction');?>';
+    Search.init('<?=$this->id?>');
+    <?$this->inlineScript()->captureEnd()?>
+</script>

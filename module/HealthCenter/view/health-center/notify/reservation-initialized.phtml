@@ -1,0 +1,11 @@
+<p>
+    <?=sprintf(t('Your request with id %s is submitted successfully.'), $this->__RESERVE_REQUEST_ID__)?>
+</p>
+<p>
+    <?= sprintf(t('you have initialized your reservation for %s'), $this->__DOCTOR_URL__) ?>
+</p>
+<p>
+    <?=
+    sprintf(t('This reservation is temporary and if payment is not completed in less than %s minutes it will be canceled'),
+        $this->__RESERVE_TIME_FOR_PAYMENT__) ?>
+</p>

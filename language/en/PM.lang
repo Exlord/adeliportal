@@ -1,0 +1,8 @@
+<?
+return array(
+    'PERM_PM' => 'PM',
+    'PM_Unread' => 'Unread',
+    'PM_Read' => 'Read',
+    'PM_VIEW_HELPER_DESC'=>'PM_VIEW_HELPER_DESC',
+    'PM_ERROR_NEW'=>'PM_ERROR_NEW',
+);

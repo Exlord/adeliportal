@@ -1,0 +1,36 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/step-order.css');
+$this->headScript()->appendFile($this->basePath() . '/js/step-order.js');
+\JQuery\API\JQuery::loadColorBox($this);
+?>
+
+<div class="main-step-order">
+    <div class="step-order-loading">
+        <span class="ajax-loading"></span>
+    </div>
+    <div class="step-order-header">
+        <h2><?= t('Welcome') ?></h2>
+
+        <h3><?= t('Your journey starts here.') ?></h3>
+
+        <p><?= t('The DAF configurator helps you to find the best solution to your transport needs.') ?></p>
+    </div>
+    <div class="step-order-content">
+        <div class="col-button main-step">
+            <? foreach ($this->select as $row) { ?>
+                <a class="step-order-link" href="#" data-id="<?= $row['id'] ?>">
+                    <h3><?= $row['itemName'] ?></h3>
+                    <?= $row['itemText'] ?>
+                </a>
+            <? } ?>
+        </div>
+    </div>
+</div>
+
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    var StepOrder = {
+        url: '<?=url('admin/other-step')?>'
+    };
+    <?$this->inlineScript()->captureEnd();?>
+</script>

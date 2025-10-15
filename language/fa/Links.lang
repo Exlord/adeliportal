@@ -1,0 +1,15 @@
+<?return array(
+    'Links' => 'پیوند ها',
+    'New Link' => 'پیوند جدید',
+    'Link Name' => 'نام لینک',
+    'Link Title' => 'عنوان لینک',
+    'Link URL' => 'آدرس لینک',
+    'Link Category' => 'دسته بندی لینک',
+    "To categorize the links create a category and set its machine name to 'links_category'" => "برای دسته بندی پیوندها یک گروه دسته بندی ساخته و نام ماشینی آن را 'links_category' قرار دهید",
+    'Links Section'=>'بخش لینک ها',
+    'Links Category'=>'لینک های دسته بندی',
+    'Links List'=>'لیست لینک ها',
+    "A list of links to friends site's"=>'یک لیست از لینکهایی که به سایت دوستان شما داده شده است . ',
+    'LINKS_ALL_LINKS'=>'تمام پیوندها',
+    'LINK_CATEGORIES'=>'دسته بندی لینک ها',
+);

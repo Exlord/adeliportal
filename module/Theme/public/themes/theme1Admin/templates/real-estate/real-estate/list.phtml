@@ -1,0 +1,655 @@
+<?
+use \RealEstate\Model\RealEstateTable;
+
+//$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/real-estate-melkyab.css');
+if ($this->isExport) {
+    $this->headLink()->appendStylesheet($this->basePath() . '/css/realestate-print.css', 'print');
+    //$this->headScript()->appendFile($this->basePath() . '/js/real-estate-list.js');
+    //$this->headScript()->appendFile($this->basePath() . '/js/filters.js');
+}
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+
+?>
+    <div>
+    <? if ($route_prefix == "admin" && !$this->isExport) { ?>
+        <a class="toolbar-button button add_button"
+           href="<?= $this->url($route_prefix . '/real-estate/new-transfer') ?>">
+            <?= $this->translate('New Estate Transfer') ?>
+        </a>
+        <a class="toolbar-button button add_button"
+           href="<?= $this->url($route_prefix . '/real-estate/new-request') ?>">
+            <?= $this->translate('New Estate Request') ?>
+        </a>
+    <? } ?>
+    <h3 class="page-title">
+        <?= $this->translate('Real Estate'); ?>
+    </h3>
+
+
+    <div class="top-menu-list-real-estate">
+    <?
+    if ($this->has_data) {
+        if (count($this->pagination)) {
+            if (!$this->isExport && $route_prefix == 'admin') {
+                ?>
+                <a class="button"
+                   href="#toggle" id="toggle_select_all">
+                    <?= $this->translate('Select/Deselect All') ?>
+                </a>
+                <a class="button"
+                   href="" id="wordExport">
+                    <?= $this->translate('Word Export') ?>
+                </a>
+                <a class="button"
+                   href="" id="print">
+                    <?= $this->translate('Print') ?>
+                </a>
+                <?
+                if (current_user()->id != 0) {
+                    ?>
+                    <a class="button"
+                       href="" id="approve">
+                        <?= $this->translate('Approve') ?>
+                    </a>
+                    <a class="button"
+                       href="" id="Disapprove">
+                        <?= $this->translate('Disapprove') ?>
+                    </a>
+                <?
+                }
+            }
+            $edit = 'admin/real-estate/edit';
+            $delete = 'admin/real-estate/delete';
+            $archive = 'admin/real-estate/archive';
+            $update = 'admin/real-estate/update';
+
+            $allowed_EDIT_OTHERS_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_EDIT_ALL);
+            $allowed_EDIT_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_EDIT);
+            $allowed_DELETE_OTHERS_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_DELETE_ALL);
+            $allowed_DELETE_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_DELETE);
+            $allowed_ARCHIVE_OTHERS_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_ARCHIVE_ALL);
+            $allowed_ARCHIVE_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_ARCHIVE);
+            $allowed_CHANGE_STATUS = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_UPDATE);
+            $allowed_CHANGE_STATUS_OTHERS = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_UPDATE_ALL);
+            $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO);
+            $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO);
+
+
+            /* @var $row \RealEstate\Model\RealEstate */
+            foreach ($this->pagination as $row) {
+                if ($row->isSpecial && $row->expireSpecial >= time())
+                    $specialClass = 'div-special-real-estate';
+                else
+                    $specialClass = '';
+                ?>
+                <fieldset class="<?= $specialClass ?> fieldset-view-real-estate">
+                <? if ($route_prefix == 'admin') { ?>
+                    <legend><?= $this->translate('Realty Id') ?> : <?= $row->itemId ?></legend>
+                <?
+                }
+                $extra_fields = $this->filed_api->generate($this->fields, $row);
+                $has_command = true;
+                $item_class = array();
+                $item_class[] = $row->isRequest ? 'real-estate-request' : 'real-estate-transfer';
+                $item_class[] = $this->last_visit < $row->published ? 'real-estate-is-new' : '';
+                $item_class[] = $row->status == 1 ? '' : 'real-estate-not-approved';
+                $reg_type_class = strtolower(str_replace(' ', '-', RealEstateTable::$estateRegType[$row->regType]));
+                $reg_type = $this->translate(RealEstateTable::$estateRegType[$row->regType]);
+                $estate_type = $row->estateTypeName;
+                $meter = $row->estateArea . ' ' . $this->translate('real_estate_Meter');
+                $title = \Application\API\App::prepareUrlString($reg_type . ' ' . $estate_type . ' ' . $meter);
+                $price = 0;
+
+                switch ($row->regType) {
+                    case 1:
+                    case 3:
+                    case 4:
+                        $price = '<span class="price">' . $this->currencyFormat($row->totalPrice) . '</span>';
+                        break;
+                    case 2:
+                        $price = '<span class="mortgage">&nbsp;' . $this->translate('mortgage') .
+                            '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->mortgagePrice) . '</span>&nbsp;' .
+                            $this->translate('and') . '&nbsp;<span class="rental">&nbsp;' . $this->translate('rental') .
+                            '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->rentalPrice) . '</span>';
+                        break;
+                }
+
+                $isCurrentUser = isCurrentUser($row->userId);
+                $commands = '';
+
+                $command_temp = "<a data-id='%s' title='%s' class='button icon_button %s' href='%s'>%s</a>";
+                $can_update = false;
+                if ($allowed_CHANGE_STATUS && ($isCurrentUser || $allowed_CHANGE_STATUS_OTHERS)) {
+                    $can_update = true;
+                    $command_title = $command_text = $this->translate('Update');
+                    $command_class = 'setting_button';
+                    $command_link = $this->url($update, array('id' => $row->itemId));
+                    $commands .= sprintf($command_temp, $row->itemId, $command_title, $command_class, $command_link, $command_text);
+                }
+                if ($allowed_EDIT_ESTATES && ($isCurrentUser || $allowed_EDIT_OTHERS_ESTATES) && $this->status != 'recycle') {
+                    $command_title = $command_text = $this->translate('Edit');
+                    $command_class = 'edit_button';
+                    $command_link = $this->url($edit, array('id' => $row->itemId));
+                    $commands .= sprintf($command_temp, $row->itemId, $command_title, $command_class, $command_link, $command_text);
+                }
+                if ($allowed_DELETE_ESTATES && ($isCurrentUser || $allowed_DELETE_OTHERS_ESTATES)) {
+                    $command_title = $command_text = $this->translate('Delete');
+                    $command_class = 'delete_button';
+
+                    if ($this->status == 'recycle')
+                        $typeDelete = 2;
+                    else
+                        $typeDelete = 1;
+                    $command_link = $this->url($delete, array('id' => $row->itemId, 'type' => $typeDelete));
+                    $commands .= sprintf($command_temp, $row->itemId, $command_title, $command_class, $command_link, $command_text);
+                }
+                if ($this->status != 'archived' && $allowed_ARCHIVE_ESTATES && ($isCurrentUser || $allowed_ARCHIVE_OTHERS_ESTATES) && $this->status != 'recycle') {
+                    $command_title = $command_text = $this->translate('Archive');
+                    $command_class = 'archive_button';
+                    $command_link = $this->url($archive, array('id' => $row->itemId), array('query' => array('redirect' => $this->uri)));
+                    $commands .= sprintf($command_temp, $row->itemId, $command_title, $command_class, $command_link, $command_text);
+                }
+
+                if (has_value($commands))
+                    $has_command = true;
+
+                $item_class = implode(' ', $item_class);
+
+                ?>
+                <div class="real-estate-item <?= $item_class ?> ">
+
+                <div class="real-estate-content-area">
+
+                <? if ($route_prefix == 'admin' || $this->isExport) { ?>
+                    <div class="real-estate-content<?= $has_command ? ' has-command' : '' ?>">
+                        <?
+                        if ($row->isRequest) {
+                            echo '<span class="is-request-overlay"></span>';
+                        }
+                        if ($this->last_visit < $row->published) {
+                            echo '<span class="is-new-overlay"></span>';
+                        }
+                        if (!$row->status == 1) {
+                            echo '<span class="is-not-approved-overlay"></span>';
+                        }
+                        if ($row->status == 3) {
+                            echo '<span class="is-transferred-overlay"></span>';
+                        }
+                        if ($row->status == 4) {
+                            echo '<span class="is-canceled-overlay"></span>';
+                        }
+                        ?>
+                        <h1>
+                            <? if (!$this->isExport && $route_prefix == 'admin') { ?>
+                                <span class="">
+                                <input type="checkbox" class="real-estate-item-select" name="chkId"
+                                       value="<?= $row->itemId ?>">
+                            </span>
+                            <? } ?>
+                            <a href="<?= $this->url($route_prefix . '/real-estate/view', array('id' => $row->itemId, 'title' => $title)) ?>">
+
+                                <span class="reg-type reg-type-<?= $reg_type_class ?>"><?= $reg_type ?></span>
+                                <span class="estate-type"><?= $estate_type ?></span>
+
+                                <?if ($row->estateArea) {
+                                    ?>
+                                    <span class="estate-area">
+                                        <?= $meter ?></span>
+                                    <sup class="super">(<?= $this->translate('real_estate_M') ?>)</sup>
+                                <? } ?>
+                                &nbsp;<span class="sell-for"><?= $this->translate('real_estate_sell_for') ?>:</span>&nbsp;
+                                <?= $price ?>
+                                <span class="location">
+                                <?= t('in') . ' ' . $row->stateTitle . ' - ' . $row->cityTitle ?></span>
+                            </a>
+                            <? if ($row->isRequest) { ?>
+                                <span class="is-request">
+                                    <span><?= $this->translate('Requested') ?></span>
+                                </span>
+                            <? } ?>
+                            <? if ($row->expire < time()) { ?>
+                                <span class="is-expired">
+                                    <span><?= $this->translate('Expired') ?></span>
+                                </span>
+                            <? } ?>
+                            <? if ($this->last_visit < $row->published) { ?>
+                                <span class="is-new">
+                                    <span><?= $this->translate('New') ?></span>
+                                </span>
+                            <? } ?>
+                            <? if ($row->status == 0) { ?>
+                                <span class="is-not-approved">
+                                    <span><?= $this->translate('Not Approved') ?></span>
+                                </span>
+                            <? } ?>
+                        </h1>
+
+                        <div class="column-owner">
+                            <div class="owner-details">
+                                <?
+                                //agar bichare pool dade ke etelaatesh neshun dade beshe . poolesh esraf nashe
+                                if ($route_prefix == 'app') //samte client hatta agar login ham shode ettelaate sabt konnande melk neshan s=dade nashavad magar pool dade ta neshan dade shavad
+                                    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = false;
+                                if ($row->showInfo && $row->expireShowInfo > time())
+                                    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+
+                                if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO) {
+                                    $owner_details = array(
+                                        'Address' => $row->addressFull,
+                                        'Name' => $row->ownerName,
+                                        'Phone' => $row->ownerPhone,
+                                        'Email' => $row->ownerEmail,
+                                        'Mobile' => $row->ownerMobile,
+                                    );
+                                } else {
+                                    $owner_details = array(
+                                        'Address' => $row->addressShort,
+                                        'Name' => $this->defaultAgent->displayName,
+                                        'Phone' => $this->defaultAgent->phone,
+                                        'Email' => $this->defaultAgent->email,
+                                        'Mobile' => $this->defaultAgent->mobile,
+                                    );
+                                }
+
+                                foreach ($owner_details as $name => $value) {
+                                    if (has_value($value)) {
+                                        ?>
+                                        <div>
+                                            <span><?= $this->translate($name) ?> :</span><?= $value ?>
+                                        </div>
+                                    <?
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="column-fields">
+                            <? $fieldHtml = '';
+                            foreach ($extra_fields as $key => $val) {
+                                $fieldHtml .= $key . " " . $val . " - ";
+                            }
+                            $fieldHtml = substr($fieldHtml, 0, strlen($fieldHtml) - 2);
+                            echo $fieldHtml;
+                            ?>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <?
+                        if (has_value($row->description)) {
+                            ?>
+                            <div class="description owner-details">
+                                <div>
+                                    <span>
+                                        <?= t('Description') . " :" ?>
+                                    </span>
+                                    <?= $row->description ?>
+                                </div>
+                            </div>
+                            <br/>
+                        <?
+                        }
+                        if (has_value($row->pm) && $row->userId == current_user()->id && $route_prefix == 'admin') {
+                            ?>
+                            <div class="description owner-details">
+                                <div>
+                                    <span><?= t('Private Message') . ' : ' ?></span>
+                                    <?= $row->pm ?>
+                                </div>
+                            </div>
+                        <?
+                        }
+
+                        //payment for realestate
+                        if ($route_prefix == 'app' && !$isCurrentUser && !$this->isExport) {
+                            $paymentParams = array(
+                                'amount' => $this->homeInfoCost,
+                                'email' => $row->ownerEmail,
+                                'comment' => 'Pay For Buying a Home Information',
+                                'validate' => array(
+                                    'route' => 'app/real-estate/view-all-info-estate',
+                                    'params' => array(
+                                        'id' => $row->itemId,
+                                    ),
+                                )
+                            );
+                            $paymentParams = serialize($paymentParams);
+                            $paymentParams = base64_encode($paymentParams);
+                            ?>
+                            <a class="payer-home"
+                               href="<?= url('app/payment', array(), array('query' => array('routeParams' => $paymentParams))) ?>">
+                                <?= $this->translate('Purchase Information') ?>
+                            </a>
+                        <?
+                        }
+
+                        $row->roleId = explode(',', $row->roleId);
+                        if (\RealEstate\API\RealEstate::isRealEstateAgent($row->roleId) && $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO)
+                            $data_row = $row;
+                        else
+                            $data_row = $this->defaultAgent;
+
+                        echo '<span class="agent">';
+                        echo getUserDisplayName($data_row);
+                        if (has_value($data_row->phone)) {
+                            echo ' - ' . $data_row->phone;
+                        }
+                        if (has_value($data_row->mobile)) {
+                            echo ' - ' . $data_row->mobile;
+                        }
+                        if (has_value($data_row->email)) {
+                            echo ' - <a href="mailto:' . $data_row->email . '">' . $data_row->email . '</a>';
+                        }
+                        echo '</span>';
+                        echo '<span class="date-time">';
+                        echo t('Reg Date') . " : ";
+                        echo $this->dateFormat(
+                            $row->created
+                        );
+                        echo '</span>';
+                        echo '<br/><span class="date-time">';
+                        echo t('Last update of registration') . " : ";
+                        echo $this->dateFormat(
+                            $row->modified
+                        );
+                        echo '</span>';
+                        if ($row->status == 3) {
+                            echo '<span class="is-transferred"><span>' . $this->translate('Transferred') . '</span></span>';
+                        }
+                        if ($row->status == 4) {
+                            echo '<span class="is-canceled"><span>' . $this->translate('RealEstateCanceled') . '</span></span>';
+                        }
+                        ?>
+
+                        <div style="clear: both;"></div>
+
+                    </div>
+                <? } else { ?>
+                    <div class="real-estate-content<?= $has_command ? ' has-command' : '' ?>">
+                        <?
+                        if ($row->isRequest) {
+                            echo '<span class="is-request-overlay"></span>';
+                        }
+                        if ($this->last_visit < $row->published) {
+                            echo '<span class="is-new-overlay"></span>';
+                        }
+                        if (!$row->status == 1) {
+                            echo '<span class="is-not-approved-overlay"></span>';
+                        }
+                        if ($row->status == 3) {
+                            echo '<span class="is-transferred-overlay"></span>';
+                        }
+                        if ($row->status == 4) {
+                            echo '<span class="is-canceled-overlay"></span>';
+                        }
+                        ?>
+                        <div class="view-real-estate-content-right">
+                            <?
+                            $image = explode(',', $row->fPath);
+                            if (is_array($image) && isset($image[0]) && !empty($image[0]))
+                                $imageUrl = getThumbnail()->resize($image[0],100, 100); //resize image
+                            else
+                                $imageUrl = getThumbnail()->resize($this->basePath() . '/images/not-image.png', 100, 100); //resize image;
+                            ?>
+                            <img src="<?= $imageUrl ?>" width="100" height="100">
+                        </div>
+                        <div class="view-real-estate-content-middle">
+                            <a href="<?= $this->url($route_prefix . '/real-estate/view', array('id' => $row->itemId, 'title' => $title)) ?>">
+
+                                <span class="reg-type reg-type-<?= $reg_type_class ?>"><?= $reg_type ?></span>
+                                <span class="estate-type"><?= $estate_type ?></span>
+                            <span class="location">
+                                <?= t('in') . ' ' . $row->stateTitle . ' - ' . $row->cityTitle ?></span>
+                            </a>
+
+                            <div class="view-real-estate-content-price">
+                                <?if ($row->estateArea) {
+                                    ?>
+                                    <span class="estate-area">
+                                        <?= $meter ?></span>
+                                    <sup class="super">(<?= $this->translate('real_estate_M') ?>)</sup>
+                                <? } ?>
+                                &nbsp;<span class="sell-for"><?= $this->translate('real_estate_sell_for') ?>:</span>&nbsp;
+                                <?= $price ?>
+                            </div>
+                            <? if ($row->isRequest) { ?>
+                                <span class="is-request">
+                                    <span><?= $this->translate('Requested') ?></span>
+                                </span>
+                            <? } ?>
+                            <? if ($row->expire < time()) { ?>
+                                <span class="is-expired">
+                                    <span><?= $this->translate('Expired') ?></span>
+                                </span>
+                            <? } ?>
+                            <? if ($this->last_visit < $row->published) { ?>
+                                <span class="is-new">
+                                    <span><?= $this->translate('New') ?></span>
+                                </span>
+                            <? } ?>
+                            <? if ($row->status == 0) { ?>
+                                <span class="is-not-approved">
+                                    <span><?= $this->translate('Not Approved') ?></span>
+                                </span>
+                            <? } ?>
+                        </div>
+                        <div class="view-real-estate-content-left">
+                            <div class="div-detail-contact view-real-estate-content-left-div-default">
+                                <a target="_blank"
+                                   href="<?= $this->url($route_prefix . '/real-estate/view', array('id' => $row->itemId, 'title' => $title)) ?>">
+                                    <?= t('View details and contact') ?>
+                                </a>
+                            </div>
+                            <?
+                            //payment for realestate
+                            if ($route_prefix == 'app' && !$isCurrentUser && !$this->isExport) {
+                                $paymentParams = array(
+                                    'amount' => $this->homeInfoCost,
+                                    'email' => $row->ownerEmail,
+                                    'comment' => 'Pay For Buying a Home Information',
+                                    'validate' => array(
+                                        'route' => 'app/real-estate/view-all-info-estate',
+                                        'params' => array(
+                                            'id' => $row->itemId,
+                                        ),
+                                    )
+                                );
+                                $paymentParams = serialize($paymentParams);
+                                $paymentParams = base64_encode($paymentParams);
+                                ?>
+                                <div class="div-payer-home view-real-estate-content-left-div-default">
+                                    <a class="payer-home"
+                                       href="<?= url('app/payment', array(), array('query' => array('routeParams' => $paymentParams))) ?>">
+                                        <?= $this->translate('Purchase Information') ?>
+                                    </a>
+                                </div>
+                            <?
+                            } ?>
+                            <div class="div-date-time view-real-estate-content-left-div-default">
+                               <span class="date-time">
+                                <?=
+                                t('Reg Date') . " : " . $this->dateFormat($row->created);
+                                ?>
+                                </span>
+                            </div>
+                            <?
+                            if ($row->status == 3) {
+                                echo '<span class="is-transferred"><span>' . $this->translate('Transferred') . '</span></span>';
+                            }
+                            if ($row->status == 4) {
+                                echo '<span class="is-canceled"><span>' . $this->translate('RealEstateCanceled') . '</span></span>';
+                            }
+                            ?>
+                        </div>
+
+                    </div>
+                <? } ?>
+                </div>
+
+                <?
+                if ($has_command && $route_prefix == "admin" && !$this->isExport) {
+                    ?>
+                    <div class="commands">
+                        <? echo $commands; ?>
+                        <? if ($can_update) { ?>
+                            <div class="update-commands" id="update-row-<?= $row->itemId ?>">
+                                <div>
+                                    <?= t('ExtentRealEstate') ?>
+                                    <select name="expire">
+                                        <option value="0"><?= t('No Change') ?></option>
+                                        <option value="-1"><?= t('Expire') ?></option>
+                                        <option value="1">1 <?= t('Month') ?></option>
+                                        <option value="3">3 <?= t('Month') ?></option>
+                                        <option value="6">6 <?= t('Month') ?></option>
+                                        <option value="12">12 <?= t('Month') ?></option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <?= t('Status') ?>
+                                    <select name="status">
+                                        <option value=""><?= t('No Change') ?></option>
+                                        <option value="1"><?= t('Approved') ?></option>
+                                        <option value="0"><?= t('Not Approved') ?></option>
+                                        <? if (!$row->isRequest) { ?>
+                                            <option value="3"><?= t('Transferred') ?></option>
+                                            <option value="4"><?= t('RealEstateCanceled') ?></option>
+                                        <? } ?>
+                                    </select>
+                                </div>
+                                <div>
+                                    <a data-id='<?= $row->itemId ?>' data-status='<?= $row->status ?>' href="#Save"
+                                       class="button save_button"><?= t('Save') ?></a>
+                                </div>
+                            </div>
+                        <? } ?>
+                    </div>
+                <? } ?>
+
+                </div>
+                </fieldset>
+
+            <?
+            }
+            ?>
+            <? if (!$this->isExport) {
+                ?>
+                <div class="pager">
+                    <?=
+                    $this->paginationControl($this->pagination,
+                        'Sliding',
+                        'application/pagination/search.phtml', array(
+                            'route' => $route_prefix . '/real-estate/list',
+                            'dataHref' => true,
+                            'route_params' => array('status' => $this->status),
+                        ));
+                    ?>
+                </div>
+            <?
+            }
+        } else {
+            echo $this->general()->noOutPut();
+        }
+    }?>
+    </div>
+    </div>
+<? if (!$this->isExport) { ?>
+    <script type="text/javascript">
+        <?$this->inlineScript()->captureStart()?>
+        var real_estate_page_status = '<?=$this->status?>';
+        var notApproved = '<span class="is-not-approved"><span><?= $this->translate('Not Approved') ?></span></span>';
+        var isTransfer = '<span class="is-transferred"><span><?=$this -> translate('Transferred')?></span></span>';
+        var isCancel = '<span class="is-canceled"><span><?=$this->translate('RealEstateCanceled')?></span></span>';
+        var isExpired = '<span class="is-expired"><span><?= $this->translate('Expired') ?></span></span>';
+        var exportRoute = '<?=url($route_prefix.'/real-estate/list')?>';
+        var __params = <?=json_encode($this->query);?>;
+        $.extend(RealEstate.params, __params);
+        $(document).ready(function () {
+
+            $('.real-estate-item-select').change(function () {
+                if (!$(this).attr("checked")) {
+                    $(this).attr("checked", "checked");
+                }
+                else {
+                    $(this).removeAttr("checked");
+                }
+            });
+
+            $('#wordExport').click(function () {
+                var id = '';
+                $('.real-estate-item-select:checked').each(function () {
+                    id += $(this).val() + ',';
+                });
+                id = id.substr(0, id.length - 1);
+                $(this).attr('href', exportRoute + '?isExport=1&exportType=word&exportId=' + id);
+            });
+
+            $('#print').click(function () {
+                var id = '';
+                $('.real-estate-item-select:checked').each(function () {
+                    id += $(this).val() + ',';
+                });
+                id = id.substr(0, id.length - 1);
+                $(this).attr('href', exportRoute + '?isExport=1&exportType=print&exportId=' + id);
+                $(this).attr('target', '_b');
+            });
+
+
+            $('.paginationControl a').click(function (e) {
+                e.preventDefault();
+                __urlToParams($(this).data('href'), RealEstate.params);
+                RealEstate.loadList();
+            });
+            $('.paginationControl #per_page').change(function (e) {
+                __urlToParams($(this).val(), RealEstate.params);
+                RealEstate.loadList();
+            });
+
+
+            $('#approve').click(function (e) {
+                e.preventDefault();
+                loadAjax(1, $(this));
+            });
+
+            $('#Disapprove').click(function (e) {
+                e.preventDefault();
+                loadAjax(0, $(this));
+            });
+
+        });
+
+        //for approve or Disapprove real estate
+        function loadAjax(status, thisTag) {
+            thisTag.addClass('ajax-loading-inline');
+            var id = '';
+            $('.real-estate-item-select:checked').each(function () {
+                id += $(this).val() + ',';
+            });
+            if (id) {
+                var data = {};
+                data['id'] = id.substr(0, id.length - 1);
+                data['status'] = status;
+                $.ajax({
+                    url: '<?=url('admin/real-estate/update')?>',
+                    type: 'POST',
+                    data: data,
+                    success: function (data) {
+                        thisTag.removeClass('ajax-loading-inline');
+                        RealEstate.loadList();
+                    }
+                });
+            }
+            else
+                System.AjaxMessage('<?=t('At least 1 item should be selected for send !')?>');
+        }
+
+        function __urlToParams(url, result) {
+            var pairs = url.split('?')[1].split('&');
+
+            pairs.forEach(function (pair) {
+                pair = pair.split('=');
+                result[pair[0]] = decodeURIComponent(pair[1] || '');
+            });
+
+            return JSON.parse(JSON.stringify(result));
+        }
+        <?$this->inlineScript()->captureEnd()?>
+    </script>
+<? } ?>

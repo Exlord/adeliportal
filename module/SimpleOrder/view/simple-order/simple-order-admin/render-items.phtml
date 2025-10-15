@@ -1,0 +1,25 @@
+<table style="width:400px; border:1px solid #cccccc;">
+    <? foreach ($this->categories as $row) { ?>
+        <tr style="text-align:center; border-bottom:1px dotted #cccccc;">
+            <td style="border-left:1px solid #cccccc; padding:5px;">
+                <?
+                if (isset($this->itemName[$row['categoryItem']]))
+                    echo $this->itemName[$row['categoryItem']] . ' --> ';
+                if (isset($this->itemName[$row['subCategoryItem']]))
+                    echo $this->itemName[$row['subCategoryItem']];
+                ?>
+            </td>
+            <td style="border-left:1px solid #cccccc;">
+                <?
+                if (isset($this->quantity[$row['quantity']]))
+                    echo $this->quantity[$row['quantity']];
+                else
+                    echo '-----';
+                ?>
+            </td>
+            <td>
+                <?= $row['count'] ?>
+            </td>
+        </tr>
+    <? } ?>
+</table>

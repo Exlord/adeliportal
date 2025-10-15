@@ -1,0 +1,33 @@
+<div class="well well-sm text-info">
+    <h4><?= t('Notice') ?> : </h4>
+    <ul>
+        <li>
+            <?= t('A new backup is created every time system is updated.') ?>
+        </li>
+        <li>
+            <?=
+            sprintf(
+                t('You can create backups manually from %s'),
+                \Theme\API\Common::Link(
+                    t('Database Backup Management Section'),
+                    url('admin/backup/db'),
+                    array('class' => 'ajax_page_load')
+                )
+            ) ?>
+        </li>
+        <li>
+            <?= t('Old Backups will be deleted if one of there rules apply') ?> :
+            <ul>
+                <li>
+                    <?= t('created more than X(default:6 month) ago') ?>
+                </li>
+                <li>
+                    <?= t('there is more than X(default: 100) backups') ?>
+                </li>
+                <li>
+                    <?= t('total backups size is bigger than X(default: 1GB)') ?>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

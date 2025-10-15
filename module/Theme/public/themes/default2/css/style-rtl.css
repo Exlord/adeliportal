@@ -1,0 +1,55 @@
+body, html{ direction:rtl; font-family:tahoma; font-size:9pt; }
+#breadcrumbs ul li a{ padding:5px 20px 6px 10px; float:right; }
+#breadcrumbs ul li a:after{
+    border-right:12px solid #3498db;
+    border-left:none;
+    left:-12px;
+    right:auto;
+}
+#breadcrumbs ul li a.active:after{ border-right-color:#525252; }
+#breadcrumbs ul li a:before{
+    border-right:12px solid #e9e9f0;
+    border-left:none;
+    left:auto; right:0;
+}
+#breadcrumbs ul li:first-child a{
+    -moz-border-bottom-left-radius:0px;
+    -moz-border-bottom-right-radius:5px -moz-border-top-left-radius : 0 px;
+    -moz-border-top-right-radius:5px;
+    -webkit-border-bottom-left-radius:0px;
+    -webkit-border-bottom-right-radius:5px;
+    -webkit-border-top-left-radius:0px;
+    -webkit-border-top-right-radius:5px;
+    border-bottom-left-radius:0px;
+    border-bottom-right-radius:5px;
+    border-top-left-radius:0px;
+    border-top-right-radius:5px;
+    padding-left:0px;
+    padding-right:10px;
+}
+#breadcrumbs ul li:last-child a{
+    -moz-border-top-right-radius:0px;
+    -moz-border-bottom-right-radius:0px;
+    -webkit-border-top-right-radius:0px;
+    -webkit-border-bottom-right-radius:0px;
+    border-top-right-radius:0px;
+    border-bottom-right-radius:0px;
+    -moz-border-top-left-radius:5px;
+    -moz-border-bottom-left-radius:5px;
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-bottom-left-radius:5px;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+}
+#breadcrumbs ul li a:hover:after{ border-right-color:green; }
+#breadcrumbs ul li a.active:hover:after{ border-right-color:#525252; }
+
+.ui-tabs .ui-tabs-nav li{ float:right; }
+.ui-tabs-vertical > .ui-tabs-nav{ float:right; }
+.ui-tabs-vertical > .ui-tabs-panel{ margin-left:0; margin-right:205px; }
+.ui-tabs-vertical > .ui-tabs-nav li{ float:right; clear:left; margin:0 0 .2em -1px; }
+.ui-tabs-vertical > .ui-tabs-nav li.ui-tabs-active{ padding-right:0; padding-left:.2em;
+    border-right:1px solid #dddddd; border-left:none;
+}
+.normal-list ul{ margin-right:20px; margin-left:0; }
+.page-title{ font-family:'BYekan'; }

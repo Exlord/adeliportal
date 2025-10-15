@@ -1,0 +1,45 @@
+<?
+$basePath = $this->basePath();
+$maxPage = $this->paginator->count();
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/books.css');
+$this->headScript()->appendFile($basePath . '/__/js/digital-library-list-loader.js');
+$this->headScript()->appendFile($basePath . '/js/purl.js');
+$this->headScript()->appendFile($basePath . '/js/jquery.serialize-object.min.js');
+?>
+<div class="page-header">
+    <? print $this->blocks('books_list_top') ?>
+</div>
+<div id="books">
+    <div class="row">
+        <div id="books-list">
+            <?print $this->partial('digital-library/client/list-item', array(
+                'paginator' => $this->paginator,
+                'per_page' => $this->per_page,
+                'fields' => $this->fields
+            ));?>
+        </div>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    DigitalLibrary.url = '<?=url('app/books')?>';
+    $('body')
+        .on('click', '#books .pager a', function (e) {
+            e.preventDefault();
+            var href = $.trim($(this).attr('href'));
+            if (typeof href != 'undefined' && href != '') {
+                DigitalLibrary.query.page = $.url(href).param('page');
+                DigitalLibrary.loadList();
+            }
+        });
+
+    $('form[name="digital-library-search"]').submit(function (e) {
+        e.preventDefault();
+        $.extend(DigitalLibrary.query, $(this).serializeObject());
+        DigitalLibrary.query.page = 1;
+        console.log(DigitalLibrary.query);
+        DigitalLibrary.loadList();
+    });
+    $('button[name=search]').tooltip();
+    <?$this->inlineScript()->captureEnd()?>
+</script>

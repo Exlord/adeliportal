@@ -1,0 +1,88 @@
+*{ direction:rtl; }
+#breadcrumbs ul li a{ padding:5px 20px 6px 10px; float:right; }
+#breadcrumbs ul li a:after{
+    border-right:12px solid #3498db;
+    border-left:none;
+    left:-12px;
+    right:auto;
+}
+#breadcrumbs ul li a.active:after{ border-right-color:#525252;}
+#breadcrumbs ul li a:before{
+    border-right:12px solid #e9e9f0;
+    border-left:none;
+    left:auto; right:0;
+}
+#breadcrumbs ul li:first-child a{
+    -moz-border-bottom-left-radius:0px;
+    -moz-border-bottom-right-radius:5px
+    -moz-border-top-left-radius:0px;
+    -moz-border-top-right-radius:5px;
+    -webkit-border-bottom-left-radius:0px;
+    -webkit-border-bottom-right-radius:5px;
+    -webkit-border-top-left-radius:0px;
+    -webkit-border-top-right-radius:5px;
+    border-bottom-left-radius:0px;
+    border-bottom-right-radius:5px;
+    border-top-left-radius:0px;
+    border-top-right-radius:5px;
+    padding-left:0px;
+    padding-right:10px;
+}
+#breadcrumbs ul li:last-child a{
+    -moz-border-top-right-radius:0px;
+    -moz-border-bottom-right-radius:0px;
+    -webkit-border-top-right-radius:0px;
+    -webkit-border-bottom-right-radius:0px;
+    border-top-right-radius:0px;
+    border-bottom-right-radius:0px;
+
+    -moz-border-top-left-radius:5px;
+    -moz-border-bottom-left-radius:5px;
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-bottom-left-radius:5px;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+}
+#breadcrumbs ul li a:hover:after{ border-right-color:green; }
+#breadcrumbs ul li a.active:hover:after{ border-right-color:#525252; }
+
+.ui-tabs .ui-tabs-nav li{float:right;}
+.ui-tabs-vertical > .ui-tabs-nav{float:right;}
+.ui-tabs-vertical > .ui-tabs-panel{margin-left:0;margin-right:205px;}
+.ui-tabs-vertical > .ui-tabs-nav li{ float:right; clear:left; margin:0 0 .2em -1px;}
+.ui-tabs-vertical > .ui-tabs-nav li.ui-tabs-active{ padding-right:0;padding-left:.2em;
+    border-right:1px solid #dddddd;border-left:none;
+}
+.normal-list ul{ margin-right:20px;margin-left:0; }
+
+#user_popup_container .admin_link_box span{padding-right:10px;}
+.top_menu_block{float:right;}
+.box-contact-bottom .contact-part-1, .box-contact-bottom .contact-part-2, .box-contact-bottom .contact-part-3{float:right; margin-left:auto; margin-right:3%;}
+.box-contact-bottom .label, .box-contact-bottom .text{float:right; text-align: justify; width: 237px;}
+.contact-part-3 div{float:right;}
+.top_menu_block .navigation li{float:left;}
+#contact-form .tbl_contact_form .required {float:right;}
+.main-contact-left{float:left;}
+.main-contact-right{float:right;}
+.category_list .horizontal li a{text-align:right;}
+.category_list .horizontal li ul li { background: url(../images/check-usp.png) no-repeat scroll 100% 5px rgba(0, 0, 0, 0); padding-left:0px; padding-right: 15px;}
+.language-switcher-box {padding-right: 9.3333%; width:auto;}
+#user_popup_container{float:right;}
+.admin_link_box{float:right; margin-left:20px;}
+#user_popup_container{width:auto;}
+.sign-up { float: right; padding-left: 12px;}
+article .rate{top:10px; left:75px; right:auto;}
+
+/*-----------------------------view projects form-------------------*/
+.view-projects-form {background: none repeat scroll 0 0 #F5F5F5; margin-top:55px;}
+.view-projects-form .title {background: none repeat scroll 0 0 #EB6907;font-family: BYekan;font-size: 12pt;font-weight: bold;height: 40px;padding: 10px;width: 100%;}
+.view-projects-form .main .tbl{width:98%; margin-left: auto; margin-right: auto;}
+.view-projects-form .main .tbl td{padding:10px; border:4px solid #F5F5F5; vertical-align:middle;}
+.view-projects-form .main .tbl .first-row{background:#e0e0e0;}
+.view-projects-form .main .tbl .second-row{background:#d5d5d5;}
+.view-projects-form .main .tbl label{width:200px; font-family: BYekan; margin: 0; vertical-align: sub;}
+.view-projects-form .main .tbl p{font-family: BMitra; margin: 0; vertical-align: sub; color:#898989; }
+.view-projects-form .main .tbl .width-200{width:200px;}
+.view-projects-form .main .tbl .width-250{width:250px;}
+.view-projects-form .main .tbl .center{text-align:center; background:#e0e0e0;}
+/*------------------------------------------------------------------*/

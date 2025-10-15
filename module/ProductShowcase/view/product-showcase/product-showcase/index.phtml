@@ -1,0 +1,122 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/jquery.lazyLoad.js');
+$maxPage = $this->paginator->count();
+?>
+<? if (!$this->ajaxLoaded){ ?>
+<div class="view-projects">
+    <div class="view-projects-main">
+        <div class="ps-tags">
+            <?
+            $tagRouteParams = array();
+            if ($this->selectCatItem)
+                foreach ($this->selectCatItem as $tag) {
+                    $tagRouteParams['tagName'] = \Application\API\App::prepareUrlString($tag->itemName);
+                    $tagRouteParams['tagId'] = $tag->id;
+                    ?>
+                    <div class="ps-tag">
+                        <a href="<?= url('app/product-showcase/list', $tagRouteParams) ?>">
+                            <?= $this->escapeHtml($tag->itemName) ?>
+                        </a>
+                    </div>
+                <?
+                }
+            ?>
+        </div>
+        <div style="clear:both"></div>
+        <?
+        }
+        if (!empty($this->paginator)) {
+            foreach ($this->paginator as $row) {
+                $image = '';
+                $imageAlt = '';
+                $imageTitle = '';
+                if (!empty($row->fPath)) {
+                    $images = explode(',', $row->fPath);
+                    $image = getThumbnail()->resize($images[0], 315, 250); //resize image
+                    if (isset($row->fAlt))
+                        $imageAlt = $row->fAlt;
+                    if (isset($row->fTitle))
+                        $imageTitle = $row->fTitle;
+                }
+
+                $url = '';
+                $appUrl = url('app/product-showcase/view', array('id' => $row->psId, 'title' => $row->title));
+                ?>
+                <article class="box-view-projects" data-id="<?= $row->psId ?>">
+                    <? if ($image) { ?>
+                        <img class="lazy" data-original="<?= $image ?>" alt="<?= $imageAlt ?>"
+                             title="<?= $imageTitle ?>" height="250" width="315">
+                        <noscript>
+                            <img alt="<?= $imageAlt ?>" title="<?= $imageTitle ?>" src="<?= $image ?>"
+                                 height="250" width="315">
+                        </noscript>
+                    <? } ?>
+                    <div>
+                        <a target="_blank" title="<?= t('Show Content') ?>" class="show-content"
+                           href="<?= $appUrl ?>"><?= t('Application_description_more') ?></a>
+                        <a target="_blank" title="<?= t('Show Website') ?>" class="show-website"
+                           href="#"><?= t('Application_website_observation') ?></a>
+                    </div>
+                </article>
+            <?
+            }
+        } else {
+            ?>
+            <div class="alert alert-info">
+                <?= t('PS_NOT_ITEMS') ?>
+            </div>
+        <? } ?>
+        <? if (!$this->ajaxLoaded){ ?>
+    </div>
+    <div class="view-projects-loader"></div>
+    <? } ?>
+</div>
+<div style="clear: both"></div>
+
+<? if (!$this->ajaxLoaded) { ?>
+    <script>
+        <?$this->inlineScript()->captureStart();?>
+        var Projects = {
+            url: '<?=url($this->route,$this->routeParams)?>',
+            maxPage: '<?=$maxPage?>'
+        };
+
+        $(document).ready(function () {
+
+            $("img.lazy").lazyload({
+                effect: "fadeIn"
+            });
+
+            var flagLoaf = true;
+            var countPage = 2;
+            $(window).scroll(function () {
+                var height = parseInt($('.view_projects_index').parent().outerHeight()) - 700;
+                if ($(this).scrollTop() >= height && flagLoaf == true && countPage <= Projects.maxPage) {
+                    flagLoaf = false;
+                    $('.view-projects-loader').addClass('ajax-loading');
+                    var data = {};
+                    data['page'] = countPage;
+                    $.ajax({
+                        url: Projects.url,
+                        type: 'POST',
+                        data: data,
+                        complete: function () {
+                            $('.view-projects-loader').removeClass('ajax-loading');
+                        },
+                        success: function (data) {
+                            $('.view_projects_index').append(data.html);
+                            $("img.lazy").lazyload({
+                                effect: "fadeIn"
+                            });
+                            setTimeout(function () {
+                                flagLoaf = true;
+                            }, 1000);
+                            countPage++;
+                        }
+                    });
+                }
+            });
+        });
+        <?$this->inlineScript()->captureEnd();?>
+    </script>
+<? } ?>

@@ -1,0 +1,17 @@
+<div>
+    <h3><?= sprintf(t('Dear friend %s'), $this->__DISPLAY_NAME__) ?></h3>
+
+    <p>
+        <?= sprintf(t('You have recently registered an account with us at %s.') . $this->__SITEURL__) ?>
+    </p>
+
+    <p>
+        <?= t('For full support you need to verify your email address.') ?>
+        <br/>
+        <a href="<?=$this->__URL__?>"><?=t('Click here to very your email address')?></a>
+        <br/>
+        <?=t('If you cant click on the link above copy and paste the below link into your browsers address bar.')?>
+        <br/>
+        <?=$this->__URL__?>
+    </p>
+</div>

@@ -1,0 +1,105 @@
+<?
+$basePath = $this->basePath();
+$this->headlink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/products.css');
+$this->headScript()->prependFile($this->basePath() . TEMPLATE_PATH . '/js/products.js');
+$this->headScript()->appendFile($this->basePath() . '/js/jquery.lazyLoad.js');
+$maxPage = $this->paginator->count();
+?>
+<? if (!$this->ajaxLoaded){ ?>
+<? if ($this->currentCat) { ?>
+    <div class="product-cat-title">
+        <div id="category-list-menu" class="pull-right flip">
+            <?= $this->blocks('category_list_menu') ?>
+        </div>
+        <h1 class="page-header">
+            <?= sprintf(t('%s shoes', TEMPLATE_NAME), t($this->currentCat->itemName)) ?>
+        </h1>
+    </div>
+<?
+} else {
+    ?>
+    <div class="product-cat-title">
+        <h1 class="page-header">
+            <?= t('All Products', TEMPLATE_NAME); ?>
+        </h1>
+    </div>
+<? } ?>
+<div class="main view_projects_index row products-row">
+    <?
+    }
+    if (empty($this->paginator) || !$this->paginator->count()) {
+        ?>
+        <div class="col-xs-12"><?
+        print $this->alert(t('No product found !', TEMPLATE_NAME), 'alert-info');
+        ?></div><?
+    }
+
+    if (!empty($this->paginator)) {
+        $thumb = getThumbnail();
+        $thumb::$ResizeGif = true;
+        foreach ($this->paginator as $row) {
+            if (isset($row->psId) && $row->psId) {
+                $image = '';
+                $imageAlt = '';
+                $imageTitle = '';
+                if (!empty($row->fPath)) {
+//                    $images = explode(',', $row->fPath);
+                    $image = $thumb->resize($row->fPath, 270, 150); //resize image
+                    if (isset($row->fAlt))
+                        $imageAlt = $row->fAlt;
+                    if (isset($row->fTitle))
+                        $imageTitle = $row->fTitle;
+                }
+
+                $url = '';
+                $appUrl = url('app/product-showcase/view', array('id' => $row->psId, 'title' => \Application\API\App::prepareUrlString($row->title)));
+                ?>
+                <div class="col-xs-4 product-wrapper">
+                    <div class="product">
+                        <div class="image-bg">
+                            <div class="image">
+                                <? if ($image) { ?>
+                                    <img class="lazy img-responsive" data-original="<?= $image ?>"
+                                         alt="<?= $imageAlt ?>"
+                                         title="<?= $imageTitle ?>">
+                                    <noscript>
+                                        <img class="img-responsive" alt="<?= $imageAlt ?>"
+                                             title="<?= $imageTitle ?>"
+                                             src="<?= $image ?>">
+                                    </noscript>
+                                <? } ?>
+                            </div>
+                        </div>
+                        <div class="image-shadow"></div>
+                        <div class="details">
+                            <h3 class="product-title">
+                                <!--                                -->
+                                <? //= t('Product Name', TEMPLATE_NAME) ?><!-- :-->
+                                <?= t($this->escapeHtml(trim($row->title))) ?></h3>
+
+                            <div class="product-code"><?= t('Product Code', TEMPLATE_NAME) ?>
+                                : <? print isset($row->ps_code) ? $row->ps_code : ''; ?></div>
+                            <a href="<?= $appUrl ?>"
+                               class="product-link"><?= t('View details', TEMPLATE_NAME) ?></a>
+                        </div>
+                    </div>
+                </div>
+            <?
+            }
+        }
+    } ?>
+
+    <? if (!$this->ajaxLoaded){ ?>
+</div>
+    <div class="view-projects-loader"></div>
+<? } ?>
+<div style="clear: both"></div>
+
+<? if (!$this->ajaxLoaded) { ?>
+    <script>
+        var Projects = {
+            url: '<?=url($this->route,$this->routeParams)?>',
+            maxPage: '<?=$maxPage?>'
+        }
+    </script>
+<? } ?>

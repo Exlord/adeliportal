@@ -1,0 +1,12 @@
+<?return array(
+    'PERM_Gallery' => 'Gallery',
+    'gallery_items_software_hits' => 'Visits from Offline App',
+    'gallery_order_banner_empty_place' => 'This block has empty space',
+    'gallery_order_banner_validate_success_msg' => 'Your banner request successfully registered',
+    'GALLERY_SHOW_GALLERY_PAGE'=>'GALLERY_SHOW_GALLERY_PAGE',
+    'GALLERY_NOT_SHOW'=>'GALLERY_NOT_SHOW',
+    'GALLERY_SHOW'=>'GALLERY_SHOW',
+    'GALLERY_BANNER_SIZE'=>'Banner Size',
+    'GALLERY_BANNER_SIZE_NEW'=>'New Banner Size',
+    'GALLERY_CREATE_BANNER_SIZE'=>'Creates Banner Size',
+);

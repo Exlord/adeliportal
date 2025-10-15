@@ -1,0 +1,30 @@
+<div>
+    <h2>
+        <?= t('app_hello_dear_user') . ' ' . $this->__NAME__ ?>
+    </h2>
+
+    <p>
+        <?= t('ADS_NEW_SUCCESS') ?>
+    </p>
+
+    <p>
+        <?= t('ADS_CODE') . ' : ' . $this->__AD_CODE__ ?>
+    </p>
+<!--    --><?// if ($this->__VIEW_LINK__) { ?>
+<!--        <a href="--><?//= $this->__VIEW_LINK__ ?><!--">-->
+<!--            --><?//= t('ADS_CLICK_FOR_VIEW%s') ?>
+<!--        </a>-->
+<!--    --><?// } ?>
+    <? if (!empty($this->__PASSWORD__)) { ?>
+        <br>
+        <p>
+            <?= t('ADS_REGISTER_GUEST') ?>
+        </p>
+        <p>
+            <?= sprintf(t('ADS_INFO_REGISTER_GUEST'), $this->__USERNAME__, $this->__PASSWORD__) ?>
+        </p>
+
+    <? } ?>
+    <br>
+    <?= $this->__SITE_URL__ ?>
+</div>

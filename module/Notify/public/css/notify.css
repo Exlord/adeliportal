@@ -1,0 +1,6 @@
+.notifications-menu .panel-heading{ text-align:center; font-size:9pt; }
+.notifications-menu .panel-footer{ text-align:center; font-size:8pt; }
+.notification-container{ min-width:300px; padding:0; }
+.notification-container .list-group{ margin-bottom:15px; }
+.notification-container .notify-item{ font-size:80%; line-height:25px; }
+.notification-navbar .slimScrollDiv{ overflow-y:scroll; height:200px; padding:10px; }

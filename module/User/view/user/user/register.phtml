@@ -1,0 +1,50 @@
+<?
+$basePath = $this->basePath();
+if (!\Application\API\App::isAdminRoute()) {
+    $this->headLink()->appendStylesheet($basePath . '/__/js/jquery.ui/jquery.ui.datepicker.css');
+    $this->headScript()->appendFile($basePath . '/__/js/jquery.ui/datepicker.js');
+    $this->headScript()->appendFile($basePath . '/js/calendar.js');
+    $this->headScript()->appendFile($basePath . '/js/jquery.ui.datepicker-cc.js');
+    if (SYSTEM_LANG == 'fa')
+        $this->headScript()->appendFile($basePath . '/js/jquery.ui.datepicker-cc-fa.js');
+
+}
+if ($this->general_details)
+    $this->headScript()->appendFile($this->basePath() . '/js/geographical.js');
+?>
+<div>
+    <h3 class="page-header text-success">
+        <?= sprintf($this->translate('Register New %s Account'), t($this->escapeHtml($this->roleName))) ?>
+    </h3>
+    <?
+    $form = $this->form;
+    $form->prepare();
+    $colSize = ($form->has('profile') && $form->has('profile')) ? '6' : '12';
+
+    $items = '';
+    foreach ($form->getElements() as $el) {
+        $items .= $this->formRow($el);
+    }
+
+    print $this->form()->openTag($form);
+    print \Theme\API\Common::Row(
+        \Theme\API\Common::Column('col-md-12', $this->formCollection($form->get('basic'))) .
+        \Theme\API\Common::Column('col-md-' . $colSize, $this->formCollection($form->get('profile'))) .
+        \Theme\API\Common::Column('col-md-' . $colSize, $this->formCollection($form->get('profile2'))) .
+        \Theme\API\Common::Column('col-md-12', $items) .
+        \Theme\API\Common::Column('col-md-12', $this->formCollection($form->get('buttons')))
+    );
+    print $this->form()->closeTag();
+    ?>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+        $("#birthDate").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy/mm/dd'
+        });
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

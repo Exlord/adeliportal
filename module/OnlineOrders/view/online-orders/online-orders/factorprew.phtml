@@ -1,0 +1,513 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/styleonlineorders.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order-client.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/reveal.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/system.css');
+$this->headLink()->prependStylesheet($this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css');
+$this->headScript()
+    ->prependFile($this->basePath() . '/js/system.js')
+    ->prependFile($this->basePath() . '/js/forms.js')
+    ->prependFile($this->basePath() . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($this->basePath() . '/js/jquery-1.9.1.min.js')
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/template.js')
+    ->prependFile($this->basePath() . '/js/jquery.ui.datepicker-cc.all.min.js')
+    ->prependFile($this->basePath() . '/js/jquery.reveal.js')
+    ->prependFile($this->basePath() . '/js/jquery.min.js');
+
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('The Order Design Website| Ideh Pardaz Tabriz Company')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+
+</head>
+<?
+
+$formData = $this->form;
+
+?>
+
+<style>
+    body{
+        font-family:tahoma;
+        font-size:9pt;
+    }
+
+    div#info-personal label{
+        display:inline-block;
+        padding:9px 0;
+        width:100px;
+        line-height:20px;
+        font-family:tahoma;
+        font-weight:bold;
+        color:#a0a0a0;
+    }
+
+    .header-factor{
+        height:30px;
+        background-color:#0066cc;
+        margin:0px;
+    }
+
+    .pish-factor-print{
+        border:1px solid #ccc;
+        background-color:#FDFDFD;
+        margin-left:auto;
+        margin-right:auto;
+        width:95%;
+    }
+
+    .tbl-pish-fact{
+        width:100%;
+        margin-top:-7px;
+    }
+
+    .td-pish-factor{
+        width:38%;
+        font-size:12px;
+        line-height:29px;
+    }
+
+    .div-pish-fact-logo{
+        font-family:tahoma;
+        font-size:12px;
+        font-weight:bold;
+    }
+
+    .lb-info{
+        font-family:tahoma;
+        font-size:12px;
+        font-weight:bold;
+        line-height:20px;
+        text-align:right;
+        margin-left:10px;
+        margin-right:17px;
+        line-height:30px;
+        direction:rtl;
+        display:inline-block;
+    }
+
+    .sp-info{
+        border:1px solid #FDFDFD;
+        font-family:tahoma;
+        font-size:12px;
+        font-weight:bold;
+        line-height:20px;
+        text-align:right;
+        color:#0060c2;
+        margin-left:10px;
+        line-height:30px;
+        direction:rtl;
+        display:inline-block;
+        width:auto;
+        margin-right:10px;
+    }
+
+    .div-payment-form{
+        border:1px solid #ccc;
+        background:#eeeeee;
+        direction:rtl;
+        margin-right:auto;
+        margin-left:auto;
+    }
+
+    img{
+        border:none;
+    }
+
+    .langCustomer fieldset{
+        border:none;
+    }
+
+    .div-pish-fact-name{
+        font-weight:normal;
+        color:#06C;
+    }
+
+    .tbl-top-show-info{
+        border:1px solid #ccc;
+        background:#eeeeee;
+        width:95%;
+        margin-left:auto;
+        margin-right:auto;
+        border-radius:8px;
+    }
+
+    .lb-info-big{
+        margin-right:15px;
+    }
+
+    .lb-lang label{
+        color:#FFF;
+    }
+
+    .div-pish-fact-tracking{
+        width:auto;
+    }
+
+    .lb-info-med{
+        margin-right:15px;
+        line-height:40px;
+    }
+
+    .sp-info-big{
+        font-size:14px;
+        color:#0060C2;
+    }
+
+    .sp-info-tbl{
+        color:#0060C2;
+        font-size:12px;
+    }
+
+    .lb-item-fact-preview-1{
+        font-size:12px;
+        color:#808080;
+        padding-right:5px;
+        line-height:20px;
+        background-color:#dddddd;
+    }
+
+    .lb-item-fact-preview-2{
+        font-size:12px;
+        color:#808080;
+        padding-right:5px;
+        line-height:20px;
+        background-color:#fffacd;
+    }
+
+    .div-item-fact-preview{
+        width:98%;
+        border:1px solid #cacaca;
+        border-radius:5px;
+        margin-right:auto;
+        margin-left:auto;
+    }
+
+    .logo-site{
+        margin-left:auto;
+        margin-right:auto;
+    }
+</style>
+<body>
+
+<div class="main_content">
+<div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+
+<div id="show-info" style="direction: rtl;">
+<div class="pish-factor-print">
+<div class="header-factor"></div>
+<div class="content-pish-fact">
+<table border="0" class="tbl-pish-fact">
+    <tr>
+        <td class="td-pish-factor">
+            <div class="div-pish-fact-name">
+                <?= $this->translate('Azar Ideh Pardaz Tabriz Company'); ?>
+            </div>
+            <div class="div-pish-fact-number">
+                <?= t('Factor Number'); ?>
+                <?= $formData['factorNumber'] ?>
+            </div>
+        </td>
+        <td class="td-pish-factor">
+            <div>
+                <img class="logo-site" src="http://ipt24.ir/images/IPT-LOGO-factor.png">
+            </div>
+        </td>
+        <td class="td-pish-factor">
+            <div class="div-pish-fact-tracking">
+                <?= t('Reference Number'); ?>
+                <?= $formData['refCode'] ?>
+            </div>
+            <div class="div-pish-fact-date">
+                <?= t('Date'); ?>
+                <?
+                $dateTime = $formData['date'];
+                echo $this->dateFormat(
+                    $dateTime
+                );
+                ?>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div class="top-show-info">
+    <table class="tbl-top-show-info">
+        <tr>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        <?= t('Personal Name'); ?>
+                    </label>
+            <span class="sp-info-tbl" id="show-namePer">
+                <?= $formData['namePer'] ?>
+                    </span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        <?= t('Company Name'); ?>
+                    </label>
+                    <span class="sp-info-tbl" id="show-nameCompanyPer">
+                        <?= $formData['nameCompanyPer'] ?>
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        <?= t('Email'); ?>
+                    </label>
+                    <span class="sp-info-tbl" id="show-emailPer">
+                        <?= $formData['emailPer'] ?>
+                    </span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        <?= t('Mobile'); ?>
+                    </label>
+                    <span class="sp-info-tbl" id="show-mobilePer">
+                        <?= $formData['mobilePer'] ?>
+                    </span>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<br/>
+
+<div>
+    <label class="lb-info-big">
+        <?= t('Technical support and updates to the site by experts to participate'); ?>
+    </label>
+                    <span class="sp-info-big" id="show-supportPer">
+                        <?
+                        if ($formData['supportPer'] == 0)
+                            echo $this->translate('No Selection');
+                        elseif ($formData['supportPer'] == 1)
+                            echo $this->translate('Selection');
+                        ?>
+                    </span>
+</div>
+<div>
+    <label class="lb-info-med">
+        <?= t('Other Facilities'); ?>
+    </label>
+                    <span class="sp-info-big" id="show-others">
+                        <?
+                        if ($formData['others'] == '')
+                            echo $this->translate('The final invoice amount is');
+                        elseif ($formData['others'] != '')
+                            echo $this->translate('Because the other features of your invoice amount is not conclusive');
+                        ?>
+                    </span>
+</div>
+<div>
+    <label class="lb-info-med">
+        <?= t('Your Domain Name'); ?>
+    </label>
+                    <span class="sp-info" id="show-domainName">
+                        <?
+                        if (!isset($formData['domainName']))
+                            echo $this->translate('No Selection');
+                        else {
+                            if ($formData['domainName'])
+                                echo $formData['domainName'];
+                            else
+                                echo $this->translate('No Selection');
+                        }
+                        ?>
+                    </span>
+</div>
+
+
+<div class="div-item-fact-preview">
+    <?
+    $i = 0;
+    $class = '';
+    foreach ($this->item as $item) {
+        if ($i == 0) {
+            $class = "class='lb-item-fact-preview-1'";
+            $i = 1;
+        } else {
+            $class = "class='lb-item-fact-preview-2'";
+            $i = 0;
+        }
+        ?>
+        <div <?= $class; ?> >
+            <?= $item ?>
+        </div>
+    <?
+    }
+    ?>
+</div>
+
+
+<div>
+    <label class="lb-info-med">
+        <?= t('Total cost of Items'); ?>
+    </label>
+                    <span class="sp-info" id="show-resultPrice">
+                        <?
+                        if ($formData['resultPrice'] == '')
+                            echo "0";
+                        else
+                            echo "<label type='hidden' id='resultPrice' data-id='" . $formData['resultPrice'] . "' >" . $formData['resultPrice'] . "</label>";
+                        ?>
+                    </span>
+    <label class="rial">
+        <?= t('Toman'); ?>
+    </label>
+</div>
+
+<div>
+    <label class="lb-info-med">
+        <?= t('Total price languages'); ?>
+    </label>
+                    <span class="sp-info" id="show-resultPriceLang">
+                         <?
+                         if ($formData['resultPriceLang'] == '')
+                             echo "0";
+                         else
+                             echo "<label type='hidden' id='resultPriceLang' data-id='" . $formData['resultPriceLang'] . "' >" . $formData['resultPriceLang'] . "</label>";
+                         ?>
+                    </span>
+    <label class="rial">
+        <?= t('Toman'); ?>
+    </label>
+</div>
+<div>
+    <label class="lb-info-med">
+        <?= t('The total price'); ?>
+    </label>
+                    <span class="sp-info" id="show-sumResultPrice">
+                         <?
+                         if ($formData['sumResultPrice'] == '')
+                             echo "0";
+                         else
+                             echo "<label type='hidden' id='sumResultPrice' data-id='" . $formData['sumResultPrice'] . "' >" . $formData['sumResultPrice'] . "</label>";
+                         ?>
+                    </span>
+    <label class="rial">
+        <?= t('Toman'); ?>
+    </label>
+</div>
+<div>
+    <label class="lb-info-med">
+        <?= $this->translate('Type of payment'); ?>
+    </label>
+    <span class="sp-info">
+      <?
+      switch ($formData['typePayment']) {
+          case 0 :
+              echo $this->translate('In Place');
+              break;
+          case 1 :
+              echo $this->translate('Card To Card');
+              ?>
+              <div class="div-payment-form" id="cardNumber-form">
+                  <label class="lb-info-med">
+                      <?= $this->translate('Account Number'); ?>
+                  </label>
+                    <span class="sp-info">
+                         <?= $formData['infoPayment']; ?>
+                    </span>
+                  <br/>
+                  <label class="lb-info-big">
+                      <?= $this->translate('Last four digits of the card number'); ?>
+                  </label>
+                    <span class="sp-info">
+                         <?= $formData['end4CardNumber']; ?>
+                    </span>
+                  <br/>
+                  <label class="lb-info-med">
+                      <?= $this->translate('Date and time deposit'); ?>
+                  </label>
+                    <span class="sp-info">
+                         <?= $formData['datePayment']; ?>
+                    </span>
+
+              </div>
+              <?
+              break;
+          case 2 :
+              echo $this->translate('Online');
+              break;
+          case 3 :
+              echo $this->translate('Cash to Bank Account');
+              ?>
+              <div class="div-payment-form" id="accountNumber-form">
+                  <label class="lb-info-med">
+                      <?= $this->translate('Account Number'); ?>
+                  </label>
+                    <span class="sp-info">
+                         <?= $formData['infoPayment']; ?>
+                    </span>
+                  <br/>
+                  <label class="lb-info-med">
+                      <?= $this->translate('Serial pay'); ?>
+                  </label>
+                    <span class="sp-info">
+                         <?= $formData['seryalPayment']; ?>
+                    </span>
+                  <br/>
+                  <label class="lb-info-med">
+                      <?= $this->translate('Date and time deposit'); ?>
+                  </label>
+                    <span class="sp-info">
+                        <?= $formData['datePayment']; ?>
+                    </span>
+              </div>
+              <?
+              break;
+      }
+      ?>
+    </span>
+
+
+</div>
+
+</div>
+<div class="header-factor"></div>
+</div>
+<div class="div-links-footer">
+    <?
+    $path = "http://www." . ACTIVE_SITE . ".ir/clients/" . ACTIVE_SITE . "/files/onlineorders/pages/" . $formData['refCode'] . ".html";
+    ?>
+
+    <a class="prew" target="_blank" href="<?= $path ?>"></a>
+    <a class="print" href="javascript:window.print()"></a>
+</div>
+<script>
+
+    function insertcomma2(vals) {
+        var regex = /(\d)((\d{3},?)+)$/;
+        while (regex.test(vals)) {
+            vals = vals.replace(regex, '$1,$2');
+        }
+        return vals;
+    }
+
+    document.getElementById('show-resultPrice').innerHTML = insertcomma2(document.getElementById('resultPrice').innerHTML);
+    document.getElementById('show-sumResultPrice').innerHTML = insertcomma2(document.getElementById('sumResultPrice').innerHTML);
+    document.getElementById('show-resultPriceLang').innerHTML = insertcomma2(document.getElementById('resultPriceLang').innerHTML);
+
+</script>
+
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

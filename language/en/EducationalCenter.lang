@@ -1,0 +1,11 @@
+<?
+return array(
+    'PERM_EducationalCenter' => 'Educational Center',
+    'EC_WORKSHOP_TIME_DONE' => 'Done',
+    'EC_WORKSHOP_TIME_CANCELED' => 'Canceled',
+    'EC_WORKSHOP_TIME_CANCEL' => 'Cancel',
+    'EC_WORKSHOP_TIME_UNCANCEL' => 'Uncancel',
+    'EC_TIMETABLE_WAITING' => 'Waiting',
+    'EC_WORKSHOP_TIME_IN_PROGRESS' => 'Session is in Progress',
+    'EDUCATINALCENTER_DETAILS_WORKSHOP'=>'EDUCATINALCENTER_DETAILS_WORKSHOP',
+);

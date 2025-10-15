@@ -1,0 +1,116 @@
+<?
+use Localization\View\Helper\DateFormat;
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+$styles = array();
+$styles[] = $basePath . TEMPLATE_PATH . '/css/bootstrap.min.css';
+$styles[] = $basePath . '/css/system.css';
+$styles[] = $basePath . '/css/base-theme/jquery-ui-1.10.1.custom.min.css';
+//$styles[] = $basePath . '/css/jquery.ui.menubar.css';
+
+foreach ($styles as $st) {
+    $this->headLink()->prependStylesheet($st);
+}
+
+$styles = array();
+$styles[] = $basePath . TEMPLATE_PATH . '/css/style.css';
+if ($direction == 'ltr')
+    $styles[] = $basePath . TEMPLATE_PATH . '/css/style-ltr.css';
+foreach ($styles as $st) {
+    $this->headLink()->appendStylesheet($st);
+}
+
+$scripts = array(
+    TEMPLATE_PATH . '/js/template.js',
+    '/js/system.jquery.ui.buttons.js',
+    '/js/system.jquery.ui.js',
+    '/js/general.js',
+    '/js/system.js',
+    '/js/forms.js',
+    '/js/jquery.hoverIntent.min.js',
+    '/js/jquery.cookie.js',
+    '/js/jquery.transit.min.js',
+   // '/js/jquery.ui.datepicker-cc.js',
+   // '/js/jquery.ui.datepicker-cc-fa.js',
+//    '/js/jquery.ui.menubar.js',
+    '/js/jquery-ui-1.10.1.custom.min.js',
+    '/js/calendar.js',
+    '/js/jquery-1.10.2.js'
+);
+foreach ($scripts as $sc) {
+    $this->headScript()->prependFile($basePath . $sc);
+}
+
+$admin_menu = trim($this->navigation()
+    ->menu('admin_menu')
+    ->setUlClass('menu')
+    ->renderMenu());
+$breadcrumbs = trim($this->navigation()
+    ->breadcrumbs('admin_menu')
+    ->setMinDepth(0)
+    ->setPartial('application/index/admin-breadcrumbs')
+    ->render());
+
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('IPT Portal System')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+
+</head>
+<!--class="--><? //= implode(' ', $this->body()->class) ?><!--"-->
+<body>
+<div class="header-sticky-bar">
+    <div class="box home-button-box">
+        <a target="_blank" href="<?= url('app/front-page') ?>" title="<?= t('Home Page') ?>"><?= t('Home Page') ?></a>
+    </div>
+    <? if ($admin_menu) { ?>
+        <div id="admin_nav" class="box no-script">
+            <?= $admin_menu; ?>
+        </div>
+    <? } ?>
+
+    <?= $this->user_logged_in_block(); ?>
+    <?= $this->langSwitcher(null); ?>
+</div>
+<div class="admin_main_content <?= !$admin_menu ? 'no_sidebar' : '' ?>">
+    <div id="system_messages"> <?= $this->flashMessenger()->render(); ?></div>
+    <? if ($breadcrumbs) { ?>
+        <div id="breadcrumbs">
+            <?= $breadcrumbs; ?>
+        </div>
+    <? } ?>
+
+    <!--    <div style="clear: both;"></div>-->
+    <!--<div class="column-right menu">-->
+
+    <!--    --><? // echo $this->block('right-column'); ?>
+    <!--</div>-->
+    <div class="column-mid">
+        <div id="content_body">
+            <?= $this->content; ?>
+        </div>
+    </div>
+    <div class="footer">
+        <p class="powered-by">
+            <?
+            $startYear = mktime(0, 0, 0, 6, 0, 2012);
+            $startYear = $this->dateFormat($startYear, DateFormat::YEAR_ONLY);
+            $nowYear = $this->dateFormat(time(), DateFormat::YEAR_ONLY);
+            ?>
+            <span
+                dir="rtl"><?= sprintf(t('Powered by %sIPT System%s'), "<a href='http://iptcms.com'>", "</a>") ?></span>
+            <span dir="ltr"><?= sprintf(t('&copy; %s-%s'), $startYear, $nowYear) ?></span>
+        </p>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('New Product'); ?>
+    </h3>
+
+    <p class="description">
+        <?= t('Create new product') ?>
+    </p>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+
+        ?>
+        <div id="product-details-tabs">
+            <ul>
+                <?
+                foreach ($form->getFieldsets() as $el) {
+                    if ($el->getName() != 'buttons') {
+                        ?>
+                        <li><a href="#tabs-<?= $el->getName() ?>"><?= t($el->getLabel()) ?></a></li>
+                        <?
+                        $el->setLabel('');
+                    }
+                }
+                ?>
+            </ul>
+            <?
+            foreach ($form->getFieldsets() as $el) {
+                if ($el->getName() != 'buttons') {
+                    ?>
+                    <div id="tabs-<?= $el->getName() ?>">
+                        <?= $this->iptFormCollection($el) ?>
+                    </div>
+                <?
+                }
+            }
+            ?>
+
+        </div>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script>
+    <?\Application\API\App::setEditor('general_note',$this)?>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+        $("#product-details-tabs").tabs();
+        $('#tabs-types fieldset').each(function () {
+            var legend = $('legend', this);
+            var label = legend.text();
+            legend.remove();
+            $(this).attr('data-label', label);
+        });
+        $('#types_type').change(function () {
+            $('#tabs-types fieldset').not('.hidden').addClass('hidden');
+            var val = $(this).val();
+            var fieldset = $('#product_type_' + val);
+            if (fieldset.length) {
+                fieldset.removeClass('hidden');
+            }
+        }).change();
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

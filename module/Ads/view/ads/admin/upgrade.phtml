@@ -1,0 +1,86 @@
+<? if (!$this->error) { ?>
+    <style>
+        #ad_view_star_count{ display:none; }
+    </style>
+    <div class="ad_upgrade_form">
+        <h3 class="page-title">
+            <?= $this->translate('ADS_UPGRADE'); ?>
+        </h3>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        ?>
+        <div id="ad_part_1" style="height:100%;">
+            <p class="description_ad alert alert-danger">
+                <?= t('ADS_ALERT_NOT_BACK_MONET') ?>
+                <br>
+                <?= t('ADS_ALERT_DIFFERENCE_INFO') ?>
+            </p>
+
+            <p class="description_ad alert alert-info">
+                <?= t('ADS_CURRENT') . ' : ' . $this->currentAd ?>
+                <br>
+                <?= t('ADS_TIME_REMAINING') . ' : ' . $this->timeRemaining ?>
+                <br>
+                <?= t('ADS_MONEY_REMAINING') . ' : ' . $this->currencyFormat($this->moneyRemaining) ?>
+                <br>
+                <?= sprintf(t('ADS_VIEW_STAR_PRICE'), '<span id="ad_view_param_5"></span>') ?>
+            </p>
+
+            <p class="description_ad alert alert-success">
+                <?= t('ADS_FINAL_PRICE') . " : " ?>
+                <span id="ad_view_final_price"></span>
+                <?= t(getCurrency()) ?>
+            </p>
+
+            <div class="col-md-12 ad_view_type">
+                <?
+                echo $this->formRow($form->get('adType'));
+                ?>
+                <div class="col-xs-4" id="ad_view_star_count">
+                    <?= $this->formRow($form->get('starCount')); ?>
+                </div>
+            </div>
+        </div>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+    <script>
+        <?$this->inlineScript()->captureStart();?>
+        var ads = {
+            config: <?=json_encode($this->adConfig)?>,
+            adConfigId: 0,
+            notConfig: '<?=t('ADS_NOT_CONFIG_MESSAGE')?>',
+            moneyRemaining: parseInt(<?=$this->moneyRemaining?>)
+        };
+        $(document).ready(function () {
+
+            $('input[name=adType]').click(function () {
+                var idLink = parseInt($(this).data('in')) + 1;
+                ads.adConfigId = $('input[name=adType]:radio:checked').val();
+                var adConfigText = $('input[name=adType]:radio:checked').parent().text();
+                if (typeof ads.config[ads.adConfigId] != 'undefined') {
+                    $('#ad_view_param_5').html(ads.config[ads.adConfigId]['starPrice_name']);
+                    var starCount = parseInt($('select[name=starCount]').val());
+                    $('#ad_view_final_price').html(insertcomma(parseInt(ads.config[ads.adConfigId]['starPrice'])*starCount));
+
+                    if (parseInt(ads.config[ads.adConfigId]['starPrice']) > 0)
+                        $('#ad_view_star_count').slideDown();
+                    else if (parseInt(ads.config[ads.adConfigId]['starPrice']) <= 0)
+                        $('#ad_view_star_count').slideUp();
+                } else
+                    System.AjaxMessage(ads.notConfig);
+            });
+
+            $('select[name=starCount]').change(function () {
+                var result = parseInt(ads.config[ads.adConfigId]['starPrice']) * parseInt($(this).val());
+                $('#ad_view_final_price').html(insertcomma(result));
+            });
+
+        });
+        <?$this->inlineScript()->captureEnd();?>
+    </script>
+<? } ?>

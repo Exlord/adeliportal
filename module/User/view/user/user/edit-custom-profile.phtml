@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-3">
+        <? echo $this->partial('user/user/user-toolbar', array('userId' => $this->user->id, 'flag' => true)); ?>
+    </div>
+    <div class="col-md-9">
+        <h3 class="page-title">
+            <?=
+            sprintf($this->translate("Edit %s's Custom Profile"),
+                "<span class='emphasize'>" .
+                $this->escapeHtml($this->user->username)
+                . "</span>") ?>
+        </h3>
+        <?
+        if ($this->hasFields) {
+            print $this->form($this->form);
+        } else {
+            echo $this->alert(t('None of your user roles have any custom fields assigned to them!', 'alert-info'));
+        }
+        ?>
+    </div>
+</div>

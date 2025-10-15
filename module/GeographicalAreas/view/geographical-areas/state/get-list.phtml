@@ -1,0 +1,5 @@
+<?
+echo "<option value=''>" . $this->translate('-- Select --') . "</option>";
+foreach ($this->list as $key => $city) {
+    echo "<option value='{$key}'>" . $this->translate($city) . "</option>";
+}

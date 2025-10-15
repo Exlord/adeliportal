@@ -1,0 +1,8 @@
+<?
+foreach ($this->select as $key => $val) {
+    ?>
+    <div data-id="<?= $key ?>">
+        <label><?= $val ?></label>
+        <a href="#delete" class="remove-icon delete-agent-area-id" data-id="<?= $key ?>"></a>
+    </div>
+<? } ?>

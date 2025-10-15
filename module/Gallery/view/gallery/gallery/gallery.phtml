@@ -1,0 +1,31 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/gallery.css');
+$select = $this->selectGallery;
+?>
+<div class="gallery-item">
+    <?
+    foreach ($select as $row) {
+        $height = null;
+        $width = null;
+        if (!empty($row->width))
+            $width = $row->width;
+        if (!empty($row->height))
+            $height = $row->height;
+        if ($width && $height)
+            $imageUrl = getThumbnail()->resize($row->image, $width, $height); //resize image
+        elseif ($width || $height)
+            $imageUrl = getThumbnail()->thumbnail($row->image, $width, $height); //resize image
+        else
+            $imageUrl = $row->image;
+
+        ?>
+        <div class="gallery-box-group">
+            <a class="gallery-item-link" href="">
+                <img class="gallery-item-link-image" src="<?= $imageUrl ?>">
+            </a>
+            <span class="gallery-item-link-title"><?= $row->title ?></span>
+            <!--<a class="gallery-item-link-download" href=""><?/*= t('Download') */?></a>-->
+            <a class="gallery-item-link-view" href=""><?= t('View') ?></a>
+        </div>
+    <? } ?>
+</div>

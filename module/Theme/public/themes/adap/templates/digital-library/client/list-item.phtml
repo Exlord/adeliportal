@@ -1,0 +1,83 @@
+<?
+if (!empty($this->paginator) && $this->paginator->count()) {
+    $fieldsApi = getSM()->get('fields_api');
+    ?>
+    <div class="col-md-12">
+        <?
+        foreach ($this->paginator as $row) {
+
+            $image = null;
+            $alt = '';
+            $imageTitle = '';
+            if (isset($row['book_image'])) {
+                $image = @unserialize($row['book_image']);
+                unset($row['book_image']);
+            }
+            if ($image) {
+                $alt = $image['alt'];
+                $imageTitle = $image['title'];
+                $image = getThumbnail()->thumbnail($image['path'], 85, 120); //resize image
+            } else
+                $image = '';
+            ?>
+
+            <div class="media book-row <?= $this->cycle(array("row-odd", "row-even"))->next() ?>">
+                <div class="image pull-right">
+                    <img src="<?= $image ?>" alt="<?= $alt ?>" title="<?= $imageTitle ?>">
+                </div>
+
+                <div class="details media-body">
+                    <a class="details-link pull-left"
+                       href="<?= url('app/books/view', array('id' => $row['itemId'],
+                           'title' => \Application\API\App::prepareUrlString($row['title']))) ?>">
+                        مشاهده محتوا و دانلود
+                    </a>
+
+                    <h4 class="media-heading book-title">
+                        <?= $this->escapeHtml($row['title']) ?>
+                    </h4>
+
+                    <div class="item-details">
+                        <?
+                        if (isset($row['book_summery']))
+                            unset($row['book_summery']);
+                        $fieldsData = $fieldsApi->generate($this->fields, $row);
+                        foreach ($fieldsData as $key => $val) {
+                            ?>
+                            <div class="detail-row">
+                                <span class="item-label"><?= $key ?> :</span>
+                                <span class="item-value"><?= nl2br($val) ?></span>
+                            </div>
+                        <?
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        <?
+        }
+        ?>
+    </div>
+    <?
+    $pager = trim($this->paginationControl($this->paginator,
+            'Sliding',
+            'theme/paginator.phtml', array(
+                'route' => 'app/books',
+                'route_params' => array(),
+                'route_options' => array('query' => array('per_page' => $this->per_page))
+            )
+        )
+    );
+    if (!empty($pager)) {
+        ?>
+        <div class="pager"><?= $pager ?></div>
+    <?
+    }
+} else {
+    ?>
+    <div class="col-xs-12">
+        <? print $this->alert(t('No books found !'), 'alert-info'); ?>
+    </div>
+<?
+}
+?>

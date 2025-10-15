@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="alert alert-danger">
+            <p><?= t('You have tried to login with invalid credentials, 5 times.') ?></p>
+
+            <p><?= t('The login system has been locked.') ?></p>
+
+            <p><?= sprintf(t('You will be able to login again after %s'), $this->unlock_after) ?></p>
+        </div>
+    </div>
+</div>

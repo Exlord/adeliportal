@@ -1,0 +1,25 @@
+<?
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+
+$this->headLink()
+    ->appendStylesheet($this->basePath() . '/css/system.css')
+    ->appendStylesheet($this->basePath() . '/css/error.css');
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('IPT System')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+    <?= $this->inlineScript() ?>
+</head>
+<body>
+<div class="main_content">
+    <?= $this->content ?>
+</div>
+</body>
+</html>

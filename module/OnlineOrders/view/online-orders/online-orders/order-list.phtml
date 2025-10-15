@@ -1,0 +1,84 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order-admin.css');
+
+$dataCustomer = $this->dataCustomer;
+$dataGroups = $this->dataGroups;
+$route = $this->route;
+$admin_route = $this->admin_route;
+$route_prefix = $admin_route ? 'admin' : 'app';
+?>
+<table class="tbl-data-grid">
+    <thead>
+    <tr>
+        <th><?=t('Rows');?></th>
+        <th><?=t('Personal Name');?></th>
+        <th><?=t('Company Name');?></th>
+        <th><?=t('Email');?></th>
+        <th><?=t('Mobile');?></th>
+        <th><?=t('Groups');?></th>
+        <th>-----</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?
+    $countClass = 1;
+    $i = 0;
+    foreach ($dataCustomer as $value) {
+        if ($countClass == 0) {
+            $class = "class='tbl-data-grid-tr-1'";
+            $countClass = 1;
+        } else {
+            $class = "class='tbl-data-grid-tr-2'";
+            $countClass = 0;
+        }
+        ?>
+
+        <tr <?=$class?> >
+            <td><?= $i++ ?></td>
+            <td><?=$value['namePer']?></td>
+            <td><?=$value['nameCompanyPer']?></td>
+            <td><?=$value['emailPer']?></td>
+            <td><?=$value['mobilePer']?></td>
+            <td><?
+                $idGroup = $value['idGroup'];
+                if (isset($dataGroups[$idGroup]))
+                    echo $dataGroups[$idGroup];
+                ?>
+            </td>
+            <td>
+                <a href="<?= $this->url($route . '/view-orders', array('id' => $value['ID'])) ?>"><?=t('Show');?></a>
+            </td>
+        </tr>
+    <?
+    }
+    ?>
+
+    </tbody>
+
+</table>
+
+<div class="pager">
+    <?=
+    $this->paginationControl($this->selectCustomer,
+        'Sliding',
+        'application/pagination/search.phtml', array('route' => $route_prefix . '/online-orders/order-list')); ?>
+</div>
+
+
+<!--
+
+<div>
+    <?/*
+    foreach ($select as $row) {
+        */?>
+        <div>
+            <a href="<?/*= $this->url($route . '/view-orders', array('id' => $row->ID)) */?>">
+                <?/*
+                echo $row->ID . "***" . $row->idGroup . "***" . $row->date;
+                */?>
+            </a>
+        </div>
+    <?/*
+    }
+    */?>    </div>
+-->

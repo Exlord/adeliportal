@@ -1,0 +1,115 @@
+<?
+$s_5000_0 = $this->blocks('search_realestate_t');
+$s_5000_1 = $this->blocks('search_realestate_r');
+?>
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4">
+            <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/logo_new.png' ?>"
+                 class="img-responsive logo_new">
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8">
+            <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/titr_search.png' ?>"
+                 class="img-responsive titr_new">
+        </div>
+    </div>
+</div>
+<? if ($s_5000_0) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="box_desc_transfer">
+            این بخش مخصوص افرادی است که می خواهند نیازهای خود را در آگهی های موجود جستجو کنند .
+        </div>
+        <img class="box_desc_arrow" src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/arrow3.png' ?>">
+        <?= $s_5000_0 ?>
+    </div>
+<? } ?>
+<? if ($s_5000_1) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="box_desc_request">
+            این قسمت مخصوص افرادی است که می خواهند مشتریان موجود در بازار را به نسبت توان آنها شناسایی کنند .
+        </div>
+        <img class="box_desc_arrow" src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/arrow3.png' ?>">
+        <?= $s_5000_1 ?>
+    </div>
+<? } ?>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+
+        $('input[name="table[address]"]').attr('placeholder','تایپ کنید');
+
+        $('select[name="field[r_t_regtype]"]').change(function () {
+            var val = $(this).val();
+            switch (parseInt(val)) {
+                case 0:
+                    $('select[name="field[r_t_totalprice]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    $('select[name="field[r_t_rahn]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    $('select[name="field[r_t_ejare]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    break;
+                case 1:
+                    $('select[name="field[r_t_totalprice]"]').parent().parent().parent().parent().removeClass('search_hidden_el');
+                    $('select[name="field[r_t_rahn]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    $('select[name="field[r_t_ejare]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    break;
+                case 2:
+                    $('select[name="field[r_t_totalprice]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    $('select[name="field[r_t_rahn]"]').parent().parent().parent().parent().removeClass('search_hidden_el');
+                    $('select[name="field[r_t_ejare]"]').parent().parent().parent().parent().removeClass('search_hidden_el');
+                    break;
+            }
+        });
+
+        $('select[name="field[r_t_estatetype]"]').change(function () {
+            var val = $(this).val();
+            switch (parseInt(val)) {
+                case 3:
+                case 4:
+                case 5:
+                case 7:
+                    $('select[name="field[r_t_roomcount]"]').parent().parent().parent().addClass('search_hidden_el');
+                    break;
+                default:
+                    $('select[name="field[r_t_roomcount]"]').parent().parent().parent().removeClass('search_hidden_el');
+                    break;
+            }
+        });
+
+        $('select[name="field[r_r_regtype]"]').change(function () {
+            var val = $(this).val();
+            switch (parseInt(val)) {
+                case 0:
+                    $('select[name="field[r_r_price]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    $('select[name="field[r_r_rahn]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    $('select[name="field[r_r_ejare]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    break;
+                case 1:
+                    $('select[name="field[r_r_price]"]').parent().parent().parent().parent().removeClass('search_hidden_el');
+                    $('select[name="field[r_r_rahn]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    $('select[name="field[r_r_ejare]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    break;
+                case 2:
+                    $('select[name="field[r_r_price]"]').parent().parent().parent().parent().addClass('search_hidden_el');
+                    $('select[name="field[r_r_rahn]"]').parent().parent().parent().parent().removeClass('search_hidden_el');
+                    $('select[name="field[r_r_ejare]"]').parent().parent().parent().parent().removeClass('search_hidden_el');
+                    break;
+            }
+        });
+
+        $('select[name="field[r_r_estatetype]"]').change(function () {
+            var val = $(this).val();
+            switch (parseInt(val)) {
+                case 3:
+                case 4:
+                case 5:
+                case 7:
+                    $('select[name="field[r_r_roomcount]"]').parent().parent().parent().addClass('search_hidden_el');
+                    break;
+                default:
+                    $('select[name="field[r_r_roomcount]"]').parent().parent().parent().removeClass('search_hidden_el');
+                    break;
+            }
+        });
+
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

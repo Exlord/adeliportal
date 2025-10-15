@@ -1,0 +1,8 @@
+<div class="box user-box">
+    <?= sprintf($this->translate('Welcome %s'), "<a href='" . $this->path . "'>" . getUserDisplayName(current_user()) . "</a>"); ?>
+    <span>
+        <a class="logout" href="<?= $this->url('app/user/logout') ?>">
+            <?= $this->translate('Logout') ?>
+        </a>
+    </span>
+</div>

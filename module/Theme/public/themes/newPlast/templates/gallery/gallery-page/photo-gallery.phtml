@@ -1,0 +1,95 @@
+<?
+//$this->headLink()->appendStylesheet($this->basePath() . '/css/gallery.css');
+$this->headScript()->appendFile($this->basePath() . '/js/jquery.lazyLoad.js');
+\JQuery\API\JQuery::loadColorBox($this, 'photo-gallery-' . $this->id);
+$select = $this->galleryItem;
+
+?>
+<div class="photo-gallery">
+    <div class="box">
+        <span class="icon_gallery"></span>
+        <span class="title">
+<?= $this->gallery->groupName ?>
+        </span>
+    </div>
+   <!-- <h3 class="page-title"></h3>-->
+    <!--<span class="published"><?/*= t('Published at') */?> : <?/*= $this->dateFormat($this->gallery->publishUp) */?></span>-->
+    <? if (!empty($this->gallery->groupText)) { ?>
+        <p class="description"><?= $this->gallery->groupText ?></p>
+    <? } ?>
+    <div style="clear:both;"></div>
+    <div class="items">
+        <?
+        foreach ($select as $row) {
+            if ($row->image) {
+                $height = 100;
+                $width = 100;
+                if (!empty($row->width))
+                    $width = $row->width;
+                if (!empty($row->height))
+                    $height = $row->height;
+                $imageUrl = getThumbnail()->resize($row->image, $width, $height); //resize image
+                $url = url('app/gallery-counter', array('id' => $row->id, 'hitsType' => $this->hitsType));
+                ?>
+
+                <div class="item">
+                    <a class="colorbox" data-id="<?= $url ?>" href="<?= $row->image ?>">
+                        <img class="lazy" data-original="<?= $imageUrl ?>" rel="tooltip"
+                             title="<?= $this->escapeHtml($row->title) ?>" width="<?= $width ?>"
+                             height="<?= $height ?>">
+                        <noscript>
+                            <img rel="tooltip" title="<?= $this->escapeHtml($row->title) ?>" src="<?= $imageUrl ?>"
+                                 width="<?= $width ?>" height="<?= $height ?>">
+                        </noscript>
+                        <? if (!empty($row->title)) { ?>
+                            <p class="title"><?= $this->escapeHtml($row->title) ?></p>
+                        <? } ?>
+                    </a>
+                     <!--<span class="gallery-item-link-title"><?/*= $this->escapeHtml($row->title) */?></span>-->
+                    <!--<a class="gallery-item-link-download" href=""><? /*= t('Download') */ ?></a>-->
+                    <!--<a class="gallery-item-link-view" href=""><? /*= t('View') */ ?></a>-->
+                </div>
+
+            <?
+            }
+        }?>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("img.lazy").lazyload({
+            effect: "fadeIn"
+        });
+
+        $('.photo-gallery .colorbox').click(function () {
+            var url = $(this).data('id');
+            var data = {};
+            data['type'] = 'photoGallery';
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                complete: function () {
+                },
+                success: function (data) {
+                }
+            });
+
+        });
+        /*$('.photo-gallery .item').hoverIntent({
+            interval: 50,
+            over: function () {
+                $('.photo-gallery .item').not(this).css({opacity: 0.3});
+                $(this).transition({ scale: 1.1});
+            },
+            out: function () {
+                $(this).transition({scale: 1});
+                $('.photo-gallery .item').css({opacity: 1});
+            }
+        });*/
+
+    })
+    ;
+</script>

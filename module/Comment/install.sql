@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS `tbl_comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `entityId` int(11) NOT NULL,
+  `entityType` varchar(300) CHARACTER SET latin1 DEFAULT NULL,
+  `parentId` int(11) NOT NULL,
+  `name` varchar(300) DEFAULT NULL,
+  `email` varchar(300) DEFAULT NULL,
+  `comment` text,
+  `status` tinyint(4) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `created` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `entityId` (`entityId`),
+  KEY `entityType` (`entityType`),
+  KEY `status` (`status`),
+  KEY `parentId` (`parentId`),
+  KEY `userId` (`userId`),
+  KEY `parentId_2` (`parentId`,`status`),
+  KEY `entityId_2` (`entityId`,`entityType`,`status`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

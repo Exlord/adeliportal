@@ -1,0 +1,142 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/page.css');
+if ($this->showTags) {
+    ?>
+    <div class="content-tags ">
+        <?
+        $tagRouteParams = array();
+        if ($this->tags)
+            foreach ($this->tags as $tag) {
+
+                $tagRouteParams['tagName'] = \Application\API\App::prepareUrlString($tag['itemName']);
+                $tagRouteParams['tagId'] = $tag['id'];
+                ?>
+                <span class="content-tag">
+            <a href="<?= url('app/content', $tagRouteParams) ?>">
+                <?= $this->escapeHtml($tag['itemName']) ?>
+                <span class="content-tag-page-count digit">(<?
+                    if (isset($this->pageCount[$tag['id']]))
+                        echo localizedDigits($this->pageCount[$tag['id']]);
+                    else
+                        echo localizedDigits('0');
+                    ?>)</span>
+                <? if ($this->showTags == 2) { ?>
+                    <div>
+                        <p><?= $tag['itemText'] ?></p>
+                        <? if (isset($this->fileArray[$tag['id']])) { ?>
+                            <img src="<?= $this->fileArray[$tag['id']]['fPath'] ?>"
+                                 alt="<?= $this->fileArray[$tag['id']]['alt'] ?>"
+                                 title="<?= $this->fileArray[$tag['id']]['title'] ?>">
+                        <? } ?>
+                    </div>
+                <? } ?>
+            </a>
+        </span>
+            <?
+            }
+        ?>
+    </div>
+<?
+}
+if ($this->paginator->count()) {
+    ?>
+    <div class='articles-intro-list content-tags-5'>
+        <?
+
+        $pageRouteParams = array();
+        /* @var $page \Page\Model\Page */
+        foreach ($this->paginator as $page) {
+            $imageUrl = null;
+            $imageAlt = '';
+            $imageTitle = '';
+            if (isset($page['image']) && $page['image']) {
+                $baseImage = unserialize($page['image']);
+                if (isset($baseImage['image']) && $baseImage['image']) {
+                    $imageUrl = $baseImage['image'];
+                    $imageAlt = $baseImage['alt'];
+                    $imageTitle = $baseImage['title'];
+                } else {
+                    $imageUrl = getSM('page_api')->getImageFromText($page['fullText']);
+                }
+                if (!$imageUrl)
+                    $imageUrl = $this->basePath() . '/__/images/book_img.jpg';
+                $imageUrl = getThumbnail()->resize($imageUrl, 165, 205); //resize image
+            }
+
+            $unConfig = unserialize($page['config']);
+
+            $showDate = 0;
+            if (isset($unConfig['showDate']) && (int)$unConfig['showDate'])
+                if ((int)$unConfig['showDate'] == 2) {
+                    if (isset($this->config['showDate']))
+                        $showDate = $this->config['showDate'];
+                } else
+                    $showDate = 1;
+
+            $showHits = 0;
+            if (isset($unConfig['showHits']) && (int)$unConfig['showHits'])
+                if ((int)$unConfig['showHits'] == 2) {
+                    if (isset($this->config['showHits']))
+                        $showHits = $this->config['showHits'];
+                } else
+                    $showHits = 1;
+
+
+//            if (\Application\API\App::matchDomain($page->domains, $page->domainVisibility)) {
+            $pageRouteParams['id'] = $page['id'];
+            $pageRouteParams['title'] = \Application\API\App::prepareUrlString($page['pageTitle']);
+            ?>
+            <div class="media panel">
+                <a class="pull-right" href="#">
+                    <img class="media-object" src="<?= $imageUrl ?>" alt="<?= $imageAlt ?>" title="<?= $imageTitle ?>"
+                         width="165" height="205">
+                </a>
+
+                <div class="media-body">
+                    <? if ($showDate) {
+                        ?>
+                        <span class="published">
+                       <?= t('Published') . " : " ?>
+                       <?= $this->date_format($page['publishUp']) ?>
+                     </span>
+                    <? } ?>
+                    <? if ($showHits) {
+                        ?>
+                        <span class="hits">
+                          <?= t('Views') . " : " ?>
+                          <?= localizedDigits($page['hits']) ?>
+                     </span>
+                    <? } ?>
+                    <a href="<?= url('app/single-content', $pageRouteParams) ?>">
+                        <h2 class="article-title">
+                            <span class="icon"></span>
+                            <?= $this->escapeHtml($page['pageTitle']) ?></h2></a>
+
+                    <div class="intro_text">
+                        <? if (strlen($page['introText']) > 500) echo mb_substr($page['introText'], 0, 500, 'UTF-8') . '...'; else echo $page['introText']; ?>
+                    </div>
+                    <a class="read-more" href="<?= url('app/single-content', $pageRouteParams) ?>">
+                        <span><?= t('Read more') ?></span>
+                    </a>
+                </div>
+
+            </div>
+        <?
+        }
+        ?>
+        <div style="clear:both"></div>
+    </div>
+    <div class="pager">
+        <?
+        /* @var $pages \Zend\Paginator\Paginator */
+        echo $this->paginationControl($this->paginator,
+            'Sliding',
+            'application/pagination/search.phtml', array('route' => $this->route, 'route_params' => $this->routeParams, 'route_options' => $this->route_options));
+        ?>
+    </div>
+    <?
+    $this->body()->class[] = 'articles';
+} else {
+    echo $this->general()->noOutPut();
+}
+?>

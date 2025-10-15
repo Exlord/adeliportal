@@ -1,0 +1,548 @@
+<?
+if (!$this->error) {
+    $this->headScript()->appendFile($this->basePath() . '/__/js/filter-fields.js');
+    $this->headScript()->appendFile($this->basePath() . '/js/geographical.js');
+    if ($this->isGoogleMap) {
+        $this->headScript()->appendFile($this->basePath() . '/__/js/adsGoogleMapHandler.js');
+    }
+
+    ?>
+    <style>
+        .ad_new_form #ad_part_2{ display:none; }
+        #image_settings .add_collection_item{ display:none; }
+        #ad_part_2 .select2-container-multi{ width:auto !important; }
+        .filter-field-hidden{ display:none; }
+    </style>
+    <div class="ad_new_form">
+    <div class="back_loading">
+        <span class="img_loading"></span>
+    </div>
+    <!--<h3 class="page-title">
+        <?/*= $this->translate('ADS_NEW'); */?>
+    </h3>
+
+    <p class="text-muted">
+        <?/*= t('ADS_NEW_DESC') */?>
+    </p>-->
+    <?
+    $form = $this->form;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formRow($form->get('id'));
+    echo $this->formRow($form->get('googleLatLong'));
+    ?>
+    <div id="ad_part_1" style="height:100%;">
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <span class="box_new_type_desc">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+لطفا مدت، قیمت و نوع آگهی خود را انتخاب کنید .
+                <span class="caret"></span>
+            </span>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 ad_view_type">
+            <?
+            $el = $form->get('adType');
+            $el->setLabel("");
+            echo $this->formRow($el);
+            ?>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <span class="blue_line"></span>
+        </div>
+
+        <div style="clear:both"></div>
+
+        <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 col-md-2 col-md-offset-5">
+            <a class="ad_next" href="#" data-in="1">
+                ادامه و تکمیل فرم
+            </a>
+        </div>
+
+        <div style="clear:both"></div>
+    </div>
+    <div id="ad_part_2">
+    <div class="col-md-12">
+    <p class="description_ad alert alert-info">
+        <?= sprintf(t('ADS_VIEW_TYPE'), '<span id="ad_view_param_1"></span>') ?>
+        <br>
+        <?= sprintf(t('ADS_VIEW_COUNT_AT_DAY'), '<span id="ad_view_param_2"></span>') ?>
+        <br>
+        <?= sprintf(t('ADS_VIEW_COUNT_CAT_ITEM'), '<span id="ad_view_param_3"></span>') ?>
+        <br>
+        <?= sprintf(t('ADS_VIEW_COUNT_KEYWORD'), $this->keywordCount) ?>
+        <br>
+        <?= sprintf(t('ADS_VIEW_COUNT_IMAGE'), '<span id="ad_view_param_4"></span>') ?>
+        <br>
+        <?= sprintf(t('ADS_VIEW_STAR_PRICE'), '<span id="ad_view_param_5"></span>') ?>
+        <br>
+        <? //= t('ADS_AMOUNT_PAYMENT') . ' : ' . $this->currencyFormat($this->amount) ?>
+    </p>
+
+    <p class="description_ad alert alert-success">
+        <?= t('ADS_FINAL_PRICE') . " : " ?>
+        <span id="ad_view_final_price"></span>
+        <?= t(getCurrency()) ?>
+        <!--                    <br>-->
+        <!--                    --><? //= t('ADS_FINAL_PRICE_DEDUCTED') . " : " ?>
+        <!--                    <span id="ad_view_final_price_deducted"></span>-->
+        <!--                    --><? //= t(getCurrency()) ?>
+    </p>
+
+    <div class="col-xs-7">
+        <div class="row">
+            <div class="col-md-2">
+                <label>
+                    <?= t('Title') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('title')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-7 a_n_cat">
+        <div class="row">
+            <div class="col-md-2">
+                <label>
+                    <?= t('Categories') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('catId')); ?>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xs-7">
+        <div class="row">
+            <div class="col-md-2">
+                <span class="glyphicon glyphicon-asterisk text-danger def_danger"></span>
+                <label>
+                    <?= t('Name') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('name')); ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-7" id="ad_view_star_count">
+        <div class="row">
+            <div class="col-md-2">
+                <label>
+                    <?= t('ADS_STAR_COUNT') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('starCount')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-9">
+        <div class="row">
+            <div class="col-md-2">
+                <label>
+                    <?= t('Description') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?
+                $el = $form->get('text');
+                $el->setLabel("");
+                echo $this->formRow($form->get('text')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-9">
+        <div class="row">
+            <div class="col-md-2">
+                <label>
+                    <?= t('Address') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('address')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-9">
+        <div class="row">
+            <div class="col-md-2">
+                <label>
+                    <?= t('ADS_KEYWORDS') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('keyword')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-5 ">
+        <div class="row">
+            <div class="col-md-2">
+                <span class="glyphicon glyphicon-asterisk text-danger def_danger"></span>
+                <label>
+                    <?= t('State') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('stateId')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-5 col-xs-offset-1">
+        <div class="row">
+            <div class="col-md-2">
+                <span class="glyphicon glyphicon-asterisk text-danger def_danger"></span>
+                <label>
+                    <?= t('City') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('cityId')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-5">
+        <div class="row">
+            <div class="col-md-2">
+                <label>
+                    تلفن ثابت
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('fax')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-5 col-xs-offset-1">
+        <div class="row">
+            <div class="col-md-2">
+                <span class="glyphicon glyphicon-asterisk text-danger def_danger"></span>
+                <label>
+                    <?= t('Mobile') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('mobile')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-5 ">
+        <div class="row">
+            <div class="col-md-2">
+                <label>
+                    <?= t('Email') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('mail')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-5 col-xs-offset-1" id="ad_view_link">
+        <div class="row">
+            <div class="col-md-2">
+                <label>
+                    <?= t('ADS_LINK') ?>
+                </label>
+            </div>
+            <div class="col-md-10">
+                <?= $this->formRow($form->get('link')); ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <span class="blue_line"></span>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-5">
+        <?= $this->formRow($form->get('showPm')); ?>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-5 box_file_small">
+        <?= $this->formRow($form->get('smallImage')); ?>
+        <? if ($this->flagEdit && $this->oldSmallImagePath) { ?>
+            <div class="box-file-collection">
+                <a id="del_smallImage_ad" class="btn">
+                    <span class="glyphicon glyphicon-remove text-danger"></span>
+                </a>
+                <img src="<?= $this->oldSmallImagePath ?>">
+            </div>
+        <? } ?>
+    </div>
+
+    <? if ($this->isGoogleMap) { ?>
+        <div class="col-xs-12 col-sm-2 col-md-2 zero_padding">
+            <a href="#googleMap" id="find-google" class="input-google-map btn btn-default btn-lg disabled">
+                <?= t('Map') ?>
+                <i class="fa fa-refresh fa-spin"></i>
+            </a>
+            <span class="map_icon"></span>
+        </div>
+    <? } ?>
+
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <span class="blue_line"></span>
+    </div>
+
+    <div class="col-xs-12 a_n_images_f box_file">
+        <?= $this->formCollection($form->get('image')); ?>
+        <? if ($this->flagEdit) { ?>
+            <div class="box-file-collection">
+                <?= $this->fileDisplay($this->imagesFile, $this->countImage) ?>
+            </div>
+        <? } ?>
+    </div>
+
+    <div class="col-xs-12">
+        <?= $this->formCollection($form->get('fields')); ?>
+    </div>
+
+    <div class="col-md-12">
+        <? if ($form->has('captcha')) echo $this->iptFormRow($form->get('captcha')); ?>
+    </div>
+
+    <div style="clear:both"></div>
+
+    <div class="col-xs-12 col-sm-12 col-md-4 col-md-offset-4 box_button">
+        <button class="ad_prev btn btn-default text-danger" data-in="2">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            بازگشت
+        </button>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        ?>
+    </div>
+    </div>
+    <div style="clear:both"></div>
+    </div>
+    <?
+    echo $this->form()->closeTag();
+    ?>
+    </div>
+    <div id="map-dialog" style="display: none;">
+        <div>
+            <input type="button" id="select_return" class="btn btn-default pull-right flip"
+                   value="<?= t('Confirm and return') ?>">
+            <input type="button" id="select_cancel" class="btn btn-default pull-right flip" value="<?= t('Close') ?>">
+
+            <div>
+                <?= t('To obtain the coordinates of the desired location click on the map.') ?>
+            </div>
+            <div id="map_selected_loc"></div>
+        </div>
+        <div id="map" style="width: 100%;height: 100%;">
+            <?= t('Google Maps is not available due to filtering.') ?>
+        </div>
+    </div>
+    <script>
+        <?$this->inlineScript()->captureStart();?>
+        var ads = {
+            config: <?=json_encode($this->adConfig)?>,
+            fieldsRequestSearch: <?=json_encode($this->fieldsRequestSearch)?>,
+            adConfigId: 0,
+            notConfig: '<?=t('ADS_NOT_CONFIG_MESSAGE')?>',
+            flagEdit: <?=$this->flagEdit?>,
+            filter:<?=$this->filterFields?>,
+            filterFieldName:<?if($this->filterFieldsName) echo $this->filterFieldsName; else echo json_encode(false);?>,
+            isGoogleMap:<?=$this->isGoogleMap?>,
+            flagFormSubmit:<?=$this->flagFormSubmit?>,
+            baseType:<?=$this->baseType?>,
+            baseTypePriceOneEmail:<?=$this->baseTypePriceOneEmail?>,
+            baseTypePriceOneSms:<?=$this->baseTypePriceOneSms?>
+        };
+        $(document).ready(function () {
+
+            $('.ad_new_form .back_loading').fadeIn(300);
+
+            if (ads.flagEdit) {
+                $('#ad_part_1 .ad_view_type .form-group').hide();
+                $('#ad_view_star_count').hide();
+                $('#ad_part_1 .ad_view_type').prepend($('input[name=adType]:radio:checked').parent().text());
+            }
+
+            $('#new_ad_form #buttons_submit').click(function (e) {
+                $('.ad_new_form .back_loading').fadeIn(300);
+                $("html,body").animate({scrollTop: $('#new_ad_form').offset().top - 50 }, 600);
+            });
+
+            $('.ad_next').click(function (e) {
+                e.preventDefault();
+                var idLink = parseInt($(this).data('in')) + 1;
+                ads.adConfigId = $('input[name=adType]:radio:checked').val();
+                var adConfigText = $('input[name=adType]:radio:checked').parent().text();
+                //check fields
+                var error = __checkElPart1();
+
+                if (ads.config[ads.adConfigId] && !error) {
+
+                    $('#ad_view_param_1').html(adConfigText);
+                    $('#ad_view_param_2').html(ads.config[ads.adConfigId]['countInDay']);
+                    $('#ad_view_param_3').html(ads.config[ads.adConfigId]['countCatItem']);
+                    $('#ad_view_param_4').html(ads.config[ads.adConfigId]['countImage']);
+                    $('#ad_view_param_5').html(ads.config[ads.adConfigId]['starPrice_name']);
+                    $('#ad_view_final_price').html(insertcomma(ads.config[ads.adConfigId]['starPrice']));
+                    // var finalPrice = ads.config[ads.adConfigId]['starPrice'];
+                    // $('#ad_view_final_price_deducted').html(insertcomma(finalPrice));
+
+                    __removeImageBox();
+                    var countImage = parseInt(ads.config[ads.adConfigId]['countImage']);
+                    if (countImage == 0)
+                        $('#image_settings').parent().hide();
+                    else {
+                        $('#image_settings').parent().show();
+                        for (var i = 1; i < countImage; i++) {
+                            $('#image_settings .add_collection_item').click();
+                        }
+                    }
+
+                    __createLegendImages();
+
+                    if (parseInt(ads.config[ads.adConfigId]['haveLink']) == 1)
+                        $('#ad_view_link').show();
+                    else
+                        $('#ad_view_link').hide();
+
+                    if (parseInt(ads.config[ads.adConfigId]['starPrice']) > 0 && !ads.flagEdit)
+                        $('#ad_view_star_count').show();
+                    else if (parseInt(ads.config[ads.adConfigId]['starPrice']) <= 0 && !ads.flagEdit)
+                        $('#ad_view_star_count').hide();
+                    $(this).parent().parent().fadeOut(700, function () {
+                        $('#ad_part_' + idLink).fadeIn(1000);
+                    });
+                } else {
+                    if (!error)
+                        System.AjaxMessage(ads.notConfig);
+                }
+
+            });
+
+            $('.ad_prev').click(function (e) {
+                e.preventDefault();
+                var idLink = parseInt($(this).data('in')) - 1;
+                $(this).parent().parent().parent().fadeOut(700, function () {
+                    $('#ad_part_' + idLink).fadeIn(1000);
+                });
+            });
+
+            $('select[name=starCount]').change(function () {
+                var result = parseInt(ads.config[ads.adConfigId]['starPrice']) * parseInt($(this).val());
+                $('#ad_view_final_price').html(insertcomma(result));
+                //  var finalPrice = result;
+                //  $('#ad_view_final_price_deducted').html(insertcomma(finalPrice));
+            });
+
+            $('#del_smallImage_ad').click(function (e) {
+                e.preventDefault();
+                var tag = $(this);
+                tag.removeClass('remove-icon').addClass('ajax-loading-inline');
+                var data = {};
+                data['id'] = $('input[name=id]').val();
+
+                $.ajax({
+                    url: '<?=url('admin/ad/delete-img')?>',
+                    type: 'POST',
+                    data: data,
+                    complete: function () {
+                        tag.removeClass('ajax-loading-inline').addClass('remove-icon');
+                    },
+                    success: function (data) {
+                        if (data.status) {
+                            tag.parent().remove();
+                        }
+                        else {
+                            System.AjaxMessage('Error . Please try again');
+                        }
+                    }
+
+                });
+            });
+
+            if (ads.filterFieldName) {
+                var fieldsName = [];
+                $.each(ads.filterFieldName, function (index, item) {
+                    fieldsName.push('select[name="' + item + '"]');
+                    $('select[name="' + item + '"]').data('index', index);
+                });
+
+                $(fieldsName.join(',')).change(function () {
+                    __showFields();
+                    var baseName = $(this).attr('name');
+                    var key = $(this).data('index');
+                    var name = baseName.replace('fields[', '').replace(']', '');
+                    var filters = ads.filter;
+                    var that = $(this);
+                    $.each(ads.filterFieldName, function (index, item) {
+                        var el = null;
+                        var elName = '';
+                        if (item != baseName) {
+                            el = $('select[name="' + item + '"]');
+                            item = item.replace('fields[', '').replace(']', '');
+                            elName = item;
+                        } else {
+                            el = that;
+                            elName = name;
+                        }
+                        filters = filters[elName][el.val()];
+                    });
+                    $.each(filters, function (index, item) {
+                        if (item == '0') {
+                            $('[name="fields[' + index + ']"]').parent().addClass('filter-field-hidden');
+                        }
+                    });
+
+                });
+            }
+
+            function __showFields() {
+                $('.filter-field-hidden').each(function () {
+                    $(this).removeClass('filter-field-hidden');
+                });
+            }
+
+            function __createLegendImages() {
+                var i = 1;
+                $('#new_ad_form #image_settings .collection-container fieldset').each(function () {
+                    var html = "<legend>" +
+                        "تصویر"
+                        +
+                        i +
+                        "</legend>";
+                    $(this).prepend(html);
+                    i++;
+                });
+            }
+
+            function __removeImageBox() {
+                var counter = 1;
+                $('#image_settings #image').each(function () {
+                    if (counter != 1)
+                        $(this).parent().remove();
+                    counter++;
+                });
+            }
+
+            function __checkElPart1() {
+                var error = false;
+                return error;
+            }
+
+            if (ads.isGoogleMap)
+                Ads.init();
+
+        });
+
+        $(window).bind("load", function () {
+            $('.ad_new_form .back_loading').fadeOut(300);
+        });
+
+
+        <?$this->inlineScript()->captureEnd();?>
+    </script>
+<? } ?>

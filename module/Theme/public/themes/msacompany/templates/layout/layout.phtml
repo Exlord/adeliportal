@@ -1,0 +1,221 @@
+<?
+//$content = \Theme\API\Themes::renderLayout($this);
+
+$topMenu = $this->blocks('top-menu');
+$footerMenu = $this->blocks('footer-menu');
+$mainSlider = $this->blocks('main-slider');
+
+$colRight = $this->blocks('col-right');
+$colLeft = $this->blocks('col-left');
+$colMid = $this->blocks('col-mid');
+$colMidLeft = $this->blocks('col-mid-left');
+$beforeMainContent = $this->blocks('before-main-content');
+$afterMainContent = $this->blocks('after-main-content');
+$contentTop = $this->blocks('content-top');
+$contentBottom = $this->blocks('content-bottom');
+
+$colMidSize = 12;
+if ($colLeft)
+    $colMidSize -= 3;
+if ($colRight)
+    $colMidSize -= 3;
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$bootstrap = $direction == 'rtl' ? '/css/bootstrap.rtl.min.css' : '/css/bootstrap.min.css';
+$basePath = $this->basePath();
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    )
+    ->prependStylesheet($basePath . '/css/system.css')
+    ->prependStylesheet($basePath . '/css/base-theme/jquery-ui-1.10.1.custom.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . $bootstrap)
+    ->prependStylesheet($basePath . '/css/reset.min.css');
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    ->prependFile($basePath . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+
+?>
+
+<!DOCTYPE html>
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<body>
+<div id="container">
+    <div class="top-bar"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="header-wrapper">
+                    <div class="main-logo">
+                        <img src="<?= $basePath . TEMPLATE_PATH ?>/images/logo.png" width="120px">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 id="site-title">
+                                فروش و خدمات پس از فروش انحصاری داف تراکس در ایران
+                            </h1>
+                            <?= $topMenu ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <? if ($mainSlider) { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <?= $mainSlider ?>
+                </div>
+            </div>
+        <? } ?>
+    </div>
+
+    <div id="body">
+        <div class="container">
+            <? if ($contentTop) { ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <?= $contentTop ?>
+                    </div>
+                </div>
+            <? } ?>
+            <div class="row">
+                <? if ($colRight) { ?>
+                    <div class="col-md-3">
+                        <?= $colRight ?>
+                    </div>
+                <? }
+                if ($this->content) { ?>
+                    <div class="col-md-<?= $colMidSize ?>">
+                        <? if ($beforeMainContent) { ?>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?= $beforeMainContent ?>
+                                </div>
+                            </div>
+                        <?
+                        }
+                        $fm = $this->flashMessenger()->render();
+                        if (!empty($fm)) {
+                            ?>
+                            <div id="system_messages"><?= $fm; ?></div>
+                        <? } ?>
+                        <div style="clear: both"></div>
+                        <?
+                        echo $this->content;
+                        if ($afterMainContent) {
+                            ?>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?= $afterMainContent ?>
+                                </div>
+                            </div>
+                        <? } ?>
+                    </div>
+                <? }
+                if ($colLeft) { ?>
+                    <div class="col-md-3">
+                        <?= $colLeft ?>
+                    </div>
+                <? } ?>
+                <? if ($colMid && $colMidLeft) { ?>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-5"><?= $colMid ?></div>
+                            <div class="col-md-7"><?= $colMidLeft ?></div>
+                        </div>
+                    </div>
+                <? } ?>
+            </div>
+            <? if ($contentBottom) { ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <?= $contentBottom ?>
+                    </div>
+                </div>
+            <? } ?>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="footer-social">
+                        <a href="/">
+                            <img src="<?= $basePath . TEMPLATE_PATH ?>/images/google+.jpg">
+                        </a>
+                        <a href="/">
+                            <img src="<?= $basePath . TEMPLATE_PATH ?>/images/facebook.jpg">
+                        </a>
+                        <a href="/">
+                            <img src="<?= $basePath . TEMPLATE_PATH ?>/images/twitter.jpg">
+                        </a>
+                        <a href="/">
+                            <img src="<?= $basePath . TEMPLATE_PATH ?>/images/in.jpg">
+                        </a>
+                    </div>
+                    <div class="main-footer">
+                        <?= $footerMenu ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid footer sticky-bottom" style="clear:both;">
+        <div class="row">
+            <div class=" col-md-12">
+                <div class="">
+                    <?
+                    $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                    $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    ?>
+                    <p align="center">
+                        <?= t('APPLICATION_BROWSERS') ?>
+                    </p>
+
+                    <p align="center">
+                        <span><?= sprintf(t('APPLICATION_RIGHTS'), 'Msa Company') ?></span>
+                        <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                        &nbsp; .
+                        <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                        <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

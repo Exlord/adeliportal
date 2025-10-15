@@ -1,0 +1,146 @@
+<div>
+    <?
+    $form = $this->form;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->iptFormRow($form->get('id'));
+
+    ?>
+    <div id="page-config-tabs">
+        <ul>
+            <li><a href="#tab-contents"><?= t('Contents') ?></a></li>
+            <li><a href="#tab-options"><?= t('Options') ?></a></li>
+            <li><a href="#tab-image"><?= t('Image') ?></a></li>
+            <li><a href="#tab-published"><?= t('Published') ?></a></li>
+            <li><a href="#tab-view"><?= t('View') ?></a></li>
+        </ul>
+        <div id="tab-contents">
+            <div id="contents">
+                <?
+                echo $this->iptFormRow($form->get('pageTitle'));
+                if ($form->has('introText'))
+                    echo $this->iptFormRow($form->get('introText'));
+                echo $this->iptFormRow($form->get('fullText'));
+
+                if ($form->has('tags'))
+                    echo $this->iptFormRow($form->get('tags'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-options">
+            <div id="options">
+                <?
+                if ($form->has('published'))
+                    echo $this->iptFormRow($form->get('published'));
+
+                if ($form->has('config'))
+                    echo $this->iptFormCollection($form->get('config'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-image">
+            <div id="images">
+                <?
+                if ($form->has('refGallery'))
+                    echo $this->iptFormRow($form->get('refGallery'));
+                if ($form->has('image'))
+                    echo $this->iptFormCollection($form->get('image'));
+                ?>
+                <? if ($this->srcImageOld) {
+                    $imageUrl = getThumbnail()->resize($this->srcImageOld, 150, 150); //resize image
+                    ?>
+                    <div class="box_img_old">
+                        <img src="<?= $imageUrl ?>">
+                        <a class="page_del_img remove-icon" href="#"></a>
+                    </div>
+                <? } ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-published">
+            <div id="published">
+                <?
+                echo $this->iptFormRow($form->get('status'));
+                if ($form->has('order'))
+                    echo $this->iptFormRow($form->get('order'));
+                if ($form->has('publishUp'))
+                    echo $this->iptFormRow($form->get('publishUp'));
+                if ($form->has('publishDown'))
+                    echo $this->iptFormRow($form->get('publishDown'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-view">
+            <div id="view">
+                <?
+                if ($form->has('domains'))
+                    echo $this->iptFormRow($form->get('domains'));
+                if ($form->has('languages'))
+                    echo $this->iptFormRow($form->get('languages'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <?
+    echo $this->iptFormCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+
+
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+        <?\Application\API\App::setEditor('fullText',$this)?>
+        <?
+        if ($form->has('introText'))
+         \Application\API\App::setEditor('introText')
+         ?>
+
+        <?$imgCalendar = $this->basePath()."/images/images-datepicker/calendar.png";    ?>
+        $("#publishDown").datepicker({
+            showOn: 'button',
+            buttonImage: '<?=$imgCalendar?>',
+            buttonImageOnly: true
+        });
+
+        $("#publishUp").datepicker({
+            showOn: 'button',
+            buttonImage: '<?=$imgCalendar?>',
+            buttonImageOnly: true
+        });
+
+        $('.page_del_img').click(function (e) {
+            e.preventDefault();
+            var tag = $(this);
+            tag.removeClass('remove-icon').addClass('ajax-loading-inline');
+            var data = {};
+            data['id'] = $('#id').val();
+
+            $.ajax({
+                url: '<?=url('admin/page/delete-img')?>',
+                type: 'POST',
+                data: data,
+                complete: function () {
+                    tag.removeClass('ajax-loading-inline').addClass('remove-icon');
+                },
+                success: function (data) {
+                    if (data.status) {
+                        tag.parent().remove();
+                    }
+                    else {
+                        System.AjaxMessage('Error . Please try again');
+                    }
+                }
+
+            });
+        });
+
+    });
+    $('#page-config-tabs').tabs();
+    <?$this->inlineScript()->captureEnd();?>
+</script>

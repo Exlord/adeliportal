@@ -1,0 +1,15 @@
+<div>
+    <h2><?= t('Online Order') ?></h2>
+    <? if(isAllowed(\OnlineOrder\Module::ADMIN_ONLINE_ORDER_WIDGET)){ ?>
+    <table>
+        <tr>
+            <td><a href="<?=url('admin/online-order/orders')?>" ><?= t('Number of all not approve orders') ?></a></td>
+            <td align='center'><b class="digit"><?= localizedDigits($this->data['count']) ?></b></td>
+        </tr>
+    </table>
+    <? } else { ?>
+        <div class="widget-access-denied">
+            <?=t('Dear user, your access is limited by the webmaster.')?>
+        </div>
+   <? } ?>
+</div>

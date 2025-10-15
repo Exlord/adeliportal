@@ -1,0 +1,15 @@
+<?
+return array(
+    'Jahan Nama Shoes' => 'کفش جهان نما',
+    'No product found !' => "محصولی یافت نشد !",
+    'Click to view details' => 'برای مشاهده جزئیات بیشتر کلیک کنید',
+    'Product Code' => 'کد محصول',
+    'Product Name' => 'نام محصول',
+    '%s shoes' => 'کفش %s',
+    'Largest specialized manufacturer of athletic shoes' => 'بزرگترین تولید کننده کفش های تخصصی ورزشی',
+    '%s or %s to view the price.' => 'برای مشاهده قیمت %s یا %s.',
+    '%s to view the price.' => 'برای مشاهده قیمت %s.',
+    'All Products' => 'تمامی محصولات',
+    'To view all products click here' => 'برای مشاهده تمامی محصولات کلیک کنید',
+    'View details' => 'مشاهده جزئیات',
+);

@@ -1,0 +1,46 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/phone-book.js', 'text/javascript');
+?>
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?= t('Phone Book') ?>
+    </h3>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>
+<div class="dialog-send-sms" style="display: none;" id="dialog-send-sms">
+    <label><?= t('Text') ?></label>
+    <textarea cols="50" rows="4" id="txt-sms" class="sms-textarea"></textarea>
+</div>
+<div class="dialog-send-email" style="display: none;" id="dialog-send-email">
+    <label><?= t('Choose your desired format') ?></label>
+    <select id="newsTemplate" class="news-template">
+        <option value="-1"><?= t('None') ?></option>
+        <? if ($this->newsTemplate) {
+            foreach ($this->newsTemplate as $val) { ?>
+                <option value="<?= $val['id'] ?>"><?= $val['desc'] ?></option>
+            <? }
+        } ?>
+    </select>
+</div>
+<script>
+    var data = {
+        'btnCancel': '<?=t('Cancel')?>',
+        'addMessage': '<?=t('At least 1 item should be selected for send !')?>',
+        'msg': '<?=t('At least 1 item should be selected for send !')?>',
+        'btnNext': '<?=t('Next')?>',
+        'sendBtn': '<?=t('Send')?>',
+        'successMessage': '<?=t('Your information has been sent successfully')?>',
+        'errorMessage': '<?=t('Error message, please try again')?>',
+        'urlEmail': '<? if ($this->newsTemplate) echo url('admin/news-letter/send',array(),array('query'=>array('templateId'=>'***','email'=>'****')))?>',
+        'titleEmail': '<?=t('Send Email')?>',
+        'titleSms': '<?=t('Send Sms')?>',
+        'urlSms': '<?= url('admin/phone-book/send-phone-book-sms')?>',
+        'urlExport': '<?= url('admin/phone-book/word-export')?>',
+        'urlPrint': '<?= url('admin/phone-book/prepare-print')?>'
+    }
+
+</script>

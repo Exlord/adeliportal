@@ -1,0 +1,5 @@
+<? return array (
+  'TEST1' => 'تست 1',
+  'TEST2' => 'تست 2',
+  'Workshop Classes' => 'کارگاه ها - دوره ها - سمینارها',
+);

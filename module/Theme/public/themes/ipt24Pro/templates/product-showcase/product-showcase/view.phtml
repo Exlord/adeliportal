@@ -1,0 +1,294 @@
+<?
+\JQuery\API\JQuery::loadColorBox($this);
+if ($this->data) {
+    $fieldsData = getSM()->get('fields_api')->generate($this->fields, $this->data);
+    ?>
+    <style>
+        .width-300{ width:300px !important; font-family: }
+        .width-320{ width:320px !important; font-family: }
+        .view-projects-form .main .tbl p{ font-family:tahoma !important; }
+        .view-projects-form .title{ background:#44c8f5 !important; }
+        .view-projects-form .main .tbl label{ font-size:10pt; }
+        .view-projects-form .title{ font-size:14pt !important; padding:6px !important; }
+    </style>
+    <div class="view-projects-form">
+    <div class="title">
+        <? if (isset($fieldsData['عنوان شرکت یا سازمان'])) echo $fieldsData['عنوان شرکت یا سازمان']; ?>
+    </div>
+    <div class="main">
+    <table class="tbl">
+    <tr class="first-row">
+        <td class="width-200">
+            <label>
+                <?= t('PS_SITE_TITLE') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if (isset($fieldsData['عنوان سایت'])) echo $fieldsData['عنوان سایت']; ?>
+            </p>
+        </td>
+        <td class="width-320">
+            <?
+            $logoImg = null;
+            $logoImgLink = null;
+            $logoImgTitle = null;
+            $logoImgAlt = null;
+            $baseLogoImg = null;
+            $href = null;
+            $className = null;
+            if (isset($fieldsData['لوگوی شرکت'])) {
+                if (isset($fieldsData['لوگوی شرکت']['path']) && $fieldsData['لوگوی شرکت']['path']) {
+                    $logoImg = getThumbnail()->resize($fieldsData['لوگوی شرکت']['path'], 100, 100); //resize image
+                    $baseLogoImg = $fieldsData['لوگوی شرکت']['path'];
+                }
+                if (isset($fieldsData['لوگوی شرکت']['alt']) && $fieldsData['لوگوی شرکت']['alt'])
+                    $logoImgAlt = $fieldsData['لوگوی شرکت']['alt'];
+                if (isset($fieldsData['لوگوی شرکت']['title']) && $fieldsData['لوگوی شرکت']['title'])
+                    $logoImgTitle = $fieldsData['لوگوی شرکت']['title'];
+                if (isset($fieldsData['لوگوی شرکت']['link']) && $fieldsData['لوگوی شرکت']['link'])
+                    $logoImgLink = $fieldsData['لوگوی شرکت']['link'];
+            }
+            if ($logoImg) {
+                if ($logoImgLink)
+                    $href = $logoImgLink;
+                else {
+                    $href = $baseLogoImg;
+                    $className = 'colorbox';
+                }
+                ?>
+                <a class="<?= $className ?>" href="<?= $href ?>">
+                    <img src="<?= $logoImg ?>" width="100" style="display: block; margin: auto;" height="100"
+                         title="<?= $logoImgTitle ?>"
+                         alt="<?= $logoImgAlt ?>">
+                </a>
+            <?
+            }
+            ?>
+        </td>
+    </tr>
+    <tr class="second-row">
+        <td>
+            <label>
+                <?= t('PS_SITE_URL') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if (isset($fieldsData['آدرس سایت'])) {
+                    //$addressUrl = unserialize($fieldsData['آدرس سایت']);
+                    if (isset($fieldsData['آدرس سایت']['title']) && isset($fieldsData['آدرس سایت']['url'])) {
+                        ?>
+                        <a href="<?= $fieldsData['آدرس سایت']['url'] ?>"><?= $fieldsData['آدرس سایت']['title'] ?></a>
+                    <?
+                    }
+                } ?>
+            </p>
+        </td>
+        <td rowspan="3" class="center">
+            <?
+            $managerImg = null;
+            $managerImgLink = null;
+            $managerImgTitle = null;
+            $managerImgAlt = null;
+            $baseManagerImg = null;
+            $href = null;
+            $className = null;
+            if (isset($fieldsData['تصویر مدیرعامل'])) {
+                if (isset($fieldsData['تصویر مدیرعامل']['path']) && $fieldsData['تصویر مدیرعامل']['path']) {
+                    $managerImg = getThumbnail()->resize($fieldsData['تصویر مدیرعامل']['path'], 150, 200); //resize image
+                    $baseManagerImg = $fieldsData['تصویر مدیرعامل']['path'];
+                }
+                if (isset($fieldsData['تصویر مدیرعامل']['alt']) && $fieldsData['تصویر مدیرعامل']['alt'])
+                    $managerImgAlt = $fieldsData['تصویر مدیرعامل']['alt'];
+                if (isset($fieldsData['تصویر مدیرعامل']['title']) && $fieldsData['تصویر مدیرعامل']['title'])
+                    $managerImgTitle = $fieldsData['تصویر مدیرعامل']['title'];
+                if (isset($fieldsData['تصویر مدیرعامل']['link']) && $fieldsData['تصویر مدیرعامل']['link'])
+                    $managerImgLink = $fieldsData['تصویر مدیرعامل']['link'];
+            }
+            if ($managerImg) {
+                if ($managerImgLink)
+                    $href = $managerImgLink;
+                else {
+                    $href = $baseManagerImg;
+                    $className = 'colorbox';
+                }
+                ?>
+                <a class="<?= $className ?>" href="<?= $href ?>">
+                    <img src="<?= $managerImg ?>" width="150" height="200" style="display: block; margin: auto;"
+                         title="<?= $managerImgTitle ?>"
+                         alt="<?= $managerImgAlt ?>">
+                </a>
+            <?
+            }
+            ?>
+            <label>
+                <?= t('PS_MANAGER_NAME') ?>
+            </label>
+            <label>
+                <? if (isset($fieldsData['نام مدیر عامل'])) echo $fieldsData['نام مدیر عامل']; ?>
+            </label>
+        </td>
+    </tr>
+    <tr class="first-row">
+        <td>
+            <label>
+                <?= t('PS_CATEGORY') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if ($this->tagName) {
+                    foreach ($this->tagName as $row)
+                        $cats = $row->itemName . "\r\n";
+                    echo nl2br($cats);
+                } ?>
+            </p>
+        </td>
+    </tr>
+    <tr class="second-row">
+        <td>
+            <label>
+                <?= t('PS_SITE_TEC') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if (isset($fieldsData['تکنولوژی مورد استفاده'])) {
+                    echo nl2br(str_replace(',', "\r\n", $fieldsData['تکنولوژی مورد استفاده']));
+                } ?>
+            </p>
+        </td>
+    </tr>
+    <tr class="first-row">
+        <td>
+            <label>
+                <?= t('PS_SITE_LANG') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if (isset($fieldsData['زبان های پروژه'])) echo nl2br(str_replace(',', "\r\n", $fieldsData['زبان های پروژه'])); ?>
+            </p>
+        </td>
+        <td rowspan="2">
+            <?
+            $files = $this->files;
+            foreach ($files as $row) {
+                $path = $row->fPath;
+                $image = getThumbnail()->thumbnail($path, 315, 250);
+                ?>
+                <a href="<?= $path ?>" class="colorbox" >
+                    <img src="<?= $image ?>" class="image img-responsive" alt="<?= $this->escapeHtml($row->fAlt) ?>"
+                         title="<?= $this->escapeHtml($row->fTitle) ?>"
+                         data-toggle="tooltip">
+                </a>
+            <?
+            }
+            ?>
+        </td>
+    </tr>
+    <tr class="second-row">
+        <td>
+            <label>
+                <?= t('PS_SITE_SERVICES') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if (isset($fieldsData['خدمات شرکت ایده پرداز'])) echo nl2br(str_replace(',', "\r\n", $fieldsData['خدمات شرکت ایده پرداز'])); ?>
+            </p>
+        </td>
+    </tr>
+    <tr class="first-row">
+        <td>
+            <label>
+                <?= t('PS_SITE_BEST_POINT') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if (isset($fieldsData['ویژگی های استفاده شده در طراحی سایت'])) echo nl2br(str_replace(',', "\r\n", $fieldsData['ویژگی های استفاده شده در طراحی سایت'])); ?>
+            </p>
+        </td>
+        <td rowspan="4" class="center">
+            <?
+            $govahiImg = null;
+            $govahiImgLink = null;
+            $govahiImgTitle = null;
+            $govahiImgAlt = null;
+            $basegovahiImg = null;
+            $href = null;
+            $className = null;
+            if (isset($fieldsData['گواهی حسن انجام کار'])) {
+                if (isset($fieldsData['گواهی حسن انجام کار']['path']) && $fieldsData['گواهی حسن انجام کار']['path']) {
+                    $govahiImg = getThumbnail()->resize($fieldsData['گواهی حسن انجام کار']['path'], 250, 350); //resize image
+                    $basegovahiImg = $fieldsData['گواهی حسن انجام کار']['path'];
+                }
+                if (isset($fieldsData['گواهی حسن انجام کار']['alt']) && $fieldsData['گواهی حسن انجام کار']['alt'])
+                    $govahiImgAlt = $fieldsData['گواهی حسن انجام کار']['alt'];
+                if (isset($fieldsData['گواهی حسن انجام کار']['title']) && $fieldsData['گواهی حسن انجام کار']['title'])
+                    $govahiImgTitle = $fieldsData['گواهی حسن انجام کار']['title'];
+                if (isset($fieldsData['گواهی حسن انجام کار']['link']) && $fieldsData['گواهی حسن انجام کار']['link'])
+                    $govahiImgLink = $fieldsData['گواهی حسن انجام کار']['link'];
+            }
+            if ($govahiImg) {
+                if ($govahiImgLink)
+                    $href = $govahiImgLink;
+                else {
+                    $href = $basegovahiImg;
+                    $className = 'colorbox';
+                }
+                ?>
+                <a class="<?= $className ?>" href="<?= $href ?>">
+                    <img src="<?= $govahiImg ?>" width="250" height="350" style="display: block; margin: auto;"
+                         title="<?= $govahiImgTitle ?>"
+                         alt="<?= $govahiImgAlt ?>">
+                </a>
+            <?
+            }
+            ?>
+        </td>
+    </tr>
+    <tr class="second-row">
+        <td>
+            <label>
+                <?= t('PS_SITE_RATE') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if (isset($fieldsData['رتبه سایت'])) echo $fieldsData['رتبه سایت']; ?>
+            </p>
+        </td>
+    </tr>
+    <tr class="first-row">
+        <td>
+            <label>
+                <?= t('PS_SITE_PRODUCT') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if (isset($fieldsData['محصولات'])) echo nl2br(str_replace(',', "\r\n", $fieldsData['محصولات'])); ?>
+            </p>
+        </td>
+    </tr>
+    <tr class="first-row">
+        <td>
+            <label>
+                <?= t('PS_BUILD_YEAR') ?>
+            </label>
+        </td>
+        <td>
+            <p>
+                <? if (isset($fieldsData['سال ساخت'])) echo nl2br(str_replace(',', "\r\n", $fieldsData['سال ساخت'])); ?>
+            </p>
+        </td>
+    </tr>
+    </table>
+    </div>
+    </div>
+<?
+}
+?>

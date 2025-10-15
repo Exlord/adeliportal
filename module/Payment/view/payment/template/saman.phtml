@@ -1,0 +1,10 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/payment.css');
+?>
+<form id="bank-form" action="<?=$this->action?>" method="post" style="display: none">
+    <input type="hidden" name="Amount" id="Amount" value="<?=$this->price?>">
+    <input type="hidden" name="MID" value="<?=$this->mid?>">
+    <input type="hidden" name="ResNum" value="<?=$this->resid?>">
+    <input type="hidden" name="RedirectURL" value="<?=$this->redirect?>">
+    <input type="submit" value=" پرداخت آنلاین بانک سامان " name="btnPay">
+</form>

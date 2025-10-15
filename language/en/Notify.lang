@@ -1,0 +1,3 @@
+<?return array(
+    'PERM_Notify' => 'Notify'
+);

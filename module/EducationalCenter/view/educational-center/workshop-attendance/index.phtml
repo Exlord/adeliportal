@@ -1,0 +1,22 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?
+        if ($this->type == 'current-user')
+            print t('My Workshop Classes');
+        else
+            print t('Workshop Attendances');
+        ?>
+    </h3>
+
+    <div class="row">
+        <div class="col-md-8">
+            <?= $this->grid ?>
+        </div>
+        <div class="col-md-4">
+            <div class="alert alert-info">
+                <?= sprintf(t("The registration can only be canceled %s before start date."), $this->classCancelTimeoutInterval) ?>
+            </div>
+        </div>
+    </div>
+</div>

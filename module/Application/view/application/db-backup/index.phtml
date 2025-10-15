@@ -1,0 +1,16 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?= t('Database Backups') ?>
+        <small><?= t('Total space used for backups') ?> :
+            <span class="label label-info">
+                <? print \System\IO\File::FormatFileSize(getSM('db_backup_api')->getTotalSize()) ?>
+            </span>
+        </small>
+    </h3>
+    <p class="description"><?= t('A list of created database backups. The system automatically creates backups in selected time intervals but you can also create a new backup manually.') ?></p>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>

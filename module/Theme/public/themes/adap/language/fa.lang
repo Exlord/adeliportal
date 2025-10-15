@@ -1,0 +1,5 @@
+<?
+return array(
+    'No product found !' => 'محصولی یافت نشد',
+    'Read this book now' => 'این کتاب را همین حالا بخوانید',
+);

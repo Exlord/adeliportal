@@ -1,0 +1,11 @@
+<?
+return array(
+    'lang_direction' => 'ltr',
+    'currency_code' => 'USD',
+    'currency_name' => '$',
+    'currency_show_decimals' => 2,
+    'lang_locale' => 'en_US',
+    'Change Language to X' => 'Change Language to English',
+    'PERM_Localization' => 'Localization',
+    'LOCALIZATION_TIME_AGO' => 'ago',
+);

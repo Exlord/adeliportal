@@ -1,0 +1,90 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+	direction: rtl;
+	font-size: 14px;
+	padding: 0px;
+	margin: 0px;
+	direction: rtl;
+	font-family: b-yekan;
+	line-height: 28px;
+	color: #1C1C1C;
+	text-align: justify;
+}
+img{border: none;}
+#form {
+	width: 175mm;
+	margin: 5px auto 5px auto;
+	border: 1px solid #ccc;
+	height: auto;
+}
+#head {
+	width: 100%;
+	height: 100px;
+}
+.title {
+	margin: 5px auto 5px auto;
+	width: 31%;
+}
+#date {
+	float: left;
+	margin: 15px auto 5px 15%;
+}
+#number {
+	float: left;
+	margin: 50px auto 5px -80px;
+}
+#madse_1 {
+	width: 95%;
+	margin: 0px auto 0px auto;
+	text-align: right;
+	direction: rtl;
+}
+#madse_2, #madse_3, #madse_4, #madse_5, #madse_6, #madse_7, #madse_8, #madse_9 {
+	width: 95%;
+	margin: 15px auto 0px auto;
+	text-align: right;
+	direction: rtl;
+}
+#madse_9 {
+	width: 95%;
+	margin: 15px auto 20px auto;
+	text-align: right;
+	direction: rtl;
+}
+@font-face {
+	font-family: b-yekan;
+	src: url(font/BYekan.ttf);
+}
+@font-face {
+	font-family: b-yekan;
+	src: url(font/BYekan.eot);
+}
+@font-face {
+	font-family: b-yekan;
+	src: url(font/BYekan.woff)
+}
+label {
+	background: #fcf8e3;
+	border: 1px solid #fbeed5;
+	border-radius: 3px;
+}
+.btn_print {
+	border: none;
+	padding: 5px;
+	cursor: pointer;
+	font-family: b-yekan;
+	transition: all 0.5s;
+	background: #06C;
+	color: #fff;
+	box-shadow: 0 3px 9px #3C3C3C;
+}
+.btn_print:hover{background: #FC0; transition: all 0.5s; color: #333;}
+#btn {
+	width: 150px;
+	margin: 10px auto 10px auto;
+}
+#header{width: 100%; height: 34px; }
+#footer{width: 100%; height: 34px; }
+.lbl_c{width: 300px;}
+p{ font-weight: bold; font-size: 16px;}

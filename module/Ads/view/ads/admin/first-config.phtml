@@ -1,0 +1,80 @@
+<? if ($this->error) { ?>
+    <div class="alert alert-danger">
+        <?= t('ADS_CONFIG_ERROR') ?>
+    </div>
+<?
+} else {
+    if ($this->flagView) {
+        ?>
+        <div>
+            <h3 class="page-title">
+                <?= $this->translate('ADS_CONFIGS'); ?>
+            </h3>
+            <?
+            $form = $this->form;
+            $form->prepare();
+            echo $this->form()->openTag($form);
+            ?>
+            <!--<div class="alert alert-danger" role="alert"><? /*= t('ADS_MANAGER_IS_RESPONSIBILITY') */ ?></div>-->
+            <div id="ads-config-tabs">
+                <ul>
+                    <li><a href="#tab-secondType"><?= t('ADS_SECOND_TYPE') ?></a></li>
+                    <li><a href="#tab-time"><?= t('ADS_TIME') ?></a></li>
+                </ul>
+                <div id="tab-secondType">
+                    <div id="secondType">
+                        <p class="help-block"><?= t('ADS_SECOND_TYPE_DESC') ?></p>
+                        <?
+                        if ($form->has('second_type_ads'))
+                            echo $this->formCollection($form->get('second_type_ads'));
+                        ?>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div id="tab-time">
+                    <div id="time">
+                        <p class="help-block"><?= t('ADS_TIME_DESC') ?></p>
+                        <?
+                        if ($form->has('time_ads'))
+                            echo $this->formCollection($form->get('time_ads'));
+                        ?>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+            <?
+            echo $this->iptFormCollection($form->get('buttons'));
+            echo $this->form()->closeTag();
+            ?>
+        </div>
+        <script>
+            <?$this->inlineScript()->captureStart();?>
+            $(document).ready(function () {
+                $('#ads-config-tabs').tabs();
+            });
+            <?$this->inlineScript()->captureEnd();?>
+        </script>
+    <? } else { ?>
+        <div class="col-md-12">
+            <? foreach ($this->baseType as $row) {
+                ?>
+                <div class="col-md-4">
+                    <a class="ajax_page_load btn btn-default btn-lg btn-block"
+                       href="<?= url('admin/ad/config/first-config', array('baseType' => $row['id'])) ?>">
+                        <span><?= $row['name'] ?></span>
+                    </a>
+                </div>
+                <? if ($row['isRequest']) { ?>
+                    <div class="col-md-4">
+                        <a class="ajax_page_load btn btn-default btn-lg btn-block"
+                           href="<?= url('admin/ad/config/first-config', array('baseType' => $row['id'], 'isRequest' => 1)) ?>">
+                            <span><?= t('ADS_REQUEST') . ' ' . $row['name'] ?></span>
+                        </a>
+                    </div>
+                <?
+                }
+            }?>
+        </div>
+    <?
+    }
+}

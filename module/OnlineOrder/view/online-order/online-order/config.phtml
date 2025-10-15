@@ -1,0 +1,56 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/online-order.css');
+?>
+<div class="config-online-order">
+    <h3 class="page-title">
+        <?= $this->translate('Online Order Settings'); ?>
+    </h3>
+    <div class="online-order-content">
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form); ?>
+        <table class="tbl-config-online-order">
+            <tr>
+                <td colspan="2"><?=t('Please specify price per group')?></td>
+            </tr>
+            <tr align="center">
+                <td class="online-order-img-bronze"></td>
+                <td class="online-order-img-silver"></td>
+                <td class="online-order-img-gold"></td>
+            </tr>
+            <tr align="center">
+                <td><?= $this->iptFormRow($form->get('priceBronze')); ?></td>
+                <td><?= $this->iptFormRow($form->get('priceSilver')); ?></td>
+                <td><?= $this->iptFormRow($form->get('priceGold')); ?></td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <?= $this->iptFormRow($form->get('domainPrice')); ?>
+                </td>
+            </tr>
+        </table>
+        <?= $this->iptFormRow($form->get('orderValidate')); ?>
+        <?= $this->iptFormRow($form->get('createSite')); ?>
+        <?= $this->iptFormRow($form->get('RegOrder')); ?>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+
+        $('.withcomma').each(function () {
+            $(this).keyup(function () {
+                numFormat(this);
+            })
+        });
+
+        $('.spinner').each(function(){
+            numFormat(this);
+        });
+
+    });
+</script>

@@ -1,0 +1,64 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/user-admin.css');
+?>
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?= t('Users') ?>
+    </h3>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    var transactions = {
+        'addMessage': '<?=t('At least 1 item should be selected for send !')?>'
+    };
+    $(document)
+        .off('click', '#password-reset')
+        .on('click', '#password-reset', function (e) {
+            e.preventDefault();
+            var url = $(this).data('url');
+            var parent = $(this).parent();
+            parent.addClass('ajax-disabled');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                complete: function () {
+                    parent.removeClass('ajax-disabled');
+                },
+                success: function (data) {
+                    if (data.msg)
+                        System.AjaxMessage(data.msg);
+                    else
+                        System.AjaxMessage(data);
+                },
+                error: System.AjaxError
+            });
+        });
+    $(document).ready(function () {
+        $('#direct-deposit-money').click(function (e) {
+            var userId = getId();
+            if (userId) {
+                var href = $(this).attr('href');
+                $(this).attr('href', href + '?userId=' + userId);
+            } else {
+                e.preventDefault();
+                e.stopPropagation();
+                System.AjaxMessage(transactions.addMessage);
+            }
+        });
+    });
+    function getId() {
+        var ids = '';
+        $('.grid .row_selector:checked').each(function (index, el) {
+            ids += $(el).parent().next().html() + ',';
+        });
+        if (ids != '')
+            ids = ids.slice(0, -1);
+        return ids;
+    }
+    <?$this->inlineScript()->captureEnd()?>
+</script>

@@ -1,0 +1,53 @@
+<?
+$form = $this->form;
+$form->prepare();
+echo($this->form()->openTag($form));
+?>
+<h3 class="page-title"><?= t('Translate') ?></h3>
+<p class="description"><?= t('Translate the selected content to your desired language') ?></p>
+<div id="tabs">
+    <ul>
+        <? foreach ($this->languages as $sign => $name) { ?>
+            <li>
+                <a href="#tabs-<?= $sign ?>">
+                    <?= $name ?>
+                </a>
+            </li>
+        <? } ?>
+    </ul>
+    <div id="tabs-<?= $this->defaultLang ?>">
+        <? foreach ($this->localizableContent['fields'] as $name => $details) { ?>
+            <div class="form_element">
+                <label class="page-title"><?= t($details['label']) ?></label>
+
+                <p><?= $this->originalData[$name] ?></p>
+            </div>
+        <? } ?>
+    </div>
+    <?
+    $langContents = $form->get('langs-content')->getFieldsets();
+    foreach ($langContents as $el) {
+        ?>
+        <div id="tabs-<?= $el->sign ?>">
+            <?= $this->formCollection($el); ?>
+        </div>
+    <?
+    }
+    echo $this->formCollection($form->get('buttons'));
+    ?>
+</div>
+<?
+echo($this->form()->closeTag($form));
+$script = $this->basePath() . '/lib/ckeditor/ckeditor.js';
+$this->headScript()->appendFile($script);
+?>
+<script type="text/javascript">
+    <?$this->inlineScript()->captureStart();?>
+    $(function () {
+        $("#tabs").tabs();
+        $('textarea.editor').each(function () {
+            CKEDITOR.replace($(this).attr('id'), {language: '<?=SYSTEM_LANG?>', skin: 'moonocolor'});
+        });
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

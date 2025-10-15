@@ -1,0 +1,25 @@
+<?var_dump($this->data)?>
+<div id="book">
+    <h1 class="page-header">
+        <?= $this->escapeHtml($this->data['title']) ?>
+    </h1>
+    <div class="book-details">
+        <?
+        $fieldsData = getSM()->get('fields_api')->generate($this->fields, $this->data);
+        foreach ($fieldsData as $key => $val) {
+            ?>
+            <div class="detail-row">
+                <span class="item-label"><?= $key ?> :</span>
+                <span class="item-value"><?= $val ?></span>
+            </div>
+        <?
+        }
+
+        if ($this->files) {
+            foreach ($this->files as $f) {
+                var_dump($f);
+            }
+        }
+        ?>
+    </div>
+</div>

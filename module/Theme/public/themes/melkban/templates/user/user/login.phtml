@@ -1,0 +1,34 @@
+<?
+$this->headLink()
+    ->appendStylesheet($this->basePath() . '/css/user.css')
+?>
+<div class="login_page">
+    <div class="login_block">
+        <div class="login-date"><?=$this->dateFormat(time());?></div>
+        <?
+        if ($this->error) {
+            foreach ($this->error as $error)
+                echo $this->general()->ERROR($this->translate($error));
+        }
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('app/user/login'))
+            ->prepare();
+        echo $this->form()->openTag($form);
+
+        foreach ($form->getElements() as $el) {
+            echo $this->iptFormRow($el);
+        }
+        ?>
+        <a id="register"
+            class="button button_register"
+           title="<?= $this->translate('Not A member Yet? Sign-up Now !') ?>"
+           href="<?= $this->url('app/user/register') ?>"><?=$this->translate('Register')?></a>
+        <a id="forgot_password"
+            class="button button_forgot_password"
+           title="<?= $this->translate("Can't Remember your Password ? Click here to start password recovery process.") ?>"
+           href="<?= $this->url('app/user/password-recovery') ?>"><?=$this->translate('Forgot Password ?')?></a>
+        <?
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>

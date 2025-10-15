@@ -1,0 +1,23 @@
+.print-content-page {
+    padding: 20px;
+}
+
+.print-content-page .div-special-real-estate {
+    border: 1px solid #8F8F8F;
+    border-radius: 5px;
+    font-family: tahoma !important;
+    color: #000000 !important;
+    font-size: 10pt;
+    background-color: #ffffff !important;
+}
+
+.print-content-page .div-special-real-estate a {
+    color: #000000;
+    text-decoration: none !important;
+    font-family: tahoma !important;
+    font-size: 10pt !important;
+}
+.print-content-page h3 {
+    color: #000000;
+}
+.real-estate-content h1{font-size:10pt;}

@@ -1,0 +1,7 @@
+<?
+return array(
+    'ABOUTUS'=>'درباره Stele',
+    'ONLINE_COUNSELING'=>'مشاوره و اجرا',
+    'PUBLIC_TEACH'=>'آموزش',
+    'ONLINE_SHOP'=>'فروشگاه اینترنتی',
+);

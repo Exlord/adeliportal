@@ -1,0 +1,49 @@
+<?
+if (!function_exists('__render_simple_menu')) {
+
+}
+
+echo __render_simple_menu($this->nav, array('class' => 'navigation'));
+?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var MegaMenu = {
+            columns: {
+                items: null,
+                witch: 50,
+                height: 50,
+                outerHeight: 50,
+                outerWidth: 50
+            }
+        };
+        $('.navigation .mega-sub').each(function (index, el) {
+            $(el).css('display', "block");
+            MegaMenu.columns.items = $('li.column', el);
+            MegaMenu.columns.items.each(function (index, el) {
+                console.log($(el).width());
+                var w = parseInt($(el).width());
+                var oW = parseInt($(el).outerWidth());
+
+                var h = parseInt($(el).height());
+                var oH = parseInt($(el).outerHeight());
+
+                MegaMenu.columns.witch = Math.max(MegaMenu.columns.witch, w);
+                MegaMenu.columns.outerWidth = Math.max(MegaMenu.columns.outerWidth, oW);
+                MegaMenu.columns.height = Math.max(MegaMenu.columns.height, h);
+                MegaMenu.columns.outerHeight = Math.max(MegaMenu.columns.outerHeight, oH);
+            });
+            MegaMenu.columns.items.each(function (index, el) {
+                $(el).css({
+                    width: MegaMenu.columns.witch,
+                    height: MegaMenu.columns.height
+                });
+            });
+
+            $(el).css({
+                width: MegaMenu.columns.outerWidth * MegaMenu.columns.items.length,
+                height: MegaMenu.columns.outerHeight,
+            });
+            $(el).css('display', "");
+        });
+    });
+</script>

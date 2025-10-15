@@ -1,0 +1,45 @@
+<div>
+    <h3 class="page-title"><?= t('Translatable Content Types') ?></h3>
+
+    <p class="description"><?= t('Select the content type you want to translate.') ?></p>
+
+    <div class="row">
+
+        <?
+        if (is_array($this->localizableContent)) {
+            $localizableContent = $this->localizableContent;
+            $localizableContent[-1] = array(
+                'url' => url('admin/translate-miscellaneous'),
+                'label' => 'Miscellaneous',
+                'note' => t('translate miscellaneous items including site title , fields key-value pair values ...'),
+            );
+            $localizableContent = array_chunk($localizableContent, (count($this->localizableContent) / 2) + 1, true);
+            foreach ($localizableContent as $chunk) {
+                ?>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="list-group">
+                        <?
+                        foreach ($chunk as $key => $content) {
+                            if (isset($content['url']))
+                                $url = $content['url'];
+                            else
+                                $url = url('admin/translation/select-entity', array('entityType' => $key));
+                            $label = '<h4 class="list-group-item-heading">' . t($content['label']) . '</h4>';
+                            if (isset($content['note']))
+                                $label .= '<p class="description list-group-item-text">' . t($content['note']) . '</p>';
+                            echo \Theme\API\Common::Link($label, $url,
+                                array('class' => array('ajax_page_load', 'list-group-item'))
+                            );
+                        }
+                        ?>
+                    </div>
+                </div>
+            <?
+            }
+        } else {
+            echo($this->localizableContent);
+        }
+        ?>
+
+    </div>
+</div>

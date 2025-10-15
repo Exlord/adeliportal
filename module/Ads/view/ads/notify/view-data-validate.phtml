@@ -1,0 +1,25 @@
+<h2>
+    <?= t('app_hello_dear_user') . ' ' . $this->__NAME__ ?>
+</h2>
+<br>
+<p><?=t('ADS_NEW_PAYMENT_SUCCESS')?></p>
+<br>
+<? if ($this->__PAYMENT_CODE__) { ?>
+    <div>
+        <span><?= t('ADS_PAYMENT_CODE').' : ' ?></span>
+        <span><?= $this->__PAYMENT_CODE__ ?></span>
+    </div>
+<? } ?>
+<? if ($this->__AD_CODE__) { ?>
+    <div>
+        <span><?= t('ADS_CODE').' : ' ?></span>
+        <span><?= $this->__AD_CODE__ ?></span>
+    </div>
+<? } ?>
+<? if ($this->__VIEW_LINK__) { ?>
+    <a href="<?= $this->__AD_LINK__ ?>">
+        <?= t('ADS_CLICK_FOR_VIEW') ?>
+    </a>
+<? } ?>
+<br>
+<?= $this->__SITE_URL__ ?>

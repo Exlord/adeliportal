@@ -1,0 +1,10 @@
+<?return array(
+    'ANALYZER_VISITS_TOTAL' => 'Total',
+    'CHART_IS_LOADING' => 'Loading',
+    'ANALYZER_REPORT_MORE' => 'Load Older Data',
+    'ANALYZER_REPORT_NORMAL_SCALE' => 'Normal Scale',
+    'ANALYZER_REPORT_DAILY_SCALE' => 'Daily Scale',
+    'ANALYZER_REPORT_MONTHLY_SCALE' => 'Monthly Scale',
+    'ANALYZER_REPORT_YEAR_SCALE' => 'Yearly Scale',
+    'ANALYZER_REPORT_COUNT' => 'Count'
+);

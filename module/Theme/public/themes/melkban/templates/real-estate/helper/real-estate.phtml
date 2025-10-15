@@ -1,0 +1,94 @@
+<div id="real-estate-slider-<?= $this->blockId ?>"
+     class="content-slider-container <? if ($this->$showLoading) echo 'ajax-loading'; ?> ">
+    <? if ($this->directionalNav == 1) { ?>
+        <div class="prev" rel='tooltip' title="<?= t('Previous') ?>">
+        </div>
+    <? } ?>
+    <div class="viewport">
+        <ul class="wrapper">
+            <?
+            $regTypeArray = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+            foreach ($this->realEstate as $row) {
+                ?>
+                <li class="item estate-item media">
+                    <?
+                    $reg_type_class = '';
+                    $reg_type = $this->translate($regTypeArray[$row->regType]);
+                    $estate_type = $row->estateTypeName;
+                    $zirbana = '';
+                    if (isset($row->zirbana))
+                        $zirbana = $row->zirbana;
+                    $meter = $zirbana . $this->translate('real_estate_Meter');
+                    $title = \Application\API\App::prepareUrlString($reg_type . ' ' . $estate_type . ' ' . $meter);
+                    $price = 0;
+
+                    switch ($row->regType) {
+                        case 78:
+                            $price = '<span class="mortgage">&nbsp;' . $this->translate('mortgage') .
+                                '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->mortgagePrice) . '</span>&nbsp;' .
+                                $this->translate('and') . '&nbsp;<span class="rental">&nbsp;' . $this->translate('rental') .
+                                '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->rentalPrice) . '</span>';
+                            break;
+                        default:
+                            $price = '<span class="price">' . $this->currencyFormat($row->totalPrice) . '</span>';
+                            break;
+                    }
+
+                    if (!empty($row->fPath)) {
+                        $image = explode(',', $row->fPath);
+                        $imageUrl = getThumbnail()->resize($image[0], $this->imageWidth, $this->imageHeight); //resize image
+                    } else
+                        $imageUrl = $this->basePath() . TEMPLATE_PATH . '/images/real-estate/not_image240_190.png';
+                    ?>
+
+                    <a href="<?= $this->url('app/real-estate/view', array('id' => $row->itemId, 'title' => $title)) ?>"
+                       class="pull-left flip">
+                        <img src="<?= $imageUrl ?>" width="<?= $this->imageWidth ?>" height="<?= $this->imageHeight ?>">
+                    </a>
+
+                    <div class="text_img_url media-body">
+                        <a href="<?= $this->url('app/real-estate/view', array('id' => $row->itemId, 'title' => $title)) ?>">
+                            <span class="reg-type reg-type-<?= $reg_type_class ?>"><?= $reg_type ?></span>
+                            <span class="estate-type"><?= $estate_type ?></span>
+                            <?if (isset($row->zirbana)) {
+                                ?>
+                                <span class="estate-area">
+                                        <?= $meter ?></span>
+                            <? } ?>
+                            &nbsp;<span class="sell-for"><?= $this->translate('real_estate_sell_for') ?>:</span>&nbsp;
+                            <?= $price ?>
+                            <span class="location">
+                                <? if (isset($row->areaTitle)) $areaTitle = $row->areaTitle; else $areaTitle = ''; ?>
+                                <?= t('in') . t('City') . ' ' . $row->cityTitle . ' ' . $areaTitle . ' ' ?></span>
+                        </a>
+                    </div>
+
+                </li>
+            <?
+
+       }
+            ?>
+
+        </ul>
+    </div>
+    <? if ($this->directionalNav == 1) { ?>
+        <div rel='tooltip' class="next" title="<?= t('Next') ?>">
+        </div>
+    <? } ?>
+</div>
+<script type="text/javascript">
+    <?$this->inlineScript()->captureStart()?>
+    $(document).ready(function () {
+        $('#real-estate-slider-<?=$this->blockId?>').contentSlider({
+            orientation: '<?=$this->orientation?>',
+            direction: '<?=$this->direction?>',
+            autoscroll: '<?=$this->autoScroll?>',
+            interval: <?=$this->interval?>,
+            speed: <?=$this->speed?>,
+            directionalNav: <?=$this->directionalNav?>,
+            visibleCount: <?=$this->visibleCount?>,
+            slideCount: <?=$this->slideCount?>
+        });
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

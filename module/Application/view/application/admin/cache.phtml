@@ -1,0 +1,36 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Clear cache files'); ?>
+        <small><?= t('Total space used for caches') ?> :
+            <span class="label label-info">
+                <? print $this->cacheSize ?>
+            </span>
+        </small>
+    </h3>
+
+    <div class="row">
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        ?>
+        <div class="col-md-6">
+            <?
+            print $this->formRow($form->get('clear_cache'));
+            print $this->formRow($form->get('block_url'));
+            print $this->formRow($form->get('cache_url'));
+            print $this->formRow($form->get('public_css'));
+            print $this->formRow($form->get('public_js'));
+            print $this->formRow($form->get('submit'));
+            ?>
+        </div>
+        <div class="col-md-6">
+            <?
+            print $this->formRow($form->get('thumb'));
+            print $this->formRow($form->get('captcha'));
+            print $this->formRow($form->get('public_folder'));
+            ?>
+        </div>
+        <? print $this->form()->closeTag(); ?>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/payment.css');
+?>
+<form name="frm_mellat_submit" id="bank-form" action="<?=$this->action;?>" method="POST">
+    <input type="hidden" name="RefId" value="<?=$this->refId?>">
+</form>

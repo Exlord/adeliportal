@@ -1,0 +1,68 @@
+<?
+$select = $this->select;
+if ($select) {
+
+    $selectGallery = $this->selectGallery;
+    $idName = 'image_box_item_' . $selectGallery->type . '_' . $selectGallery->id;
+    foreach ($this->select as $select) {
+        $url = url('app/gallery-counter', array('id' => $select->id, 'hitsType' => $this->hitsType));
+        $style = '';
+        $width = 100;
+        $height = 100;
+
+        if ($select->width)
+            $width = $select->width;
+        elseif ($selectGallery->width)
+            $width = $selectGallery->width;
+
+        if ($select->height)
+            $height = $select->height;
+        elseif ($selectGallery->height)
+            $height = $selectGallery->height;
+
+        if ($select->image) {
+            ?>
+            <div class="image-box-item" id="<?= $idName ?>">
+
+                <?    if (strpos($select->fileType, 'flash') == true) {
+                    ?>
+                    <a href="<?=$url?>"></a>
+                    <script>
+                        flashMovie = $('.gallery-item-flash');
+                        flashMovie.flash(
+                            {
+                                swf: '<?= $select->image ?>',
+                                width: <?= $width ?>,
+                                height: <?= $height ?>,
+                                play: true,
+                                flashvars: {
+                                    message: 'I come from Flash.'
+                                }
+                            }
+                        );
+                    </script>
+
+                <?
+                } elseif (strpos($select->fileType, 'gif') == true) {
+                    ?>
+                    <a href="<?=$url?>" target="_blank">
+                        <img src="<?= $select->image ?>" width="<?= $width ?>"
+                             height="<?= $height ?>" class="img-responsive">
+                       <!-- <span><?/*= $select->title */?></span>-->
+                    </a>
+                <?
+                } else {
+                    $file_path = getThumbnail()->resize($select->image, $width, $height);
+                    ?>
+                    <a href="<?=$url?>" target="_blank">
+                        <img src="<?= $file_path ?>" class="img-responsive">
+                        <!--<span><?/*= $select->title */?></span>-->
+                    </a>
+                <?
+                } ?>
+            </div>
+
+        <?
+        }
+    }
+}

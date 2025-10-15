@@ -1,0 +1,44 @@
+<div>
+    <!--    <a class="toolbar-button button add_button"-->
+    <!--       href="--><?//= $this->url('admin/geographical-areas/city/new',
+//           array('countryId' => $this->country->id, 'stateId' => $this->state->id)) ?><!--">-->
+    <!--        --><? //=$this->translate('New City')?>
+    <!--    </a>-->
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?
+        if (!$this->state->id && !$this->city->id) {
+            echo $this->translate('Area');
+        } else {
+            echo $this->translate('Area list for');
+            if ($this->city->id) {
+                ?>
+                &nbsp;
+                <span class="emphasize">
+                            <?= sprintf($this->translate('%s City'), $this->city->cityTitle) ?>
+                    </span>
+                <?
+                echo "&nbsp;" . $this->translate('in');
+                ?>
+                <span class="emphasize" rel='tooltip' title="<?=
+                sprintf($this->translate('The List of Area for %s in %s'),
+                    $this->city->cityTitle, $this->translate($this->state->stateTitle))?>">
+                            <?= $this->translate($this->state->stateTitle) ?>
+                    </span>
+            <?
+            } elseif ($this->state->id) {
+                ?>
+                <span class="emphasize">
+                            <?= $this->translate($this->state->stateTitle) ?>
+                    </span>
+            <?
+            }
+        }
+        ?>
+
+    </h3>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>

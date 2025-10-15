@@ -1,0 +1,116 @@
+<?
+$template = $this->form->format;
+$search = array();
+$replace = array();
+$finfo = new finfo;
+//debug($data);
+var_dump($data);
+foreach ($this->fields as $key => $value) {
+    $name = $value['fieldMachineName'];
+    $type = $value['fieldType'];
+
+    if (isset($this->data[$name])) {
+        $data = $this->data[$name];
+
+        switch ($type) {
+            case 'checkBox':
+            case 'radio':
+            case 'select':
+                //fieldConfigData[radio_field][keyValuePairs][0][field_key]
+                //fieldConfigData[checkBox_field][keyValuePairs][0][field_key]
+                //fieldConfigData[select_field][keyValuePairs][0][field_key]
+                $config = unserialize($value['fieldConfigData']);
+                $fieldTypeName = $type . '_field';
+                $keyValues = $config[$fieldTypeName]['keyValuePairs'];
+                $values = array();
+                foreach ($keyValues as $item) {
+                    $values[$item['field_key']] = $item['field_value'];
+                }
+//                debug($values);
+                if (!is_array($data))
+                    $data = explode(',', $data);
+//debug($data);
+                $dataValues = array();
+                foreach ($data as $dataKey) {
+                    $dataValues[] = $values[$dataKey];
+                }
+
+                $data = implode(' , ', $dataValues);
+                break;
+            case 'fileUpload':
+                if (is_array($data)) {
+                    if (isset($data['path'])) {
+                        $path = $data['path'];
+                        $pathRoot = PUBLIC_PATH . $path;
+                        $isImage = \File\API\File::isImage($pathRoot);
+                        if ($isImage) {
+                            $alt = isset($data['alt']) ? $data['alt'] : '';
+                            $title = isset($data['title']) ? $data['title'] : '';
+                            $link = isset($data['link']) ? $data['title'] : false;
+                            $thumbW = isset($data['thumbW']) ? (int)$data['thumbW'] : false;
+                            $thumbH = isset($data['thumbH']) ? (int)$data['thumbH'] : false;
+                            $hasThumb = ($thumbW && $thumbH);
+
+                            if ($hasThumb && !$link) {
+                                $thumb = getSM('thumbnail_api')->thumbnail($path, $thumbW, $thumbH);
+                                $img = sprintf("<img src='%s' alt='%s' title='%s'>", $thumb, $alt, $title);
+                                $data = \Theme\API\Common::Link($img, $path, array('class' => 'colorbox'));
+                            } elseif ($link) {
+                                $img = sprintf("<img src='%s' alt='%s' title='%s'>", $path, $alt, $title);
+                                $data = \Theme\API\Common::Link($img, $link);
+                            } else {
+                                $data = sprintf("<img src='%s' alt='%s' title='%s'>", $path, $alt, $title);
+                            }
+
+                        } else {
+                            $data = \Theme\API\Common::Link(t('View/Download'), $path, array('target' => '_blank'));
+                        }
+
+
+                    } else
+                        $data = '';
+                }
+                break;
+            case 'text':
+                $config = unserialize($value['fieldConfigData']);
+                if ($config['text_field']['text_type'] == 'color')
+                    $data = "<div style='background:#{$data};min-height:20px;' class='color-picker-display'>&nbsp;</div>";
+                elseif ($config['text_field']['text_type'] == 'text_web')
+                    $data = \Theme\API\Common::Link($data['title'], $data['url']);
+                break;
+            case 'long_text':
+                $data = nl2br($data);
+                break;
+            case 'collection':
+                $value['fieldConfigData'] = unserialize($value['fieldConfigData']);
+                $data = getSM('fields-api')->renderCollection($data, $value, 'block-dl-h');
+//                debug($data);
+                break;
+            case 'uniqueCode':
+            case 'barcode':
+            case 'currentDate':
+            default:
+                break;
+        }
+    } else
+        $data = '';
+
+
+    $search[] = '__FIELD__' . $key . '__';
+    $replace[] = $data;
+}
+$template = str_replace($search, $replace, $template);
+if (!$this->print) {
+    $printData = array(
+        'name' => 'FormsManager\Controller\FormsData',
+        'params' => array('action' => 'view', 'form-id' => $this->form->id, 'id' => $this->data['formId'], 'viewMode' => 'print'),
+    );
+    ?>
+    <a class="toolbar-button btn btn-default" target="_blank" href="<?=
+    url('app/print', array('data' => base64_encode(serialize($printData)))) ?>">
+        <i class="glyphicon glyphicon-print text-primary"></i>
+        <?= t('Print') ?></a>
+<?
+}
+
+echo $template;

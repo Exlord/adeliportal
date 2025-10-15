@@ -1,0 +1,19 @@
+#section-4 .header{ font-family:wYekan; font-size:16pt; }
+#social-menu .to-right{ margin-right:0; margin-left:20px; }
+#social-menu .to-right a{ float:left; }
+#social-menu .to-left{ margin-left:0; margin-right:-50px; }
+#social-menu .to-left a{ float:right; }
+#contact-box h3{ font-family:wYekan; padding-right:40px; padding-left:0; text-align:right; }
+#contact-box .icon{ float:right;; left:auto; right:5px; }
+#contact-box #online_support{ padding-right:7px; padding-left:0; }
+#divQuickSendMail .quick-send-mail-button{ float:left; }
+#divQuickSendMail .captcha-box{ padding-left:5px; padding-right:0; text-align:left; }
+#divQuickSendMail #quick_send_mail_captcha-image{ float:left; }
+#divQuickSendMail #quick_send_mail_captcha{ margin-left:0; margin-right:2px; }
+#contact-box .normal-form .form_element label{ width:72px; font-family:wYekan; font-size:10pt; }
+.captcha-box span{ font-family:wYekan; font-size:11pt; }
+#contact-box #online_support a{ font-family:wYekan; font-size:20pt; }
+#section-4 ul.navigation li a span{ font-family:wYekan; }
+/* EXTRA FIX FOR BOOTSTRAP RTL --- REMOVE AFTER UPDATE */
+.col-md-pull-4{ right:auto; }
+/*-----------------------------------------------------*/

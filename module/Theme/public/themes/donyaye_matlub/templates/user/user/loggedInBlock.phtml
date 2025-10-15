@@ -1,0 +1,19 @@
+<!--<div class="col-xs-12 col-sm-12 col-md-12 zero_padding wellcome">-->
+    <!--<a href='<?/*= url('admin') */?>'>
+        <button class="btn btn-default">
+             <span class="glyphicon glyphicon-home">
+             </span>
+            دنیای مطلوب
+            <?/*=getUserDisplayName(current_user())*/?>
+        </button>
+    </a>-->
+<!--</div>-->
+<div class="col-xs-12 col-sm-4 col-md-4 zero_padding">
+    <a class="logout" href="<?= $this->url('app/user/logout') ?>">
+        <button class="btn btn-default">
+            <span class="glyphicon glyphicon-log-out text-danger"></span>
+            <?= $this->translate('Logout') ?>
+        </button>
+    </a>
+</div>
+

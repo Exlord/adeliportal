@@ -1,0 +1,264 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/jdate.js');
+//$this->headScript()->appendFile($this->basePath() . '/highstock/highstock.js');
+$this->headScript()->appendFile($this->basePath() . '/highchart/highcharts.js');
+$this->headScript()->appendFile($this->basePath() . '/highchart/modules/exporting.js');
+?>
+<style>
+    #chart-container *{ direction:ltr; }
+</style>
+<div>
+    <a class="btn btn-default toolbar-button" id="load-more-chart-data" href="#loadmore"><?= t('ANALYZER_REPORT_MORE') ?></a>
+    <a class="btn btn-default  toolbar-button chart_scale" data-value="0"
+       href="#normal"><?= t('ANALYZER_REPORT_NORMAL_SCALE') ?></a>
+    <a class="btn btn-default  toolbar-button chart_scale" data-value="1"
+       href="#daily"><?= t('ANALYZER_REPORT_DAILY_SCALE') ?></a>
+    <a class="btn btn-default  toolbar-button chart_scale" data-value="2"
+       href="#daily"><?= t('ANALYZER_REPORT_MONTHLY_SCALE') ?></a>
+    <a class="btn btn-default  toolbar-button chart_scale" data-value="3"
+       href="#daily"><?= t('ANALYZER_REPORT_YEAR_SCALE') ?></a>
+
+    <h3 class="page-title"><?= t('Visitors Report') ?></h3>
+
+    <div id="chart-container" style="width:95%;height:auto;margin:auto;overflow-x:auto;direction:ltr;">
+        <div id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
+</div>
+<script>
+<?$this->inlineScript()->captureStart()?>
+var Analyzer = {
+    chart: null,
+    lastLoadedMonth: 0,
+    seriesIndex: 0,
+    series: {},
+    scale: 0,
+    dateTimeLabelFormats: {
+        '%H:%M:%S.%L': 'HH:mm:ss',//millisecond
+        '%H:%M:%S': 'HH:mm:ss',//second
+        '%H:%M': 'HH:mm',//minute
+        '%e. %b': 'MMMM. d',//day
+        '%b \'%y': 'MMMM yyyy',//month
+        '%Y': 'yyyy'//year
+    },
+    data: {0: {}, 1: {}, 2: {}, 3: {}},
+    addData: function (data) {
+        $.each(data, function (x, series) {
+            Analyzer.data[0][x] = series;
+
+            //------------------- daily -------------------------
+            var day = x - (x % 86400);
+            if (typeof Analyzer.data[1][day] == 'undefined')
+                Analyzer.data[1][day] = {};
+
+            $.each(series, function (index, y) {
+                if (typeof Analyzer.data[1][day][index] == 'undefined')
+                    Analyzer.data[1][day][index] = 0;
+                Analyzer.data[1][day][index] += parseInt(y);
+            });
+
+            //------------------- monthly -------------------------
+            var month = x - (x % 2592000);
+            if (typeof Analyzer.data[2][month] == 'undefined')
+                Analyzer.data[2][month] = {};
+
+            $.each(series, function (index, y) {
+                if (typeof Analyzer.data[2][month][index] == 'undefined')
+                    Analyzer.data[2][month][index] = 0;
+                Analyzer.data[2][month][index] += parseInt(y);
+            });
+
+            //------------------- year -------------------------
+            var year = x - (x % 31536000);
+            if (typeof Analyzer.data[3][year] == 'undefined')
+                Analyzer.data[3][year] = {};
+
+            console.log(Analyzer.data[3]);
+            $.each(series, function (index, y) {
+                if (typeof Analyzer.data[3][year][index] == 'undefined')
+                    Analyzer.data[3][year][index] = 0;
+                Analyzer.data[3][year][index] += parseInt(y);
+            });
+        });
+    },
+    draw: function (data) {
+        Analyzer.chart.showLoading('<?=t('CHART_IS_LOADING')?> ...');
+
+        $.each(data, function (x, series) {
+            $.each(series, function (index, y) {
+                Analyzer.chart.series[Analyzer.series[index]].addPoint({x: parseInt(x) * 1000, y: parseInt(y)}, false);
+            });
+        });
+        Analyzer.chart.redraw();
+        Analyzer.chart.hideLoading();
+    }
+};
+$(document).ready(function () {
+    $('#load-more-chart-data').click(function (e) {
+        Analyzer.chart.showLoading('<?=t('CHART_IS_LOADING')?> ...');
+        e.preventDefault();
+        $.ajax({
+            url: '<?=url('admin/reports/analyzer/more-data')?>?month=' + Analyzer.lastLoadedMonth,
+            type: 'GET',
+            success: function (data) {
+                if (typeof data == 'object') {
+                    if (data.hasOwnProperty('msg'))
+                        System.AjaxMessage(data.msg);
+                    else {
+                        if (data.hasOwnProperty('series')) {
+                            $.each(data.series, function (index, item) {
+                                Analyzer.series[index] = Analyzer.seriesIndex;
+                                Analyzer.seriesIndex++;
+                                Analyzer.chart.addSeries({
+                                    name: item
+                                });
+                            });
+                            Analyzer.chart.redraw();
+                        }
+
+                        Analyzer.lastLoadedMonth++;
+                        Analyzer.chart.hideLoading();
+                        if (data.hasOwnProperty('data')) {
+                            Analyzer.addData(data.data);
+                            var drawData = data.data;
+                            if (Analyzer.scale != 0) {
+                                $.each(Analyzer.chart.series, function (index, item) {
+                                    item.setData([]);
+                                });
+                                Analyzer.scale = 0;
+                                drawData = Analyzer.data[0];
+                            }
+                            Analyzer.draw(drawData);
+                        }
+                    }
+                }
+                else
+                    System.AjaxMessage(data);
+
+
+            },
+            error: System.ajaxError
+        });
+        //chart.hideLoading();
+    });
+    $('.chart_scale').click(function (e) {
+        e.preventDefault();
+        var scale = parseInt($(this).data('value'));
+        if (scale != Analyzer.scale) {
+
+            $.each(Analyzer.chart.series, function (index, item) {
+                item.setData([]);
+            });
+            Analyzer.chart.xAxis[0].isDirty = true;
+            Analyzer.chart.redraw();
+
+            Analyzer.scale = scale;
+            switch (scale) {
+                case 0:
+                    Analyzer.chart.xAxis[0].options.minTickInterval = 3600000 * 4;
+                    Analyzer.chart.xAxis[0].minRange = 3600000 * 48;
+                    break;
+                case 1:
+                    Analyzer.chart.xAxis[0].options.minTickInterval = 3600000 * 24 * 4;
+                    Analyzer.chart.xAxis[0].minRange = 3600000 * 24 * 15;
+                    break;
+                case 2:
+                    Analyzer.chart.xAxis[0].options.minTickInterval = 3600000 * 24 * 30;
+                    Analyzer.chart.xAxis[0].minRange = 3600000 * 24 * 30 * 12;
+                    break;
+                case 3:
+                    Analyzer.chart.xAxis[0].options.minTickInterval = 3600000 * 24 * 30 * 12;
+                    Analyzer.chart.xAxis[0].minRange = 3600000 * 24 * 30 * 12 * 5;
+                    break;
+
+            }
+            Analyzer.chart.xAxis[0].isDirty = true;
+            Analyzer.chart.redraw();
+
+
+            Analyzer.chart.redraw();
+            Analyzer.draw(Analyzer.data[scale]);
+        }
+    });
+    Highcharts.setOptions({
+        lang: {resetZoomTitle: ''}
+    });
+    $('#chart-container').highcharts({
+        scrollbar: {
+            enabled: true
+        },
+        chart: {
+            type: 'spline',
+            zoomType: 'x',
+            spacingRight: 20,
+            events: {
+                load: function (event) {
+                    Analyzer.chart = this;
+                    $('#load-more-chart-data').click();
+                }
+            }
+        },
+        title: {
+            text: '<?=t('Analyzer Statistics')?>',
+            x: -20 //center
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                '<?=t('Click and drag in the plot area to zoom in')?>' :
+                '<?=t('Pinch the chart to zoom in')?>'
+        },
+        xAxis: {
+            type: 'datetime',
+            minRange: 3600000 * 24 * 2,
+            title: {
+                text: null
+            },
+//            minTickInterval: 3600000 * 4,
+            labels: {
+                formatter: function () {
+//                    console.log(this.value);
+                    return new <?=$this->dateFunction?>(this.value, true).toString(Analyzer.dateTimeLabelFormats[this.dateTimeLabelFormat], true);
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: '<?=t('ANALYZER_REPORT_COUNT')?>'
+            },
+            labels: {
+                formatter: function () {
+                    return (this.value).toString().toFaDigit();
+                }
+            }
+        },
+        tooltip: {
+            shared: true,
+            crosshairs: [true, true],
+            dateTimeLabelFormats: {
+                millisecond: "%A, %b %e, %H:%M:%S.%L",
+                second: "%A, %b %e, %H:%M:%S",
+                minute: "%A, %b %e, %H:%M",
+                hour: "%A, %b %e, %Y, %H:%M",
+                day: "%A, %b %e, %Y",
+                week: "Week from %A, %b %e, %Y",
+                month: "%B %Y",
+                year: "%Y"
+            },
+            formatter: function () {
+                var s = new <?=$this->dateFunction?>(this.x, true).toString('dddd, d MMMM yyyy, HH:mm', true);
+                $.each(this.points, function (i, point) {
+                    s += '<br/><span style="color:' + point.series.color + '">' + point.series.name + '</span> : <b>' + point.y + '</b>';
+                });
+                return s;
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        }
+    });
+});
+<?$this->inlineScript()->captureEnd()?>
+</script>

@@ -1,0 +1,63 @@
+<? $this->headLink()->appendStylesheet($this->basePath() . '/css/help.css');
+if (!function_exists('__render_help_links')) {
+    function __render_help_links($pages)
+    {
+        foreach ($pages as $name => $page) {
+            ?>
+            <li>
+                <a href="<?= url('admin/help', array('page' => $name)) ?>"><?= t($page['label']) ?></a>
+                <? if (isset($page['pages'])) {
+                    ?>
+                    <ul class=""><?
+                    __render_help_links($page['pages']);
+                    ?></ul><?
+                } ?>
+            </li>
+        <?
+        }
+    }
+}
+?>
+<div id="helps" class="container-fluid">
+    <div class="row">
+        <h3 class="page-title col-xs-12"><?= t('Documentation and Help') ?></h3>
+
+        <div id="help-navigation" class="col-md-3 ">
+            <div class="panel panel-default sidebar">
+                <ul class="nav nav-sidebar">
+                    <?
+                    __render_help_links($this->pages);
+                    ?>
+                </ul>
+            </div>
+        </div>
+        <div id="help-content-wrapper" class="col-md-9">
+            <div id="help-content"></div>
+        </div>
+    </div>
+    <script>
+        function loadHelpPage(page) {
+            $('#help-content').append(overlay);
+            $.ajax({
+                url: page,
+                data: {terminal: true},
+                complete: function () {
+                    overlay.remove();
+                },
+                success: function (data) {
+                    $('#help-content').html(data);
+                },
+                error: System.AjaxError
+            });
+        }
+        <?=$this->inlineScript()->captureStart()?>
+        $('#help-navigation a').click(function (e) {
+            e.preventDefault();
+            loadHelpPage($(this).attr('href'));
+        });
+        $(document).ready(function () {
+            loadHelpPage('<?=url('admin/help',array('page'=>$this->selected))?>');
+        });
+        <?=$this->inlineScript()->captureEnd()?>
+    </script>
+</div>

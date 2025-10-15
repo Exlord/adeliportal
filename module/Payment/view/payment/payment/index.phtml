@@ -1,0 +1,124 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/payment.css');
+?>
+<div class="clearfix">
+    <div class="payment" id="page-payment">
+        <?
+        if ($this->pageType == false) {
+            ?>
+            <div class="alert alert-warning">
+                <?= sprintf(t('PAYMENT_MONEY_FOR_PAY'), $this->currencyFormat($this->showData['amount'])) ?>
+                <br>
+                <?if (isset($this->showData['userMoney']) && !empty($this->showData['userMoney']))
+                    print sprintf(t('PAYMENT_TRANSACTION_MONEY'), $this->currencyFormat($this->showData['userMoney'])) ?>
+            </div>
+            <? if (isset($this->showData['userMoney']) && !empty($this->showData['userMoney'])) { ?>
+                <div class="alert alert-success">
+                    <?
+                    if (!$this->flagTransactions) {
+                        echo sprintf(t('PAYMENT_SUM_PRICE'), $this->currencyFormat($this->showData['amount'] - $this->showData['userMoney']));
+                    } else
+                        echo sprintf(t('PAYMENT_SUM_PRICE'), $this->currencyFormat($this->showData['amount']));
+                    ?>
+                </div>
+            <? } ?>
+        <? } elseif ($this->pageType == true) {//TODO changed & updates ?>
+            <h3 class="page-title"><?= t('Online Payment') ?></h3>
+            <? if (!current_user()->id) { ?>
+                <p class="description"><?=
+                    sprintf(t('If you want to see the status of your payment, %s first'),
+                        "<a href='" . url('app/user/login') . "'>" . t('Login to your account') . "</a>") ?></p>
+            <? } ?>
+            <div class="normal-form">
+                <div class="form_element text">
+                    <label>مبلغ مورد نظر</label>
+                    <input type="text" class="online-order-amount-input" id="online-order-amount-input">
+                    <span class="form_element_description"><?= t('Rial') ?></span>
+                </div>
+                <div class="form_element text">
+                    <label>ایمیل</label>
+                    <input type="text" class="online-order-email-input" id="online-order-email-input">
+                </div>
+                <div class="form_element textarea">
+                    <label>توضیحات</label>
+                    <textarea rows="4" cols="100" id="online-order-description-textarea"
+                              class="online-order-description-textarea"></textarea>
+                </div>
+            </div>
+
+        <?
+        }
+        if ((isset($this->showData['amount']) && $this->showData['amount'] > 0) || $this->pageType == true) {
+            ?>
+            <div>
+                <h1>
+                    <small><?= t('PAYMENT_PLEASE_CLICK_BANK') ?></small>
+                </h1>
+                <?
+                foreach ($this->bankName as $key => $val) {
+                    $class = substr($key, 12); ?>
+                    <a data-id="<?= $key ?>" class="<?= $class ?> all-bank-image"></a>
+                <?
+                }
+                ?>
+            </div>
+        <? } ?>
+    </div>
+    <div class="page-transfer" id="page-transfer"></div>
+</div>
+<script>
+    <? $this->inlineScript()->captureStart(); ?>
+
+    $(document).ready(function () {
+
+        $('.all-bank-image').click(function () {
+            var tag = $(this);
+            var flag = false;
+            if ($('#content_body').find('.online-order-amount-input').attr('id')) {
+                if ($('#online-order-amount-input').val() && $('#online-order-email-input').val())
+                    flag = true;
+                else
+                    System.AjaxMessage('<?=t('Please fill all the requested items')?>');
+            } else
+                flag = true;
+
+            if (flag) {
+                tag.parent().addClass('ajax-loading');
+                var data = {};
+                var dataFromQuery = '<?= $this->data ?>';
+                if (dataFromQuery)
+                    data['routeParams'] = dataFromQuery;
+                else {
+                    data['amount'] = $('#online-order-amount-input').val();
+                    data['email'] = $('#online-order-email-input').val();
+                    data['comment'] = $('#online-order-description-textarea').val();
+                }
+
+                data['bankName'] = tag.data('id');
+
+                $.ajax({
+                    url: '<?=url('app/payment/initialize')?>',
+                    type: 'POST',
+                    data: data,
+                    complete: function () {
+                         tag.parent().removeClass('ajax-loading');
+                    },
+                    success: function (data) {
+                        if (data) {
+                            $('#page-transfer').html(data);
+                            $('#page-payment').fadeOut(500, function () {
+                                $('#page-transfer').fadeIn(1000);
+                            })
+                        }
+                        else
+                            System.AjaxMessage('Error');
+                    },
+                    error: System.AjaxError
+                });
+            }
+        });
+
+    });
+
+    <? $this->inlineScript()->captureEnd(); ?>
+</script>

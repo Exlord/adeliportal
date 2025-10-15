@@ -1,0 +1,153 @@
+<?
+use User\Module as UserAcl;
+
+?>
+<div>
+    <?
+    if (isset($this->user)) {
+        if ($this->user->id) {
+            $this->headLink()->appendStylesheet($this->basePath() . '/css/user-admin.css');
+            \JQuery\API\JQuery::loadColorBox($this);
+            //only in user profile special button and information in related to user show
+        if ($this->specialInformationShow) {
+            ?>
+            <? if (isAllowed(UserAcl::ADMIN_USER_EDIT)) {
+        if (isCurrentUser($this->user->id) || isAllowed(UserAcl::ADMIN_USER_EDIT_ALL)) {
+            ?>
+            <a class="toolbar-button button add_button"
+               href="<?= $this->url('admin/users/edit', array('id' => $this->user->id)) ?>">
+                <?= $this->translate('Edit Account') ?>
+            </a>
+            <a class="toolbar-button button add_button"
+               href="<?= $this->url('admin/users/edit/custom-profile', array('id' => $this->user->id)) ?>">
+                <?= $this->translate('Edit Custom Profile') ?>
+            </a>
+            <a class="toolbar-button button refresh_button"
+               href="<?= $this->url('admin/users/change-password', array('id' => $this->user->id)) ?>">
+                <?= $this->translate('Change Password') ?>
+            </a>
+            <a class="toolbar-button button image_button"
+               href="<?= url('admin/users/edit-image', array('id' => $this->user->id)) ?>">
+                <?= t('Change Image') ?>
+            </a>
+        <?
+        }
+        } ?>
+            <? if (isAllowed(UserAcl::ADMIN_USER_DELETE)) {
+        if ((isCurrentUser($this->user->id) && isAllowed(UserAcl::ADMIN_USER_DELETE_OWN)) || isAllowed(UserAcl::ADMIN_USER_DELETE_ALL)) {
+            ?>
+            <a class="toolbar-button button delete_button"
+               href="<?= $this->url('admin/users/delete', array('id' => $this->user->id)) ?>">
+                <?= $this->translate('Delete Account') ?>
+            </a>
+        <?
+        }
+        } ?>
+            <h3 class="page-title">
+                <?= sprintf($this->translate("%s's Profile"), "<span class='user-name-title emphasize '>" . getUserDisplayName($this->user) . "</span>") ?>
+            </h3>
+        <? } ?>
+
+        <? if (!empty($this->user->image)) {
+        $file_path = getThumbnail()->thumbnail($this->user->image, 250, 250);
+        ?>
+            <div class="user-profile-image">
+                <a class="colorbox" href="<?= $this->basePath() . $this->user->image ?>"> <img
+                        src="<?= $this->basePath() . $file_path ?>"
+                        alt="<?= getUserDisplayName($this->user) ?>">
+                </a>
+            </div>
+        <?
+        }
+        ?>
+
+            <table>
+                <? if ($this->specialInformationShow) { ?>
+                    <? if ($this->user->roleName) { ?>
+                        <tr>
+                            <td><?= t('Roles') ?> :</td>
+                            <td><?= t($this->user->roleName) ?></td>
+                        </tr>
+                    <?
+                    }
+                }
+                if ($this->user->email) {
+                    ?>
+                    <tr>
+                        <td><?= $this->translate('Email') ?> :</td>
+                        <td><?= $this->user->email ?></td>
+                    </tr>
+                <?
+                }
+                if ($this->user->phone) {
+                    ?>
+                    <tr>
+                        <td><?= $this->translate('Phone') ?> :</td>
+                        <td><?= $this->user->phone ?></td>
+                    </tr>
+                <?
+                }
+                if ($this->user->mobile) {
+                    ?>
+                    <tr>
+                        <td><?= $this->translate('Mobile') ?> :</td>
+                        <td><?= $this->user->mobile ?></td>
+                    </tr>
+                <?
+                }
+                if ($this->user->firstName) {
+                    ?>
+                    <tr>
+                        <td><?= $this->translate('First Name') ?> :</td>
+                        <td><?= $this->user->firstName ?></td>
+                    </tr>
+                <?
+                }
+                if ($this->user->lastName) {
+                    ?>
+                    <tr>
+                        <td><?= $this->translate('Last Name') ?> :</td>
+                        <td><?= $this->user->lastName ?></td>
+                    </tr>
+                <?
+                }
+                if ($this->user->address) {
+                    ?>
+                    <tr>
+                        <td><?= $this->translate('Address') ?> :</td>
+                        <td><?= $this->user->address ?></td>
+                    </tr>
+                <?
+                }
+                if ($this->user->countryTitle || $this->user->stateTitle || $this->user->cityTitle) {
+                    ?>
+                    <tr>
+                        <td><?= $this->translate('Location') ?> :</td>
+                        <td><?=
+                            ($this->user->countryTitle ? $this->user->countryTitle . ', ' : '') .
+                            ($this->user->stateTitle ? $this->user->stateTitle . ', ' : '') .
+                            ($this->user->cityTitle ? $this->user->cityTitle : '') ?></td>
+                    </tr>
+                <?
+                }
+                if ($this->user->aboutMe) {
+                    ?>
+                    <tr>
+                        <td><?= $this->translate('About Me') ?> :</td>
+                        <td><?= $this->user->aboutMe ?></td>
+                    </tr>
+                <? } ?>
+            </table>
+            <div style="clear: both;"></div>
+            <script>
+                $(document).ready(function () {
+                    RealEstate.params.userId = '<?=$this->user->id?>';
+                    RealEstate.loadList();
+                });
+            </script>
+            <?= $this->realestate_list($this->path); ?>
+        <?
+        }
+    }
+    ?>
+</div>

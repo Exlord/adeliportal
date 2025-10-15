@@ -1,0 +1,18 @@
+<div>
+    <h3 class="page-title">
+        <?=$this->translate('Configs Chart');?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach($form->getElements() as $el){
+            echo $this->iptFormRow($el);
+        }
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>

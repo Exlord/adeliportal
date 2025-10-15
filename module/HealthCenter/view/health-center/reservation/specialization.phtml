@@ -1,0 +1,45 @@
+<div class="doctor-specializations">
+    <h1 class="page-header">
+        <?= t('Specializations') ?>
+    </h1>
+    <?if ($this->items && $this->items->count()) {
+        $items = $this->items->toArray();
+        $items = array_chunk($items, (int)(count($items) / 3) + 1, true);
+        ?>
+        <div class="row">
+            <?
+            foreach ($items as $list) {
+                ?>
+                <div class="col-md-4 col-sm-6">
+                    <div class="list-group">
+                        <?
+                        foreach ($list as $row) {
+                            ?>
+                            <a href="<?= url('app/health-center/doctors', array('spec' => $row['id'], 'spec-title' => \Application\API\App::prepareUrlString($row['itemName']))) ?>"
+                               class="list-group-item" data-toggle="tooltip" title="">
+                                <?= t($row['itemName']) ?>
+                                <small><?= t($row['itemText']) ?></small>
+                                <span class="badge"><?= $row['itemCount'] ?></span>
+                            </a>
+                        <?
+                        }
+                        ?>
+                    </div>
+                </div>
+            <?
+            }
+            ?>
+        </div>
+    <?
+    } else {
+        ?>
+        <div class="row">
+            <div class="col-md-12">
+                <?
+                print $this->alert(t('currently there is no item available to show'), 'alert-warning');
+                ?>
+            </div>
+        </div>
+    <?
+    }?>
+</div>

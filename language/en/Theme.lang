@@ -1,0 +1,11 @@
+<?return array(
+    'PERM_Theme' => 'Theme',
+    'LAYOUT_DESIGNER_COLUMN_WIDTH' => 'Column Width',
+    'LAYOUT_DESIGNER_COLUMN_VISIBLE' => 'Visible',
+    'LAYOUT_DESIGNER_DEVICE_TYPE' => 'Devise Type',
+    'LAYOUT_DESIGNER_COLUMN_XS' => 'Extra Small',
+    'LAYOUT_DESIGNER_COLUMN_SM' => 'Small',
+    'LAYOUT_DESIGNER_COLUMN_MD' => 'Medium',
+    'LAYOUT_DESIGNER_COLUMN_LG' => 'Large',
+    'LAYOUT_DESIGNER_COLUMN_OFFSET' => 'Offset',
+);

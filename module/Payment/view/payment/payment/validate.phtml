@@ -1,0 +1,20 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/payment.css');
+?>
+<div>
+    <? if ($this->msg && is_string($this->msg)) { ?>
+        <div class="alert alert-danger error"><?= $this->msg ?></div>
+    <?
+    }
+    if ($this->trackingCode) {
+        ?>
+        <h3>
+            پرداخت شما با موفقیت انجام شد.
+        </h3>
+        <div class="alert alert-success success">
+            <? print sprintf(t('PAYMENT_SUCCESS_ID'), "<span class='highlight'>{$this->patmentId}</span>") ?>
+            <br/>
+            <? print sprintf(t('PAYMENT_SUCCESS_BANK_ID'), "<span class='highlight'>{$this->trackingCode}</span>") ?>
+        </div>
+    <? } ?>
+</div>

@@ -1,0 +1,53 @@
+<div id="pm-view">
+    <h3 class="page-title">
+        <?= t('Private Message') ?>
+    </h3>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><?= t('Sender') ?></label>
+
+            <div class="col-sm-10">
+                <p class="form-control-static">
+                    <?=
+                    \Theme\API\Common::Link($this->pm->username,
+                        url('admin/users/view', array('id' => $this->pm->from)),
+                        array('class' => 'ajax_page_load'))?>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><?= t('Send date') ?></label>
+
+            <div class="col-sm-10">
+                <p class="form-control-static">
+                    <?= $this->date_format($this->pm->date) ?>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><?= t('Message') ?></label>
+
+            <div class="col-sm-10">
+                <p class="form-control-static">
+                    <?= trim($this->pm->msg) ?>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a href="<?= url('admin/pm/new', array('reply-to' => $this->pm->id)) ?>"
+                   class="btn btn-default ajax_page_load">
+                    <i class="fa fa-reply"></i>
+                    <?= t('Send Reply') ?>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    Notifications.update('pm');
+    <?$this->inlineScript()->captureEnd();?>
+</script>

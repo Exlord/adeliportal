@@ -1,0 +1,157 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order-admin.css');
+
+$select = $this->select;
+$formNew = $this->formNew;
+$formEdit = $this->formEdit;
+$route = $this->route;
+$admin_route = $this->admin_route;
+$route_prefix = $admin_route ? 'admin' : 'app';
+?>
+<style>
+    .div-new-account {
+        width: auto;
+        padding: 10px;
+        text-align: right;
+        line-height: 30px;
+        display: none;
+        border: 1px solid #139ff7;
+        border-radius: 4px;
+        background-color: #fcf8e3;
+        left: 50px;
+        top: 50px;
+        position: absolute;
+    }
+
+    .div-edit-account {
+        width: auto;
+        padding: 10px;
+        text-align: right;
+        line-height: 30px;
+        display: none;
+        border: 1px solid #139ff7;
+        border-radius: 4px;
+        background-color: #fcf8e3;
+        left: 30px;
+        position: absolute;
+    }
+    .btnEditAccount{
+        background-image: url(<?=$this->basePath() ?>/images/plus-icon1.png);
+        border: none;
+        border-radius: 5px;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+    }
+    .btnEditAccount1{
+        background-image: url(<?=$this->basePath() ?>/images/min-icon.png);
+        border: none;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>
+<div>
+    <a id="btnCreateAccount"
+       class="toolbar-button button add_button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-secondary"
+       href="#" role="button" aria-disabled="false">
+        <span class="ui-button-text"><?=t('New Account')?></span>
+        <span class="ui-button-icon-secondary ui-icon ui-icon-plus"></span>
+    </a>
+
+    <br/><br/>
+
+    <div class="div-new-account" id="createaccountTab" style="display: none;">
+        <?
+        $formNew->prepare();
+        echo $this->form()->openTag($formNew);
+        foreach ($formNew->getElements() as $el) {
+            echo $this->iptformRow($el);
+        }
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<br/>
+<table align=center class="tbl-data-grid" style="width: 100%">
+    <thead>
+    <tr align=center>
+        <th><?=t('Rows');?></th>
+        <th><?=t('Bank Name');?></th>
+        <th><?=t('Name And Family');?></th>
+        <th><?=t('Card Number');?></th>
+        <th><?=t('Account Number');?></th>
+        <th><?=t('Sheba Number');?></th>
+        <th><?=t('Display');?></th>
+        <th><?=t('Operations');?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?
+    $j = 1;
+    $countClass = 1;
+    foreach ($select as $row) {
+        if ($countClass == 0) {
+            $class = "class='tbl-data-grid-tr-1'";
+            $countClass = 1;
+        } else {
+            $class = "class='tbl-data-grid-tr-2'";
+            $countClass = 0;
+        }
+
+        ?>
+        <tr align="center" <?=$class?>>
+            <td><?=$j?></td>
+            <td><?=$row->bankName?></td>
+            <td><?=$row->nameAndFamily?></td>
+            <td><?=$row->cardNumber?></td>
+            <td><?=$row->accountNumber?></td>
+            <td><?=$row->shebaNumber?></td>
+            <td><?=\OnlineOrders\API\API::yesOrNo($row->status)?></td>
+            <td width="100"><input type="button" class="btnEditAccount" value="" id="<?= $row->ID ?>">
+
+                <div class="div-edit-account" id="div-edit-account-<?= $row->ID ?>">
+                    <?
+                    $formEdit->setData($row);
+                    $formEdit->prepare();
+                    echo $this->form()->openTag($formEdit);
+                    foreach ($formEdit->getElements() as $el) {
+                        echo $this->iptFormRow($el);
+                    }
+                    echo $this->form()->closeTag();
+                    ?>
+                </div>
+            </td>
+        </tr>
+        <?
+        $j++;
+    }
+    ?>
+    </tbody>
+
+</table>
+<div class="pager">
+    <?=
+    $this->paginationControl($this->select,
+        'Sliding',
+        'application/pagination/search.phtml', array('route' => $route_prefix . '/online-orders/account-number')); ?>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('#btnCreateAccount').click(function () {
+            $('#createaccountTab').slideToggle(1000);
+        });
+
+        $('.btnEditAccount').click(function () {
+            var idAccount = $(this).attr('id');
+            var x = $(this).position();
+            $(this).toggleClass('btnEditAccount1');
+            $('#div-edit-account-' + idAccount).css({top: (x.top) + 30});
+            $('#div-edit-account-' + idAccount).slideToggle(1000);
+        });
+
+    });
+
+</script>

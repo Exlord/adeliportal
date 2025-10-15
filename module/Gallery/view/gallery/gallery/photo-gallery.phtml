@@ -1,0 +1,27 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/multi-zoom/multizoom.css');
+$this->headScript()->appendFile($this->basePath() . '/multi-zoom/multizoom.js');
+$this->headScript()->appendFile($this->basePath() . '/js/photo-gallery.js');
+?>
+<?
+$html = '';
+$i = 0;
+$defaultIMG = '';
+foreach ($this->select as $row) {
+    if (isset($row->image) && $row->image) {
+        $img_tmb = getThumbnail()->resize($row->image, 70, 70); //resize image
+        $img_small = getThumbnail()->resize($row->image, 325, 300); //resize image
+        $img = $row->image;
+        $html .= "<a href='" . $img_small . "' data-large='" . $img . "' data-title='" . $row->title . "'><img src='" . $img_tmb . "' alt='" . $row->alt . "' title='" . $row->title . "'/></a>";
+        if ($i == 0)
+            $defaultIMG = $img_small;
+        $i++;
+    }
+} ?>
+<div class="targetarea" style="border:1px solid #eee">
+    <img id="multizoom1" alt="zoomable" title="" src="<?= $defaultIMG ?>"/>
+</div>
+<div id="description">Milla Jojovitch</div>
+<div class="multizoom1 thumbs">
+    <?= $html ?>
+</div>

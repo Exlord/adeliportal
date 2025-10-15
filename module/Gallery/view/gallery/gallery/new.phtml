@@ -1,0 +1,77 @@
+<?
+$basePath = $this->basePath();
+$form = $this->form;
+?>
+<div class="new-form">
+    <?
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    foreach ($form->getElements() as $el) {
+        echo $this->iptformRow($el);
+    }
+    echo $this->iptFormCollection($form->get('config'));
+    echo $this->iptFormCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+
+    if ($this->oldImage) {
+        ?>
+        <div>
+            <a href="#" id="delete_table_image" class="btn btn-default btn-xs" data-id="<?= $this->groupId ?>">
+                <span class="glyphicon glyphicon-remove text-danger"></span>
+            </a>
+            <img src="<?= $this->oldImage ?>">
+        </div>
+    <?
+    }
+    ?>
+
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+
+    var GalleryGroup = {
+      deleteUrl : '<?=url('admin/'.$this->type.'/groups/delete-img')?>'
+    };
+
+    $(document).ready(function () {
+        <?
+         $imgCalendar = $this->basePath()."/images/images-datepicker/calendar.png";
+     ?>
+        $("#publishUp").datepicker({
+            showOn: 'button',
+            buttonImage: '<?=$imgCalendar?>',
+            buttonImageOnly: true
+        });
+
+        $("#publishDown").datepicker({
+            showOn: 'button',
+            buttonImage: '<?=$imgCalendar?>',
+            buttonImageOnly: true
+        });
+
+        $('#delete_table_image').click(function(e){
+            e.preventDefault();
+            var tag = $(this);
+            tag.addClass('tiny-ajax-loader');
+            var data = {};
+            data['groupId'] = $(this).data('id');
+            $.ajax({
+                url: GalleryGroup.deleteUrl,
+                type: 'POST',
+                data: data,
+                complete: function () {
+                    tag.removeClass('tiny-ajax-loader');
+                },
+                success: function (data) {
+                    if(data.status==1)
+                    {
+                        tag.parent().remove();
+                    }
+                },
+                error: System.AjaxError
+            });
+        });
+
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

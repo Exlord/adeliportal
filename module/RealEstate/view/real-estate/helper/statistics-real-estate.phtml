@@ -1,0 +1,31 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/statistics-real-estate.css');
+?>
+<div>
+    <table width="100%" class="statistics-estate">
+        <thead>
+        <tr>
+            <td><?=t('Type')?></td>
+            <td><?=t('Count')?></td>
+        </tr>
+        </thead>
+        <tbody>
+        <?
+        foreach ($this->statisticsEstate as $key => $val) {
+
+            foreach ($val as $keys => $value) {
+                ?>
+                <tr>
+                    <td class="statistics-label">
+                        <span><?=$this->estateType[$key]?></span>
+                        (<span><?=$this->estateRegType[$keys]?></span>)
+                    </td>
+                    <td class="statistics-value digits comma-separated"><?=$value?></td>
+                </tr>
+            <?
+            }
+        }
+        ?>
+        </tbody>
+    </table>
+</div>

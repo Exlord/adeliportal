@@ -1,0 +1,55 @@
+<?
+return array(
+    'PERM_Menu' => 'منو',
+    'Menu' => 'منو',
+    'Menus' => 'منوها',
+    'New Menu' => 'منوی جدید',
+    'Menu Items' => 'آیتم های منو',
+    'Menu Item Name' => 'نام آیتم',
+    'New Menu Item' => 'آیتم جدید',
+    'Parent Menu Item' => 'آیتم سرگروه',
+    'Menu Item Title' => 'عنوان',
+    'Menu Item Url' => 'مسیر',
+    'Menu Item Url Type' => 'نوع مسیر منو',
+    'External Url' => 'مسیر خارجی',
+    'System Url' => 'مسیر داخلی',
+    'System Route' => 'مسیر سیستمی',
+    'Specs' => 'مشخصات',
+    'Menu Block Settings' => 'تنظیمات بلوک منو',
+    'Menu Section' => 'بخش منو',
+    'Menu Items Section' => 'بخش آیتم های منو',
+    'Menu type' => 'نوع منو',
+    'Selected Value' => 'مقدار انتخاب شده',
+    'Edit Menu Item' => 'ویرایش آیتم منو',
+    'Select Menu Type' => 'انتخاب نوع منو',
+    "A list of links to friends site's in a specific category" => 'لیستی از لینک ها به سایت های دوستان در یک دسته بندی خاص',
+    'Do you want this items sub menus to be displayed as a mega menu ?' => 'آیا شما می خواهید زیر منوهای این منو بعنوان منوی مگا نمایش داده شود ؟',
+    'how many columns should this mega menu item have ?' => 'این منو مگا آیتم چه تعداد ستون میخواهید داشته باشد ؟',
+    'Is mega menu ?' => 'منوی مگا باشد ؟',
+    'Mega Menu' => 'منوی مگا',
+    "exp : http://ipt24.ir, be advised that external urls should have the 'http://' part otherwise they will be considered a internal url" => 'بعنوان مثال : http://ipt24.ir . توصیه می شود در آدرس های خارجی حتما "http://" لحاظ شود در غیر این صورت سیستم آدرس را بعنوان آدرس داخلی شناسایی می کند .',
+    "A url relative to site's full url. exp : /fa/front-page" => 'یک آدرس نسبی به آدرس کامل سایت . بعنوان مثال : /fa/front-page',
+    'How to open the page?' => 'نحوه باز شدن صفحه ؟',
+    'Options' => 'گزینه ها',
+    'MENU_ITEM_NOFOLLOW_DESCRIPTION' => '"nofollow" یعنی:  به موتور جستجو گفته می شود که "این لینک از سایت من نیست" .',
+    'Is nofollow ?' => 'nofollow باشد ؟',
+    'menu_widget_config_label' => 'ابزار منو',
+    'menu_widget_count_content' => 'تعداد منوی اصلی',
+    'Menu_form_ShowTitle' => 'عنوان منو نمایش داده شود ؟',
+    'Menu_form_imgTitle' => 'عنوان تصویر',
+    'Menu_form_imgAlt' => 'متن جایگزین تصویر',
+    'Create/Edit Menu' => 'ساخت و ویرایش منو',
+    'Create/Edit Menu Item' => 'ساخت و ویرایش آیتم منو',
+    'MENU_RESPONSIVE' => 'منوی رسپانسیو',
+    'MENU_IS_NOT' => 'نمی باشد',
+    'MENU_IS' => 'می باشد',
+    'translate menu items label and title' => 'ترجمه لیبل و عناوین آیتم های منو',
+    'Allowed extensions are jpg, jpeg, png and gif<br/>' .
+    'Min size : 100x100 and Max size : 1500x1500<br/>' .
+    'Max file size : 1MB' .
+    'The image size does not change' =>
+        'پسوند های مجاز jpg,jpeg,png و gif هستند<br/>' .
+        'حداقل اندازه : 100x100 و حداکثر اندازه : 1500x1500<br/>' .
+        'حداکثر سایز فایل : 1MB' .
+        'اندازه تصویر تغییر نمیکد'
+);

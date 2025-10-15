@@ -1,0 +1,66 @@
+<?
+$this->headScript()->prependFile($this->basePath() . '/js/jquery.lazyLoad.js');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/view-gallery-slide.css');
+$this->headScript()->prependFile($this->basePath() . '/js/view-gallery-slide.js');
+$selectItem = $this->galleryItem;
+$loaderImage = $this->basePath() . '/images/ajax_loader_tiny.gif';
+$navItemTemp = "<span class='%s' data-id='%s' id='gallery-nav-%s'></span>";
+$imgTemp = "<img class='img-responsive'  rel='tooltip' title='%s' src='{$loaderImage}' data-src='%s'>";
+$itemsTemp = "<div class='items'>%s</div>";
+$itemTemp = "<div class='item' style='width:%spx;height:%spx;'>%s</div>";
+$navigationTemp = "<div class='navigation'>%s</div>";
+?>
+
+<div class="gallery-slide">
+    <div class="box">
+        <span class="icon_gallery"></span>
+        <span class="title">
+            گالری تصاویر شرکت نیوپلاست
+        </span>
+    </div>
+    <?
+    $gallery = '';
+    foreach ($selectItem as $val) {
+        $count = 0;
+        $navItem = '';
+        $items = '';
+        $height = 100;
+        $width = 100;
+        foreach ($val as $row) {
+            $count++;
+            if ($count == 1) {
+                $className = 'active';
+                if (!empty($row->width))
+                    $width = $row->width;
+                if (!empty($row->height))
+                    $height = $row->height;
+            } else
+                $className = '';
+
+
+            $imageUrl = getThumbnail()->resize($row->image, $width, $height); //resize image
+            $params = array('id' => $row->groupId);
+            if (!empty($row->groupName))
+                $params['title'] = $row->groupName;
+            $url = url('app/photo-gallery', $params);
+            $navItem .= sprintf($navItemTemp, $className, $row->id, $row->id);
+            $img = sprintf($imgTemp, $row->title, $imageUrl);
+            $items .= \Theme\API\Common::Link($img, $url, array(
+                'class' => $className,
+                'data-id' => $row->id,
+                'id' => 'gallery-item-' . $row->id
+            ));
+        }
+        $item = sprintf($itemsTemp, $items);
+        $item .= sprintf($navigationTemp, $navItem);
+        $gallery .= sprintf($itemTemp, $width, $height, $item);
+    }
+    echo($gallery);
+    ?>
+</div>
+<script>
+    $(document).ready(function () {
+        FancyGallery.speed = <?=(int)$this->speed?>;
+        FancyGallery.run();
+    });
+</script>

@@ -1,0 +1,18 @@
+<div>
+    <?if ($this->emailStatus == 1)
+        echo $this->general()->MSG(t('This email address is already verified.'));
+    else {
+        echo $this->general()->SUCCESS(t('This email address has been successfully verified.'));
+        if ($this->accountStatus == 1) {
+            if (!current_user()->id) {
+                echo $this->general()->SUCCESS(t('You can now login to your account.'));
+
+                ?>
+                <a href="<?= url('app/user/login') ?>"><?= t('Click here to login to your account') ?></a>
+            <?
+            }
+        } else {
+            echo $this->general()->WARNING(t('Your account has not been yet approved by the site admin, you will be able to login to the site after your account has been approved.'));
+        }
+    }?>
+</div>

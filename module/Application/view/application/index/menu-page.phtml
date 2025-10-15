@@ -1,0 +1,42 @@
+<?
+if ($this->container) {
+    $minDepth = 0;
+    $maxDepth = null;
+    if (!$active = $this->navigation()->menu('admin_menu')->findActive($this->container)) {
+        return '';
+    }
+
+    // special case if active page is one below minDepth
+    if ($active['depth'] < $minDepth) {
+        if (!$active['page']->hasPages()) {
+            return '';
+        }
+    } elseif (!$active['page']->hasPages()) {
+        // found pages has no children; render siblings
+        $active['page'] = $active['page']->getParent();
+    } elseif (is_int($maxDepth) && $active['depth'] + 1 > $maxDepth) {
+        // children are below max depth; render siblings
+        $active['page'] = $active['page']->getParent();
+    }
+
+    ?>
+    <ul class="list-group">
+    <?
+    foreach ($active['page'] as $subPage) {
+        if (!$this->navigation()->menu()->accept($subPage)) {
+            continue;
+        }
+
+        $class = $subPage->getClass();
+        $subPage->setClass($class . ' ajax_page_load list-group-item-heading');
+
+        ?>
+        <li class="list-group-item">
+            <?= $this->navigation()->menu()->htmlify($subPage); ?>
+            <p class="list-group-item-text description"><?= t($subPage->get('note')) ?> </p>
+        </li>
+    <?
+    }
+    ?></ul><?
+
+}

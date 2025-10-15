@@ -1,0 +1,58 @@
+<?
+if ($this->error) {
+    ?>
+    <div class="alert alert-danger">
+        <?= t('ADS_CONFIG_ERROR') ?>
+    </div>
+<?
+} else {
+    if ($this->flagView) {
+        // $this->headScript()->appendFile($this->basePath() . '/js/file.js');
+        ?>
+        <div>
+            <h3 class="page-title">
+                <?= $this->translate('ADS_CONFIGS'); ?>
+            </h3>
+
+            <p class="alert alert-info"><?= t('ADS_FOUR_CONFIG_DESC') ?></p>
+
+            <?
+            $form = $this->form;
+            $form->prepare();
+            echo $this->form()->openTag($form);
+            echo $this->formCollection($form->get('fields_ads'));
+            echo $this->formCollection($form->get('buttons'));
+            echo $this->form()->closeTag();
+            ?>
+        </div>
+    <?
+    } else {
+        ?>
+        <div class="col-md-12">
+            <?
+            $counter = 0;
+            foreach ($this->baseType as $row) {
+                ?>
+                <? if ($row['isRequest']) {
+                    $counter++;
+                    ?>
+                    <div class="col-md-4">
+                        <a class="ajax_page_load btn btn-default btn-lg btn-block"
+                           href="<?= url('admin/ad/config/four-config', array('baseType' => $row['id'], 'isRequest' => 1)) ?>">
+                            <span><?= $row['name'] ?></span>
+                        </a>
+                    </div>
+                <?
+                }
+            }
+            if ($counter == 0) {
+                ?>
+                <p class="alert alert-warning"><?= t('ADS_REQUEST_NOT_FOUND') ?></p>
+            <?
+            }
+            ?>
+        </div>
+    <?
+    }
+}?>
+

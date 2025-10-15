@@ -1,0 +1,26 @@
+<?
+$basePath = $this->basePath() . '/images/dashboard/';
+?>
+<div>
+    <h2><?= t('Menu') ?></h2>
+    <div class="widget-box">
+        <a class="button"  href="<?=url('admin/menu')?>" >
+            <img src="<?=$basePath.'icon-48-menumgr.png'?>">
+            <p><?=t('Menus')?></p>
+        </a>
+        <a class="button"  href="<?=url('admin/menu/new')?>" >
+            <img src="<?=$basePath.'icon-48-menu-add.png'?>">
+            <p><?=t('Add Menu')?></p>
+        </a>
+    </div>
+    <table>
+        <tr>
+            <td>
+                <a href="<?=url('admin/menu')?>" ><?= t('menu_widget_count_content') ?></a>
+            </td>
+            <td align='center'>
+                <b class="digit"><?= localizedDigits($this->data['count']) ?></b>
+            </td>
+        </tr>
+    </table>
+</div>

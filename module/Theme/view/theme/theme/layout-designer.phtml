@@ -1,0 +1,116 @@
+<?
+$this->headScript()->prependFile($this->basepath() . '/js/json2.js');
+$this->headScript()->appendFile($this->basepath() . '/js/layout-designer.js');
+$this->headLink()->appendStylesheet($this->basepath() . '/css/layout-designer.css');
+?>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    LayoutDesigner.Messages.designBtnTitle = '<?=t('Design Layout')?>';
+    LayoutDesigner.Messages.saveBtnTitle = '<?=t('Save')?>';
+    LayoutDesigner.Messages.cancelBtnTitle = '<?=t('Cancel')?>';
+    LayoutDesigner.Messages.rowNameRequired = '<?=t('Row name is required')?>';
+    LayoutDesigner.Messages.columnNameRequired = '<?=t('Column name is required')?>';
+    LayoutDesigner.Messages.noSelectedItem = '<?=t('No item is selected for delete!')?>';
+    LayoutDesigner.Messages.cantEditPage = '<?=t("Page cannot be edited!")?>';
+    LayoutDesigner.Messages.selectRowOrColumn = '<?=t("Select a row or column to add new column.")?>';
+    LayoutDesigner._defaultLayout = <?=\Theme\API\Themes::getDefaultLayout()?>;
+    LayoutDesigner.layout = <?=$this->layout?>;
+    LayoutDesigner.init();
+    <?$this->inlineScript()->captureEnd()?>
+</script>
+<div id="designer-toolbar">
+    <a class="button add_button icon_button" href="#add-row" id="add-row"><?= t('Add Row') ?></a>
+    <a class="button add_button icon_button" href="#add-column" id="add-column"><?= t('Add Column') ?></a>
+    <a class="button delete_button icon_button" href="#delete" id="delete-item"><?= t('Delete') ?></a>
+    <a class="button edit_button icon_button" href="#edit" id="edit-item"><?= t('Edit') ?></a>
+    <a class="button icon_button" data-icon-p="ui-icon-scissors" href="#cut" id="cut-item"><?= t('Cut') ?></a>
+    <a class="button icon_button" data-icon-p="ui-icon-copy" href="#copy" id="copy-item"><?= t('Copy') ?></a>
+    <a class="button icon_button" data-icon-p="ui-icon-clipboard" href="#paste" id="paste-item"><?= t('Paste') ?></a>
+</div>
+<span id="selected-item">
+    <?= t('Selected Item') ?> : <span id="selected-item-value"></span>
+</span>
+<p>
+    <?= t('Columns should have unique names') ?><br/>
+    <?= t('Rename copied items after paste.') ?><br/>
+    <?= t('You can reorder rows and columns with grabbing from their name tags and dragging.') ?>
+</p>
+<div id="layout-content" class="container-fluid">
+    <span class="layout-tag"><?= t('Page Layout') ?></span>
+
+</div>
+<div style="display:none" id="add-layout-row-form" class="layout-designer-form">
+    <label><?= t('Row Name') ?></label>
+    <input type="text" id="row-name" value="row-X">
+</div>
+<div style="display:none" id="add-layout-column-form" class="layout-designer-form">
+    <div class="" style="margin:0;">
+        <label><?= t('Column Name') ?></label>
+        <input type="text" id="column_name" value="row-Y-column-X">
+
+        <br/>
+        <label>
+            <input type="checkbox" id="main_content_column">
+            <?= t('Main Content Column ?') ?></label>
+
+        <p class="description"><?= t('Only 1 column can contain the main content') ?></p>
+
+        <br/>
+        <label>
+            <input type="checkbox" id="clearfix" value="1">
+            <?= t('clear-fix') ?></label>
+
+        <p class="description"><?= t('add clearfix class to this column') ?></p>
+
+        <div class="">
+            <p><?= t("Column Width,Offset :A number between 1 and 12, if you don't what it set it to 0") ?></p>
+
+            <p><?= t('Visible:if any selected the column will be visible only in the selected devices otherwise in all devices') ?></p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th><?= t('LAYOUT_DESIGNER_DEVICE_TYPE') ?></th>
+                    <th><?= t('LAYOUT_DESIGNER_COLUMN_WIDTH') ?></th>
+                    <th><?= t('LAYOUT_DESIGNER_COLUMN_VISIBLE') ?>
+                        <a class="button icon_button" data-icon-p="ui-icon-help"
+                           href="http://getbootstrap.com/css/#grid-responsive-resets" target="_blank">Help</a>
+                    </th>
+                    <th><?= t('LAYOUT_DESIGNER_COLUMN_OFFSET') ?>
+                        <a class="button icon_button" data-icon-p="ui-icon-help"
+                           href="http://getbootstrap.com/css/#grid-offsetting" target="_blank">Help</a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <?
+                $devices = array(
+                    'xs' => "Extra small devices, Phones (<768px)",
+                    'sm' => "Small devices, Tablets (≥768px)",
+                    'md' => "Medium devices, Desktops (≥992px)",
+                    'lg' => "Large devices, Desktops (≥1200px)",
+                );
+                foreach ($devices as $id => $title) {
+                    ?>
+                    <tr>
+                        <td rel='tooltip' title="<?= $title ?>"><?= t('LAYOUT_DESIGNER_COLUMN_' . strtoupper($id)) ?></td>
+                        <td>
+                            <input type="text" id="column_width_<?= $id ?>" value="0" class="spinner" data-min="0"
+                                   data-max="12">
+                        </td>
+                        <td>
+                            <input type="checkbox" id="column_visible_<?= $id ?>">
+                        </td>
+                        <td>
+                            <input type="text" id="column_offset_<?= $id ?>" value="0" class="spinner" data-min="0"
+                                   data-max="12">
+                        </td>
+                    </tr>
+                <?
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

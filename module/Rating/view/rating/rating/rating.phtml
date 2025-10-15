@@ -1,0 +1,62 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/rating.css');
+$this->headScript()->prependFile($this->basePath() . '/js/rating.js');
+$this->headScript()->prependFile($this->basePath() . '/js/jquery.raty.min.js');
+//    dateRate: '<?//=$this->dateRate',
+
+$id = $this->ei;
+if ($this->ei2)
+    $id .= '_' . $this->ei2;
+?>
+<script>
+    if (typeof Rating == 'undefined') {
+        new Image().src = '<?=$this->basePath()?>/images/rating/star-off.png';
+        new Image().src = '<?=$this->basePath()?>/images/rating/star-half.png';
+        new Image().src = '<?=$this->basePath()?>/images/rating/star-on.png';
+        var Rating = {
+            imagesPath: '<?=$this->basePath() . '/images/rating'?>',
+            url: '<?=url('app/rating/new')?>',
+            title: '<?=t('Rating')?>',
+            notSaved: '<?=t('Your Vote Not Saved')?>',
+            success: '<?=t('Select Your Success')?>',
+            error1: '<?=t('For a new choice, please wait 5 minutes')?>',
+            error2: '<?=t('To select, please enter your User Panel')?>',
+            userId: '<?=current_user()->id;?>',
+            instances: {},
+            showMyVote:<?=$this->showMyVote?>
+        };
+    }
+
+    Rating.instances['<?=$id?>'] = {
+        entityId: '<?=$this->ei?>',
+        entityId2: '<?=$this->ei2?>',
+        entityType: '<?=$this->et?>',
+        average: '<?=$this->average?>',
+        PermitForUpdateRate: '<?=$this->PermitForUpdateRate?>'
+    };
+
+    if (typeof window.StarRating != 'undefined')
+        StarRating.run('<?=$id?>');
+    else
+        $(document).on('star-rating-loaded', function () {
+            StarRating.run('<?=$id?>');
+        });
+</script>
+<div class="star-rater" id="star-rater-<?= $id ?>">
+    <div class="star-rating" data-score="<?= $this->average ?>"></div>
+    <div class="rating-hint"></div>
+    <? if ($this->showMyVote) { ?>
+        <div class="user-vote">
+            <label class="user-vote-label">
+                <?= t('Your Voted') . " : " ?>
+            </label>
+        <span class="user-vote-span">
+            <? if ($this->userVote) echo $this->userVote; else echo t('Rating_nothingVoted'); ?>
+        </span>
+        </div>
+    <? } ?>
+    <div id="rating_dialog" style="display: none;">
+        <div class="message-rating" id="message-rating"></div>
+        <div class="ajax-loading-rating"></div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<?
+return array(
+    'lang_direction' => 'ltr',
+    'currency_code' => 'YTL',
+    'lang_locale' => 'tr_TR',
+    'Change Language to X' => 'Türkçesine dilini değiştirme',
+);

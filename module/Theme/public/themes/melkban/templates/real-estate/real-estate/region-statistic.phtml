@@ -1,0 +1,25 @@
+<style>
+    .tbl_region_statistic{width: 240px; background: #ffffff;}
+    .tbl_region_statistic tr .labels{width: 100px; font-family: WYekan; font-size: 10pt; color: #707070; padding: 7px; display: block !important; border-bottom: 1px dotted #cccccc;}
+    .tbl_region_statistic tr .value{width: 140px; font-family: tahoma; font-size: 10pt; color: #975320; padding: 7px; border-bottom: 1px dotted #cccccc;}
+</style>
+<?
+if ($this->data) {
+    ?>
+    <table class="tbl_region_statistic">
+        <tr>
+            <td class="labels"><?= t('Region') ?></td>
+            <td class="value"><? if(!$this->areaText) echo '-----'; else echo $this->areaText; ?></td>
+        </tr>
+        <?
+        foreach ($this->data as $key => $val) {
+            ?>
+            <tr>
+                <td class="labels"><?= t($key) ?></td>
+                <td class="value"><? if(empty($val)) echo '-----'; else echo $this->currencyFormat($val); ?></td>
+            </tr>
+        <?
+        }
+        ?>
+    </table>
+<? }

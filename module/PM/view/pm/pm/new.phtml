@@ -1,0 +1,111 @@
+<?
+//$this->headScript()->appendFile($this->basePath() . '/tinymce/tinymce.min.js');
+//$ld = t('lang_direction');
+$colSize = 6;
+if (!$this->flagShowBBCode)
+    $colSize = 12;
+?>
+<div class="row">
+    <div class="col-md-<?= $colSize ?>">
+        <h3 class="page-title">
+            <?= t('New Private Message'); ?>
+        </h3>
+
+        <div>
+            <? echo $this->form($this->form); ?>
+        </div>
+    </div>
+    <? if ($this->flagShowBBCode) { ?>
+        <div class="col-md-6">
+            <div class="well">
+                <h4>
+                    <?= t('Supported BBCodes') ?>
+                </h4>
+
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt><?= t('Quote Block') ?></dt>
+                        <dd>[blockquote]text[/blockquote]</dd>
+
+                        <dt><?= t('Short for blockquote') ?></dt>
+                        <dd>[quote]text[/quote]</dd>
+
+                        <dt><?= t('Bold Text') ?></dt>
+                        <dd>[b]text[/b]</dd>
+
+                        <dt><?= t('Italic Text') ?></dt>
+                        <dd>[i]text[/i]</dd>
+
+                        <dt><?= t('Underline Text') ?></dt>
+                        <dd>[u]text[/u]</dd>
+
+                        <dt><?= t('Url') ?></dt>
+                        <dd>[url]http://example.com[/url]</dd>
+
+                        <dt><?= t('Url') ?></dt>
+                        <dd>[url=http://example.com]text[/url]</dd>
+
+                        <dt><?= t('Image File') ?></dt>
+                        <dd>[img]image[/img]</dd>
+
+                        <dt><?= t('Colored Text') ?></dt>
+                        <dd>[color=red]text[/color]</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    <? } ?>
+</div>
+
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    var selected_pm_users = <?=$this->users?>;
+    $(document).ready(function () {
+
+        /* tinyMCE.init({
+         mode: "none",
+         language: '
+        <?//=SYSTEM_LANG?>',
+         directionality: '
+        <?//=$ld?>',
+         toolbar: "undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | formatselect fontselect fontsizeselect | bullist numlist | link image blockquote",
+         //            selector: "textarea[name=msg]",
+         plugins: "bbcode link image code",
+         content_css: "
+        <?//=$this->basePath()."/tinymce/css/bbcode.css"?>",
+         entity_encoding: "raw",
+         adt_unload_trigger: false,
+         remove_linebreaks: false,
+         inline_styles: false,
+         convert_fonts_to_spans: false
+         });
+         */
+//        tinymce.EditorManager.execCommand('mceAdtEditor', true,  'pm_msg');
+
+        $('#pm input[name=to]').select2({
+            minimumInputLength: 2,
+            ajax: {
+                type: 'POST',
+                url: '<?=url('admin/users/search')?>',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        q: term, //search term
+                        page_limit: 10, // page size
+                        page: page // page number
+                    };
+                },
+                results: function (data, page) {
+                    var more = (page * 10) < data.total;
+                    return {results: data.users, more: more};
+                }
+            },
+            initSelection: function (element, callback) {
+                $.map(element.val().split(','), function (id) {
+                    callback({id: id, text: selected_pm_users[id]});
+                });
+            }
+        });
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

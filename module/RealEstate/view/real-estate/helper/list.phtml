@@ -1,0 +1,20 @@
+<div id="real-estate-list">
+</div>
+<script type="text/javascript">
+    <?=$this->inlineScript()->captureStart();?>
+    var r_list = {
+        url: '<?=url('app/real-estate/list')?>',
+        params:'<?=$this->params?>'
+    };
+    $.ajax({
+        type: 'GET',
+        url: r_list.url + '?' + r_list.params,
+        complete: function () {
+        },
+        success: function (data) {
+            $('#real-estate-list').html(data);
+        },
+        error: System.AjaxError
+    });
+    <?=$this->inlineScript()->captureEnd();?>
+</script>

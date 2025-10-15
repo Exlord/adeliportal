@@ -1,0 +1,21 @@
+<?return array(
+    'simpleOrder_new_order_form' => ' فرم سفارش',
+    'simpleOrder_new_page_title' => 'سفارش محصول',
+    'simpleOrder_title_choice_product' => 'انتخاب محصول',
+    'simpleOrder_title_products' => 'محصولات',
+    'simpleOrder_select_item_ton' => 'وزن ( تن )',
+    'simpleOrder_select_item_kg' => 'وزن ( کیلوگرم )',
+    'simpleOrder_select_item_num' => 'تعداد',
+    'simpleOrder_label_quantity' => 'مقدار',
+    'SIMPLE_ORDER_CONTACT_INFO' => 'اطلاعات تماس',
+    'SIMPLE_ORDER_PRODUCT' => 'محصول',
+    'SIMPLE_ORDER_SUB_CATEGORY' => 'زیرشاخه',
+    'SIMPLE_ORDER_ORDER_PRODUCT' => 'سفارش محصول',
+    'simpleOrder_config_order_form' => 'تنظیمات فرم سفارش',
+    'simpleOrder_new_stepOrder_form' => 'فرم سفارش مرحله ای',
+    'simpleOrder_NEW_STEP_ORDER' => 'سفارش مرحله ای',
+    'simpleOrder_NEW_STEP_ORDER_DESC' => 'در این صفحه سفارش به صورت مرحله ای انجام می گیرد .',
+    'SimpleOrder_DESC_CREATE_CATEGORY' => 'برای ساخت صفحه سفارش و اضافه کردن محصولات ابتدا دسته بندی با نام ماشینی simpleOrder ایجاد کرده و سپس محصولات را به صورت آیتم ها به این دسته بندی اضافه کنید .',
+    'PERM_SimpleOrder' => 'سفارش ساده',
+
+);

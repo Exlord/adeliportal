@@ -1,0 +1,16 @@
+<div class="div-app-download">
+<?
+if($this->flag)
+{ ?>
+    <p><?=t('realEstate_appDownload_msg_downloaded_1')?></p>
+    <br/>
+    <p><?=t('realEstate_appDownload_msg_downloaded_2')?></p>
+<?}else {?>
+    <div class="user-register">
+        <?= t('To download the software, you must first log into your account.') ?>
+        <a target="_blank" href="<?= url('app/user/login') ?>">
+            <?= t('Click here to Login/register') ?>
+        </a>
+    </div>
+    <? } ?>
+</div>

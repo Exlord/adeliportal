@@ -1,0 +1,131 @@
+<?
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$styles = array();
+if ($direction == 'ltr')
+    $styles[] = $this->basePath() . TEMPLATE_PATH . '/css/style-ltr.css';
+$styles[] = $this->basePath() . '/css/print-preview.css';
+$styles[] = $this->basePath() . '/css/system.css';
+$styles[] = $this->basePath() . TEMPLATE_PATH . '/css/style.css';
+$styles[] = $this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css';
+
+foreach ($styles as $st) {
+    $this->headLink()->prependStylesheet($st);
+}
+
+$scripts = array(
+    '/js/general.js',
+    '/js/system.jquery.ui.buttons.js',
+    '/js/system.jquery.ui.js',
+    '/js/system.js',
+    '/js/jquery.transit.min.js',
+    '/js/jquery-ui-1.10.1.custom.min.js',
+    '/js/jquery-1.9.1.min.js');
+foreach ($scripts as $sc) {
+    $this->headScript()->prependFile($this->basePath() . $sc);
+
+}
+$this->headLink()->appendStylesheet($this->basePath() . '/css/print.css', 'print', false, false);
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('IPT Management System')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<body>
+<div class="print-toolbar">
+    <div class="print-toolbar-content">
+        <a class="toolbar-button button icon_button" data-icon-p="ui-icon-print" href="javascript:window.print()"
+           title="<?= t('Print') ?>" rel="tooltip"><?= t('Print') ?></a>
+        <a class="toolbar-button button icon_button" data-icon-p="ui-icon-zoomin" id="zoom-in" href="#zoom-in"
+           title="<?= t('Zoom In') ?>" rel="tooltip"><?= t('Zoom In') ?></a>
+        <a class="toolbar-button button icon_button" data-icon-p="ui-icon-search" id="zoom-reset"
+           href="#zoom-reset" title="<?=t('Zoom Reset')?>" rel="tooltip"><?= t('Zoom Reset') ?></a>
+        <a class="toolbar-button button icon_button" data-icon-p="ui-icon-zoomout" id="zoom-out" href="#zoom-out"
+           title="<?= t('Zoom Out') ?>" rel="tooltip"><?= t('Zoom Out') ?></a>
+        <a class="toolbar-button button icon_button" data-icon-p="ui-icon-arrowthick-2-n-s" id="portrait"
+           href="#portrait" title="<?= t('Portrait') ?>" rel="tooltip"><?= t('Portrait') ?></a>
+        <a class="toolbar-button button icon_button" data-icon-p="ui-icon-arrowthick-2-e-w" id="landscape"
+           href="#landscape" title="<?= t('Landscape') ?>" rel="tooltip"><?= t('Landscape') ?></a>
+    </div>
+</div>
+<div class="print-content portrait" id="print-content">
+    <div class="print-content-page">
+        <?= $this->page ?>
+    </div>
+    <div class="pages">
+        <div id="page-1" class='page'><span class='page-tag'><?= t('Page') ?> : 1</span></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var Printer = {
+        pageName: '<?=t('Page')?>',
+        page: "<div class='page'><span class='page-tag'>__PAGE__</span></div>",
+        scale: {
+            x: 1,
+            y: 1
+        },
+//        orientation: 'portrait',
+        renderPages: function () {
+            var pageHeight = ($('#page-1').height());
+            var height = ($('#print-content').outerHeight());
+            var pageCount = height / pageHeight;
+            pageCount = Math.ceil(pageCount);
+            if (pageCount < 1)
+                pageCount = 1;
+
+            $('.page').remove();
+            for (var i = 1; i <= pageCount; i++) {
+                var page = Printer.page;
+                page = $(page.replace('__PAGE__', Printer.pageName + ' : ' + i)).attr('id', 'page-' + i);
+                $('#print-content .pages').append(page);
+            }
+        }
+    };
+    $(document).ready(function () {
+        $('#portrait').click(function () {
+            Printer.orientation = 'portrait';
+            $('#print-content').addClass('portrait').removeClass('landscape');
+//            Printer.renderPages();
+        });
+        $('#landscape').click(function () {
+            Printer.orientation = 'landscape';
+            $('#print-content').addClass('landscape').removeClass('portrait');
+//            Printer.renderPages();
+        });
+        $('#zoom-in').click(function () {
+            Printer.scale.x += 0.1;
+            Printer.scale.y += 0.1;
+            $('#print-content').transition({
+                scale: [Printer.scale.x, Printer.scale.y]
+            });
+        });
+        $('#zoom-out').click(function () {
+            Printer.scale.x -= 0.1;
+            Printer.scale.y -= 0.1;
+            $('#print-content').transition({
+                scale: [Printer.scale.x, Printer.scale.y]
+            });
+        });
+        $('#zoom-reset').click(function () {
+            Printer.scale.x = 1;
+            Printer.scale.y = 1;
+            $('#print-content').transition({
+                scale: [Printer.scale.x, Printer.scale.y]
+            }, function () {
+                $(this).transition({top: 0, left: 0});
+            });
+        });
+
+        Printer.renderPages();
+        $('#print-content').draggable();
+    });
+</script>
+</body>
+</html>
+

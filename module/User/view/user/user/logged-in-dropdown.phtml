@@ -1,0 +1,44 @@
+<div class="user-navbar pull-right flip header-navbar">
+    <ul class="nav navbar-nav">
+        <li class="dropdown user-menu">
+            <a data-toggle="dropdown" class="dropdown-toggle" href="<?= $this->path ?>">
+                <?= getUserDisplayName(current_user()) ?>
+                <span class="glyphicon glyphicon-user icon-2x"></span>
+            </a>
+            <ul class="dropdown-menu flip notification-container">
+                <li>
+                    <ul class="menu">
+                        <li class="useruser-header">
+                            <h1 class="center-block"><?= getUserDisplayName(current_user()) ?></h1>
+
+                            <p class="center-block">
+                                <span class=""> <?= t('Last Login Date') ?> : </span>
+                                <span class=" date">
+                                    <? if (current_user()->lastLoginDate && !is_null(current_user()->lastLoginDate))
+                                        echo $this->date_format(current_user()->lastLoginDate, 0, 1);
+                                    else
+                                        echo $this->date_format(current_user()->loginDate, 0, 1);
+                                    ?>
+                                </span>
+                            </p>
+                        </li>
+                        <li class="user-footer clearfix">
+                            <div class="pull-left">
+                                <a class="btn btn-default" href="<?= $this->url('app/user/logout') ?>">
+                                    <span class="glyphicon glyphicon-log-out text-danger"></span>
+                                    <?= t('Logout') ?>
+                                </a>
+                            </div>
+                            <div class="pull-right">
+                                <a class="btn btn-default ajax_page_load" href="<?= $this->path ?>">
+                                    <span class="glyphicon glyphicon-user text-primary"></span>
+                                    <?= t('Profile') ?>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

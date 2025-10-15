@@ -1,0 +1,13 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title"><?= t('Notifications') ?></h3>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    Notifications.update('notify');
+    <?$this->inlineScript()->captureEnd();?>
+</script>

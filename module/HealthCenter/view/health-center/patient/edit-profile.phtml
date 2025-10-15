@@ -1,0 +1,16 @@
+<div class="patient-profile-form">
+    <h3 class="page-header page-title">
+        <?= $this->translate('Medical Records'); ?>
+    </h3>
+
+    <div>
+        <? echo($this->form($this->form)); ?>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#PatientProfile #skip').click(function () {
+            window.location = $(this).data('href');
+        });
+    });
+</script>

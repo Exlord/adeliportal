@@ -1,0 +1,40 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/view-projects.css');
+$this->headScript()->prependFile($this->basePath() . TEMPLATE_PATH . '/js/view-projects.js');
+?>
+<div class="view-projects">
+    <? if ($this->catItem) { ?>
+        <div class="content-tags">
+            <?
+            $tagRouteParams = array();
+            foreach ($this->catItem as $tag) {
+                $tagRouteParams['tagName'] = \Application\API\App::prepareUrlString($tag->itemName);
+                $tagRouteParams['tagId'] = $tag->id;
+                ?>
+                <span class="content-tag">
+                    <a href="<?= url('app/projects', $tagRouteParams) ?>">
+                        <?= $this->escapeHtml($tag->itemName) ?>
+                    </a>
+                </span>
+            <?
+            }
+            ?>
+        </div>
+    <? } ?>
+    <?
+    if (!empty($this->data)) {
+        foreach ($this->data as $row) {
+                $pageRouteParams['id'] = $row['id'];
+                $pageRouteParams['title'] = \Application\API\App::prepareUrlString($row['title']);
+                ?>
+                <article class="box-view-projects" data-id="<?=$row['id']?>">
+                    <img src="<?= $row['image'] ?>">
+                    <div>
+                        <a target="_blank" title="<?=t('Show Content')?>" class="show-content" href="<?= url('app/single-content', $pageRouteParams) ?>"></a>
+                        <a target="_blank" title="<?=t('Show Website')?>" class="show-website" href="<?= $row['url'] ?>"></a>
+                    </div>
+                </article>
+        <?
+        }
+    } ?>
+</div>

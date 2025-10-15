@@ -1,0 +1,29 @@
+<div>
+    <h2>
+        <?
+        if($this->__TYPE__=='both')
+          echo t('realEstate_validate_special_showInfo');
+        elseif($this->__TYPE__=='isSpecial')
+          echo t('realEstate_validate_special');
+        elseif($this->__TYPE__=='showInfo')
+            echo t('realEstate_validate_showInfo');
+        ?>
+    </h2>
+    <label>
+        <?=t('Payment Code').' : '?>
+    </label>
+    <p>
+        <?=$this->__PAYERID__?>
+    </p>
+    <br/>
+    <label>
+        <?=t('Estate Code').' : '?>
+    </label>
+    <p>
+        <?=$this->_ESTATEID__?>
+    </p>
+    <br/>
+    <p>
+        <?=ACTIVE_SITE?>
+    </p>
+</div>

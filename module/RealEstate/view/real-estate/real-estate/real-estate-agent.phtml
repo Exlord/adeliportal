@@ -1,0 +1,64 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/real-estate.css');
+?>
+
+<div class="box-all-real-estate-agent">
+    <?
+    foreach ($this->select as $row) {
+        if ($row->image)
+            $image = getThumbnail()->resize($row->image, 100, 100); //resize image;
+        else
+            $image = getThumbnail()->resize($this->basePath() . '/images/not-image.png', 100, 100); //resize image;
+        ?>
+        <div class="single-real-estate-agent">
+            <div class="single-real-estate-agent-right">
+                <a href="<?=url('app/user/user-profile',array('id'=>$row->id))?>">
+                    <img src="<?= $image ?>">
+                </a>
+            </div>
+            <div class="single-real-estate-agent-left">
+                <h2><?= $row->displayName ?></h2>
+                <? if ($row->email) { ?>
+                    <div class="single-real-estate-agent-left-div">
+                        <label class="single-real-estate-agent-left-div-label"><?= t('Email') ?></label>
+
+                        <p class="single-real-estate-agent-left-div-p"><?= $row->email ?></p>
+                    </div>
+                <? } ?>
+                <? if ($row->phone) { ?>
+                    <div class="single-real-estate-agent-left-div">
+                        <label class="single-real-estate-agent-left-div-label"><?= t('Phone') ?></label>
+
+                        <p class="single-real-estate-agent-left-div-p"><?= $row->phone ?></p>
+                    </div>
+                <? } ?>
+                <? if ($row->mobile) { ?>
+                    <div class="single-real-estate-agent-left-div">
+                        <label class="single-real-estate-agent-left-div-label"><?= t('Mobile') ?></label>
+
+                        <p class="single-real-estate-agent-left-div-p"><?= $row->mobile ?></p>
+                    </div>
+                <? } ?>
+                <? if ($row->address) { ?>
+                    <div class="single-real-estate-agent-left-div">
+                        <label class="single-real-estate-agent-left-div-label"><?= t('Address') ?></label>
+                        <p class="single-real-estate-agent-left-div-p"><?= $row->address ?></p>
+                    </div>
+                <? } ?>
+            </div>
+        </div>
+    <?
+    }
+    ?>
+</div>
+<div class="pager">
+    <?=
+    $this->paginationControl($this->select,
+        'Sliding',
+        'application/pagination/search.phtml',
+        array(
+            'route' => 'app/real-estate/agent',
+            'route_params' => array()
+        )
+    ); ?>
+</div>

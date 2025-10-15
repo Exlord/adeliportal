@@ -1,0 +1,74 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/agent-area.css');
+$this->headScript()->prependFile($this->basePath() . '/js/agent-area.js');
+$this->headScript()->prependFile($this->basePath() . '/js/geographical.js');
+?>
+<div class="agent-area-wrapper">
+    <div>
+        <label><?= t('Real Estate Agent') ?></label>
+        <select id="agentId">
+            <option value="-1"><?= t('-- Select --') ?></option>
+            <?
+            foreach ($this->selectAgent as $key => $val) {
+                ?>
+                <option value="<?= $key ?>"><?= $val ?></option>
+            <?
+            }
+            ?>
+        </select>
+    </div>
+    <div id="otherInfoAgentArea">
+        <div>
+            <label><?= t('State') ?></label>
+            <select id="stateId" class="state-selector" data-cityid="cityId" name="stateId">
+                <?
+                foreach ($this->stateList as $key => $val) {
+                    ?>
+                    <option value="<?= $key ?>"><?= $val ?></option>
+                <?
+                }
+                ?>
+            </select>
+        </div>
+        <div>
+            <label><?= t('City') ?></label>
+            <select id="cityId" class="city-selector" data-areaid="areaId" name="cityId">
+                <?
+                foreach ($this->cityList as $key => $val) {
+                    ?>
+                    <option value="<?= $key ?>"><?= $val ?></option>
+                <?
+                }
+                ?>
+            </select>
+        </div>
+        <div>
+            <label><?= t('Region') ?></label>
+            <select id="areaId" class="area-selector" name="areaId">
+                <option value="0"><?=t('-- Select --') ?></option>
+                <?
+                foreach ($this->areaList as $key => $val) {
+                    ?>
+                    <option value="<?= $key ?>"><?= $val ?></option>
+                <?
+                }
+                ?>
+            </select>
+        </div>
+        <div id="allAgentAreaIds"></div>
+        <a class="toolbar-button button more_button" href="#insert" id="AgentAreaSave">
+            <?= t('Save') ?>
+        </a>
+       <!-- <a href="#insert" id="AgentAreaSave"></a>-->
+    </div>
+</div>
+
+<script>
+    var agentArea = {
+        msgEmptyAgentId: '<?=t('REALESTATE_ENTER_ALL_FIELDS')?>',
+        insertUrl: '<?=url('admin/real-estate/agent-area')?>',
+        getAreaUrl: '<?=url('admin/real-estate/agent-area/get-agent-area')?>',
+        msgSuccessAgentId:'<?=t('REALESTATE_SUCCESS_AGENT_AREA')?>',
+        msgErrorAgentId:'<?=t('Error . Please Try Again')?>'
+    }
+</script>

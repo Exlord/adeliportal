@@ -1,0 +1,25 @@
+<?
+$entities = array('all' => 'All Fields') + $this->entities;
+$items = array();
+$a = "<a href='%s' class='ajax_page_load'>%s</a>";
+$p = "<p class='description'>%s</p>";
+
+?>
+<h3 class="page-title"><?= t('Fields Entity Types') ?></h3>
+<p class="description"><?= t('Select the entity type that you want to create fields for') ?></p>
+<div class="row components-block-list">
+    <div class="col-md-12">
+        <div class="list-group">
+            <?
+            foreach ($entities as $key => $value) {
+                ?>
+                <a class="ajax_page_load list-group-item"
+                   href="<?= url('admin/fields', array('entityType' => $key)) ?>">
+                    <h4 class="list-group-item-heading"><?= t($value) ?></h4>
+                </a>
+                <?
+            }
+            ?>
+        </div>
+    </div>
+</div>

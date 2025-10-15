@@ -1,0 +1,171 @@
+<?
+use Localization\View\Helper\DateFormat;
+
+$notifications = $this->notifications();
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+$styles = array();
+$styles[] = $basePath . '/css/font-awesome.min.css';
+$styles[] = $basePath . '/select2/select2-bootstrap.css';
+$styles[] = $basePath . '/select2/select2.css';
+if ($direction == 'rtl')
+    $styles[] = $basePath . '/__/bootstrap/css/bootstrap-rtl.min.css';
+$styles[] = $basePath . TEMPLATE_PATH . '/css/bootstrap-theme-custom.min.css';
+//$styles[] = $basePath . TEMPLATE_PATH . '/css/bootstrap-theme-yeti.min.css';
+$styles[] = $basePath . '/__/bootstrap/css/bootstrap.min.css';
+$styles[] = $basePath . '/css/system.css';
+$styles[] = $basePath . '/css/base-theme/jquery-ui-1.10.1.custom.min.css';
+//$styles[] = $basePath . '/css/jquery.ui.menubar.css';
+
+foreach ($styles as $st) {
+    $this->headLink()->prependStylesheet($st);
+}
+
+$styles = array();
+$styles[] = $basePath . TEMPLATE_PATH . '/css/style.css';
+if ($direction == 'rtl')
+    $styles[] = $basePath . TEMPLATE_PATH . '/css/style-rtl.css';
+foreach ($styles as $st) {
+    $this->headLink()->appendStylesheet($st);
+}
+
+$scripts = array(
+    TEMPLATE_PATH . '/js/template.js',
+//    '/js/system.jquery.ui.buttons.js',
+    '/js/system.jquery.ui.js',
+    '/js/general.js',
+    '/js/system.js',
+    '/js/forms.js',
+    '/js/jquery.hoverIntent.min.js',
+    '/js/jquery.cookie.js',
+    '/js/jquery.transit.min.js',
+    '/select2/select2.min.js',
+    '/js/jquery.ui.datepicker-cc.js',
+    '/js/calendar.js',
+    '/js/jquery-ui-1.10.4.custom.min.js',
+//    '/__/js/jquery.ui/custom1/jquery-ui-1.10.4.custom.min.js',
+//    '/__/bootstrap/bootstrap.min.js',
+    '/js/jquery-1.10.2.js'
+);
+
+foreach ($scripts as $sc) {
+    $this->headScript()->prependFile($basePath . $sc);
+}
+if (SYSTEM_LANG == 'fa')
+    $this->headScript()->appendFile($basePath . '/js/jquery.ui.datepicker-cc-fa.js');
+
+if (SYSTEM_LANG != 'en')
+    $this->headScript()->appendFile($basePath . '/select2/select2_locale_' . SYSTEM_LANG . '.js');
+
+$admin_menu = trim($this->navigation()
+    ->menu('admin_menu')
+    ->setUlClass('menu')
+    ->renderMenu());
+$breadcrumbs = trim($this->navigation()
+    ->breadcrumbs('admin_menu')
+    ->setMinDepth(0)
+    ->setPartial('application/index/admin-breadcrumbs')
+    ->render());
+
+// set browser Title and Logo
+$config = getConfig('system_config')->varValue;
+if (isset($config['adminLogoUrl']) && $config['adminLogoUrl'])
+    $imageAdminLogo = $config['adminLogoUrl'];
+else
+    $imageAdminLogo = $this->basePath() . TEMPLATE_PATH . "/images/logo.png";
+
+if (isset($config['browserTitle']) && $config['browserTitle'])
+    $browserTitle = $config['browserTitle'];
+else
+    $browserTitle = $this->translate('IPT Portal System');
+//end
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($browserTitle) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+
+</head>
+<!--class="--><? //= implode(' ', $this->body()->class) ?><!--"-->
+<body>
+<div class="header-sticky-bar">
+    <div id="header-row-1">
+        <ul id="right-toolbar">
+            <li id="home-button">
+                <a class="label" target="_blank" href="<?= url('app/front-page') ?>"
+                   title="<?= t("View Home Page") ?>"><?= t('View Site') ?></a>
+            </li>
+        </ul>
+        <?= $this->userLoggedInBlock('logged-in-dropdown'); ?>
+        <?= $this->langSwitcher(null); ?>
+        <?= $notifications ?>
+    </div>
+    <div class="header">
+        <a href="<?= url('app/front-page') ?>" target="_blank">
+            <img id="header-logo" src="<?= $imageAdminLogo ?>">
+        </a>
+        <? if ($admin_menu) { ?>
+            <div id="admin_nav" class="no-script">
+                <?= $admin_menu; ?>
+            </div>
+        <? } ?>
+    </div>
+</div>
+<div class="admin_main_content <?= !$admin_menu ? 'no_sidebar' : '' ?>">
+    <div id="system_messages"> <?= $this->flashMessenger()->render(); ?></div>
+    <? if ($breadcrumbs) { ?>
+        <div id="breadcrumbs">
+            <?= $breadcrumbs; ?>
+        </div>
+    <? } ?>
+    <div class="column-mid">
+        <div id="content_body">
+            <?= $this->content; ?>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="powered-by label">
+            <?
+            $startYear = mktime(0, 0, 0, 6, 0, 2012);
+            $startYear = $this->dateFormat($startYear, DateFormat::YEAR_ONLY);
+            $nowYear = $this->dateFormat(time(), DateFormat::YEAR_ONLY);
+            ?>
+            <span
+                dir="rtl"><?= sprintf(t('Powered by %sIPT Portal%s'), "<a href='http://ipt24.com' target='_blank'>", "</a>") ?></span>
+            <span dir="ltr"><?= sprintf(t('&copy; %s-%s'), $startYear, $nowYear) ?></span>
+        </div>
+        <ul id="footer-toolbar">
+            <li>
+                <a class="label" target="_blank" href="<?= url('app/front-page') ?>"
+                   title="<?= t("View Home Page") ?>"><?= t('View Site') ?></a>
+            </li>
+            <li id="today-date" class="border">
+                <span class="label"><?= t('Today') ?> : </span>
+                <span class="label date"><?= $this->date_format(time(), 0); ?></span>
+            </li>
+            <li>
+                <span class="label"> <?= t('Last Login Date') ?> : </span>
+                <span class="label date">
+                    <? if (current_user()->lastLoginDate && !is_null(current_user()->lastLoginDate))
+                        echo $this->date_format(current_user()->lastLoginDate, 0, 1);
+                    else
+                        echo $this->date_format(current_user()->loginDate, 0, 1);
+                    ?>
+                </span>
+            </li>
+            <li class="last">
+                <?= \Theme\API\Common::Link(t('Logout'), url('app/user/logout'), array('class' => 'label')) ?>
+            </li>
+        </ul>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

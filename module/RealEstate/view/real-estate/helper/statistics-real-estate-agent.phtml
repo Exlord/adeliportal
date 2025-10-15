@@ -1,0 +1,88 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/statistics-real-estate.css');
+?>
+<style>
+    .tr_hidden{ display:none !important; }
+</style>
+<div>
+    <?
+    if ($this->statisticsEstate) {
+        ?>
+        <table border="1" width="100%" class="statistics-estate-agent">
+            <thead>
+            <tr>
+                <td rowspan="2"><?= t('Name') ?></td>
+                <?
+                foreach ($this->estateType as $estateT) {
+                    ?>
+                    <td colspan="2"><?= $this->estateType2[$estateT] ?></td>
+                <? } ?>
+            </tr>
+            <tr>
+                <?
+                foreach ($this->estateType as $estateT) {
+                    foreach ($this->estateRegType as $regT) {
+                        ?>
+                        <td><?= $this->estateRegType2[$regT] ?></td>
+                    <?
+                    }
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?
+            $flagHidden = true;
+            $countShow = 5;
+            $counter = 0;
+            $className = '';
+            foreach ($this->statisticsEstate as $agentName => $row) {
+                if ($counter == $countShow) {
+                    $className = 'tr_hidden';
+                    ?>
+                    <tr>
+                        <td colspan="15">
+                            <a href="#" id="btn_all_show">
+                                برای نمایش آمار املاک سایر مشاورین کلیک نمایید
+                            </a>
+                        </td>
+                    </tr>
+                <?
+                }
+                $counter++;
+                ?>
+                <tr class="<?= $className ?>">
+                    <td>
+                        <a class="tbl_user_name" href="<?= url('app/user/user-profile', array('id' => $row['userId'])) ?>"><?= $agentName ?></a>
+                    </td>
+                    <?
+                    foreach ($this->estateType as $estateT) {
+                        foreach ($this->estateRegType as $regT) {
+                            ?>
+                            <td>
+                                <? if (isset($row['array'][$estateT][$regT])) echo $row['array'][$estateT][$regT]; else echo 0; ?>
+                            </td>
+                        <?
+                        }
+                    } ?>
+                </tr>
+            <? } ?>
+            </tbody>
+        </table>
+
+    <?
+    } else {
+        echo $this->alert(t('REALESTATE_NOT_AGENT_AT_AREA'), 'alert-info');
+    }
+    ?>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    $(document).ready(function () {
+        $('#btn_all_show').click(function (e) {
+            e.preventDefault();
+            $(this).parent().parent().hide();
+            $('.statistics-estate-agent tr').removeClass('tr_hidden');
+        });
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

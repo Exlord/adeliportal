@@ -1,0 +1,5 @@
+<?return array(
+    'PERM_Links' => 'Links',
+    'LINKS_ALL_LINKS'=>'All Links',
+    'LINK_CATEGORIES'=>'Links Categories'
+);

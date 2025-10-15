@@ -1,0 +1,46 @@
+<?php
+/**
+ * Created by JetBrains PhpStorm.
+ * User: Exlord
+ * Date: 10/21/13
+ * Time: 10:25 AM
+ */
+$basePath = $this->basePath() . '/images/dashboard/';
+?>
+<div>
+    <h2><?=t('Users')?></h2>
+    <div class="widget-box">
+        <a class="button" href="<?=url('admin/users')?>" >
+            <img src="<?=$basePath.'icon-48-user.png'?>">
+            <p><?=t('Users')?></p>
+        </a>
+        <a class="button"  href="<?=url('admin/users/new')?>" >
+            <img src="<?=$basePath.'icon-48-user-add.png'?>">
+            <p><?=t('Add user')?></p>
+        </a>
+        <a class="button"  href="<?=url('admin/users/role')?>" >
+            <img src="<?=$basePath.'icon-48-groups.png'?>">
+            <p><?=t('User Roles')?></p>
+        </a>
+        <a class="button"  href="<?=url('admin/users/role/new')?>" >
+            <img src="<?=$basePath.'icon-48-groups-add.png'?>">
+            <p><?=t('Add User Role')?></p>
+        </a>
+        <a class="button"  href="<?=url('admin/users/permission')?>" >
+            <img src="<?=$basePath.'icon-48-user-add.png'?>">
+            <p><?=t('Permissions')?></p>
+        </a>
+        <a class="button"  href="<?=url('admin/users', array('id' => current_user()->id))?>" >
+            <img src="<?=$basePath.'icon-48-user-profile.png'?>">
+            <p><?=t('User Profile')?></p>
+        </a>
+    </div>
+    <table>
+        <? foreach ($this->data as $row) { ?>
+            <tr>
+                <td><a href="<?=url('admin/users')?>"><?= sprintf(t('Number of %s'), t($row['roleName'])) ?></a></td>
+                <td align='center'><b class="digit"><?= localizedDigits($row['count']) ?></b></td>
+            </tr>
+        <? } ?>
+    </table>
+</div>

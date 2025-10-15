@@ -1,0 +1,81 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/real-estate.css'); //TODO css khodash ra besaz va benevis
+?>
+<div class="box_order_banner">
+    <h3 class="page-title">
+        <?= $this->translate('Order Banner'); ?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->iptFormRow($form->get('id'));?>
+        <table class="fields-real-estate-tbl">
+            <tr>
+                <td class="fields-real-estate-tbl-title"><?= t('Position') ?></td>
+                <td class="fields-real-estate-tbl-title"><?= t('Price').' '.t(getCurrency()) ?></td>
+                <td class="fields-real-estate-tbl-title"><?= t('Per price addition image').' '.t(getCurrency()) ?></td>
+                <td class="fields-real-estate-tbl-title"><?= t('Expiration Date first banner') ?></td>
+            </tr>
+            <?
+            foreach ($this->dataArray as $row) {
+                ?>
+                <tr>
+                    <td class="footer-agent-tbl-td-title"><?= t($row['viewPosition']) ?></td>
+                    <td class="footer-agent-tbl-td-title"><?
+                        if (!empty($row['price']))
+                            echo $row['price'];
+                        else
+                            echo t('Is Free');
+                        ?>
+                    </td>
+                    <td class="footer-agent-tbl-td-title"><?
+                        if (!empty($row['addPrice']))
+                            echo $row['addPrice'];
+                        else
+                            echo t('Is Free');
+                        ?>
+                    </td>
+                    <td class="footer-agent-tbl-td-title"><?
+
+                        if(isset($this->countPosition[$row['position']]))
+                        {
+                            if($this->countPosition[$row['position']]<=0){
+                                if (isset($this->expirePosition[$row['position']]) && $this->expirePosition[$row['position']])
+                                    echo $this->date_format($this->expirePosition[$row['position']]);
+                            }else
+                                echo t('gallery_order_banner_empty_place');
+                        }
+                        ?>
+                    </td>
+                </tr>
+            <?
+            }
+            ?>
+        </table>
+        <?
+        echo $this->iptFormRow($form->get('position'));
+        echo $this->iptFormCollection($form->get('banner_image_box'));?>
+        <p class="form_element_description">
+            <?= sprintf(t('Selecting more images. Image blocks per minute can change your banner and painting gives the viewer a beautiful and charming diversity.'), $this->imageCost); ?>
+        </p>
+        <?
+        echo $this->iptFormRow($form->get('countMonth'));
+        echo $this->iptFormRow($form->get('name'));
+        echo $this->iptFormRow($form->get('title'));
+        echo $this->iptFormRow($form->get('url'));
+        echo $this->iptFormRow($form->get('email'));
+        echo $this->iptFormRow($form->get('mobile'));
+        echo $this->iptFormRow($form->get('description')); ?>
+        <div class="captcha-div">
+            <?= $this->iptFormRow($form->get('captcha')); ?>
+        </div>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+
+    </div>
+</div>

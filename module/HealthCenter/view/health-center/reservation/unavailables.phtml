@@ -1,0 +1,53 @@
+<div>
+    <h3 class="page-header text-danger">
+        <?= t('Error') ?> !
+    </h3>
+
+    <p>
+        <?= t('Some of the selected sessions are not available') ?>
+    </p>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><?= t('Id') ?></th>
+            <th><?= t('Status') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?
+        $availables = array_flip($this->time);
+
+        foreach ($this->unavailables as $key => $value) {
+            unset($availables[$key]);
+            ?>
+            <tr class="danger">
+                <td><?= $key ?></td>
+                <td><?= $value ?></td>
+            </tr>
+        <?
+        }
+        foreach ($availables as $key => $value) {
+            ?>
+            <tr class="success">
+                <td><?= $key ?></td>
+                <td><?= t('Available') ?></td>
+            </tr>
+        <?
+        }
+        ?>
+        </tbody>
+    </table>
+    <a href="<?= url('app/health-center/reserve', array(
+            'doctor' => $this->doctor,
+            'time' => implode(',', array_keys($availables))
+        )
+    ) ?>"
+       class="btn btn-success">
+        <span class="glyphicon glyphicon-ok"></span>
+         <?= t('Continue reserve with available sessions') ?>
+    </a>
+    <a href="<?= url('app/health-center') ?>" class="btn btn-danger">
+        <span class="glyphicon glyphicon-remove"></span>
+        <?= t('Cancel') ?>
+    </a>
+</div>

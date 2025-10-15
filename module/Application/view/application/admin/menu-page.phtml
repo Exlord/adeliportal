@@ -1,0 +1,9 @@
+<?
+
+$admin_menu = trim(
+    $this->navigation()
+        ->menu('admin_menu')
+        ->setPartial('application/index/menu-page')
+        ->render()
+);
+echo $admin_menu;

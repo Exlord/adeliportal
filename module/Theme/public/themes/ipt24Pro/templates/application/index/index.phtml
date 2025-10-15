@@ -1,0 +1,326 @@
+<?
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+//$this->headScript()->appendFile($basePath . '/js/jquery.easings.min.js');
+//$this->headScript()->appendFile($basePath . '/fullpage/jquery.fullpage.min.js');
+$this->headScript()->appendFile($basePath . '/bg/fancyFy.js');
+//$this->headLink()->appendStylesheet($basePath . '/fullpage/jquery.fullpage.css');
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/front-page.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/front-page-rtl.css');
+$path = $this->basePath() . TEMPLATE_PATH;
+?>
+<div class="page-is-loading">
+    <div><?= t('Loading', TEMPLATE_NAME) ?> ...</div>
+</div>
+<div id="fullpage">
+<div class="section" id="section-1">
+    <div class="fancy-bg"></div>
+    <div class="row ">
+<!--        <div class="col-md-3 col-sm-6 col-xs-6">-->
+<!--            <a href="http://ipt24.com/takhfif">-->
+<!--                <img class="img-responsive center-block"-->
+<!--                     src="--><?//= $this->basePath() . TEMPLATE_PATH . '/images/takhfif.png' ?><!--"-->
+<!--                     width="220"-->
+<!--                     height="150">-->
+<!--            </a>-->
+<!--        </div>-->
+
+        <div class="col-md-3 col-md-push-0 col-sm-6 col-xs-12">
+            <div id="logo">
+                <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/logo2.png' ?>">
+            </div>
+
+        </div>
+        <div class="col-md-6 col-md-offset-0 col-md-pull-0 col-sm-8 col-sm-offset-2 col-xs-12">
+            <div id="main-slider-content">
+                <?= $this->blocks('main-slider') ?>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="social-menu">
+        <div class="wrapper clearfix">
+            <a target="_blank" href="https://www.facebook.com/IPT24">
+                <img class="img-responsive"
+                     title="FaceBook" rel="tooltip"
+                     alt="FaceBook"
+                     src="<?= $path ?>/images/social/face.png">
+            </a>
+            <a target="_blank" href="http://fliker.com">
+                <img class="img-responsive" title="Fliker"
+                     rel="tooltip" alt="Fliker"
+                     src="<?= $path ?>/images/social/fliker.png">
+            </a>
+            <a target="_blank" href="http://gplus.com">
+                <img class="img-responsive" title="g+"
+                     rel="tooltip" alt="g+"
+                     src="<?= $path ?>/images/social/gplus.png">
+            </a>
+            <a target="_blank" href="http://instagram.com/IPT24">
+                <img class="img-responsive"
+                     title="Instagram" rel="tooltip"
+                     alt="instagram"
+                     src="<?= $path ?>/images/social/instagram.png">
+            </a>
+            <a target="_blank" href="https://www.linkedin.com/company/ipt24">
+                <img class="img-responsive"
+                     title="Linkedin" rel="tooltip" alt="linkedin"
+                     src="<?= $path ?>/images/social/linkdein.png"></a>
+            <a target="_blank" href="https://twitter.com/IPT24">
+                <img class="img-responsive"
+                     title="Twitter" rel="tooltip" alt="twitter"
+                     src="<?= $path ?>/images/social/twitter.png"></a>
+            <a target="_blank" href="http://youtube.com">
+                <img class="img-responsive" title="Youtube"
+                     rel="tooltip" alt="Youtube"
+                     src="<?= $path ?>/images/social/youtub.png"></a>
+        </div>
+    </div>
+</div>
+<div class="section" id="section-2">
+    <div class="fancy-bg"></div>
+    <div class="row">
+
+        <div class="col-md-3 col-xs-6">
+            <a href="http://ipt24.com/fa/products">
+                <div class="images">
+                    <img src="<?= $path ?>/images/main_icons/barname-nevisi-narmafzar1.png" alt="" title="">
+                    <img src="<?= $path ?>/images/main_icons/barname-nevisi-narmafzar2.png" alt="" title=""
+                         class="hover">
+                </div>
+                <h2><?= t('Programming', TEMPLATE_NAME) ?></h2>
+
+                <p><?= t('Web Application Development', TEMPLATE_NAME) ?></p>
+            </a>
+        </div>
+        <div class="clearfix visible-xs-block"></div>
+        <div class="col-md-3 col-xs-6">
+            <a href="http://seo.ipt24.com">
+                <div class="images">
+                    <img src="<?= $path ?>/images/main_icons/seo1.png" alt="" title="">
+                    <img src="<?= $path ?>/images/main_icons/seo2.png" alt="" title="" class="hover">
+                </div>
+                <h2><?= t('Site Optimization', TEMPLATE_NAME) ?></h2>
+
+
+            </a>
+        </div>
+        <div class="col-md-3 col-xs-6">
+            <a href="http://support.azaript.com">
+                <div class="images">
+                    <img src="<?= $path ?>/images/main_icons/host-domain1.png" alt="" title="">
+                    <img src="<?= $path ?>/images/main_icons/host-domain2.png" alt="" title="" class="hover">
+                </div>
+                <h2><?= t('Hosting and Domains', TEMPLATE_NAME) ?></h2>
+
+
+            </a>
+        </div>
+        <div class="clearfix visible-xs-block"></div>
+        <div class="col-md-3 col-xs-6">
+            <a href="http://agahi118.ir">
+                <div class="images">
+                    <img src="<?= $path ?>/images/main_icons/etela-resani1.png" alt="" title="">
+                    <img src="<?= $path ?>/images/main_icons/etela-resani2.png" alt="" title="" class="hover">
+                </div>
+                <h2><?= t('Internet Advertising', TEMPLATE_NAME) ?></h2>
+            </a>
+        </div>
+        <div class="col-md-3 col-xs-6">
+            <a href="http://ipt24.com/fa/products">
+                <div class="images">
+                    <img src="<?= $path ?>/images/main_icons/mahsulat1.png" alt="" title="">
+                    <img src="<?= $path ?>/images/main_icons/mahsulat2.png" alt="" title="" class="hover">
+                </div>
+                <h2><?= t('Products', TEMPLATE_NAME) ?></h2>
+
+
+            </a>
+        </div>
+        <div class="col-md-3 col-xs-6">
+            <a href="http://graphic.ipt24.com">
+                <div class="images">
+                    <img src="<?= $path ?>/images/main_icons/graphic1.png" alt="" title="">
+                    <img src="<?= $path ?>/images/main_icons/graphic2.png" alt="" title="" class="hover">
+                </div>
+                <h2><?= t('Graphic', TEMPLATE_NAME) ?></h2>
+
+
+            </a>
+        </div>
+        <div class="col-md-3 col-xs-6">
+            <a href="http://website-design.ipt24.com">
+                <div class="images">
+                    <img src="<?= $path ?>/images/main_icons/tarrahi-site1.png" alt="" title="">
+                    <img src="<?= $path ?>/images/main_icons/tarrahi-site2.png" alt="" title="" class="hover">
+                </div>
+                <h2><?= t('Site Design', TEMPLATE_NAME) ?></h2>
+
+
+            </a>
+        </div>
+
+        <div class="clearfix visible-xs-block"></div>
+
+        <div class="col-md-3 col-xs-6">
+            <a href="http://cctv.ipt24.com">
+                <div class="images">
+                    <img src="<?= $path ?>/images/main_icons/security1.png" alt="" title="">
+                    <img src="<?= $path ?>/images/main_icons/security2.png" alt="" title="" class="hover">
+                </div>
+                <h2><?= t('Security Cams', TEMPLATE_NAME) ?></h2>
+
+
+            </a>
+        </div>
+    </div>
+    <div class="bottom-bg row"></div>
+</div>
+<div class="section-3-4-bg row">
+    <div class="col-md-12">
+        <div class="section" id="section-3">
+            <div class="row" id="section-3-first-row">
+                <div class="col-md-5 col-md-offset-1">
+                    <img src="<?= $path ?>/images/nomoone-karhaye-ma.png" class="img-responsive">
+                    <a class="button1"
+                       href="http://ipt24.com/projects"><?= t('Click here to view job samples', TEMPLATE_NAME) ?></a>
+                    <img src="<?= $path ?>/images/sabte-sefaresh.png" class="img-responsive">
+                    <a class="button2"
+                       href="ipt24.com/fa/online-orders"><?= t('Confidently place your order', TEMPLATE_NAME) ?></a>
+                </div>
+                <div class="col-md-6">
+                    <img id="profit-image" src="<?= $path ?>/images/profit.png" class="img-responsive">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-11 col-md-offset-1">
+                    <img src="<?= $path ?>/images/barkhi-az-moshtarian.png" class="img-responsive">
+                </div>
+                <div class="col-md-12">
+                    <div id="brands">
+                        <?= $this->blocks('brands') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" id="section-4">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-2">
+                    <h1 class="header">
+                        <?= t('Why we are trusted by our customers ?', TEMPLATE_NAME) ?>
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?= $this->blocks('section-4-menu') ?>
+                        </div>
+                    </div>
+                    <img src="<?= $path ?>/images/moshtarian-che-migooand.png" class="img-responsive">
+
+                    <div id="customer-shout">
+                        <?= $this->blocks('customer-shout') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section" id="section-5">
+    <div class="fancy-bg"></div>
+    <div class="row top-bg"></div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12" id="contact-box">
+            <div class="row">
+                <div class="col-md-8 col-sm-8">
+                    <h3>
+                        <span class="icon icon-address"></span>
+                        تبریز- چایکنار جنوبی- نرسیده به زیرگذر آبرسان- برج L.K.P- طبقه دوم
+                    </h3>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <h3 class="digit">
+                                <span class="icon icon-phone"></span>
+                                041-33250011
+                            </h3>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <h3 class="digit">
+                                <span class="icon icon-fax"></span>
+                                041-33250010
+                            </h3>
+                        </div>
+                    </div>
+                    <h3 class="email">
+                        <span class="icon icon-email"></span>
+                        info@ipt24.com
+                    </h3>
+
+                    <h2 id="online_support">
+                        <?= \Theme\API\Common::Link(t('Consult with us online', TEMPLATE_NAME), 'http://www.azaript.com/online-support/chat.php', array('target' => '_blank')); ?>
+                    </h2>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <?= $this->quick_send_mail("info@azaript.com") ?>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!--[if lt IE 9]>
+<script type="text/javascript">
+    var isIE = true;
+</script>
+<![endif]-->
+<script>
+    <?$this->inlineScript()->captureStart();?>
+
+    $(document).ready(function () {
+
+        var brands = [];
+        $('.content-slider-container .item a img').each(function () {
+            var img = new Image();
+            img.src = $(this).data('img');
+            brands.push(img);
+        });
+        $('.content-slider-container .item a img').hover(function () {
+                var data_img = $(this).data('img');
+                if (data_img) {
+                    var src_img = $(this).attr('src');
+                    $(this).attr('src', data_img);
+                    $(this).data('img', src_img);
+                }
+            },
+            function () {
+                var data_img = $(this).data('img');
+                if (data_img) {
+                    var src_img = $(this).attr('src');
+                    $(this).attr('src', data_img);
+                    $(this).data('img', src_img);
+                }
+            });
+
+    });
+
+    $(window).load(function () {
+        $('.page-is-loading').fadeOut().remove();
+        var options = {};
+        if (window.isIE)
+            options = {circles: {count: 0}};
+        $('#section-1 .fancy-bg').fancyFyBg(options);
+        var fancyBgOptions = {
+            circles: {count: 0},
+            colors: [ 'f0ece9', 'eeedeb', 'f0eceb', 'f0ece9']
+        };
+        $('#section-2 .fancy-bg').fancyFyBg(fancyBgOptions);
+        $('#section-5 .fancy-bg').fancyFyBg(fancyBgOptions);
+    });
+    //    $(document).ready(function () {
+    var bodyDirection = '<?=$direction?>';
+    <?$this->inlineScript()->captureEnd();?>
+</script>

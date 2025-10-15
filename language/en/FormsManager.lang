@@ -1,0 +1,4 @@
+<?return array(
+    'PERM_FormsManager' => "Forms Manager",
+    'FORM_MANAGER_MESSAGE_AFTER_SAVE' => 'Message after save'
+);

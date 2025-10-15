@@ -1,0 +1,95 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . TEMPLATE_PATH . '/css/page.css');
+$this->headScript()->prependFile($this->basePath() . TEMPLATE_PATH . '/js/page.js');
+$this->headScript()->appendFile($this->basePath() . '/js/jquery.lazyLoad.js');
+
+$page = new \Page\API\Page();
+
+?>
+<? if (!$this->ajaxLoaded){ ?>
+<div class="view-projects">
+    <div class="view-projects-main">
+        <? } ?>
+        <? if ($this->tags) { ?>
+            <div class="content-tags">
+                <?
+                $tagRouteParams = array();
+                foreach ($this->tags as $tag) {
+                    $tagRouteParams['tagName'] = \Application\API\App::prepareUrlString($tag['itemName']);
+                    $tagRouteParams['tagId'] = $tag['id'];
+                    ?>
+                    <span class="content-tag">
+                    <a href="<?= url('app/content', $tagRouteParams) ?>">
+                        <?= $this->escapeHtml($tag['itemName']) ?>
+                    </a>
+                </span>
+                <?
+                }
+                ?>
+            </div>
+        <? } ?>
+        <?
+        if (!empty($this->paginator)) {
+            foreach ($this->paginator as $row) {
+                $pageImage = unserialize($row['image']);
+                $image = '';
+                if (isset($pageImage['image']))
+                    $image = $pageImage['image'];
+                if (!empty($image))
+                    $image = getThumbnail()->resize($image, 315, 250); //resize image
+                $alt = '';
+                if (isset($pageImage['alt']))
+                    $alt = $pageImage['alt'];
+                $titleImage = '';
+                if (isset($pageImage['title']))
+                    $titleImage = $pageImage['title'];
+
+                $url = '';
+                if (!empty($row['fullText'])) {
+                    /*$image = $page->getImageFromText($row->fullText);*/
+                    $url = $page->getUrlFromText($row['fullText']);
+                    /*if ($image)
+                        $image = getThumbnail()->resize($image, 190, 270);*/ //resize image
+                }
+
+                $pageRouteParams['id'] = $row['id'];
+                $pageRouteParams['title'] = \Application\API\App::prepareUrlString($row['pageTitle']);
+                ?>
+                <article class="box-view-projects" data-id="<?= $row['id'] ?>">
+                    <img class="lazy" data-original="<?= $image ?>" alt="<?= $alt ?>"
+                         title="<?= $titleImage ?>" height="250" width="315">
+                    <noscript>
+                        <img alt="<?= $alt ?>" title="<?= $titleImage ?>" src="<?= $image ?>"
+                             height="250" width="315">
+                    </noscript>
+                    <div>
+                        <a target="_blank" title="<?= t('Show Content') ?>" class="show-content"
+                           href="<?= url('app/single-content', $pageRouteParams) ?>"><?= t('Application_description_more') ?></a>
+                        <a target="_blank" title="<?= t('Show Website') ?>" class="show-website"
+                           href="<?= $url ?>"><?= t('Application_website_observation') ?></a>
+                    </div>
+                </article>
+            <?
+            }
+        } ?>
+        <? if (!$this->ajaxLoaded){ ?>
+    </div>
+    <div class="view-projects-loader"></div>
+    <? } ?>
+</div>
+<div style="clear: both"></div>
+<!--<div class="pager">-->
+<!--    --><?//
+//    /* @var $pages \Zend\Paginator\Paginator */
+//    echo $this->paginationControl($this->paginator,
+//        'Sliding',
+//        'application/pagination/search.phtml', array('route' => $this->route, 'route_params' => $this->routeParams, 'route_options' => $this->route_options));
+//    ?>
+<!--</div>-->
+<? if (!$this->ajaxLoaded){ ?>
+<script>
+    var Projects = {
+        url: '<?=url($this->route,$this->routeParams,$this->route_options)?>'
+    }
+</script>
+<? } ?>

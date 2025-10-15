@@ -1,0 +1,19 @@
+<div>
+    <?
+    $breadcrumbs = trim($this->navigation()
+        ->breadcrumbs('admin_menu')
+        ->setMinDepth(0)
+        ->setPartial('application/index/admin-breadcrumbs')
+        ->render());
+    $headLink = $this->headLink()->toString();
+    $headScript = $this->headScript()->toString();
+    $inlineScript = $this->inlineScript()->toString();
+    $fm = $this->flashMessenger()->render();
+    ?>
+    <input type="hidden" id="inlineScriptContainer" value="<?= $this->escapeHtmlAttr(trim($inlineScript)) ?>">
+    <input type="hidden" id="flashMessengerContainer" value="<?= $this->escapeHtmlAttr(trim($fm)) ?>">
+    <input type="hidden" id="headLinkContainer" value="<?= $this->escapeHtmlAttr(trim($headLink)) ?>">
+    <input type="hidden" id="headScriptContainer" value="<?= $this->escapeHtmlAttr(trim($headScript)) ?>">
+    <input type="hidden" id="breadcrumbsContainer" value="<?= $this->escapeHtmlAttr(trim($breadcrumbs)) ?>">
+    <?= $this->content ?>
+</div>

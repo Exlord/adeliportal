@@ -1,0 +1,28 @@
+<?
+$this->headScript()->prependFile($this->basePath() . '/js/geographical.js');
+if ($this->error) {
+    ?>
+  <div class="alert alert-danger">
+      <?=t('PS_CART_EMPTY')?>
+  </div>
+<?
+} else {
+    ?>
+    <div class="shopping_cart">
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+       // echo $this->psCart($this->psIds);
+        foreach ($form->getElements() as $el) {
+            ?>
+            <div class="form_element">
+                <?= $this->formRow($el); ?>
+            </div>
+        <?
+        }
+        echo $this->formCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+<? }

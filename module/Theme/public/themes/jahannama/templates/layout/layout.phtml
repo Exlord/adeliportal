@@ -1,0 +1,201 @@
+<?
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    )
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie8.css',
+        'screen',
+        'lt IE 9'
+    );
+
+if ($direction == 'rtl')
+    $this->headLink()->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-rtl.min.css');
+
+$this->headLink()
+    ->prependStylesheet($basePath . '/select2/select2-bootstrap.css')
+    ->prependStylesheet($basePath . '/select2/select2.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-theme.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap.min.css')
+    ->prependStylesheet($basePath . '/css/system.css');
+
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/select2/select2.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . TEMPLATE_PATH . '/js/bootstrap.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    )
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/html5shiv.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+
+//---------------------------------- BLOCKS -----------------------------------------------//
+$before_main_content = $this->blocks('before_main_content');
+$main_content = $this->blocks('main_content');
+$after_main_content = $this->blocks('after_main_content');
+$header = $this->blocks('header');
+$footer = $this->blocks('footer');
+$footerMenu = $this->blocks('footer_menu');
+$col_right = $this->blocks('col_right');
+$col_left = $this->blocks('col_left');
+$topMenu = $this->blocks('top_menu');
+$topMenu2 = $this->blocks('top_menu_2');
+$siteTitle = $this->body()->getSiteTitle();
+$siteSubTitle = $this->body()->getSiteSubTitle();
+
+$mainColSize = 12;
+if ($col_left && $col_right)
+    $mainColSize = 6;
+if ($col_right || $col_left)
+    $mainColSize = 9;
+
+
+$flashMS = trim($this->flashMessenger()->render());
+$userLoginBlock = $this->user_login_block();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head(false) ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+<body id="page-top" class="<?= implode(' ', $this->body()->class) ?>">
+<div id="body">
+    <!-- Intro Section -->
+    <section id="header" class="header-section">
+        <!-- Navigation -->
+        <div class="container my-container">
+            <?= $this->langSwitcher(null,true); ?>
+            <div class="top-menus">
+                <nav class="navbar" role="navigation">
+
+                    <? if ($topMenu) { ?>
+                        <div class="top-menu-1">
+                            <? print $topMenu; ?>
+                        </div>
+                    <? } ?>
+                    <? if ($topMenu2) { ?>
+                        <div class="top-menu-2">
+                            <? print $topMenu2; ?>
+                        </div>
+                    <? } ?>
+
+                </nav>
+            </div>
+        </div>
+        <div class="text-center">
+            <?=t('Largest specialized manufacturer of athletic shoes',TEMPLATE_NAME)?>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="main_content" class="main_content">
+        <div class="container my-container">
+            <div class="row">
+                <? if (!empty($flashMS)) { ?>
+                    <div class="col-xs-12">
+                        <div id="system_messages"> <?= $flashMS ?></div>
+                    </div>
+                <? } ?>
+                <? if ($before_main_content) { ?>
+                    <div class="col-md-12 before_main_content">
+                        <?= $before_main_content ?>
+                    </div>
+                <? } ?>
+
+                <? if ($col_left) { ?>
+                    <div class="col-md-3">
+                        <?= $col_left ?>
+                    </div>
+                <? } ?>
+
+                <div class="col-md-<?= $mainColSize ?>">
+                    <? if ($main_content) {
+                        ?>
+                        <div id="main-content-blocks">
+                            <?
+                            print $main_content;
+                            ?>
+                        </div>
+                    <?
+                    } ?>
+                    <?= $this->content ?>
+                </div>
+
+                <? if ($col_right) { ?>
+                    <div class="col-md-3">
+                        <?= $col_right ?>
+                    </div>
+                <? } ?>
+
+                <? if ($after_main_content) { ?>
+                    <div class="col-md-12 after_main_content">
+                        <?= $after_main_content ?>
+                    </div>
+                <? } ?>
+            </div>
+        </div>
+    </section>
+    <? if ($footerMenu) { ?>
+        <section id="footer-menu" class="container my-container">
+            <? print $footerMenu; ?>
+        </section>
+    <? } ?>
+    <section id="footer" class="container-fluid footer sticky-bottom">
+        <div class="row">
+            <div class=" col-md-12">
+                <div class="">
+                    <?
+                    $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                    $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                    ?>
+                    <p align="center">
+                        <?= t('APPLICATION_BROWSERS') ?>
+                    </p>
+
+                    <p align="center">
+                        <span><?= sprintf(t('APPLICATION_RIGHTS'), t('Jahan Nama Shoes', TEMPLATE_NAME)) ?></span>
+                        <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                        &nbsp; .
+                        <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                        <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

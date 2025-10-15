@@ -1,0 +1,357 @@
+<?
+if ($this->pagination->count()) {
+    $allRegType = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+    $route_prefix = 'app';
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO);
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO);
+    $r_config = getConfig('real_estate_config')->varValue;
+    $regTypeArray = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+    /* @var $row ArrayObject */
+    foreach ($this->pagination as $row) {
+        if (isset($row->userId) && (int)$row->userId > 0 && (int)$row->userId != 2) {
+            if (isset($r_config['agentUserRole']) && $r_config['agentUserRole']) {
+                $userRole = getSM('user_role_table')->getRoles($row->userId);
+                $userRoleArray = array();
+                if ($userRole)
+                    foreach ($userRole as $rows)
+                        $userRoleArray[] = $rows['id'];
+
+                $containsSearch = count(array_intersect($userRoleArray, $r_config['agentUserRole']));
+                if ($containsSearch)
+                    $created = t('REALESTATE_AGENT');
+                else
+                    $created = t('REALESTATE_MEMBER');
+            }
+        } elseif (isset($row->userId) && (int)$row->userId == 0) {
+            $created = t('REALESTATE_GUEST');
+        } else {
+            $created = t('REALESTATE_MANAGER');
+        }
+
+        if ($row->isSpecial && $row->expireSpecial >= time())
+            $specialClass = 'div-special-real-estate';
+        else
+            $specialClass = '';
+        ?>
+        <fieldset class="<?= $specialClass ?>">
+        <!--<legend><? /*= $this->translate('Realty Id') */ ?> : <? /*= $row->itemId */ ?></legend>-->
+        <?
+        $extra_fields = $this->filed_api->generate($this->fields, $row);
+        $item_class = array();
+        $item_class[] = $row->isRequest ? 'real-estate-request' : 'real-estate-transfer';
+        $reg_type_class = strtolower(str_replace(' ', '-', $regTypeArray[$row->regType]));
+        $reg_type = '';
+        if (isset($allRegType[$row->regType]))
+            $reg_type = t($allRegType[$row->regType]);
+        $estate_type = $row->estateTypeName;
+        $meter = '';
+        if (isset($extra_fields['زیربنا']))
+            $meter = $extra_fields['زیربنا'];
+        $title = \Application\API\App::prepareUrlString($reg_type . ' ' . $estate_type . ' ' . $meter);
+        $t_price = 0;
+        $r_price = 0;
+        $m_price = 0;
+
+        switch ($row->regType) {
+            case 78:
+                $r_price = $this->currencyFormat($row->rentalPrice);
+                $m_price = $this->currencyFormat($row->mortgagePrice);
+                break;
+            default :
+                $t_price = $this->currencyFormat($row->totalPrice);
+        }
+
+        $isCurrentUser = isCurrentUser($row->userId);
+
+        $item_class = implode(' ', $item_class);
+
+        ?>
+        <div class="real-estate-item <?= $item_class ?> ">
+        <div class="real-estate-content">
+        <div class="list_col_right">
+
+            <!--                    --><? //
+            //                    if ($row->isRequest) {
+            //                        echo '<span class="is-request-overlay"></span>';
+            //                    }
+            //                    if ($this->last_visit < $row->published) {
+            //                        echo '<span class="is-new-overlay"></span>';
+            //                    }
+            //                    if ($row->status == 3) {
+            //                        echo '<span class="is-transferred-overlay"></span>';
+            //                    }
+            //                    if ($row->status == 4) {
+            //                        echo '<span class="is-canceled-overlay"></span>';
+            //                    }
+            //
+            ?>
+            <div class="real-estate-title">
+
+                <div class="title_list">
+                    <span style="color: #000000; margin-left: 15px;">
+                        <?= $this->translate('Realty Id') ?> : <?= $row->itemId ?>
+                    </span>
+                    <?
+                    $titleListText = /*$row->stateTitle*/
+                        $row->cityTitle . ' - ' . $row->addressShort;
+                    $titleListLenght = mb_strlen($titleListText, 'UTF-8');
+                    if ($titleListLenght > 500)
+                        $titleListText = mb_substr($titleListText, 0, 300, 'UTF-8') . ' ...';
+                    ?>
+                    <?= $titleListText ?>
+                </div>
+            </div>
+            <table class="tbl_list">
+                <tr>
+                    <td style="width:207px; ">
+                        <label>
+                            <?= t('Estate Type') . ' : ' ?>
+                        </label>
+                        <span>
+                           <?= $estate_type ?>
+                        </span>
+                    </td>
+                    <td style="width: 207px;">
+                        <label>
+                            <?= t('Register Type') . ' : ' ?>
+                        </label>
+                        <span>
+                            <? if ($row->isRequest)
+                                if ($row->regType == 77)
+                                    $reg_type = 'خرید';
+                            echo $reg_type ?>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <?
+                            if ($row->isRequest)
+                                echo 'متراز در بازه :';
+                            else
+                                echo t('REALESTATE_ZIRBANA') . ' : ' ?>
+                        </label>
+                        <span>
+                            <?
+                            if ($row->isRequest) {
+                                if (isset($extra_fields['کمترین متراژ']) && isset($extra_fields['بالاترین متراژ'])) {
+                                    echo $extra_fields['کمترین متراژ'] . ' الی ' . $extra_fields['بالاترین متراژ'];
+                                } else
+                                    echo '-----';
+                            } else
+                                if (isset($extra_fields['زیربنا'])) echo $extra_fields['زیربنا'] . ' مترمربع'; else echo '-----';
+                            ?>
+                        </span>
+                    </td>
+                    <td>
+                        <label>
+                            <?= t('REALESTATE_COUNT_ROOM') . ' : ' ?>
+                        </label>
+                        <span>
+                            <? if (isset($extra_fields['تعداد اتاق خواب'])) echo $extra_fields['تعداد اتاق خواب']; else echo '-----'; ?>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <?
+                        if ((int)$row->regType == 2) {
+                            if ($row->isRequest) {
+                                ?>
+                                <label>
+                                    رهن در بازه :
+                                </label>
+                                <span>
+                                    <? if (isset($extra_fields['کمترین رهن']) && isset($extra_fields['بالاترین رهن'])) {
+                                        echo $extra_fields['کمترین رهن'] . ' الی ' . $extra_fields['بالاترین رهن'];
+                                    } else
+                                        echo '-----';?>
+                               </span>
+                            <?
+                            } else {
+                                ?>
+                                <label>
+                                    <?= t('REALESTATE_MORTGAGE') . ' : ' ?>
+                                </label>
+                                <span>
+                                    <? if ($m_price) echo $m_price; else echo '-----'; ?>
+                               </span>
+                            <?
+                            }
+                        } else {
+                            if ($row->isRequest) {
+                                ?>
+                                <label>
+                                    قیمت در بازه :
+                                </label>
+                                <span>
+                                    <? if (isset($extra_fields['کمترین قیمت']) && isset($extra_fields['بالاترین قیمت'])) {
+                                        echo $extra_fields['کمترین قیمت'] . ' الی ' . $extra_fields['بالاترین قیمت'];
+                                    } else
+                                        echo '-----';?>
+                               </span>
+                            <?
+                            } else {
+                                ?>
+                                <label>
+                                    <?= t('REALESTATE_TOTAL') . ' : ' ?>
+                                </label>
+                                <span class="price">
+                                    <? if ($t_price) echo $t_price; else echo '-----'; ?>
+                               </span>
+                            <?
+                            }
+                        }
+                        ?>
+                    </td>
+                    <td>
+                        <?
+                        if ((int)$row->regType == 2) {
+                            if ($row->isRequest) {
+                                ?>
+                                <label>
+                                    اجاره در بازه :
+                                </label>
+                                <span>
+                                    <? if (isset($extra_fields['کمترین اجاره']) && isset($extra_fields['بالاترین اجاره'])) {
+                                        echo $extra_fields['کمترین اجاره'] . ' الی ' . $extra_fields['بالاترین اجاره'];
+                                    } else
+                                        echo '-----';?>
+                               </span>
+                            <?
+                            } else {
+                                ?>
+                                <label>
+                                    <?= t('REALESTATE_RENTAL') . ' : ' ?>
+                                </label>
+                                <span class="price">
+                                    <? if ($r_price) echo $r_price; else echo '-----'; ?>
+                               </span>
+                            <?
+                            }
+                        }
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a class="icon_details"
+                           href="<?= $this->url('app/real-estate/view', array('id' => $row->itemId, 'title' => $title)) ?>"></a>
+                    </td>
+                </tr>
+            </table>
+
+
+            <!-- <? /* if ($row->isRequest) { */ ?>
+                        <span class="is-request">
+                                    <span><? /*= $this->translate('Requested') */ ?></span>
+                                </span>
+                    <? /* } */ ?>
+                    <? /* if ($this->last_visit < $row->published) { */ ?>
+                        <span class="is-new">
+                                    <span><? /*= $this->translate('New') */ ?></span>
+                                </span>
+                    --><? /* } */ ?>
+
+
+        </div>
+
+        <div class="list_col_left">
+
+            <?
+            $image = explode(',', $row->fPath);
+
+            if (is_array($image) && isset($image[0]) && !empty($image[0]))
+                $imageUrl = getThumbnail()->resize($image[0], 70, 70); //resize image
+            else
+                $imageUrl = getThumbnail()->resize($this->basePath() . TEMPLATE_PATH . '/images/real-estate/icone.png', 66, 64); //resize image;
+            ?>
+            <img src="<?= $imageUrl ?>" width="70" height="70">
+
+            <div class="user_created">
+                <?= t('REALESTATE_REGISTERED_BY') . ' ' . $created ?>
+            </div>
+            <?
+            echo '<div class="date-time">';
+            echo t('Reg Date') . " : ";
+            echo $this->dateFormat(
+                $row->created, 2
+            );
+            echo '</div>';
+            /*echo '<span class="date-time">';
+            echo t('Last update of registration') . " : ";
+            echo $this->dateFormat(
+                $row->modified
+            );
+            echo '</span>';*/
+            ?>
+        </div>
+
+
+        <!--        --><? //
+        //        //payment for realestate
+        //        if ($route_prefix == 'app' && !$isCurrentUser) {
+        //            $paymentParams = array(
+        //                'amount' => $this->homeInfoCost,
+        //                'email' => $row->ownerEmail,
+        //                'comment' => 'Pay For Buying a Home Information',
+        //                'validate' => array(
+        //                    'route' => 'app/real-estate/view-all-info-estate',
+        //                    'params' => array(
+        //                        'id' => $row->itemId,
+        //                    ),
+        //                )
+        //            );
+        //            $paymentParams = serialize($paymentParams);
+        //            $paymentParams = base64_encode($paymentParams);
+        //
+        ?>
+        <!--            <a class="payer-home"-->
+        <!--               href="-->
+        <? //= url('app/payment', array(), array('query' => array('routeParams' => $paymentParams))) ?><!--">-->
+        <!--                --><? //= $this->translate('Purchase Information') ?>
+        <!--            </a>-->
+        <!--        --><? //
+        //        }
+        ?>
+
+        <?
+
+        //        if ($row->status == 3) {
+        //            echo '<span class="is-transferred"><span>' . $this->translate('Transferred') . '</span></span>';
+        //        }
+        //        if ($row->status == 4) {
+        //            echo '<span class="is-canceled"><span>' . $this->translate('RealEstateCanceled') . '</span></span>';
+        //        }
+        //
+
+        ?>
+
+        <div style="clear: both;"></div>
+        </div>
+        </div>
+        </fieldset>
+
+    <?
+
+    }
+    ?>
+    <div class="pager">
+        <?
+        /* @var $p \Zend\Paginator\Paginator */
+        $p = $this->pagination;
+        print $this->paginationControl($this->pagination,
+            'Sliding',
+            'application/pagination/search.phtml', array(
+                'route' => $this->route,
+//                'route_params' => array('status' => $this->status),
+                'route_options' => array('query' => $this->query)
+            ));
+        ?>
+    </div>
+<?
+} else {
+    echo $this->general()->noOutPut();
+}?>

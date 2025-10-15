@@ -1,0 +1,126 @@
+<div>
+    <a class="toolbar-button btn btn-default ajax_page_load"
+       href="<?= url('admin/users/config/more') ?>"><?= t('Advance Config') ?></a>
+
+    <h3 class="page-title">
+        <?= $this->translate('User Settings'); ?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        ?>
+        <div class="row">
+            <div class="col-md-6">
+                <?
+                foreach ($form->getElements() as $el) {
+                    echo $this->formRow($el);
+                }
+                ?>
+            </div>
+            <div class="col-md-6">
+                <?
+                $headers = array(t('Field'), t('Access Level'));
+                $rows = array();
+
+                $fields_access = $this->fields_access ? $this->fields_access : array();
+                foreach ($form->get('fields_access')->getElements() as $item) {
+
+                    $fieldId = $item->getAttribute('data-field-id');
+                    $access = isset($fields_access[$fieldId]) ? $fields_access[$fieldId] : 'private';
+                    $class = ($access == 'private') ? '' : ($access == 'members' ? 'warning' : 'danger');
+                    $rows[$fieldId]['class'][] = $class;
+                    $rows[$fieldId]['data'][] = $item->getLabel();
+                    $rows[$fieldId]['data'][] = $this->formSelect($item);
+                }
+                ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><?= t('Access Levels') ?> </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <? echo \Theme\API\Table::Table($headers, $rows, array('class' => 'table table-striped table-hover table-condensed', 'id' => 'roleType_fields_grid', 'cellspacing' => 0)); ?>
+                            <dl class="dl-horizontal">
+                                <dt><?= t('Private') ?></dt>
+                                <dd>
+                                    <?= t('private fields are only visible to authorized users and the owner') ?>
+                                </dd>
+                                <dt class="text-warning"><?= t('Site Members') ?></dt>
+                                <dd>
+                                    <?= t("these fields are only visible to site's logged in members") ?>
+                                </dd>
+                                <dt class="text-danger"><?= t('Public') ?></dt>
+                                <dd>
+                                    <?= t('public fields are visible to anyone') ?>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <?
+            //        echo $this->iptFormCollection($form->get('email_templates'));
+            //        echo $this->iptFormCollection($form->get('sms'));
+            /* @var $roleType_fields \Zend\Form\Fieldset */
+            $roleType_fields = $form->get('roleType_fields');
+            $roleGroups = $roleType_fields->getFieldsets();
+            ?>
+            <div class="col-md-12">
+                <fieldset>
+                    <legend><?= t($roleType_fields->getLabel()) ?></legend>
+                    <p class="form_element_description"><?= t($roleType_fields->getOption('description')) ?></p>
+
+                    <?
+                    $headers = array('');
+                    foreach ($roleGroups as $fieldset) {
+                        $headers[] = $fieldset->getLabel();
+                    }
+
+                    $items = array();
+                    $rows = array();
+                    foreach ($roleGroups as $fieldset) {
+                        foreach ($fieldset->getElements() as $checkbox) {
+                            $id = $checkbox->getAttribute('data-id'); //fieldId
+                            $rows[$id][-1] = $checkbox->getLabel();
+                            $items[$id][$fieldset->getName()] = $checkbox;
+                        }
+                    }
+
+                    foreach ($items as $fieldId => $roleFields) {
+                        $row = $rows[$fieldId];
+                        foreach ($roleFields as $fieldName => $checkbox) {
+                            $row[] = array('data' => $this->formCheckbox($checkbox),);
+                        }
+                        $rows[$fieldId] = $row;
+                    }
+                    ?>
+                    <div class="table-responsive">
+                        <? echo \Theme\API\Table::Table($headers, $rows, array('class' => 'table table-striped table-hover table-condensed', 'id' => 'roleType_fields_grid', 'cellspacing' => 0)); ?>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <?
+
+
+        echo $this->formCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script>
+    $('#roleType_fields_grid td').click(function (e) {
+        e.stopPropagation();
+        var el = $(this).children('input');
+        if (el.length) {
+            $(el).prop('checked', !$(el).is(':checked'))
+        }
+    });
+    $('#roleType_fields_grid td input').click(function (e) {
+        e.stopPropagation();
+    });
+</script>

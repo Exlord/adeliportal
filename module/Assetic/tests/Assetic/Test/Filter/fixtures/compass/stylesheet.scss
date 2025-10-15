@@ -1,0 +1,6 @@
+@import "partials/_scss";
+
+.test-class
+{
+    @include mixin-test(2em);
+}

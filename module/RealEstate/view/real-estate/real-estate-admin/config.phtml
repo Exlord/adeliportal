@@ -1,0 +1,68 @@
+<div>
+    <a class="toolbar-button btn btn-default ajax_page_load"
+       href="<?= $this->url('admin/real-estate/config/more') ?>">
+        <i class="glyphicon glyphicon-cog"></i>
+        <?= $this->translate('Advance Settings') ?>
+    </a>
+    <a class="toolbar-button btn btn-default ajax_page_load"
+       href="<?= $this->url('admin/real-estate/agent-area') ?>">
+        <i class="glyphicon glyphicon-cog"></i>
+        <?= $this->translate('Area Admin') ?>
+    </a>
+
+    <h3 class="page-title">
+        <?= $this->translate('RealEstate Settings'); ?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach ($form->getElements() as $el) {
+                echo $this->iptFormRow($el);
+        }
+        foreach ($form->getFieldsets() as $el) {
+            echo $this->iptFormCollection($el);
+        }
+        //        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<style type="text/css">
+    .multi_checkbox label {
+        display: block;
+        margin-left: 5px;
+        padding: 5px 10px;
+        float: right;
+        width: 200px;
+    }
+    .fieldset_list fieldset {
+        float: right;
+    }
+
+    .form_element.checkbox label {
+        width: auto;
+    }
+
+    .column {
+        float: right;
+    }
+
+</style>
+<script>
+    $(document).ready(function () {
+
+        $('.spinner').each(function () {
+            numFormat(this);
+        });
+
+        $('.withcomma').each(function () {
+            $(this).keyup(function () {
+                numFormat(this);
+            })
+        });
+
+    });
+</script>

@@ -1,0 +1,6 @@
+<?return array(
+    'PERM_Fields' => 'Fields',
+    'IMAGE_ALT' => 'Alt',
+    'IMAGE_TITLE' => 'Image Title',
+    'IMAGE_LINK' => 'Link',
+);

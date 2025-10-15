@@ -1,0 +1,165 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/page.css');
+$commentStatus = 0;
+
+$this->body()->class[] = 'articles';
+if (isset($this->page->pageTitle))
+    $this->headTitle()->append('-' . $this->page->pageTitle);
+
+$showCommentSection = 0;
+if (isset($this->page->config['showCommentSection']) && $this->page->config['showCommentSection'] && $this->has('comment'))
+    if ($this->page->config['showCommentSection'] == 2) {
+        if (isset($this->config['showCommentSection']))
+            $showCommentSection = $this->config['showCommentSection'];
+    } else
+        $showCommentSection = 1;
+
+$viewAuthor = 0;
+if (isset($this->page->config['viewAuthor']) && $this->page->config['viewAuthor'])
+    if ($this->page->config['viewAuthor'] == 2) {
+        if (isset($this->config['viewAuthor']))
+            $viewAuthor = $this->config['viewAuthor'];
+    } else
+        $viewAuthor = 1;
+
+$showTitle = 1;
+if (isset($this->page->config['showTitle']))
+    $showTitle = (int)$this->page->config['showTitle'];
+
+$showDate = 0;
+if (isset($this->page->config['showDate']) && $this->page->config['showDate'])
+    if ($this->page->config['showDate'] == 2) {
+        if (isset($this->config['showDate']))
+            $showDate = $this->config['showDate'];
+    } else
+        $showDate = 1;
+
+$showHits = 0;
+if (isset($this->page->config['showHits']) && $this->page->config['showHits'])
+    if ($this->page->config['showHits'] == 2) {
+        if (isset($this->config['showHits']))
+            $showHits = $this->config['showHits'];
+    } else
+        $showHits = 1;
+
+$showRateSection = 0;
+if (isset($this->page->config['showRateSection']) && $this->page->config['showRateSection'] && $this->has('rating'))
+    if ($this->page->config['showRateSection'] == 2) {
+        if (isset($this->config['showRateSection']))
+            $showRateSection = $this->config['showRateSection'];
+    } else
+        $showRateSection = 1;
+
+$showTags = 0;
+if (isset($this->page->config['showTags']) && $this->page->config['showTags'])
+    if ($this->page->config['showTags'] == 2) {
+        if (isset($this->config['showTags']))
+            $showTags = $this->config['showTags'];
+    } else
+        $showTags = 1;
+
+
+if ($this->isStaticPage) {
+    ?>
+    <article>
+        <? if ($showTitle) { ?>
+            <h1 class="page-title">
+                <span class="icon"></span>
+                <?= $this->escapeHtml($this->page->pageTitle) ?>
+            </h1>
+        <? } ?>
+        <div class="page-content">
+            <?= $this->page->fullText ?>
+        </div>
+        <?
+        if ($this->has('add_to_any_helper'))
+            echo $this->add_to_any_helper();
+        ?>
+    </article>
+    <?
+    if ($showCommentSection) {
+        if (isset($this->page->config['commentStatus']))
+            $commentStatus = $this->page->config['commentStatus'];
+        echo $this->comment($this->page->id, $this->entityType, $commentStatus);
+    }
+} else {
+    if(isset($this->page->refGallery))
+    {
+        $gallery = unserialize($this->page->refGallery);
+        if(is_array($gallery))
+            echo $this->photo_gallery($gallery);
+    }
+    ?>
+    <article>
+        <? if ($showTitle) { ?>
+            <h1 class="article-title">
+                <span class="icon"></span>
+                <?= $this->escapeHtml($this->page->pageTitle) ?>
+            </h1>
+        <? } ?>
+        <? if ($viewAuthor) {
+            ?>
+            <span class="author">
+                <?= " _ " . t('Author') . " : " ?>
+                <?= $this->profile->displayName ?>
+            </span>
+        <? } ?>
+        <? if ($showDate) {
+            ?>
+            <span class="published">
+            <?= t('Published') . " : " ?>
+            <?= $this->date_format($this->page->publishUp) ?>
+        </span>
+        <? } ?>
+        <? if ($showHits) {
+            ?>
+            <span class="hits">
+            <?= t('Views') . " : " ?>
+            <?= localizedDigits($this->page->hits) ?>
+        </span>
+        <? } ?>
+        <? if ($showRateSection) { ?>
+            <div class="rate">
+                <?= $this->rating($this->page->id, \Page\Module::CONTENT_ENTITY_TYPE); ?>
+            </div>
+        <? } ?>
+        <p class="intro">
+            <?= $this->page->introText ?>
+        </p>
+
+        <p class="page-content">
+            <?= $this->page->fullText ?>
+        </p>
+        <? if ($showTags) {
+            ?>
+            <p class="tags">
+                <?= t('Tags') . " : " ?>
+                <?
+                if ($this->selectTags) {
+                    foreach ($this->selectTags as $row) {
+
+                        $tagRouteParams['tagName'] = \Application\API\App::prepareUrlString($row['itemName']);
+                        $tagRouteParams['tagId'] = $row['id'];
+                        ?>
+                        <a href="<?= url('app/content', $tagRouteParams) ?>"><?= $this->escapeHtml($row['itemName']) ?></a>
+                    <?
+                    }
+                } ?>
+
+            </p>
+        <?
+        }
+        if ($this->has('add_to_any_helper'))
+            echo $this->add_to_any_helper();
+        ?>
+    </article>
+    <?
+    if ($showCommentSection) {
+        if (isset($this->page->config['commentStatus']))
+            $commentStatus = $this->page->config['commentStatus'];
+        echo $this->comment($this->page->id, $this->entityType, $commentStatus);
+    }
+    ?>
+<? } ?>
+
+

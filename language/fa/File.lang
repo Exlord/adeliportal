@@ -1,0 +1,18 @@
+<?
+return array(
+    'Add More File' => 'فایل بیشتر',
+    'File Name' => 'نام فایل',
+    'File Title' => 'عنوان فایل',
+    'Title attribute of the element. will be displayed if mouse hovers the element' => 'عنوان این آیتم.اگر ماوس روی این آیتم نگه داشته شود این عنوان نمایش داده خواهد شد',
+    'Image Alt Text' => 'متن جایگزین عکس',
+    'Image Alt text wil be visible if the image is not loaded' => 'متن جایگزین عکس ها در صورتی که عکس بارگذاری نشود به جای آن نمایش داده میشود',
+    'File' => 'فایل',
+    'PERM_File' => 'فایل ها',
+    'Delete Files' => 'حذف فایل ها',
+    'Files Section' => 'بخش فایل ها',
+    'File Upload' => 'آپلود فایل',
+    'Public Files Section' => 'بخش فایل های عمومی',
+    'Private Files Section' => 'بخش فایل های خصوصی',
+    'Private Files' => 'فایل های خصوصی',
+    'You are not authorized to download this file.' => 'شما اجازه دانلود این فایل را ندارید',
+);

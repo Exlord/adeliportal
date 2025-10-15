@@ -1,0 +1,12 @@
+<div class="footer">
+    <p class="powered-by">
+        <?
+        $startYear = mktime(0, 0, 0, 6, 0, 2012);
+        $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+        $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+        ?>
+        <span
+            dir="rtl"><?= sprintf(t('Powered by %sIPT System%s'), "<a href='http://iptcms.com'>", "</a>") ?></span>
+        <span dir="ltr"><?= sprintf(t('&copy; %s-%s'), $startYear, $nowYear) ?></span>
+    </p>
+</div>

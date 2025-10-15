@@ -1,0 +1,10 @@
+<p>
+    <?sprintf(t('%s has requested to cancel their registration(%s) for %s'),
+        $this->__USER_URL__,
+        $this->__WORKSHOP_ATTENDANCE__,
+        $this->__WORKSHOP_CLASS_URL__
+    )?>
+</p>
+<?if (has_value($this->__WORKSHOP_CLASS_CANCEL_REASON__))
+    print $this->__WORKSHOP_CLASS_CANCEL_REASON__;
+?>

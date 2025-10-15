@@ -1,0 +1,10 @@
+<p>
+    <?=sprintf(t('%s has requested to cancel their reservation(%s) for %s'),
+        $this->__USER_URL__,
+        $this->__RESERVATION__,
+        $this->__DOCTOR_URL__
+    )?>
+</p>
+<?if (has_value($this->__RESERVE_CANCEL_REASON__))
+    print $this->__RESERVE_CANCEL_REASON__;
+?>

@@ -1,0 +1,20 @@
+<div class="simple-pagination">
+    <?php if (isset($this->previous)) {
+        $route_options['query']['page'] = $this->previous;
+        ?>
+        <a class="button prev_button"
+           href="<?= url($this->route, array(), $route_options) ?>">
+            <?= $this->translate('Previous') ?>
+        </a>
+
+    <?
+    }
+    if (isset($this->next)) {
+        $route_options['query']['page'] = $this->next;
+        ?>
+        <a class="button next_button "
+           href="<?= url($this->route, array(), $route_options) ?>">
+            <?= $this->translate('Next') ?>
+        </a>
+    <? } ?>
+</div>

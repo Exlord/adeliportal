@@ -1,0 +1,46 @@
+<style>
+    .tbl-view-phone-book{
+        font-family: tahoma;
+        font-size: 8pt;
+        direction: ltr;
+        border-top: 1px solid #8B8B8B;
+        border-right: 1px solid #8B8B8B;
+    }
+   .th-tbl-view-phone-book{
+       text-align: center;
+       color: #505050;
+       border-bottom: 1px solid #8B8B8B;
+   }
+    .tr-tbl-view-phone-book{
+        text-align: right;
+        border-bottom: 1px solid #8B8B8B;
+    }
+    .td-tbl-view-phone-book{
+        border-left: 1px solid #8B8B8B;
+        border-bottom: 1px solid #8B8B8B;
+        line-height: 20px;
+        margin: 5px;
+    }
+</style>
+<table class="tbl-view-phone-book">
+    <tr class="th-tbl-view-phone-book">
+        <td class="td-tbl-view-phone-book"><?=t('Comment')?></td>
+        <td class="td-tbl-view-phone-book"><?=t('Fax')?></td>
+        <td class="td-tbl-view-phone-book"><?=t('Phone')?></td>
+        <td class="td-tbl-view-phone-book"><?=t('Mobile')?></td>
+        <td class="td-tbl-view-phone-book"><?=t('Email')?></td>
+        <td class="td-tbl-view-phone-book"><?=t('Name')?></td>
+    </tr>
+    <?
+    foreach($this->select as $row){
+    ?>
+    <tr class="tr-tbl-view-phone-book">
+        <td class="td-tbl-view-phone-book"><?=$row->comment?></td>
+        <td class="td-tbl-view-phone-book"><?=$row->fax?></td>
+        <td class="td-tbl-view-phone-book"><?=$row->phone?></td>
+        <td class="td-tbl-view-phone-book"><?=$row->mobile?></td>
+        <td class="td-tbl-view-phone-book" dir="ltr"><?=$row->email?></td>
+        <td class="td-tbl-view-phone-book"><?=$row->nameAndFamily?></td>
+    </tr>
+    <?}?>
+</table>

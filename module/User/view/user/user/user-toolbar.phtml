@@ -1,0 +1,78 @@
+<?
+use User\Module as UserAcl;
+
+?>
+<div class="user-toolbar">
+    <div class="list-group">
+        <?if (isAllowed(Application\Module::ADMIN)) {
+            ?>
+            <a class="list-group-item"
+               href="<?= $this->url('admin') ?>">
+                <i class="glyphicon glyphicon-cog fa-lg text-info"></i>
+                <?= $this->translate('Admin Panel') ?>
+            </a>
+        <? } ?>
+        <?if (isAllowed(UserAcl::ADMIN_USER_EDIT) && $this->flag) {
+            if (isCurrentUser($this->userId) || isAllowed(UserAcl::ADMIN_USER_EDIT_ALL)) {
+                ?>
+                <a class="ajax_page_load list-group-item"
+                   href="<?= $this->url('admin/users/edit', array('id' => $this->userId)) ?>">
+                    <i class="glyphicon glyphicon-edit text-primary fa-lg"></i>
+                    <?= $this->translate('Edit Account') ?>
+                </a>
+                <a class="ajax_page_load list-group-item"
+                   href="<?= $this->url('admin/users/edit/custom-profile', array('id' => $this->userId)) ?>">
+                    <i class="glyphicon glyphicon-edit text-primary fa-lg"></i>
+                    <?= $this->translate('Edit Custom Profile') ?>
+                </a>
+                <a class="ajax_page_load list-group-item"
+                   href="<?= $this->url('admin/users/change-password', array('id' => $this->userId)) ?>">
+                    <i class="fa fa-key fa-lg "></i>
+                    <?= $this->translate('Change Password') ?>
+                </a>
+                <a class="ajax_page_load list-group-item"
+                   href="<?= url('admin/users/edit-image', array('id' => $this->userId)) ?>">
+                    <i class="glyphicon glyphicon-picture text-primary fa-lg"></i>
+                    <?= t('Change Image') ?>
+                </a>
+            <?
+            }
+        } ?>
+        <?if (getSM()->has('transactions_api')) {
+            if (isAllowed(\Payment\Module::PAYMENT_TRANSACTIONS_NEW) && (isCurrentUser($this->userId) || isAllowed(\Payment\Module::ADMIN_PAYMENT_TRANSACTIONS_NEW_DIRECT_DEPOSIT))) {
+                ?>
+                <a class="ajax_page_load list-group-item"
+                   href="<?= url('admin/payment/transactions/new', array(), array('query' => array('userId' => $this->userId))) ?>">
+                    <i class="glyphicon glyphicon-usd text-primary fa-lg"></i>
+                    <?= t('PAYMENT_CHANGE_BALANCE') ?>
+                </a>
+            <?
+            }
+        } ?>
+        <? if (getSM()->has('pm_table') && !isCurrentUser($this->userId) && isAllowed(\PM\API\PM::SEND)) { ?>
+            <a class="ajax_page_load list-group-item" title="<?= t('Send a private message to this user') ?>"
+               href="<?= url('admin/pm/new', array('to' => $this->userId)) ?>">
+                <i class="glyphicon glyphicon-envelope fa-lg"></i>
+                <?= t('Send PM') ?>
+            </a>
+        <? } ?>
+        <? if (isAllowed(UserAcl::ADMIN_USER_DELETE) && $this->flag) {
+            if ((isCurrentUser($this->userId) && isAllowed(UserAcl::ADMIN_USER_DELETE_OWN)) || isAllowed(UserAcl::ADMIN_USER_DELETE_ALL)) {
+                ?>
+                <a class="ajax_page_load list-group-item"
+                   href="<?= $this->url('admin/users/delete', array('id' => $this->userId)) ?>">
+                    <span class="glyphicon glyphicon-remove text-danger fa-lg"></span>
+                    <?= $this->translate('Delete Account') ?>
+                </a>
+            <?
+            }
+        } ?>
+        <? if (isCurrentUser($this->userId)) { ?>
+            <a class="list-group-item"
+               href="<?= $this->url('app/user/logout', array('id' => $this->userId)) ?>">
+                <span class="glyphicon glyphicon-log-out text-danger fa-lg"></span>
+                <?= $this->translate('Logout') ?>
+            </a>
+        <? } ?>
+    </div>
+</div>

@@ -1,0 +1,536 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order-admin.css');
+
+$select = $this->select;
+$formNew = $this->formNew;
+$formEdit = $this->formEdit;
+$route = $this->route;
+$groupArray = $this->groupArray;
+$admin_route = $this->admin_route;
+$route_prefix = $admin_route ? 'admin' : 'app';
+?>
+<style>
+    #upload-process {
+        z-index: 1000;
+        visibility: hidden;
+    }
+
+    .frame {
+        width: 50%;
+        height: 30px;
+        border: 0px;
+    }
+
+    .upload-img-group {
+        border: 1px solid #808080;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 10px;
+        margin-top: 50px;
+    }
+
+    .div-new-group {
+        width: auto;
+        padding: 10px;
+        text-align: right;
+        line-height: 30px;
+        display: none;
+        border: 1px solid #139ff7;
+        border-radius: 4px;
+        background-color: #fcf8e3;
+        left: 50px;
+        top: 50px;
+        position: absolute;
+        z-index: 1000;
+    }
+
+    .div-edit-group {
+        width: auto;
+        padding: 10px;
+        text-align: right;
+        line-height: 30px;
+        display: none;
+        border: 1px solid #139ff7;
+        border-radius: 4px;
+        background-color: #fcf8e3;
+        left: 30px;
+        position: absolute;
+        z-index: 1000;
+    }
+
+    .btnEditGroups {
+        background-image: url(<?=$this->basePath() ?>/images/plus-icon1.png);
+        border: none;
+        border-radius: 5px;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+    }
+
+    .btnEditGroups1 {
+        background-image: url(<?=$this->basePath() ?>/images/min-icon.png);
+        border: none;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .btnDeletePic {
+        background-image: url(<?=$this->basePath() ?>/images/delete-icon.png);
+        border: none;
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        z-index: 999;
+    }
+</style>
+<div>
+    <a id="btnCreateGroups"
+       class="toolbar-button button add_button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-secondary"
+       href="#" role="button" aria-disabled="false">
+        <span class="ui-button-text"><?=t('New Group')?></span>
+        <span class="ui-button-icon-secondary ui-icon ui-icon-plus"></span>
+    </a>
+
+    <br/><br/>
+
+    <div class="div-new-group" id="createGroupsTab" style="display: none;">
+        <?
+        $formNew->prepare();
+        echo $this->form()->openTag($formNew);
+        foreach ($formNew->getElements() as $el) {
+            echo $this->iptformRow($el);
+        }
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<br/>
+<table align=center class="tbl-data-grid" style="width: 100%">
+    <thead>
+    <tr align=center>
+        <th><?=t('Rows');?></th>
+        <th style="text-align: right;"><?=t('Group Name');?></th>
+        <th style="text-align: right;"><?=t('Description');?></th>
+        <th><?=t('Position');?></th>
+        <th><?=t('Categories');?></th>
+        <th><?=t('Display');?></th>
+        <th><?=t('Price');?></th>
+        <th><?=t('Pic');?></th>
+        <th><?=t('Display');?> <?=t('Languages');?></th>
+        <th><?=t('Display');?> <?=t('Support');?></th>
+        <th><?=t('Operations');?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?
+    $j = 1;
+    $countClass = 1;
+    foreach ($select as $row) {
+        if ($countClass == 0) {
+            $class = "class='tbl-data-grid-tr-1'";
+            $countClass = 1;
+        } else {
+            $class = "class='tbl-data-grid-tr-2'";
+            $countClass = 0;
+        }
+
+        ?>
+        <tr align="center" <?=$class?>>
+            <td><?=$j?></td>
+            <td style="text-align: right"><?=$row->groupName?></td>
+            <td style="width: 30%; font-size: 10px; text-align: right;"><?=$row->groupDesc?></td>
+            <td><?=$row->groupPosition?></td>
+            <td><?=$row->groupParentId?></td>
+            <td><?= \OnlineOrders\API\API::yesOrNo($row->groupPermit)?></td>
+            <td><?=$row->groupPrice?></td>
+            <td>
+                <? if ($row->imageIcon) { ?>
+                    <img src='<?= $row->imageIcon ?>' width="100" height="80"/>
+                    <input type="button" value="" id="<?= $row->id ?>" class="btnDeletePic">
+                <? } ?>
+            </td>
+            <td><?= \OnlineOrders\API\API::yesOrNo($row->groupShowLang) ?></td>
+            <td><?= \OnlineOrders\API\API::yesOrNo($row->groupShowSupport) ?></td>
+            <td width="100"><input type="button" class="btnEditGroups" value="" id="<?= $row->id ?>">
+
+                <div class="div-edit-group" id="div-edit-group-<?= $row->id ?>">
+                    <?
+                    $formEdit->setData($row);
+                    $formEdit->prepare();
+                    echo $this->form()->openTag($formEdit);
+                    echo $this->iptFormRow($formEdit->get('id'));
+                    echo $this->iptFormRow($formEdit->get('groupName'));
+                    echo $this->iptFormRow($formEdit->get('groupDesc'));
+                    echo $this->iptFormRow($formEdit->get('groupPrice'));
+                    echo $this->iptFormRow($formEdit->get('groupPosition'));
+                    echo $this->iptFormRow($formEdit->get('groupParentId'));
+                    echo $this->iptFormRow($formEdit->get('groupPermit'));
+                    echo $this->iptFormRow($formEdit->get('groupShowLang'));
+                    echo $this->iptFormRow($formEdit->get('groupShowSupport'));
+                    echo $this->iptFormRow($formEdit->get('user-file'));
+                    echo $this->iptFormRow($formEdit->get('csrf_groups_form'));
+                    echo $this->iptFormRow($formEdit->get('submit-edit'));
+                    echo $this->iptFormRow($formEdit->get('submit-delete'));
+                    ?>
+                    <img class="img-edit-group-show" src='<?= $row->imageIcon ?>' width="100" height="80"/>
+                    <?  echo $this->form()->closeTag();
+                    ?>
+                </div>
+            </td>
+        </tr>
+        <?
+        $j++;
+    }
+    ?>
+    </tbody>
+
+</table>
+<div class="pager">
+    <?=
+    $this->paginationControl($this->select,
+        'Sliding',
+        'application/pagination/search.phtml', array('route' => $route_prefix . '/online-orders/group-select')); ?>
+</div>
+<script>
+    $(document).ready(function () {
+
+
+        $('#btnCreateGroups').click(function () {
+            $('#createGroupsTab').slideToggle(1000);
+        });
+        $('.btnEditGroups').click(function () {
+            var idGroup = $(this).attr('id');
+            var x = $(this).position();
+            $(this).toggleClass('btnEditGroups1');
+            $('#div-edit-group-' + idGroup).css({top: (x.top) + 30});
+            $('#div-edit-group-' + idGroup).slideToggle(1000);
+        });
+
+
+        $('.btnDeletePic').click(function () {
+            var dataGroup = {};
+            dataGroup['id'] = $(this).attr('id');
+            var tdParent = $(this).parent();
+            var url = '/<?=$route?>/5/group-operations';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: dataGroup,
+                complete: function () {
+
+                },
+                success: function (data) {
+                    tdParent.html('');
+                    $('.img-edit-group-show').hide();
+                },
+                error: __ajaxError
+            });
+        });
+
+
+    });
+
+</script>
+
+
+<?/*
+$select = $this->select;
+$formNew = $this->formNew;
+$route = $this->route;
+$groupArray = $this->groupArray;
+
+*/?><!--
+<style>
+    .ok {
+        display: block;
+        padding: 4px;
+        border: 0px #666 solid;
+        color: #090;
+        width: 300px;
+    }
+
+    .error {
+        display: block;
+        padding: 4px;
+        border: 0px #666 solid;
+        color: #C00;
+        width: 300px;
+    }
+
+    #upload-process {
+        z-index: 1000;
+        visibility: hidden;
+    }
+
+    .frame {
+        width: 50%;
+        height: 30px;
+        border: 0px;
+    }
+    .upload-img{
+        border: 1px solid #808080;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+</style>
+<div>
+    <input type="hidden" value="<?/*= $route */?>" id="route">
+    <input type="button" id="btnCreateGroup" value="create new group">
+
+    <div id="createGroupsTab" style="display: none;">
+
+
+        <?/*
+        $formNew->prepare();
+        echo $this->form()->openTag($formNew);
+        foreach ($formNew->getElements() as $el) {
+            echo $this->iptformRow($el) . "<br/>";
+        }
+        */?>
+        <input class='button' type="button" value="save" id="btnsave"/>
+        <?/*
+        echo $this->form()->closeTag();
+        */?>
+
+    </div>
+</div>
+<br/>
+<div class="upload-img">
+    <form id="form-upload" action="/fa/<?/*= $route */?>/upload-ajax-pic" method="post" enctype="multipart/form-data"
+          target="upload-target">
+        <label for="user-file"></label>
+        <input type="file" id="user-file" name="user-file"/>
+        <select class="rowIdGroup" name="idGroup">
+            <?/* foreach($groupArray as $value) {*/?>
+             <option value="<?/*=$value['id']*/?>" ><?/*=$value['groupName']*/?></option>
+            <?/* } */?>
+        </select>
+        <input id="upload-submit" type="submit" value="آپلود فایل"/>
+    </form>
+    <iframe id="upload-target" name="upload-target" class="frame"></iframe>
+</div>
+<br/>
+<table id="tblGroup" align=center border="1" style="width: 100%">
+    <thead>
+    <tr align=center>
+        <th>row</th>
+        <th>name</th>
+        <th>Desc</th>
+        <th>Position</th>
+        <th>Parent Id</th>
+        <th>Permit</th>
+        <th>pic</th>
+        <th>------</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?/*
+    $i = 0;
+    $j = 1;
+    foreach ($select as $row) {
+
+        */?>
+        <tr align=center id="<?/*= $i */?>">
+            <td><?/*=$j*/?><input type="hidden" value="<?/*= $row->id */?>" class="rowIdGroup"></td>
+            <td class="groupName"><?/*=$row->groupName*/?></td>
+            <td class="groupDesc"><?/*=$row->groupDesc*/?></td>
+            <td class="groupPosition"><?/*=$row->groupPosition*/?></td>
+            <td class="groupParentId"><?/*=$row->groupParentId*/?></td>
+            <td class="groupPermit"><?/*=$row->groupPermit*/?></td>
+            <td class="grouppic">
+                <img src='<?/*= $row->imageIcon */?>' width="100" height="80"/>
+
+
+            </td>
+            <td width="150"><input type="button" class="btnEditGroup" value="Edit">
+                <input class='btnDelete' type='button' value='Delete' id='btnDelete'/>
+
+
+            </td>
+            <?/* $i++; */?>
+        </tr>
+        <tr align=center style="border: none;" id="<?/*= $i */?>">
+            <td colspan="8">
+                <div style="display: none;">
+
+                </div>
+            </td>
+        </tr>
+        <?/*
+        $i++;
+        $j++;
+    }
+    */?>
+    </tbody>
+
+</table>
+<input type="hidden" value="<?/*= $i */?>" id="idDiv">
+<input type="hidden" value="<?/*= $j */?>" id="countRow">
+<script>
+    $(document).ready(function () {
+
+        $('#btnCreateGroup').click(function () {
+            $('#createGroupsTab').slideToggle(1000);
+        });
+
+
+        $('body').on('click', '.btnEditGroup', function () {
+            var divEdit = $(this).parent().parent().next().children('td').children('div');
+            if (divEdit.find('form').length) {
+                divEdit.slideToggle(1000);
+            }
+            else {
+
+                var data = {};
+                data['id'] = $(this).parent().siblings('td').find('.rowIdGroup').val();
+                var url = '/' + $('#route').val() + '/1/group-operations';
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    complete: function () {
+
+                    },
+                    success: function (data) {
+                        divEdit.html(data);
+                        divEdit.slideDown(1000);
+                    },
+                    error: __ajaxError
+                });
+            }
+
+        });
+
+
+        $('#btnsave').click(function () {
+            var dataGroup = {};
+            dataGroup['id'] = '';
+            dataGroup['groupName'] = $(this).siblings("div.form_element").find('#groupName').val();
+            dataGroup['groupDesc'] = $(this).siblings("div.form_element").find('#groupDesc').val();
+            dataGroup['groupPosition'] = $(this).siblings("div.form_element").find('#groupPosition').val();
+            dataGroup['groupParentId'] = $(this).siblings("div.form_element").find("#groupParentId").val();
+
+
+            if ($(this).siblings("div.form_element").find(".groupCheck").attr("checked"))
+                dataGroup['groupPermit'] = 1;
+            else
+                dataGroup['groupPermit'] = 0;
+
+
+            var idDiv = parseInt($('#idDiv').val());
+            var countRow = parseInt($('#countRow').val());
+            var url = '/' + $('#route').val() + '/2/group-operations';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: dataGroup,
+                complete: function () {
+                    $('#createGroupsTab').slideUp(1000);
+                },
+                success: function (data) {
+                    if (data.id) {
+                        var html = '<tr align=center id="' + idDiv + '"><td>' + countRow + '<input type="hidden" value="' + data.id + '" class="rowIdGroup"></td><td class="groupName">' + dataGroup['groupName'] + '</td><td class="groupDesc">' + dataGroup['groupDesc'] + '</td><td class="groupPosition">' + dataGroup['groupPosition'] + '</td><td class="groupParentId">' + dataGroup['groupParentId'] + '</td><td class="groupPermit">' + dataGroup['groupPermit'] + '</td><td width=150><input type="button" class="btnEditGroup" value="Edit"><input class="btnDelete" type="button" value="Delete" id="btnDelete" /></td></tr>';
+                        html += '<tr align=center style="border: none;" id="' + (idDiv + 1) + '"><td colspan="8"><div style="display: none;"></div></td></tr>';
+                        $('#tblGroup tr:last').after(html);
+                        $('#idDiv').val(idDiv + 2);
+                        $('#countRow').val(countRow + 1);
+                    }
+                    else
+                        alert("Error");
+                },
+                error: __ajaxError
+            });
+        });
+
+
+        $('body').on('click', '.btnEdit', function () {
+            var dataGroup = {};
+            var siblingTr = $(this).parent().parent().parent().parent().prev();
+            var parentDiv = $(this).parent().parent();
+            dataGroup['id'] = $(this).siblings("input").val();
+            dataGroup['groupName'] = $(this).siblings("div.form_element").find('#groupName').val();
+            dataGroup['groupDesc'] = $(this).siblings("div.form_element").find('#groupDesc').val();
+            dataGroup['groupPosition'] = $(this).siblings("div.form_element").find('#groupPosition').val();
+            dataGroup['groupParentId'] = $(this).siblings("div.form_element").find("#groupParentId").val();
+            if ($(this).siblings("div.form_element").find(".groupCheck").attr("checked"))
+                dataGroup['groupPermit'] = 1;
+            else
+                dataGroup['groupPermit'] = 0;
+
+
+            var url = '/' + $('#route').val() + '/3/group-operations';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: dataGroup,
+                complete: function () {
+                    parentDiv.slideUp(1000);
+                },
+                success: function (data) {
+                    siblingTr.find('.groupName').html(dataGroup['groupName']);
+                    siblingTr.find('.groupDesc').html(dataGroup['groupDesc']);
+                    siblingTr.find('.groupPosition').html(dataGroup['groupPosition']);
+                    siblingTr.find('.groupParentId').html(dataGroup['groupParentId']);
+                    siblingTr.find('.groupPermit').html(dataGroup['groupPermit']);
+                    parentDiv.html(data);
+                },
+                error: __ajaxError
+            });
+        });
+
+
+        $('body').on('click', '.btnDelete', function () {
+            var dataGroup = {};
+            var siblingTr = $(this).parent().parent();
+            var tr = siblingTr.next();
+            dataGroup['id'] = $(this).parent().siblings('td').find('.rowIdGroup').val();
+
+
+            var url = '/' + $('#route').val() + '/4/group-operations';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: dataGroup,
+                complete: function () {
+
+                },
+                success: function (data) {
+                    siblingTr.remove();
+                    tr.remove();
+                },
+                error: __ajaxError
+            });
+        });
+
+
+        $('body').on('change', '.groupCheck', function () {
+            if (!$(this).attr("checked")) {
+                $(this).attr("checked", "checked");
+            }
+            else {
+                $(this).removeAttr("checked");
+            }
+        });
+
+        $('#upload-submit').click(function(){
+            $('#upload-target').slideDown();
+            setTimeout(function(){$('#upload-target').slideUp()},3000)
+        });
+
+
+
+    });
+
+
+</script>
+-->

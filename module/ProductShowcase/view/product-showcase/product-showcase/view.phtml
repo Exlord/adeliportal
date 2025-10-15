@@ -1,0 +1,17 @@
+<?
+if ($this->data) {
+        $fieldsData = getSM()->get('fields_api')->generate($this->fields, $this->data);
+        foreach ($fieldsData as $key => $val) {
+            ?>
+            <div>
+                <span><?=$key?> : </span>
+                <span><?=$val?></span>
+            </div>
+        <?
+        }
+        ?>
+        <div>
+            <?= $this->data->title ?>
+        </div>
+    <?
+}

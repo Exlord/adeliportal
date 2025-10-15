@@ -1,0 +1,80 @@
+<div>
+    <a class="toolbar-button btn btn-default ajax_page_load"
+       href="<?= url('admin/users/config') ?>"><?= t('Simple Config') ?></a>
+
+    <h3 class="page-title">
+        <?= $this->translate('Advance User Settings'); ?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach ($form->getElements() as $el) {
+            echo $this->iptFormRow($el);
+        }
+        echo $this->iptFormCollection($form->get('user_status'));
+
+        /* @var $roleType_fields \Zend\Form\Fieldset */
+        $roleType_fields = $form->get('roleType_fields');
+        $roleGroups = $roleType_fields->getFieldsets();
+        ?>
+        <fieldset>
+            <legend><?= t($roleType_fields->getLabel()) ?></legend>
+            <p class="form_element_description"><?= t($roleType_fields->getOption('description')) ?></p>
+            <?
+            $headers = array('');
+            foreach ($roleGroups as $fieldset) {
+                $headers[] = $fieldset->getLabel();
+            }
+
+            $rows = array();
+
+            foreach ($roleGroups as $fieldset) {
+                $roleId = $fieldset->getAttribute('data-id');
+
+                foreach ($this->regFields as $fieldId => $fieldname) {
+                    if (!isset($rows[$fieldId]))
+                        $rows[$fieldId] = array($fieldname);
+                    if (!isset($rows[$fieldId][$roleId]))
+                        $rows[$fieldId][$roleId] = '';
+                }
+
+
+                foreach ($fieldset->getElements() as $checkbox) {
+                    $id = $checkbox->getAttribute('data-id');
+                    $rows[$id][$roleId] = array('data' => $this->formCheckbox($checkbox),);
+//                    $items[$id][$fieldset->getName()] = $checkbox;
+                }
+                foreach ($this->regFields as $fieldId => $fieldname) {
+                    if (!isset($rows[$fieldId][$roleId]))
+                        $rows[$fieldId][$roleId] = '';
+                }
+            }
+
+            ?>
+            <div class="table-responsive">
+                <? echo \Theme\API\Table::Table($headers, $rows, array('class' => 'table table-striped table-hover table-condensed', 'id' => 'roleType_fields_grid', 'cellspacing' => 0)); ?>
+            </div>
+        </fieldset>
+        <?
+
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script>
+    $('#roleType_fields_grid td').click(function (e) {
+        e.stopPropagation();
+        var el = $(this).children('input');
+        if (el.length) {
+            $(el).prop('checked', !$(el).is(':checked'))
+        }
+    });
+    $('#roleType_fields_grid td input').click(function (e) {
+        e.stopPropagation();
+    });
+    $('#templates_tabs').tabs();
+</script>

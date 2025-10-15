@@ -1,0 +1,92 @@
+<?
+//$this->headLink()
+//    ->appendStylesheet($this->basePath() . '/css/server-manager.css')
+?>
+<div>
+    <a class="toolbar-button button ajax_page_load" href="<?= $this->url('admin/modules/rebuild') ?>">
+        <span class="refresh_18_icon button_icon"></span>
+        <?= $this->translate('Rebuild Module List') ?>
+
+    </a>
+
+    <h3 class="page-title">
+        <?= $this->translate('Modules') ?>
+    </h3>
+
+    <div>
+        <table width='100%' class="grid" cellspacing='0'>
+            <thead>
+            <tr>
+                <th><?= $this->translate('Name') ?></th>
+                <th><?= t('Version') ?></th>
+                <th><?= t('Installed Version') ?></th>
+                <th class="last"><?= t('module_stage') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?
+            if (is_array($this->modules) && count($this->modules)) {
+                foreach ($this->modules as $key => $module) {
+                    ?>
+                    <tr>
+                        <td>
+                            <b><?= $module['name'] ?></b>
+                            <?if (isset($module['required']) && $module['required'] == true) {
+                                ?>
+                                <br/> <span class="emphasize small">
+                                    <?= t('System Prerequisite') ?>
+                                </span>
+                            <? } ?>
+                            <? if (isset($module['subs'])) { ?>
+                                <div class="sub_text">
+                                    <?= $this->translate('Application_Modules_Subs') ?> : <?= implode(' , ', $module['subs']) ?>
+                                </div>
+                            <? } ?>
+                            <? if (isset($module['depends'])) { ?>
+                                <div class="sub_text">
+                                    <?= $this->translate('Dependencies') ?> : <?= implode(' , ', $module['depends']) ?>
+                                </div>
+                            <? } ?>
+
+                            <? if (isset($module['uses'])) { ?>
+                                <div class="sub_text">
+                                    <?= $this->translate('Application_Modules_Uses') ?>
+                                    : <?= implode(' , ', $module['uses']) ?>
+                                </div>
+                            <? } ?>
+
+                            <p>
+                                <?= $module['note'] ?>
+                            </p>
+                        </td>
+                        <td align='center' class="digit"><?= $module['version'] ?></td>
+                        <?
+                        $class = '';
+                        if (isset($this->installed_modules[$key]) && $module['version'] != $this->installed_modules[$key]->dbVersion)
+                            $class = 'warning';
+                        elseif (!isset($this->installed_modules[$key]))
+                            $class = 'error'
+                        ?>
+                        <td align='center'
+                            class="digit <?= $class ?>">
+                            <? if ($class != 'error')
+                                echo $this->installed_modules[$key]->dbVersion;
+                            else
+                                echo(t('Not Installed'));
+                            ?></td>
+                        <td align='center' class="module-stage-<?= strtolower($module['stage']) ?>">
+                            <?= $this->translate('module_stage_' . lcfirst($module['stage'])); ?>
+                        </td>
+                    </tr>
+                <?
+                }
+            } ?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4"></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

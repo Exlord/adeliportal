@@ -1,0 +1,82 @@
+<?
+use \RealEstate\Model\RealEstateTable;
+
+?>
+<div id="special-estate-slider-<?= $this->blockId ?>" class="content-slider-container ajax-loading">
+        <span class="prev" rel='tooltip' title="<?= t('Previous') ?>">
+        </span>
+
+    <div class="viewport">
+        <ul class="wrapper">
+            <?
+            $regTypeArray = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+            foreach ($this->specialEstate as $row) {
+                ?>
+                <li class="item special-estate-item">
+                    <?
+                    $reg_type_class = strtolower(str_replace(' ', '-', $regTypeArray[$row->regType]));
+                    $reg_type = $this->translate($regTypeArray[$row->regType]);
+                    $estate_type = $row->estateTypeName;
+                    $meter = $row->estateArea . ' ' . $this->translate('real_estate_Meter');
+                    $title = \Application\API\App::prepareUrlString($reg_type . ' ' . $estate_type . ' ' . $meter);
+                    $price = 0;
+
+                    switch ($row->regType) {
+                        case 78:
+                            $price = '<span class="mortgage">&nbsp;' . $this->translate('mortgage') .
+                                '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->mortgagePrice) . '</span>&nbsp;' .
+                                $this->translate('and') . '&nbsp;<span class="rental">&nbsp;' . $this->translate('rental') .
+                                '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->rentalPrice) . '</span>';
+                            break;
+                        default :
+                            $price = '<span class="price">' . $this->currencyFormat($row->totalPrice) . '</span>';
+                    }
+                    /*if (!empty($row->fPath)) {
+                        $image = explode(',', $row->fPath);
+                        $imageUrl = getThumbnail()->resize($image[0], 80, 80); //resize image
+                    } else
+                        $imageUrl = getThumbnail()->resize($this->basePath() . '/images/not-image.png', 80, 80); //resize image;*/
+                    ?>
+
+                    <a href="<?= $this->url('app/real-estate/view', array('id' => $row->id, 'title' => $title)) ?>">
+                        <!--<img src="<? /*= $imageUrl */ ?>">-->
+                        <h2>
+                            <span class="reg-type reg-type-<?= $reg_type_class ?>"><?= $reg_type ?></span>
+                            <span class="estate-type"><?= $estate_type ?></span>
+                        </h2>
+
+                        <p>
+                            <?if ($row->estateArea) {
+                                ?>
+                                <span class="estate-area">
+                                        <?= $meter ?></span>
+                                <sup class="super"><?= $this->translate('real_estate_M') ?></sup>
+                            <? } ?>
+                            <span class="sell-for"><?= $this->translate('real_estate_sell_for') ?>:</span>
+                            <?= $price ?>
+                            <span class="location">
+                                <?= t('in') . ' ' . $row->stateTitle . ' ' . t('City') . ' ' . $row->cityTitle ?></span>
+                        </p>
+                    </a>
+                </li>
+            <?
+            }
+            ?>
+        </ul>
+    </div>
+        <span rel='tooltip' class="next" title="<?= t('Next') ?>">
+        </span>
+</div>
+<script type="text/javascript">
+    <?$this->inlineScript()->captureStart()?>
+    $(document).ready(function () {
+        $('#special-estate-slider-<?=$this->blockId?>').contentSlider({
+            orientation: '<?=$this->orientation?>',
+            direction: '<?=$this->direction?>',
+            autoscroll: '<?=$this->autoScroll?>',
+            interval: <?=$this->interval?>,
+            speed: <?=$this->speed?>
+        });
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

@@ -1,0 +1,54 @@
+<div>
+    <h3 class="page-header text-danger">
+        <?= t('Your profile is not complete') ?>
+    </h3>
+
+    <div>
+        <p>
+            <?= t('Before you can reserve any time you need to complete your profile.'); ?>
+        </p>
+        <? if (isset($this->items['user']) || isset($this->items['profile'])) { ?>
+            <p>
+                <?=
+                sprintf(t('The values for these fields are required for your %suser profile%s'),
+                    "<a target='_blank' href='" . url('admin/users/edit', array('id' => current_user()->id)) . "'>", "</a>"); ?>
+                :
+            </p>
+            <ul>
+                <?
+                if (isset($this->items['user']))
+                    foreach ($this->items['user'] as $item) {
+                        print "<li>{$item}</li>";
+                    }
+                if (isset($this->items['profile']))
+                    foreach ($this->items['profile'] as $item) {
+                        print "<li>{$item}</li>";
+                    }
+                ?>
+            </ul>
+        <?
+        }
+        if (isset($this->items['customProfile'])) {
+            ?>
+            <p>
+                <?=
+                sprintf(t('The values for these fields are required for your %scustom user profile%s'),
+                    "<a target='_blank' href='" . url('admin/users/edit/custom-profile', array('id' => current_user()->id)) . "'>", "</a>"); ?>
+                :
+            </p>
+            <ul>
+                <? foreach ($this->items['customProfile'] as $item) { ?>
+                    <li><?= $item ?></li>
+                <? } ?>
+            </ul>
+        <? } ?>
+    </div>
+    <div class="alert alert-info">
+        <p><?= t('To edit/update your profile click on the provided links above') ?></p>
+
+        <p>
+            <?= sprintf(t('After you are done with editing/updating your profile simply just refresh this page or %s to continue')
+                , \Theme\API\Common::Link(t('Click Here'), '', array('class' => 'btn btn-default'))) ?>
+        </p>
+    </div>
+</div>

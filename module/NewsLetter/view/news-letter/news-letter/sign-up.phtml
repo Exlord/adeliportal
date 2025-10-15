@@ -1,0 +1,27 @@
+<script>
+    $(document).ready(function () {
+        $('.submit-newsletter-signup').click(function (e) {
+            var textBox = $('.input-email-newsletter-signup');
+            textBox.addClass('ajax-loading-inline');
+            e.preventDefault();
+            var data = $('#newsletter_sign_up').serialize();
+            $.ajax({
+                url: '<?=url('app/newsletter-sign-up')?>',
+                type: 'post',
+                data: data,
+                complete: function () {
+                    textBox.removeClass('ajax-loading-inline');
+                },
+                success: function (data) {
+                    if (data.status == 1)
+                        System.AjaxMessage('Success');
+                    else if (data.status == 0)
+                        System.AjaxMessage('Error');
+                    else if (data.status == 2)
+                        System.AjaxMessage('Duplicate');
+                },
+                error: System.AjaxError
+            });
+        })
+    });
+</script>

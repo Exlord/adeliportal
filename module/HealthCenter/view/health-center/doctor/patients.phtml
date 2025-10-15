@@ -1,0 +1,14 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?= t('Patients') ?>
+        <? if ($this->doctor) { ?>
+            »
+            <small><?= getUserDisplayName($this->doctor) ?></small>
+        <? } ?>
+    </h3>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>

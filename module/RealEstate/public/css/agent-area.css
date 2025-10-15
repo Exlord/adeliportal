@@ -1,0 +1,8 @@
+.agent-area-wrapper{ padding:10px; }
+.agent-area-wrapper > div{ padding:10px; width:300px; display:block; }
+.agent-area-wrapper div > div{ padding:10px; width:300px; display:block; }
+.agent-area-wrapper div select{ width:200px; display:block; }
+#allAgentAreaIds{ width:600px; padding:5px; }
+#allAgentAreaIds div{ width:190px; border:1px solid #b9b9b9; background:#c6c6c6; border-radius:3px; padding:3px; margin:2px; display:inline-block; }
+#allAgentAreaIds label{ width:150px; display:inline-block;}
+#otherInfoAgentArea{display:none}

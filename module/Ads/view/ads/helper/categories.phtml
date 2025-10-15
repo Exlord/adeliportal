@@ -1,0 +1,39 @@
+<? if ($this->select) {
+    foreach ($this->select['table'] as $key => $row) {
+        ?>
+        <ul class="nav nav-pills nav-stacked">
+            <? if (is_array($row)) {
+                foreach ($row as $item) {
+                    ?>
+                    <li class="active">
+                        <a href="<?= url('app/ad/list', array('baseType' => $this->baseType, 'baseTitle' => $this->baseTypeName), array('query' => array('table' => array($key => $item['id'])))) ?>">
+                            <span class="badge pull-left"><?= $item['count'] ?></span>
+                            <?= $item['name'] ?>
+                        </a>
+                    </li>
+                <?
+                }
+            }?>
+        </ul>
+    <?
+    }
+    if (isset($this->select['fields']))
+        foreach ($this->select['fields'] as $key => $row) {
+            ?>
+            <ul class="nav nav-pills nav-stacked">
+                <? if (is_array($row)) {
+                    foreach ($row as $item) {
+                        ?>
+                        <li class="active">
+                            <a href="<?= url('app/ad/list', array('baseType' => $this->baseType, 'baseTitle' => $this->baseTypeName), array('query' => array('f' => array($key => $item['id'])))) ?>">
+                                <span class="badge pull-left"><?= $item['count'] ?></span>
+                                <?= $item['name'] ?>
+                            </a>
+                        </li>
+                    <?
+                    }
+                }?>
+            </ul>
+        <?
+        }
+} ?>

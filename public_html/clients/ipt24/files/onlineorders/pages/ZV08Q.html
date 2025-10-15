@@ -1,0 +1,447 @@
+<head>
+    <meta content="text/html" charset="utf-8">
+</head>
+<style>
+    body {
+        font-family: tahoma;
+        font-size: 9pt;
+    }
+
+    div#info-personal label {
+        display: inline-block;
+        padding: 9px 0;
+        width: 100px;
+        line-height: 20px;
+        font-family: tahoma;
+        font-weight: bold;
+        color: #a0a0a0;
+    }
+
+    .header-factor {
+        height: 30px;
+        background-color: #0066cc;
+        margin: 0px;
+    }
+
+    .pish-factor-print {
+        border: 1px solid #ccc;
+        background-color: #FDFDFD;
+        margin-left: auto;
+        margin-right: auto;
+        width: 95%;
+    }
+
+    .tbl-pish-fact {
+        width: 100%;
+        margin-top: -7px;
+    }
+
+    .td-pish-factor {
+        width: 38%;
+        font-size: 12px;
+        line-height: 29px;
+    }
+
+    .div-pish-fact-logo {
+        font-family: tahoma;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .lb-info {
+        font-family: tahoma;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 20px;
+        text-align: right;
+        margin-left: 10px;
+        margin-right: 17px;
+        line-height: 30px;
+        direction: rtl;
+        display: inline-block;
+    }
+
+    .sp-info {
+        border: 1px solid #FDFDFD;
+        font-family: tahoma;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 20px;
+        text-align: right;
+        color: #0060c2;
+        margin-left: 10px;
+        line-height: 30px;
+        direction: rtl;
+        display: inline-block;
+        width: auto;
+        margin-right: 10px;
+    }
+
+    .div-payment-form {
+        border: 1px solid #ccc;
+        background: #eeeeee;
+        direction: rtl;
+        margin-right: auto;
+        margin-left: auto;
+        width: 98%;
+    }
+
+    img {
+        border: none;
+    }
+
+    .langCustomer fieldset {
+        border: none;
+    }
+
+    .div-pish-fact-name {
+        font-weight: normal;
+        color: #06C;
+    }
+
+    .tbl-top-show-info {
+        border: 1px solid #ccc;
+        background: #eeeeee;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 8px;
+    }
+
+    .lb-info-big {
+        margin-right: 15px;
+    }
+
+    .lb-lang label {
+        color: #FFF;
+    }
+
+    .div-pish-fact-tracking {
+        width: auto;
+    }
+
+    .lb-info-med {
+        margin-right: 15px;
+        line-height: 40px;
+    }
+
+    .sp-info-big {
+        font-size: 14px;
+        color: #0060C2;
+    }
+
+    .sp-info-tbl {
+        color: #0060C2;
+        font-size: 12px;
+    }
+
+    .lb-item-fact-preview-1 {
+        font-size: 12px;
+        color: #808080;
+        padding-right: 5px;
+        line-height: 20px;
+        background-color: #dddddd;
+    }
+
+    .lb-item-fact-preview-2 {
+        font-size: 12px;
+        color: #808080;
+        padding-right: 5px;
+        line-height: 20px;
+        background-color: #fffacd;
+    }
+
+    .div-item-fact-preview {
+        width: 98%;
+        border: 1px solid #cacaca;
+        border-radius: 5px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .logo-site {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<div id="show-info" style="direction: rtl;">
+<div class="pish-factor-print">
+<div class="header-factor"></div>
+<div class="content-pish-fact">
+<table border="0" class="tbl-pish-fact">
+    <tr>
+        <td class="td-pish-factor">
+            <div class="div-pish-fact-name">
+                شرکت آذر ایده پرداز تبریز            </div>
+            <div class="div-pish-fact-number">
+                شماره فاکتور                1092            </div>
+        </td>
+        <td class="td-pish-factor">
+            <div>
+                <img class="logo-site" src="http://ipt24.ir/clients/ipt24/themes/ipt24client/img/IPT-LOGO-factor.png">
+            </div>
+        </td>
+        <td class="td-pish-factor">
+            <div class="div-pish-fact-tracking">
+                کد پیگیری                ZV08Q            </div>
+            <div class="div-pish-fact-date">
+                تاریخ                جمعه,۳۰ مرداد ۱۳۴۹             </div>
+        </td>
+    </tr>
+</table>
+
+<div class="top-show-info">
+    <table class="tbl-top-show-info">
+        <tr>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        نام کامل                     </label>
+            <span class="sp-info-tbl" id="show-namePer">
+                                    </span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        نام شرکت                    </label>
+                    <span class="sp-info-tbl" id="show-nameCompanyPer">
+                                            </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        ایمیل شخصی                     </label>
+                    <span class="sp-info-tbl" id="show-emailPer">
+                                            </span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label class="lb-info">
+                        تلفن همراه                     </label>
+                    <span class="sp-info-tbl" id="show-mobilePer">
+                                            </span>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<br/>
+
+<div>
+    <label class="lb-info-big">
+        پشتیبانی فنی و به روز رسانی سایت توسط کارشناسان شرکت    </label>
+                    <span class="sp-info-big" id="show-supportPer">
+                        انتخاب نشده است                    </span>
+</div>
+<div>
+    <label class="lb-info-med">
+        سایر امکانات     </label>
+                    <span class="sp-info-big" id="show-others">
+                        مبلغ پیش فاکتور شما به صورت قطعی می باشد                    </span>
+</div>
+<div>
+    <label class="lb-info-med">
+        نام دامنه شما    </label>
+                    <span class="sp-info" id="show-domainName">
+                        انتخاب نشده است                    </span>
+</div>
+
+
+<div class="div-item-fact-preview">
+            <div class='lb-item-fact-preview-1' >
+            ارائه پنل ویژه به اساتید و اعضای هیات علمی و راه اندازی سایت شخصی        </div>
+            <div class='lb-item-fact-preview-2' >
+            ارتباط دانشجو با اساتید و اعضای هیات علمی و ارسال مطلب برای ایشان        </div>
+            <div class='lb-item-fact-preview-1' >
+            قرارگیری لینک دانلود جزوات اساتید برای استفاده دانشجویان        </div>
+            <div class='lb-item-fact-preview-2' >
+            ارائه نمونه سوالات اساتید به دانشجویان در پتل استاد        </div>
+            <div class='lb-item-fact-preview-1' >
+            اعتراض به نمره توسط دانشجو و ارسال برای استاد مربوطه        </div>
+            <div class='lb-item-fact-preview-2' >
+            راه اندازی سایت شخصی برای اساتید و اعضای هیات علمی دانشگاه        </div>
+            <div class='lb-item-fact-preview-1' >
+            تغییر تمپلت پیش فرض نرم افزار و ویرایش تم گرافیکی        </div>
+            <div class='lb-item-fact-preview-2' >
+            جستجوی تخصصی در اخبار ، مقالات ، عناوین ، مطالب و بخشنامه های سایت        </div>
+            <div class='lb-item-fact-preview-1' >
+            تنظیم استایل ها و فرمت های نمایش عنوان ، خلاصه و متن اخبار و مقالات        </div>
+            <div class='lb-item-fact-preview-2' >
+            گزارشگیری و یا نمایش امار میزان بازدید هر مقاله        </div>
+            <div class='lb-item-fact-preview-1' >
+            نمایش ارشیو مقالات بر روی تقویم جاری و سال های گذشته        </div>
+            <div class='lb-item-fact-preview-2' >
+            کراپ ، ریسایز و درج واترمارک سایت در عکس های منتشره        </div>
+            <div class='lb-item-fact-preview-1' >
+            نمایش عکس های جالب در قالب عکس روز ، مرور تصویری اخبار        </div>
+            <div class='lb-item-fact-preview-2' >
+            ساخت تبلیغات بنری فلش در پانل مدیریت برای نمایش در باکس های تبلیغاتی سایت        </div>
+            <div class='lb-item-fact-preview-1' >
+            نمایش آیکون هایی برای ترجمه مطالب سایت و نمایش ترجمه در زبان های دیگر توسط مترجم گوگل        </div>
+            <div class='lb-item-fact-preview-2' >
+            انتساب مطلب فارسی با همان مطلب در بخش انگلیسی یا زبان های دیگر و بالعکس        </div>
+            <div class='lb-item-fact-preview-1' >
+            ادیتور متن پیشرفته آنلاین با قابلیت های کامل شبیه word و امکان انتقال مطالب از word به آن        </div>
+            <div class='lb-item-fact-preview-2' >
+            ارائه نسخه چاپی Print friendly از متون سایت دانشگاه        </div>
+            <div class='lb-item-fact-preview-1' >
+            امتیاز دهی و نمایش رنک دانشجویان به هر عنوان مقاله        </div>
+            <div class='lb-item-fact-preview-2' >
+            امکان ارسال یک مقاله توسط دانشجویان به ایمیل دوستان        </div>
+            <div class='lb-item-fact-preview-1' >
+            معرفی چارت سازمانی دانشگاه و پرسنل هر بخش و معرفی انها        </div>
+            <div class='lb-item-fact-preview-2' >
+            ثبت نام دانشجویان به شکل اینترنتی و دریافت مبلغ ثبت نام ، بصورت انلاین        </div>
+            <div class='lb-item-fact-preview-1' >
+            معرفی دفتر نمایندگی مقام معظم رهبری و ارائه زیر سایت به ایشان        </div>
+            <div class='lb-item-fact-preview-2' >
+            ثبت نام از دانشجویان برای اردوهای علمی و عمره دانشجویی        </div>
+            <div class='lb-item-fact-preview-1' >
+            برگزاری آزمون اینترنتی در سایت دانشگاه        </div>
+            <div class='lb-item-fact-preview-2' >
+            برگزاری مسابقات علمی تحت پورتال دانشگاه        </div>
+            <div class='lb-item-fact-preview-1' >
+            تعریف فرم دریافت مقاله برای استفاده از مقالات دانشجویان و اساتید        </div>
+            <div class='lb-item-fact-preview-2' >
+            توزیع سطوح دسترسی برای ایجاد ، ویرایش ، تایید و یا انتشار اخبار و مقالات به گروه های کاربری        </div>
+            <div class='lb-item-fact-preview-1' >
+            امکان ارائه خروجی RSS از اخبار و بخشنامه های سایت برای آپدیت بودن دانشجویان        </div>
+            <div class='lb-item-fact-preview-2' >
+            نظرسنجی و جمع آوری نظرات دانشجویان و کارکنان و اساتید چه در قالب نظرسنجی و چه در قالب کامنت        </div>
+            <div class='lb-item-fact-preview-1' >
+            بنرهای تبلیغاتی سمینارها و گردهمایی ها و مدیریت تبلیغات در پورتال و زمانبندی نمایش باکس های تبلیغاتی        </div>
+            <div class='lb-item-fact-preview-2' >
+            تعریف هرگونه فرم الکترونیک با هر تعداد فیلد برای دریافت هرگونه اطلاعات از دانشجویان        </div>
+            <div class='lb-item-fact-preview-1' >
+            گزارش گیری گزارش های کلی ، جزیی یا پارامتریک از فرم های الکترونیک تعریف شده        </div>
+            <div class='lb-item-fact-preview-2' >
+            ایجاد رادیوی اینترنتی برای پخش برنامه های پادکست با پلیر مخصوص سایت شما        </div>
+            <div class='lb-item-fact-preview-1' >
+            راه اندازی تلویزیون اینترنتی برای پوشش اخبار و رویدادهای تصویری با پلیر مخصوص پخش فیلم        </div>
+            <div class='lb-item-fact-preview-2' >
+            گروه بندی اعضا و مشخص کردن مجوزهای مشاهده اخبار و دسته های خبری به گروه ای عضویت        </div>
+            <div class='lb-item-fact-preview-1' >
+            دریافت حق عضویت در سایت بصورت الکترونیک        </div>
+            <div class='lb-item-fact-preview-2' >
+            مشخص کردن سطح عضویت مثلا طلایی،نقره ای و برنز و ارائه سطوح گوناگون خدمات به اعضا        </div>
+            <div class='lb-item-fact-preview-1' >
+            ارتباط اعضا با مدیر سایت و یا در صورت مجوز مدیر ، ارتباط اعضا با یکدیگر        </div>
+            <div class='lb-item-fact-preview-2' >
+            سیستم مدیریت و اشتراک گذاری و دانلود فایل و گزارش های پیشرفته از دانلودکنندگان و نرخ دانلود مقالات        </div>
+            <div class='lb-item-fact-preview-1' >
+            سیستم کتابخانه مجازی و قرارگیری متون کتب تحت وب جهت مشاهده یا دانلود        </div>
+            <div class='lb-item-fact-preview-2' >
+            بهینه سازی صفحات سایت برای موتورهای جستجو توسط مدیر        </div>
+            <div class='lb-item-fact-preview-1' >
+            تطبیق ادرس های سایت قبلی با آدرس های مطالب و مقالات، در سایت جدید برای از بین نرفتن جایگاه گوگلی        </div>
+            <div class='lb-item-fact-preview-2' >
+            دسته بندی لینکستان و لینک دهی به سایت های دانشگاهی داخلی و بین المللی و مراجع علمی آنلاین        </div>
+            <div class='lb-item-fact-preview-1' >
+            گسترش سایت خبری پس از جذب کاربران زیاد به فروشگاه اینترنتی ، دایره المعارف اطلاعاتی        </div>
+            <div class='lb-item-fact-preview-2' >
+            انتشار مطالب سایت دانشگاه به زبان های گوناگون از قبیل فارسی ، انگلیسی ، عربی ، روسی ، و ...        </div>
+            <div class='lb-item-fact-preview-1' >
+            پرینت و ارسال مطالب و مقالات برای  اعضای هیات علمی و اساتید دانشگاه یا دانشجویان و کارکنان دانشگاه        </div>
+            <div class='lb-item-fact-preview-2' >
+            راه اندازی ساب پرتال های خبری بصورت ساب دامینی از سایت اصلی        </div>
+            <div class='lb-item-fact-preview-1' >
+            راه اندازی ساب پرتال های خبری بصورت ساب دامینی از سایت اصلی        </div>
+            <div class='lb-item-fact-preview-2' >
+            ارسال ایمیل های مناسبتی ، تبلیغاتی و خبری مبتنی بر موضوعات مورد علاقه دانشجویان        </div>
+            <div class='lb-item-fact-preview-1' >
+            نمایش گرافیکی و سلسله مراتبی ساختار مدیریتی دانشگاه و هر یک از ادارات و دانشکده های دانشگاه        </div>
+            <div class='lb-item-fact-preview-2' >
+            فرم درخواست استفاده از خوابگاه دانشجویی ، فرم درخواست شرکت در همایش ها و سمینار های دانشگاه        </div>
+            <div class='lb-item-fact-preview-1' >
+            فرم انتقادات و پیشنهادات جهت دانشجویان ، اساتید و همکاران ، فرم ثبت نام عمره مفرده دانشجویی        </div>
+            <div class='lb-item-fact-preview-2' >
+            پرسش دانشجویان از اساتید به دو شکل خصوصی و عمومی و ارائه پاسخ  اساتید بر اساس نوع درخواست        </div>
+            <div class='lb-item-fact-preview-1' >
+            پاسخ به سوالات متداول دانشجویان از دانشگاه یا هر یک از دانشکده ها و زیر مجموعه های دانشگاه        </div>
+            <div class='lb-item-fact-preview-2' >
+            برگزاری آزمون اینترنتی توسط اساتید دانشگاه و ارائه پرسش به دانشجویان و دریافت پاسخ ایشان        </div>
+            <div class='lb-item-fact-preview-1' >
+            نمایش اخبار و مطالب راجع به دانشگاه و دانشکده های زیر مجموعه در قالب بریده جراید دانشگاه        </div>
+            <div class='lb-item-fact-preview-2' >
+            مشاهده لاگ فعالیت های خرابکارانه هکر به منظور جلوگیری از هک و خرابکاری در وب سایت اینترنتی دانشگاه        </div>
+            <div class='lb-item-fact-preview-1' >
+            بلاک کردن و ممانعت از ادامه فعالیت ایشان بر روی پرتال اطلاع رسانی دانشگاه یا دانشکده        </div>
+            <div class='lb-item-fact-preview-2' >
+            مشاهده لاگ آی پی های استفاده کننده از سایت و بستن دسترسی یک آی پی خاص به پورتال دانشگاه        </div>
+            <div class='lb-item-fact-preview-1' >
+            فیلتر واژه های ناهنجار در وب سایت دانشگاه یا دانشکده های زیر مجموعه        </div>
+            <div class='lb-item-fact-preview-2' >
+            خصوصی کردن مقالات ، اخبار و مطالب سایت دانشگاه و ارائه دسترسی خاص به گروه خاصی از دانشجویان        </div>
+            <div class='lb-item-fact-preview-1' >
+            نمایش یک جمله از هر یک از اساتید و اعضای هیات علمی دانشگاه در قالب سخن روز        </div>
+            <div class='lb-item-fact-preview-2' >
+            برگزاری مناقصات و مزایدات دانشگاه تحت وب سایت اینترنتی دانشگاه        </div>
+            <div class='lb-item-fact-preview-1' >
+            نتشار مجلات علمی ، دانشجویی منتشر شده در دانشگاه به صورت تحت وب        </div>
+            <div class='lb-item-fact-preview-2' >
+            ارائه تالار گفتمان و فروم تحت وب به دانشجویان و اساتید برای تبادل نظر و ارتباط نزدیک تر دانشجویان و اساتید        </div>
+    </div>
+
+
+<div>
+    <label class="lb-info-med">
+        جمع قیمت آیتم ها    </label>
+                    <span class="sp-info" id="show-resultPrice">
+                        <input type='hidden' id='resultPrice' value='66000' >                    </span>
+    <label class="rial">
+        ریال    </label>
+</div>
+
+<div>
+    <label class="lb-info-med">
+        جمع قیمت زبان ها    </label>
+                    <span class="sp-info" id="show-resultPriceLang">
+                         <input type='hidden' id='resultPriceLang' value='0' >                    </span>
+    <label class="rial">
+        ریال    </label>
+</div>
+<div>
+    <label class="lb-info-med">
+        جمع کل قیمت    </label>
+                    <span class="sp-info" id="show-sumResultPrice">
+                         <input type='hidden' id='sumResultPrice' value='66000' >                    </span>
+    <label class="rial">
+        ریال    </label>
+</div>
+<div>
+    <label class="lb-info-med">
+        نوع پرداخت    </label>
+    <span class="sp-info">
+      در محل    </span>
+
+
+</div>
+
+</div>
+<div class="header-factor"></div>
+</div>
+<div class="div-links-footer">
+    
+    <a class="prew" target="_blank" href="http://www.ipt24.ir/clients/ipt24/files/onlineorders/pages/ZV08Q.html"></a>
+    <a class="print" href="javascript:window.print()"></a>
+</div>
+<script>
+
+    function insertcomma2(vals) {
+        var regex = /(\d)((\d{3},?)+)$/;
+        while (regex.test(vals)) {
+            vals = vals.replace(regex, '$1,$2');
+        }
+        return vals;
+    }
+    document.getElementById('show-resultPrice').innerHTML=insertcomma2(document.getElementById('resultPrice').value);
+    document.getElementById('show-sumResultPrice').innerHTML=insertcomma2(document.getElementById('sumResultPrice').value);
+    document.getElementById('show-resultPriceLang').innerHTML=insertcomma2(document.getElementById('resultPriceLang').value);
+
+</script>

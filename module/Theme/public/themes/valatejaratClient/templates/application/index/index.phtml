@@ -1,0 +1,57 @@
+<?
+$this->headLink()
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/intro/style-intro.css')
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/intro/nivo-slider.css')
+    ->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/intro/default-intro.css');
+
+$this->headScript()
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/intro/jquery.nivo.slider.js')
+    ->prependFile($this->basePath() . '/js/jquery-1.9.1.min.js');
+
+?>
+
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('Official Vala Tejarat Website Company')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+
+</head>
+<body>
+<div class="logo">
+    <div id="logo"></div>
+</div>
+<div class="slider">
+    <div id="wrapper">
+
+
+        <div class="slider-wrapper theme-default">
+            <div id="slider" class="nivoSlider">
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/slide_image/slide1.jpg"  alt="" />
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/slide_image/slide3.jpg"  alt="" />
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/slide_image/slide4.jpg"  alt="" />
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/slide_image/slide5.jpg"  alt="" />
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/slide_image/slide6.jpg"  alt="" />
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/slide_image/slide7.jpg"  alt="" />
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/slide_image/slide8.jpg"  alt="" />
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/slide_image/slide9.jpg"  alt="" />
+                <img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/slide_image/slide11.jpg" alt="" />
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="footer">
+    <div class="btn_footer"><a href="<?=url('app/content')?>" title="فارسی"><img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/farsi.png"></a></div>
+    <div class="btn_footer"><a href="<?=url('app/content',array('lang'=>'en'))?>" title="english"><img src="<?= $this->basePath() . TEMPLATE_PATH ?>/images/intro/english.png"></a></div>
+</div>
+<script type="text/javascript">
+    $(window).load(function() {
+        $('#slider').nivoSlider();
+    });
+</script>
+</body>
+</html>

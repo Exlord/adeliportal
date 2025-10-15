@@ -1,0 +1,31 @@
+<? return array(
+    'PERM_CustomersClub' => 'باشگاه مشتریان',
+    'CustomersClub' => 'باشگاه مشتریان',
+    'Customers Club' => 'باشگاه مشتریان',
+    'Points' => 'امتیاز ها',
+    'Note' => 'توضیحات',
+    'Point' => 'امتیاز',
+    'Add Point' => 'افزودن امتیاز',
+    'add/edit members points' => 'افزایش/ویرایش امتیاز اعضا',
+    'Add/Edit Point' => 'افزایش/ویرایش امتیاز',
+    'Type' => 'نوع',
+    'the member has received some points' => 'کاربر امتیاز کسب کرده است',
+    'points modification saved successfully.' => 'تغییرات امتیاز ها با موفقیت ذخیره شد.',
+    'please select a user' => 'لطفا یک کاربر را انتخاب کنید',
+    'You have a total of %s points' => 'شما کلا %s امتیاز دارید',
+    'My Points' => 'امتیازات من',
+    'You received __POINT__ points for : __POINT_NOTE__' =>
+        'شما به میزان __POINT__ برای __POINT_NOTE__ امتیاز دریافت کردید',
+    'Points Received' => 'امتیاز دریافت شد',
+    'Points Edited' => "امتیاز تغییر کرد",
+    'Points Deleted' => "امتیاز حذف شد",
+    '__ADMIN__ has changed your points for __POINT_NOTE__ from __POINT_BEFORE__ to __POINT_AFTER__' =>
+        '__ADMIN__ امتیاز شما برای __POINT_NOTE__ را از __POINT_BEFORE__ به __POINT_AFTER__ تغییر داد',
+    '__ADMIN__ has deleted your points __POINT__ for __POINT_NOTE__' => '__ADMIN__ امتیاز شما __POINT__ برای __POINT_NOTE__ را حذف کرد',
+    'Customers Club Config' => 'تنظیمات باشگاه مشتریان',
+    'Module Points' => 'امتیاز ماژول ها',
+    'configure points for each event' => 'تنظیمات امتیاز ها برای هر رویداد',
+    'Customers club configs saved successfully' => 'تنظیمات باشگاه مشتریان با موفقیت ذخیره شد',
+    'Customer Records' => 'سوابق مشتری',
+
+);

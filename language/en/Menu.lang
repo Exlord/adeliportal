@@ -1,0 +1,12 @@
+<?return array(
+    'MENU_ITEM_NOFOLLOW_DESCRIPTION' => "'nofollow' tells the search engines that they should not open this link when indexing your site",
+    'PERM_Menu' => 'Menu',
+    'menu_widget_config_label'=>'menu_widget_config_label',
+    'menu_widget_count_content'=>'menu_widget_count_content',
+    'Menu_form_ShowTitle'=>'Menu_form_ShowTitle',
+    'Menu_form_imgTitle'=>'Menu_form_imgTitle',
+    'Menu_form_imgAlt'=>'Menu_form_imgAlt',
+    'MENU_RESPONSIVE'=>'MENU_RESPONSIVE',
+    'MENU_IS_NOT'=>'MENU_IS_NOT',
+    'MENU_IS'=>'MENU_IS',
+);

@@ -1,0 +1,68 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Exlord
+ * Date: 10/30/13
+ * Time: 4:15 PM
+ */
+if ($this->type == 'public') {
+    $direction = $this->translate('lang_direction'); //rtl ? ltr
+    $styles = array();
+//if ($direction == 'ltr')
+//    $styles[] = $this->basePath() . TEMPLATE_PATH . '/css/style-ltr.css';
+//$styles[] = $this->basePath() . TEMPLATE_PATH . '/css/style.css';
+//$styles[] = $this->basePath() . '/css/system.css';
+    $styles[] = $this->basePath() . '/js/jquery/ui-themes/smoothness/jquery-ui.css';
+    $styles[] = $this->basePath() . '/css/elfinder.min.css';
+    $styles[] = $this->basePath() . '/css/elfinder.theme.css';
+
+    foreach ($styles as $st) {
+        $this->headLink()->prependStylesheet($st);
+    }
+
+    $scripts = array(
+        '/js/i18n/elfinder.' . $this->locale . '.js',
+        '/js/elfinder.min.js',
+        '/js/jquery/jquery-ui-1.8.23.custom.min.js',
+        '/js/jquery-1.7.2.min.js');
+    foreach ($scripts as $sc) {
+        $this->headScript()->prependFile($this->basePath() . $sc);
+
+    }
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>elFinder 2.0</title>
+        <?= $this->headLink() ?>
+        <?= $this->headScript() ?>
+        <!-- elFinder initialization (REQUIRED) -->
+        <script type="text/javascript" charset="utf-8">
+            // Helper function to get parameters from the query string.
+            function getUrlParam(paramName) {
+                var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i');
+                var match = window.location.search.match(reParam);
+
+                return (match && match.length > 1) ? match[1] : '';
+            }
+
+            $(document).ready(function () {
+                var funcNum = getUrlParam('CKEditorFuncNum');
+                var elf = $('#elfinder').elfinder({
+                    url: '<?=url('admin/file/connector',array('type'=>$this->type))?>',  // connector URL (REQUIRED)
+                    lang: '<?=$this->locale?>',             // language (OPTIONAL)
+                    getFileCallback: function (file) {
+                        window.opener.CKEDITOR.tools.callFunction(funcNum, file);
+                        window.close();
+                    }
+                }).elfinder('instance');
+            });
+        </script>
+    </head>
+    <body>
+    <!-- Element where elFinder will be created (REQUIRED) -->
+    <div id="elfinder"></div>
+    </body>
+    </html>
+<? }

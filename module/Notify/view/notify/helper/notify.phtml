@@ -1,0 +1,79 @@
+<?
+/* @var $paginator \Zend\Paginator\Paginator */
+$paginator = $this->data;
+$itemCount = $paginator->getTotalItemCount();
+?>
+<li class="dropdown notifications-menu">
+    <? if ($itemCount) { ?>
+        <a data-toggle="dropdown" class="dropdown-toggle"
+           href="<?= url('admin/notify') ?>" title="<?= t('You have unread notifications') ?>">
+            <i class="fa fa-warning fa-lg"></i>
+            <span class="label label-success notify-count notify-badge"><?= $itemCount ?></span>
+        </a>
+    <?
+    } else {
+        ?>
+        <a class="ajax_page_load"
+           href="<?= url('admin/notify') ?>" title="<?= t('There is no new notification for you at this moment.') ?>">
+            <i class="fa fa-warning fa-lg text-muted"></i>
+        </a>
+    <?
+    }
+    if ($this->data->count()) {
+        ?>
+        <div class="dropdown-menu flip notification-container panel panel-default">
+            <div class="panel-heading">
+                <?= sprintf(t('You have %s notifications'), "<span class='notify-count'>" . $itemCount . "</span>") ?>
+            </div>
+            <div class="panel-body slimScrollDiv">
+                <div class="list-group">
+                    <?
+                    foreach ($this->data as $row) {
+                        ?>
+                        <div data-href="<?= url('admin/notify/read', array('id' => $row->id)) ?>"
+                           class="list-group-item notify-item list-group-item-success unread" data-id="<?= $row->id ?>">
+                            <?= $row->msg ?>
+                        </div>
+                    <?
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <a href="<?= url('admin/notify') ?>" class="ajax_page_load">
+                    <?= sprintf(t('View all notifications')) ?>
+                </a>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                Notifications.sections.notify.unread = <?= $itemCount ?>;
+                Notifications.sections.notify.noNotify = "<?= t('There is no new notification for you at this moment.') ?>";
+                $('.notify-item.unread').hover(function () {
+                    if ($(this).hasClass('unread')) {
+                        $(this).addClass('disabled').removeClass('unread');
+                        $('.notifications-menu .notify-count').html(--Notifications.sections.notify.unread);
+                        var url = $(this).data('href');
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            success: function (data) {
+                            },
+                            error: System.AjaxError
+                        });
+                        if (Notifications.sections.notify.unread == 0) {
+                            $('.notifications-menu a.dropdown-toggle .notify-count').remove();
+                            $('.notifications-menu a.dropdown-toggle')
+                                .attr('title', Notifications.sections.notify.noNotify);
+                            $('.notifications-menu a.dropdown-toggle i').addClass('text-muted');
+                        }
+                    }
+                }).click(function (e) {
+                    e.preventDefault();
+                });
+            });
+        </script>
+    <?
+    }
+    ?>
+</li>

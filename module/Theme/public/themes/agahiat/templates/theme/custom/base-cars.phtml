@@ -1,0 +1,99 @@
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 box_r_view">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 title">
+مشاهده آگهی
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 arrow">
+                            <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/arrow3.png' ?>">
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 btn_click">
+                            <a href="<?=url('app/ad/search',array('baseType'=>6000))?>" class="btn btn-default" id="click_r_view">
+                                کلیک کنید
+                            </a>
+                        </div>
+                       <!-- <div class="col-xs-12 col-sm-12 col-md-12 sub_btn row_hidden">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-4 col-md-4">
+                                    <a href="<?/*=url('app/ad/list',array('baseType'=>6000,'isRequest'=>0,'baseTitle'=>'cars'))*/?>" class="btn btn-default">
+                                        عرضه ها
+                                    </a>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-4">
+                                    <a href="<?/*=url('app/ad/list',array('baseType'=>6000,'isRequest'=>1,'baseTitle'=>'cars'))*/?>" class="btn btn-default">
+                                        تقاضاها
+                                    </a>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-4">
+                                    <a href="<?/*=url('app/ad/search',array('baseType'=>6000))*/?>" class="btn btn-default">
+                                        جستجو
+                                    </a>
+                                </div>
+                            </div>
+                        </div>-->
+                        <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/cars/khodro.png' ?>"
+                             class="label_ab_r">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 box_r_new">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 title">
+ثبت آگهی
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 arrow">
+                            <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/arrow3.png' ?>">
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 btn_click">
+                            <a href="#" class="btn btn-default" id="click_r_view">
+                                کلیک کنید
+                            </a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 sub_btn row_hidden">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-4 col-md-5 col-md-offset-1">
+                                    <a href="<?=url('app/ad/new',array('baseType'=>6000,'isRequest'=>0))?>" class="btn btn-default">
+عرضه
+                                    </a>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-5">
+                                    <a href="<?=url('app/ad/new',array('baseType'=>6000,'isRequest'=>1))?>" class="btn btn-default">
+تقاضا
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/cars/khodro2.png' ?>"
+                             class="label_ab_r">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        /*$('.box_r_view .btn_click #click_r_view').click(function (e) {
+            e.preventDefault();
+            $('.box_r_view .btn_click').addClass('row_hidden');
+            $('.box_r_view .sub_btn').fadeIn(1000);
+
+        });*/
+
+        $('.box_r_new .btn_click #click_r_view').click(function (e) {
+            e.preventDefault();
+            $('.box_r_new .btn_click').addClass('row_hidden');
+            $('.box_r_new .sub_btn').fadeIn(1000);
+
+        });
+
+    });
+</script>

@@ -1,0 +1,127 @@
+<div class="step-order-loading">
+    <span class="ajax-loading"></span>
+</div>
+<div class="step-order-header">
+    <h2><?= t('03. Axle config') ?></h2>
+
+    <h3><?= t('Choose the configuration for your transport needs') ?></h3>
+
+    <p><?= t('Click on the description for more information and to select an axle configuration.') ?></p>
+</div>
+<div class="main-step3 main-step">
+    <div>
+        <div class="col1">
+            <?
+            $class = '';
+            $htmlOrderLink='';
+            $i = 1;
+            foreach ($this->dataArray as $row) {
+                if ($i != 1)
+                    $class = 'hidden';
+                $i++;
+                $htmlOrderLink .= " <a id='step3_order_link_".$row['id']."' class='step3-order-link step3-next-level ".$class."' href='#' data-name='".$row['itemName']."' data-id='". $row['id']."'><h3>". $row['itemName']."</h3></a>";
+                ?>
+                <div id="step3_order_tabs_<?= $row['id'] ?>" class="box-step3-order-tabs <?= $class ?>">
+                    <ul>
+                        <li><a href="#tab-drawing"><?= t('Drawing') ?></a></li>
+                        <li><a href="#tab-information"><?= t('Information') ?></a></li>
+                        <li><a href="#tab-image"><?= t('Image') ?></a></li>
+                    </ul>
+                    <div id="tab-drawing">
+                        <div class="drawing">
+                            <?
+                            $htmlImages = '';
+                            if ($row['images']) {
+                                $counterDraw = 0;
+                                foreach ($row['images'] as $imageRow) {
+                                    $counterDraw++;
+                                    if (!empty($imageRow->fPath)) {
+                                        if ($counterDraw == 1) {
+                                            $imageUrl = getThumbnail()->resize($imageRow->fPath, 150, 150); //resize image
+                                            ?>
+                                            <a class="colorbox" href="<?= $imageRow->fPath ?>">
+                                                <img src="<?= $imageUrl ?>" alt="<?= $imageRow->fAlt ?>" rel="tooltip"
+                                                     title="<?= $this->escapeHtml($imageRow->fTitle) ?>">
+                                            </a>
+                                        <?
+                                        } else {
+                                            $imageUrl = getThumbnail()->resize($imageRow->fPath, 50, 50); //resize image
+                                            $htmlImages .= "<a class='colorbox' href='" . $imageRow->fPath . "'><img src='" . $imageUrl . "' alt='" . $imageRow->fAlt . "' rel='tooltip'  title='" . $this->escapeHtml($imageRow->fTitle) . "'></a>";
+                                        }
+                                    }
+                                }
+                            } ?>
+                        </div>
+                    </div>
+                    <div id="tab-information">
+                        <div id="information">
+                            <?= $row['itemText'] ?>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    <div id="tab-image">
+                        <div id="image">
+                            <?= $htmlImages ?>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+
+                <script>
+                    $('#step3_order_tabs_<?= $row['id'] ?>').tabs();
+                </script>
+            <? } ?>
+        </div>
+        <div class="col2">
+
+            <? foreach ($this->dataArray as $row) { ?>
+                <div>
+                    <a href="#" data-id="<?= $row['id'] ?>"  class="step3-custom-link">
+                        <?= $row['itemName'] ?>
+                    </a>
+                </div>
+            <? } ?>
+
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    <div>
+        <?=$htmlOrderLink?>
+    </div>
+</div>
+<div style="clear: both"></div>
+<div class="step-order-nav">
+    <a class="home" href="<?=url('app/step-order')?>"></a>
+    <span class="end-inactive"></span>
+        <span class="main-inactive step-order-link pointer" data-id="<? if(isset($this->info[1]['id'])) echo t($this->info[1]['id']); ?>" data-name="">
+            <label><?= t('Page1') ?></label>
+            <p><? if(isset($this->info[2]['name'])) echo t($this->info[2]['name']); ?></p>
+        </span>
+    <span class="end-inactive"></span>
+        <span class="main-inactive step1-order-link pointer" data-id="<? if(isset($this->info[2]['id'])) echo t($this->info[2]['id']); ?>" data-name="<? if(isset($this->info[2]['name'])) echo t($this->info[2]['name']); ?>">
+            <label><?= t('Page2') ?></label>
+            <p><? if(isset($this->info[3]['name'])) echo t($this->info[3]['name']); ?></p>
+        </span>
+    <span class="start-active"></span>
+        <span class="main-active">
+            <label><?= t('Page3') ?></label>
+        </span>
+    <span class="end-active"></span>
+        <span class="main-inactive">
+            <label><?= t('Page4') ?></label>
+        </span>
+    <span class="end-inactive"></span>
+        <span class="main-inactive">
+            <label><?= t('Page5') ?></label>
+        </span>
+    <span class="end-inactive"></span>
+    <span class="main-inactive">
+            <label><?= t('Summary') ?></label>
+        </span>
+    <span class="end-inactive"></span>
+</div>
+<script>
+    $('.colorbox').colorbox({rel: 'colorbox'});
+</script>
+
+

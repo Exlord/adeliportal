@@ -1,0 +1,115 @@
+<?php if ($this->pageCount > 1): ?>
+
+    <?
+    if (!isset($this->route_params) && !is_array($this->route_params))
+        $this->route_params = array();
+    $route_params = $this->route_params;
+    $route_options = $this->route_options;
+    $route_options['query']['page'] = 1;
+    $per_page = array('' => t('-- Row Per Page --'), 10 => 10, 20 => 20, 50 => 50, 100 => 100, 0 => 'All');
+    if ($this->totalItemCount > 2000)
+        unset($per_page[0]);
+    $selected_per_page = isset($query['per_page']) ? : '';
+    $dataHref = $this->dataHref;
+
+    $ajax_page_load = $this->ajax_page_load ? 'ajax_page_load' : '';
+    ?>
+    <div class="paginationControl">
+        <select id="per_page" name="per_page">
+            <?
+            $temp_ro = $route_options;
+            foreach ($per_page as $key => $pageCount) {
+                if (has_value($key))
+                    $temp_ro['query']['per_page'] = $key;
+                $href = $this->url($this->route, $route_params, $temp_ro);
+                ?>
+                <option value="<?= $href ?>"><?= $this->translate($pageCount) ?></option>
+            <? } ?>
+        </select>
+        <a class="<?= $ajax_page_load ?> pager_items_count">
+            <?php echo $this->firstItemNumber; ?> - <?php echo $this->lastItemNumber; ?>
+            <?= $this->translate('of') ?> <?php echo $this->totalItemCount; ?>
+        </a>
+
+        <!-- First page link -->
+        <?php if (isset($this->previous)) { ?>
+            <? $route_options['query']['page'] = $this->first; ?>
+            <a class="btn btn-default <?= $ajax_page_load ?> first_btn"
+               <?= $dataHref ? 'data-' : '' ?>href="<?php echo $this->url($this->route, $route_params, $route_options); ?>">
+                <i class="glyphicon glyphicon-forward fa-lg text-primary"></i>
+                <?= $this->translate('First') ?>
+            </a>
+        <?php } else { ?>
+            <a class="disabled first_item btn btn-default first_btn">
+                <i class="glyphicon glyphicon-forward fa-lg"></i>
+                <?= $this->translate('First') ?></a>
+        <?php } ?>
+
+        <!-- Previous page link -->
+        <?php if (isset($this->previous)): ?>
+            <? $route_options['query']['page'] = $this->previous; ?>
+            <a class="btn btn-default <?= $ajax_page_load ?> prev_btn"
+               <?= $dataHref ? 'data-' : '' ?>href="<?php echo $this->url($this->route, $route_params, $route_options); ?>">
+                <i class="glyphicon glyphicon-chevron-right fa-lg  text-primary"></i>
+                <?= $this->translate('Previous') ?>
+            </a>
+        <?php else: ?>
+            <a class="disabled btn btn-default prev_btn">
+                <i class="glyphicon glyphicon-chevron-right fa-lg "></i>
+                <?= $this->translate('Previous') ?></a>
+        <?php endif; ?>
+
+        <!-- Numbered page links -->
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if ($page != $this->current): ?>
+                <? $route_options['query']['page'] = $page; ?>
+                <a class="btn btn-default <?= $ajax_page_load ?> item_btn"
+                   <?= $dataHref ? 'data-' : '' ?>href="<?php echo $this->url($this->route, $route_params, $route_options); ?>">
+                    <?php echo $page; ?>
+                </a>
+            <?php else: ?>
+                <a class="btn btn-primary current_page item_btn">
+                    <?php echo $page; ?>
+                </a>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <!-- Next page link -->
+        <?php if (isset($this->next)): ?>
+            <? $route_options['query']['page'] = $this->next; ?>
+            <a class="btn btn-default <?= $ajax_page_load ?> next_btn"
+               <?= $dataHref ? 'data-' : '' ?>href="<?php echo $this->url($this->route, $route_params, $route_options); ?>">
+                <?= $this->translate('Next') ?>
+                <i class="glyphicon glyphicon-chevron-left fa-lg  text-primary"></i>
+            </a>
+        <?php else: ?>
+            <a class="disabled btn btn-default next_btn">
+                <?= $this->translate('Next') ?>
+                <i class="glyphicon glyphicon-chevron-left fa-lg "></i>
+            </a>
+        <?php endif; ?>
+
+        <!-- Last page link -->
+        <?php if (isset($this->next)): ?>
+            <? $route_options['query']['page'] = $this->last; ?>
+            <a class="btn btn-default <?= $ajax_page_load ?> end_btn"
+               <?= $dataHref ? 'data-' : '' ?>href="<?php echo $this->url($this->route, $route_params, $route_options); ?>">
+                <?= $this->translate('Last') ?>
+                <i class="glyphicon glyphicon-backward fa-lg  text-primary"></i>
+            </a>
+        <?php else: ?>
+            <a class="disabled btn btn-default end_btn">
+                <?= $this->translate('Last') ?>
+                <i class="glyphicon glyphicon-backward fa-lg "></i></a>
+        <?php endif; ?>
+    </div>
+    <? if ($ajax_page_load) { ?>
+        <script>
+            <?$this->inlineScript()->captureStart();?>
+            $('body').on('change', '.paginationControl #per_page', function () {
+                System.Pages.ajaxLoad($(this).val());
+            });
+            <?$this->inlineScript()->captureEnd()?>
+        </script>
+    <? } ?>
+<?php endif; ?>

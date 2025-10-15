@@ -1,0 +1,47 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('OrgChart_NEWCHART'); ?>
+    </h3>
+
+    <p class="description">
+        <? //= t('') ?>
+    </p>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach ($form->getElements() as $el) {
+            echo $this->iptFormRow($el);
+        }
+        /* @var $roleType_fields \Zend\Form\Fieldset */
+        $type_fields = $form->get('config');
+        $fieldsGroups = $type_fields->getFieldsets();
+        ?>
+        <fieldset>
+            <legend><?= $type_fields->getLabel() ?></legend>
+            <?
+            $header = array(
+                0 => t('Fields'),
+                1 => t('View'),
+               // 2 => t('Order'),
+            );
+            $rows = array();
+            foreach ($fieldsGroups as $fields) {
+                $row = array();
+                $row[]=$fields->getLabel();
+                $row[] = $this->formCheckbox($fields->get('view'));
+               // $row[] = $this->formText($fields->get('order'));
+               // $row[] = $this->formHidden($fields->get('name'));
+                $rows[]=$row;
+            }
+            echo \Theme\API\Table::Table($header,$rows,array('class' => 'grid', 'id' => 'type_fields_grid', 'cellspacing' => 0));
+            ?>
+        </fieldset>
+        <?
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>

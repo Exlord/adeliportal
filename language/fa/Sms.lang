@@ -1,0 +1,12 @@
+<?return array(
+   'Sms Panel'=>'پنل sms',
+    'Send Sms'=>'ارسال پیامک',
+    'Sms Text configs saved successfully'=>'تنظیمات پیامک شما با موفقیت انجام شد',
+    'Group Mobile Number : Example 09140000000,09140000000'=>'گروه تلفن همراه : بعنوان مثال 09140000000,09140000000',
+    'Sms Settings'=>'تنظیمات پیامک',
+    'From Number'=>'از شماره',
+    'Sms Section'=>'بخش پیامک',
+    'Please read the text sms or phone number'=>'لطفا متن و یا شماره تلفن را وارد نمایید',
+    'Send sms ?'=>'ارسال پیامک ؟',
+    'PERM_Sms' => 'پیامک',
+);

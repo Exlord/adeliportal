@@ -1,0 +1,124 @@
+<?
+$s_6000_0 = $this->blocks('search_cars_t');
+$s_6000_1 = $this->blocks('search_cars_r');
+?>
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4">
+            <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/logo_new.png' ?>"
+                 class="img-responsive logo_new">
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8">
+            <img src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/titr_search.png' ?>"
+                 class="img-responsive titr_new">
+        </div>
+    </div>
+</div>
+<? if ($s_6000_0) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="box_desc_transfer">
+            این بخش مخصوص افرادی است که می خواهند نیازهای خود را در آگهی های موجود جستجو کنند .
+        </div>
+        <img class="box_desc_arrow" src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/arrow3.png' ?>">
+        <?= $s_6000_0 ?>
+    </div>
+<? } ?>
+<? if ($s_6000_1) { ?>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="box_desc_request">
+            این قسمت مخصوص افرادی است که می خواهند مشتریان موجود در بازار را به نسبت توان آنها شناسایی کنند .
+        </div>
+        <img class="box_desc_arrow" src="<?= $this->basePath() . TEMPLATE_PATH . '/images/main/arrow3.png' ?>">
+        <?= $s_6000_1 ?>
+    </div>
+<? } ?>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+
+
+        //change select type & brand & model
+        __changeBrandT(-1);
+
+        $('input[name="field[c_t_typecars]"]').change(function () {
+            __changeBrandT($('input[name="field[c_t_typecars]"]:radio:checked').val());
+        });
+        function __changeBrandT(checkVal) {
+
+            if (checkVal == -1) {
+                var carsType = $('input[name="field[c_t_typecars]"]:radio:checked').val();
+            } else
+                carsType = checkVal;
+            var vals = 'ac' + carsType;
+            __hiddenBrandT();
+            $('select[name="field[c_t_brand]"] option').each(function () {
+                if ($(this).val().contains(vals))
+                    $(this).removeClass('op_hidden');
+            });
+        }
+
+        function __hiddenBrandT() {
+            $('select[name="field[c_t_brand]"] option').each(function () {
+                $(this).addClass('op_hidden');
+            });
+        }
+
+        function __hiddenModelT() {
+            $('select[name="field[c_t_model]"] option').each(function () {
+                $(this).addClass('op_hidden');
+            });
+        }
+
+        $('select[name="field[c_t_brand]"]').change(function () {
+            var vals = $(this).val();
+            __hiddenModelT();
+            $('select[name="field[c_t_model]"] option').each(function () {
+                if ($(this).val().contains(vals))
+                    $(this).removeClass('op_hidden');
+            });
+        });
+        //end
+
+        // change select type & brand & model
+        __changeBrandR(-1);
+
+        $('input[name="field[c_r_typecars]"]').change(function () {
+            __changeBrandR($('input[name="field[c_r_typecars]"]:radio:checked').val());
+        });
+        function __changeBrandR(checkVal) {
+            if (checkVal == -1) {
+                var carsType = $('input[name="field[c_r_typecars]"]:radio:checked').val();
+            } else
+                carsType = checkVal;
+            var vals = 'ac' + carsType;
+            __hiddenBrandR();
+            $('select[name="field[c_r_brand]"] option').each(function () {
+                if ($(this).val().contains(vals))
+                    $(this).removeClass('op_hidden');
+            });
+        }
+
+        function __hiddenBrandR() {
+            $('select[name="field[c_r_brand]"] option').each(function () {
+                $(this).addClass('op_hidden');
+            });
+        }
+
+        function __hiddenModelR() {
+            $('select[name="field[c_r_model]"] option').each(function () {
+                $(this).addClass('op_hidden');
+            });
+        }
+
+        $('select[name="field[c_r_brand]"]').change(function () {
+            var vals = $(this).val();
+            __hiddenModelR();
+            $('select[name="field[c_r_model]"] option').each(function () {
+                if ($(this).val().contains(vals))
+                    $(this).removeClass('op_hidden');
+            });
+        });
+        //end
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

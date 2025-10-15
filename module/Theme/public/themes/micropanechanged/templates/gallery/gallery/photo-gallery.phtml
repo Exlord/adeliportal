@@ -1,0 +1,62 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/multi-zoom/multizoom.css');
+$this->headScript()->appendFile($this->basePath() . '/multi-zoom/jquery.zoom.js');
+//$this->headScript()->appendFile($this->basePath() . '/js/photo-gallery.js');
+?>
+<?
+$width = 100;
+$i = 0;
+$img = '';
+foreach ($this->select as $row) {
+    if (isset($row->image) && $row->image) {
+        if ($i == 0) {
+            $path = PUBLIC_PATH . $row->image;
+            $size = getimagesize($path);
+            if (isset($size[0]) && $size[0] && isset($size[1]) && $size[1]) {
+
+                if ((int)$size[0] > 900) {
+                    $width = 900;
+                } else {
+                    $width = (int)$size[0] - 50;
+                }
+                $img = $row->image;
+                $i++;
+            }
+        }
+    }
+} ?>
+<style>
+    .zoom {
+        display: block;
+        position: relative;
+        margin: auto;
+        }
+
+    .zoom:after {
+        content: '';
+        display: block;
+        width: 33px;
+        height: 33px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        }
+
+    .zoom img {
+        display: block;
+        }
+
+    .zoom img::selection { background-color: transparent; }
+</style>
+<div class="box-zoom-img">
+    <span class='zoom' id='ex1'>
+		<img src='<?= $img ?>' width="<?= $width ?>"/>
+	</span>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+        $('#ex1').zoom();
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

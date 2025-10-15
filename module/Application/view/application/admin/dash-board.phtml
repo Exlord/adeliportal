@@ -1,0 +1,62 @@
+<div id="system-widgets" class="row">
+    <div class="col-md-12">
+        <?
+        if (isset($this->widgets['widgets'])) {
+//    $this->body()->class[] = 'dash-board';
+//    if (!$this->loaded) {
+            $this->headScript()->prependFile($this->basePath() . '/js/widget.js');
+//            $this->headScript()->prependFile($this->basePath() . '/gridster/jquery.gridster.min.js');
+            $this->headLink()->prependStylesheet($this->basePath() . '/css/widget.css');
+//            $this->headLink()->prependStylesheet($this->basePath() . '/gridster/jquery.gridster.min.css');
+//    }
+//        if (isset($_COOKIE['widgets_order'])) {
+//            foreach (explode(',', $_COOKIE['widgets_order']) as $helper) {
+//                if (in_array($helper, $this->widgets['widgets']))
+//                    /* @var $helper callable */
+//                    echo $this->$helper();
+//            }
+//        } else
+            foreach ($this->widgets['widgets'] as $helper) {
+                /* @var $helper callable */
+                echo $this->$helper();
+            }
+            ?>
+            <script type="text/javascript">
+                <?$this->inlineScript()->captureStart();?>
+                $(document).ready(function () {
+                    System.Widgets.url = '<?=url('admin/widget-loader')?>';
+                    System.Widgets.init();
+                });
+                <?$this->inlineScript()->captureEnd();?>
+            </script>
+        <?
+        }
+        ?>
+    </div>
+    <div class="col-md-12">
+        <?
+        if (isAllowed(\Application\Module::ADMIN_CONFIGS_WIDGETS)) {
+            print $this->alert(sprintf(
+                    t('dashboard widgets can be changed throw %s'),
+                    "<strong>" . \Theme\API\Common::Link(
+                        t('Dashboard Widgets'),
+                        url('admin/configs/widgets'),
+                        array('class' => 'ajax_page_load')) . "</strong>"
+                ),
+                'alert-info');
+        }?>
+    </div>
+</div>
+<?if ($this->data) {
+    $this->headLink()->prependStylesheet($this->basePath() . '/__/css/dynamic-widget.css');
+    ?>
+    <div class="dynamic-widgets">
+        <div class="row"><?
+            foreach ($this->data as $item) {
+                print $item;
+            }
+            ?>
+        </div>
+    </div>
+<?
+}?>

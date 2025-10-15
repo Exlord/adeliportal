@@ -1,0 +1,15 @@
+<?
+if ($this->loadResources) {
+    $this->headLink()->appendStylesheet($this->basePath() . '/css/notify.css');
+    $this->headScript()->appendFile($this->basePath() . '/js/notifications.js');
+}
+?>
+<div class="notification-navbar pull-right flip header-navbar">
+    <ul class="nav navbar-nav">
+        <?= implode(PHP_EOL, $this->items) ?>
+    </ul>
+    <script>
+        if (typeof Notifications == 'undefined') var Notifications = {};
+        Notifications.url = '<?=url('admin/notify/update')?>';
+    </script>
+</div>

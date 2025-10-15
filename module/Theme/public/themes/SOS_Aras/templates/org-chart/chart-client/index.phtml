@@ -1,0 +1,52 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/orgChart/orgChart.js');
+$this->headLink()->appendStylesheet($this->basePath() . '/orgChart/html.css');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/chart.css');
+$this->headScript()->appendFile($this->basePath() . '/js/chart.js');
+$data = $this->data;
+$fieldName = $this->fieldName;
+$items = array();
+
+build_chart($items, $data, 0, $fieldName);
+
+if (isset($items['nodes']))
+    $items = $items['nodes'];
+
+function build_chart(&$output, &$parents, $parentId = 0, $fieldName)
+{
+    if (isset($parents[$parentId])) {
+        foreach ($parents[$parentId] as $node) {
+            $lvl = array();
+            $htmlNode = '';
+            foreach ($fieldName as $val) {
+                if (isset($node[$val]))
+                    $htmlNode .= '<a class="view-node-chart" data-url="' . url('app/user/user-profile', array('id' => $node['userId'])) . '" href="#" ><span>' . $node[$val] . '</span></a>';
+            }
+            $lvl['content'] = $htmlNode;
+            build_chart($lvl, $parents, $node['id'], $fieldName);
+            $output['nodes'][] = $lvl;
+        }
+    }
+}
+
+?>
+<div id="orgChart"></div>
+<div style="clear: both;"></div>
+<div class="org-chart-view-popup" style="display:none;">
+    <img src="<?= $this->basePath() . '/images/ajax-loader.gif' ?>">
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    var data = <?=json_encode($items)?>;
+    var options = {
+        renderTo: '#orgChart'
+    };
+    var chart = new OrgChart(data, options).draw();
+
+    var chartNode = {
+        imgLoading: '<?=$this->basePath().'/images/ajax-loader.gif'?>',
+        viewTypeNode: '<?=$this->viewTypeNode;?>'
+    };
+
+    <?$this->inlineScript()->captureEnd()?>
+</script>

@@ -1,0 +1,270 @@
+<?
+/* @var $renderer \Zend\View\Renderer\PhpRenderer */
+$renderer = $this;
+$renderer->layout('layout/empty');
+$basePath = $this->basePath();
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/product-category.css');
+
+$items = array();
+if ($this->selectCatItem) {
+    foreach ($this->selectCatItem as $tag) {
+        $items[$tag->id] = array(
+            'name' => \Application\API\App::prepareUrlString(t($tag->itemName)),
+            'title' => $this->escapeHtml(t($tag->itemName)),
+            'note' => $this->escapeHtml(trim(t($tag->itemText)))
+        );
+    }
+}
+//for ($i = 4; $i <= 13; $i++) {
+//    $items[$i . ''] = array(
+//        'name' => 'آیتم ' . $i,
+//        'title' => 'آیتم ' . $i,
+//        'note' => 'آیتم ' . $i,
+//    );
+//}
+
+?>
+<img src="<?=$basePath.TEMPLATE_PATH?>/images/category/category_bg.jpg" id="category-bg-image">
+<div id="round_buttons">
+    <!---------------------------- images  ----------------------------------------->
+    <img class="side-button" style="position: absolute;left:304px;bottom:3px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/basket1.png"
+         id="Btn4"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['4']['note'] ?>"
+         data-placement="auto top">
+
+    <img class="side-button" style="position: absolute;right:16px;bottom:60px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/vaiball1.png"
+         id="Btn5"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['5']['note'] ?>"
+         data-placement="auto top">
+
+    <img class="side-button" style="position: absolute;left:128px;bottom:3px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/razmi1.png"
+         id="Btn6"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['6']['note'] ?>"
+         data-placement="auto right">
+
+    <img class="side-button" style="position: absolute;right:16px;top:61px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/kuhi1.png"
+         id="Btn7"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['7']['note'] ?>"
+         data-placement="auto bottom">
+
+    <img class="side-button" style="position: absolute;right:4px;top:209px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/rahati1.png"
+         id="Btn8"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['8']['note'] ?>"
+         data-placement="auto bottom">
+
+    <img class="side-button" style="position: absolute;left:306px;top:3px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/koshti1.png"
+         id="Btn9"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['9']['note'] ?>"
+         data-placement="auto bottom">
+
+    <img class="side-button" style="position: absolute;left:15px;bottom:60px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/box1.png"
+         id="Btn10"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['10']['note'] ?>"
+         data-placement="auto bottom">
+    <img class="side-button" style="position: absolute;left:1px;top:211px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/sayer1.png"
+         id="Btn11"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['11']['note'] ?>"
+         data-placement="auto left">
+    <img class="side-button" style="position: absolute;left:129px;top:3px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/football1.png"
+         id="Btn12"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['12']['note'] ?>"
+         data-placement="auto top">
+    <img class="side-button" style="position: absolute;left:14px;top:60px;"
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/futsal1.png"
+         id="Btn13"
+         alt=""
+         data-toggle="tooltip"
+         title="<?= $items['13']['note'] ?>"
+         data-placement="auto top">
+
+    <img class="" style="position: absolute;left:130px;top:130px;"
+         id="BtnCenter"
+         alt=""
+         src="<?= $basePath . TEMPLATE_PATH ?>/images/category/center.png">
+
+
+    <img src="<?= $basePath . TEMPLATE_PATH ?>/images/category/category-bg.png"
+         usemap="#categories-map"
+         style="position:absolute;top:0;right:0;">
+    <!---------------------------- maps ----------------------------------->
+    <map id="categories-map" name="categories-map">
+        <area id="area13" shape="poly"
+              coords="140,249,18,210,33,171,56,131,93,87,126,60,201,163,177,185,161,207,148,230,140,249"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '13', 'tagName' => $items['13']['name'])) ?>"
+              alt=""/>
+        <area id="area12" shape="poly"
+              coords="303,3,303,131,275,133,246,140,222,151,205,162,130,57,171,33,217,15,264,5,303,3"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '12', 'tagName' => $items['12']['name'])) ?>"
+              alt=""/>
+        <area id="area11" shape="poly"
+              coords="18,394,139,355,131,317,132,280,138,254,16,213,3,276,3,329,18,394"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '11', 'tagName' => $items['11']['name'])) ?>"
+              alt=""/>
+        <area id="area10" shape="poly"
+              coords="124,544,200,442,173,416,153,388,140,359,19,398,39,449,69,492,100,525,124,544"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '10', 'tagName' => $items['10']['name'])) ?>"
+              alt=""/>
+        <area id="area9" shape="poly"
+              coords="307,3,307,131,335,134,363,142,385,151,403,162,479,58,438,33,391,14,347,5,307,3"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '9', 'tagName' => $items['9']['name'])) ?>"
+              alt=""/>
+        <area id="area8" shape="poly"
+              coords="590,213,470,252,477,286,476,326,470,355,591,394,603,345,605,284,600,244,590,213"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '8', 'tagName' => $items['8']['name'])) ?>"
+              alt=""/>
+        <area id="area7" shape="poly"
+              coords="483,61,406,163,430,185,455,219,469,248,590,209,569,157,538,112,511,84,483,61"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '7', 'tagName' => $items['7']['name'])) ?>"
+              alt=""/>
+        <area id="area6" shape="poly"
+              coords="301,602,302,475,259,470,227,457,204,444,129,546,166,571,216,591,262,600,301,602"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '6', 'tagName' => $items['6']['name'])) ?>"
+              alt=""/>
+        <area id="area5" shape="poly"
+              coords="589,399,469,359,455,389,432,420,408,441,484,544,527,506,564,456,580,424,589,399"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '5', 'tagName' => $items['5']['name'])) ?>"
+              alt=""/>
+        <area id="area4" shape="poly"
+              coords="480,546,404,443,371,463,342,473,306,475,305,602,361,598,422,580,457,561,480,546"
+              href="<?= url('app/product-showcase/list',
+                  array('tagId' => '4', 'tagName' => $items['4']['name'])) ?>"
+              alt=""/>
+
+
+        <area id="areaCenter" alt="" href="<?= url('app/product-showcase') ?>" coords="303,228, 165" shape="circle">
+    </map>
+    <!---------------------------- texts ----------------------------------------->
+    <div id="text4" style="position:absolute;right:85px;bottom:-17px;">
+        <span class="text"><?= $items['4']['title'] ?></span>
+    </div>
+    <div id="text5" style="position:absolute;right:-45px;bottom:77px;">
+        <span class="text"><?= $items['5']['title'] ?></span>
+    </div>
+    <div id="text6" style="position:absolute;left:85px;bottom:-17px;">
+        <span class="text"><?= $items['6']['title'] ?></span>
+    </div>
+    <div id="text7" style="position:absolute;right:-48px;top:75px;">
+        <span class="text"><?= $items['7']['title'] ?></span>
+    </div>
+    <div id="text8" style="position:absolute;right:-125px;top:290px;">
+        <span class="text"><?= $items['8']['title'] ?></span>
+    </div>
+    <div id="text9" style="position:absolute;right:85px;top:-14px;">
+        <span class="text"><?= $items['9']['title'] ?></span>
+    </div>
+    <div id="text10" style="position:absolute;left:-48px;bottom:75px;">
+        <span class="text"><?= $items['10']['title'] ?></span>
+    </div>
+    <div id="text11" style="position:absolute;left:-125px;top:290px;">
+        <span class="text"><?= $items['11']['title'] ?></span>
+    </div>
+    <div id="text12" style="position:absolute;left:85px;top:-14px;">
+        <span class="text"><?= $items['12']['title'] ?></span>
+    </div>
+    <div id="text13" style="position:absolute;left:-48px;top:75px;">
+        <span class="text"><?= $items['13']['title'] ?></span>
+    </div>
+
+    <div id="textCenter" style="position:absolute;left:142px;top:96px;width:340px;">
+        <span class="text" style="width:auto;"><?= t('To view all products click here', TEMPLATE_NAME) ?></span>
+    </div>
+    <!---------------------------- tooltips ----------------------------------------->
+
+</div>
+<script type="text/javascript">
+
+    var basePath = '<?=$basePath.TEMPLATE_PATH;?>';
+
+    $(document).ready(function () {
+
+//        var windowWith = $(window).width();
+//        var windowHeight = $(window).height();
+//
+//        var boxWodth = 610 + 120 + 120 + 20;
+//        var boxHeight = 640;
+
+        $('#round_buttons img.side-button').each(function () {
+            var img = new Image();
+            img.src = $(this).attr('src').replace('1', '2');
+        });
+
+        $('#categories-map area').hover(
+            function () {
+                var id = $(this).attr('id');
+                if (id != 'areaCenter') {
+                    id = id.replace('area', 'Btn');
+                    var img = $('#' + id);
+                    var src = img.attr('src');
+                    img.attr('src', src.replace('1', '2')).addClass('map-hover');
+//                    $(img).tooltip('show');
+                    id = id.replace('Btn', 'text');
+                    $('#' + id + ' .text').css('display', 'block');
+                } else {
+                    $('#BtnCenter').addClass('center-hover');
+                    $('#textCenter .text').css('display', 'block');
+                }
+            }, function () {
+                var id = $(this).attr('id');
+                if (id != 'areaCenter') {
+                    id = id.replace('area', 'Btn');
+                    var img = $('#' + id);
+                    var src = img.attr('src');
+                    img.attr('src', src.replace('2', '1')).removeClass('map-hover');
+//                    $(img).tooltip('hide');
+                    id = id.replace('Btn', 'text');
+                    $('#' + id + ' .text').css('display', 'none');
+                } else {
+                    $('#textCenter .text').css('display', 'none');
+                    $('#BtnCenter').removeClass('center-hover');
+                }
+            }
+        );
+//        $('img').tooltip({
+////            container: 'body'
+//        }).on('show.bs.tooltip', function () {
+//            console.log('show.bs.tooltip')
+//        });
+
+        if (document.documentElement.attachEvent) {
+            document.documentElement.attachEvent('onmousedown', function () {
+                event.srcElement.hideFocus = true
+            });
+        }
+    });
+</script>

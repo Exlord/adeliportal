@@ -1,0 +1,89 @@
+<div id="comment_<?= $this->row['id'] ?>" class="comment-div">
+    <?
+    if (isCurrentUser($this->row['userId'])) {
+        ?>
+
+        <a href="#delete" data-icon-p="ui-icon-trash" class="button delete-comment"
+           data-id="<?= $this->row['id'] ?>"><?= t('Delete') ?></a>
+
+    <? } ?>
+    <?
+    if (current_user()->id && $this->showButtons) {
+        ?>
+        <?= $this->negative_positive($this->row['id'], \Comment\Module::ENTITY_TYPE) ?>
+    <? } ?>
+    <div>
+        <a class="comment-username" href="<?= url('app/user/user-profile', array('id' => $this->row['userId'])) ?>">
+            <?= $this->escapeHtml($this->row['name']) ?>
+        </a>
+        <span class="line"> | </span>
+        <span class="comment-date"> <?= $this->dateFormat($this->row['created']) ?></span>
+    </div>
+    <?
+    if (!empty($this->row['image'])) {
+        $file_path_resize = getThumbnail()->thumbnail($this->row['image'], 80, 80);
+        $file_path_base = $this->basePath() . $this->row['image'];
+    } else {
+        $file_path_resize = getThumbnail()->thumbnail($this->basePath() . '/images/not-image.png', 80, 80);
+        $file_path_base = $this->basePath() . '/images/not-image.png';
+    }
+    ?>
+    <div class="comment-image">
+        <a class="colorbox" href="<?= $file_path_base ?>">
+            <img class="img-comment-image" src="<?= $file_path_resize ?>" alt="">
+        </a>
+    </div>
+
+
+    <p class="comment-body">
+        <?= $this->escapeHtml($this->row['comment']) ?>
+    </p>
+
+    <div style="clear: both"></div>
+    <?
+    if (current_user()->id) {
+        ?>
+        <div class="comment-buttons">
+                <span class="span-new-reply">
+                <a href="#reply" id="newReply" class="new-reply" data-id="<?= $this->row['id'] ?>"><?= t('Reply') ?></a>
+                </span>
+            <?
+            if ($this->showButtons) {
+                if ($this->row['count']) {
+                    ?>
+                    <span class="span-replies">
+                    <a href="#replies" data-id="<?= $this->row['id'] ?>" class="replies">
+                        <?= t('Replies') ?>
+                        ( <span class="count-reply"><?= $this->row['count'] ?></span> )
+                    </a>
+                        </span>
+                <?
+                }
+                if ($this->row['parentId']) {
+                    ?>
+                    <span class="span-reply-to">
+                    <a href="#in-reply-to" class="replied-to"
+                       data-id="<?= $this->row['id'] ?>"><?= t('In Reply To') ?></a>
+                        </span>
+                <?
+                }
+                if ($this->row['count']) {
+                    ?>
+                    <div style="display: none" id="showReply<?= $this->row['id'] ?>" class="show-reply"></div>
+                <?
+                }
+                if ($this->row['parentId']) {
+                    ?>
+                    <div style="display: none" id="showReplyTo<?= $this->row['id'] ?>" class="show-reply-to"></div>
+                <? }
+            } ?>
+        </div>
+    <? } else { ?>
+        <div class="user-register">
+            <?= t('You must be logged in to comment your user panel.') ?>
+            <a target="_blank" href="<?= url('app/user/register') ?>">
+                <?= t('Click here to register') ?>
+            </a>
+        </div>
+    <? } ?>
+</div>

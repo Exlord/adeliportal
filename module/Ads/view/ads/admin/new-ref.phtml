@@ -1,0 +1,35 @@
+<?
+if ($this->form) {
+    //$this->headScript()->appendFile($this->basePath() . '/__/js/filter-fields.js');
+    ?>
+    <div class="col-md-12">
+        <div class="row">
+            <h3 class="page-title">
+                <?= $this->translate('ADS_REF'); ?>
+            </h3>
+            <?
+            $form = $this->form;
+            $form->prepare();
+            echo $this->form()->openTag($form);
+           // echo $this->formRow($form->get('adId'));
+            ?>
+            <div class="col-md-6">
+                <p class="text text-muted">
+                    <?=t('ADS_REF_ROLE_DESC')?>
+                </p>
+                <?= $this->formRow($form->get('roleId')); ?>
+            </div>
+            <div class="col-md-6">
+                <p class="text text-muted">
+                    <?=t('ADS_REF_USER_DESC')?>
+                </p>
+                <?= $this->formRow($form->get('userId')); ?>
+            </div>
+            <div style="clear:both"></div>
+            <?
+            echo $this->iptFormCollection($form->get('buttons'));
+            echo $this->form()->closeTag();
+            ?>
+        </div>
+    </div>
+<? } ?>

@@ -1,0 +1,57 @@
+<?
+$file_path = false;
+if (isset($this->row['image']))
+    $file_path = getThumbnail()->thumbnail($this->row['image'], 100, 100);
+
+$userDisplayName = getUserDisplayName($this->row);
+$id = $this->row['id'];
+$owner = $this->row['owner'];
+?>
+<div class="media <?= $this->cycle(array("row-odd", "row-even"))->next() ?>" id="note-<?= $id ?>">
+    <? if ($file_path) { ?>
+        <a target="_blank" class="pull-left flip"
+           href="<?= url('app/user/user-profile', array('id' => $owner)) ?>">
+            <img class="media-object" src="<?= $file_path ?>" alt="<?= $userDisplayName ?>">
+        </a>
+    <? } ?>
+
+    <div class="media-body">
+        <div class="note-commands btn-group-vertical pull-right flip">
+            <?
+            $currentUserId = current_user()->id;
+            if (isAllowed(\Note\Module::NOTE_EDIT_ALL) || ($currentUserId == $owner && isAllowed(\Note\Module::NOTE_EDIT))) {
+                print \Theme\API\Common::Link("<span class='glyphicon glyphicon-edit'></span>",
+                    '',
+                    array(
+                        'class' => array('btn btn-default btn-sm edit-note'),
+                        'data-url' => url('admin/note/edit', array('id' => $id))
+                    )
+                );
+            }
+            if (isAllowed(\Note\Module::NOTE_DELETE_ALL) || ($currentUserId == $owner && isAllowed(\Note\Module::NOTE_DELETE))) {
+                print \Theme\API\Common::Link("<span class='glyphicon glyphicon-remove text-danger'></span>",
+                    '',
+                    array(
+                        'class' => array('btn btn-default btn-sm delete-note'),
+                        'data-id' => $id,
+                        'data-url' => url('admin/note/delete')
+                    )
+                );
+            }
+            ?>
+        </div>
+        <blockquote>
+            <p class="note-text"><?= $this->escapeHtml($this->row['note']) ?></p>
+            <footer>
+                <span dir="rtl"><?= t('Written by') ?></span>
+                <a target="_blank" dir="rtl"
+                   href="<?= url('app/user/user-profile', array('id' => $owner)) ?>">
+                    <?= $userDisplayName ?>
+                </a> -
+                <span
+                    dir="rtl"><?= \Localization\API\Date::formatInterval((int)$this->now - (int)$this->row['date']) . ' ' . t('LOCALIZATION_TIME_AGO') ?></span>
+                <? //t('DATE_AT') . ' ' .?>
+            </footer>
+        </blockquote>
+    </div>
+</div>

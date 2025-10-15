@@ -1,0 +1,26 @@
+.articles #comments-wrapper{background:#f5f5f5; border:1px solid #dcdcdc; display:block; padding:10px; margin-bottom:5px; position:relative;}
+#comments-wrapper h3{font-family:BYekan;font-size:10pt;border-bottom:solid 1px #288032;margin:0;}
+.comment-div{ border: 1px solid #dddddd; padding: 5px; margin: 12px 5px 5px; border-radius: 5px; position:relative;}
+.comment-div img{cursor: pointer;}
+.comment-username{color: #000000; font-size: 12pt; font-weight: bold; padding-right: 15px; padding-bottom: 15px; padding-top: 15px; font-family:BYekan; padding-left: 3px;}
+.comment-username:hover{color: #595959;font-size: 12pt;font-weight: bold; padding-right: 15px; padding-bottom: 15px; padding-top: 15px;padding-left: 3px; font-family:BYekan;}
+.new-reply,.replies,.replied-to,.edit-comment-text,.delete-comment,.comment_text_edit,.comment_text_cancel{ padding:3px 8px; background:#1e90ff; color:#f0f0f0;
+    margin:2px; font-size:10pt; position:relative; cursor:pointer; display:inline-block; }
+/*.new-reply,.replies,.replied-to,.edit-comment-text,.delete-comment{ color:#ffffff; }*/
+.new-reply:hover,.replies:hover,.reply-to:hover,.edit-comment-text:hover,.delete-comment:hover,.comment_text_edit:hover,.comment_text_cancel:hover{ background:#3e9615; }
+.line{font-size: 12pt;font-weight: bold;}
+.comment-date{color: #808080;font-size: 9pt;margin-right: 2px;}
+.comment-image{padding: 10px; width: 100px;float: right;}
+.img-comment-image{border-radius: 8px;border-top-left-radius: 30px;margin: auto;}
+.comment-body{font-family:BYekan; font-size: 12pt; text-align: right; }
+.user-register{color: #808080;font-size: 9pt;margin-right: 2px;}
+#openComment,#load-more-comments{ display:inline; padding:4px 25px; background:#3e9615; color:#f0f0f0; margin:20px; font-size:10pt; position:relative; cursor:pointer;}
+#openComment:hover,#load-more-comments:hover{ background:#1e90ff;}
+#comments{margin-top: 10px; color: #686868;font-family: tahoma;font-size: 9pt;}
+.footer-wrapper{border-top:solid 1px #288032;}
+.icon-ajax-loader{width:100%; height:100%; background:url(../images/ajax_loader_tiny.gif) no-repeat center center #ffffff; display:block; position:absolute; top:0px; right:0px;}
+.back-comment-1{background-color:#E5E8E8}
+.back-comment-2{background-color:#FFFFF4}
+.attach-open-icon{background: url(../images/attach.png) no-repeat center center ; width:20px; height:20px; display:inline-block; position:absolute; top:-9px; right:-9px;}
+.attach-close-icon{background: url(../images/attach-close.png) no-repeat center center ; width:20px; height:20px; display:inline-block; position:absolute; top:-9px; right:-9px;}
+.comment-buttons{padding-bottom:5px;}

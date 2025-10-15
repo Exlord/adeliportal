@@ -1,0 +1,16 @@
+<div>
+    <h3 class="page-title"><?= t('New Account Type') ?></h3>
+
+    <p class="description">
+        <?= t('Choose witch type of account do you want to create ?') ?>
+    </p>
+
+    <ul>
+        <?foreach ($this->roles as $role) {
+            ?>
+            <li><a
+                href="<?= url('app/user/register', array('roleId' => $role['id'], 'roleName' => \Application\API\App::prepareUrlString($role['roleName']))) ?>"><?= t($this->escapeHtml($role['roleName'])) ?></a>
+            </li><?
+        }?>
+    </ul>
+</div>

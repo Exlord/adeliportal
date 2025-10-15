@@ -1,0 +1,255 @@
+<?
+//$content = \Theme\API\Themes::renderLayout($this);
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    )
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie8.css',
+        'screen',
+        'lt IE 9'
+    );
+
+if ($direction == 'rtl')
+    $this->headLink()->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-rtl.min.css');
+
+$this->headLink()
+    ->prependStylesheet($basePath . '/select2/select2-bootstrap.css')
+    ->prependStylesheet($basePath . '/select2/select2.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-theme.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap.min.css')
+//    ->prependStylesheet($basePath . '/css/base-theme/jquery-ui-1.10.1.custom.min.css')
+//    ->prependStylesheet($basePath . TEMPLATE_PATH .'/css/jquery-ui-bootstrap/jquery.ui.theme.css')
+//    ->prependStylesheet($basePath . TEMPLATE_PATH .'/css/jquery-ui.structure.min.css')
+    ->prependStylesheet($basePath . '/css/system.css');
+
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/select2/select2.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+//    ->prependFile($basePath . '/js/jquery.ui.datepicker-cc-fa.js')
+//    ->prependFile($basePath . '/js/jquery.ui.datepicker-cc.js')
+//    ->prependFile($basePath . '/js/calendar.js')
+//    ->prependFile($basePath . '/js/jquery-ui-1.10.4.custom.min.js')
+//    ->prependFile($basePath . TEMPLATE_PATH . '/js/jquery-ui.min.js')
+    ->prependFile($basePath . TEMPLATE_PATH . '/js/bootstrap.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    )
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/html5shiv.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+
+//---------------------------------- BLOCKS -----------------------------------------------//
+$top_main_menu_1 = $this->blocks('top_main_menu_1');
+$top_main_menu_2 = $this->blocks('top_main_menu_2');
+$top_fav_menu = $this->blocks('top_fav_menu');
+$before_main_content = $this->blocks('before_main_content');
+$after_main_content = $this->blocks('after_main_content');
+$header = $this->blocks('header');
+$footer = $this->blocks('footer');
+$col_right = $this->blocks('col_right');
+$col_left = $this->blocks('col_left');
+$user_block = $this->user_logged_in_block();
+$mainColSize = 12;
+if ($col_left && $col_right)
+    $mainColSize = 6;
+if ($col_right || $col_left)
+    $mainColSize = 9;
+
+?>
+
+<!DOCTYPE html>
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<body>
+<div id="container">
+    <div id="body" class="main_body">
+        <div class="container-fluid my_container">
+            <div class="row">
+                <div class="col-md-7">
+                    <a href="<?= url('app/front-page') ?>">
+                        <span class="main_logo_site"></span>
+                    </a>
+                </div>
+                <div class="col-md-5 zero_padding">
+                    <? if ($top_main_menu_1) { ?>
+                        <div class="col-md-12 zero_padding">
+                            <?= $top_main_menu_1 ?>
+                        </div>
+                    <? } ?>
+                    <div style="clear: both"></div>
+
+                    <? if ($top_fav_menu) { ?>
+                        <div class="col-md-5 zero_padding">
+                            <?= $top_fav_menu ?>
+                        </div>
+                    <? } ?>
+                    <div class="col-md-7 zero_padding login_btn">
+                        <? if (!$user_block) { ?>
+                            <div class="col-md-12 zero_padding register_btn">
+                                <a class="login_img" href="<?= url('app/user/register') ?>"></a>
+                                <a href="<?= url('app/user/login') ?>" class="register_img"></a>
+                            </div>
+                        <? } ?>
+                        <?
+                        if ($user_block) {
+                            echo $user_block;
+                            if (isAllowed(\Application\Module::ADMIN)) {
+                                ?>
+                                <div class="col-xs-12 col-sm-8 col-md-8 zero_padding">
+                                    <a href='<?= url('admin') ?>' title="<?= t('Administration') ?>" class="admin">
+                                        <button class="btn btn-default">
+                                            <span class="glyphicon glyphicon-home text-success"></span>
+                                            دنیای مطلوب
+                                            <?
+                                            $nameUser = getUserDisplayName(current_user());
+                                            if (strlen($nameUser) > 12)
+                                                echo substr($nameUser, 0, 12) . ' ...';
+                                            else
+                                                echo $nameUser;
+                                            ?>
+                                        </button>
+                                    </a>
+                                </div>
+                            <?
+                            }
+                        } ?>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <? if ($top_main_menu_2) { ?>
+                        <?= $top_main_menu_2 ?>
+                    <? } ?>
+                </div>
+
+
+                <? if ($before_main_content) { ?>
+                    <div class="col-md-12 before_main_content">
+                        <?= $before_main_content ?>
+                    </div>
+                <? } ?>
+
+                <? if ($col_left) { ?>
+                    <div class="col-md-3">
+                        <?= $col_left ?>
+                    </div>
+                <? } ?>
+
+                <div class="col-md-<?= $mainColSize ?>">
+                    <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+                    <?= $this->content ?>
+                </div>
+
+                <? if ($col_right) { ?>
+                    <div class="col-md-3">
+                        <?= $col_right ?>
+                    </div>
+                <? } ?>
+
+                <? if ($after_main_content) { ?>
+                    <div class="col-md-12 after_main_content">
+                        <?= $after_main_content ?>
+                    </div>
+                <? } ?>
+            </div>
+        </div>
+        <div class="container-fluid footer sticky-bottom sticky-bottom-main">
+            <div class="row position_relative">
+                <div class="col-md-6">
+                    <div class="box_sharing_menu">
+                        <ul class="navigation">
+                            <li>
+                                <a href="http://donyayematloob.com/fa/contact">
+                                    <span class="sh_address sh_img_menu"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://ir.linkedin.com/in/qualityworld">
+                                    <span class="sh_linkedin sh_img_menu"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.facebook.com/pages/Quality-world/1456285227928410">
+                                    <span class="sh_facebook sh_img_menu"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/donyayematloob">
+                                    <span class="sh_twitter sh_img_menu"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="sh_instagram sh_img_menu"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box_footer_address">
+                        <span class="arrow_footer_add"></span>
+                        <span class="text_footer_add">
+                            تبریز ، ابتدای 17 شهریور جدید ، مابین تقاطع شریعتی و طالقانی ، جنب داروخانه سپیده ، ساختمان 222 ، طبقه دوم. شماره تماس : 35575985 - 041
+                        </span>
+                    </div>
+                </div>
+                <div class=" col-md-12">
+                    <div class="copy_right">
+                        <?
+                        $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                        $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                        $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                        ?>
+                        <!--<p align="center">
+                            <? /*= t('APPLICATION_BROWSERS') */ ?>
+                        </p>-->
+                        <p align="center">
+                            <span><?= sprintf(t('APPLICATION_RIGHTS'), 'دنیای مطلوب') ?></span>
+                                    <span
+                                        dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                            &nbsp; .
+                            <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                            <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<div>
+    <h3><?=sprintf($this->translate('Are you sure you want to delete User Role %s with ID:%s ?'),
+        "<em>" . $this->roll->roleName . "</em>",
+        "<em>" . $this->roll->id . "</em>")?>
+    </h3>
+
+    <div>
+        <form method="post" action="<?=$this->url(
+            'admin/users/role/delete',
+            array('id' => $this->roll->id))?>">
+            <input class="button yes_button" type="submit" name="submit" value="<?=$this->translate('Yes')?>">
+            <input class="button no_button" type="submit" name="cancel" value="<?=$this->translate('No')?>">
+        </form>
+    </div>
+</div>

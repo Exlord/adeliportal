@@ -1,0 +1,118 @@
+<?
+$basePath = $this->basePath();
+$this->headScript()
+    ->prependFile($basePath . TEMPLATE_PATH . '/js/jquery.simpleWeather.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    )
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/html5shiv.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/intro.css');
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head(false) ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <style>
+
+    </style>
+    <?= $this->headScript() ?>
+</head>
+<body>
+<div id="top-text">
+    <span style="color:#a90000;">
+    تاریخ :
+        </span>
+    <?= dateFormat(time()); ?>
+    &nbsp;&nbsp;&nbsp;
+    <span style="color:#a90000;">
+    ساعت :
+        </span>
+    <span id="clock"></span>
+    &nbsp;&nbsp;&nbsp;
+    <span style="color:#a90000;">
+    دمای تبریز :
+        </span>
+    <span id="weather"></span>
+    درجه
+</div>
+<div id="middle-content">
+    <img src="<?= $basePath . TEMPLATE_PATH . '/images/intro/logo.png' ?>">
+</div>
+<div id="langs_container">
+    <div id="lang_fa">
+        <a href="<?= url('app/front-page', array('lang' => 'fa')) ?>"></a>
+    </div>
+    <div id="lang_en">
+        <a href="<?= url('app/front-page', array('lang' => 'en')) ?>"></a>
+    </div>
+
+</div>
+<script>
+    function resize() {
+        var h = parseInt($(window).height()) - 158 - 60;
+        $('#middle-content').css({'height': h});
+        $('#middle-content img').css('margin-top', 0);
+        var imgH = 329;
+        if (h > imgH) {
+            var margin = parseInt((h - imgH) / 2);
+            $('#middle-content img').css('margin-top', margin);
+        }
+    }
+    $(document).ready(function () {
+
+        resize();
+        $(window).resize(function () {
+            resize();
+        });
+
+        startTime();
+
+        $.simpleWeather({
+//            location: 'Tabriz, Iran',
+            woeid: '2255239',
+            unit: 'c',
+            success: function (weather) {
+                $("#weather").html(weather.temp);
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    });
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        $('#clock').html(h + ":" + m + ":" + s);
+        var t = setTimeout(function () {
+            startTime()
+        }, 1000);
+        today = h = m = s = null;
+    }
+
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i
+        }
+        // add zero in front of numbers < 10
+        return i;
+    }
+</script>
+</body>
+</html>

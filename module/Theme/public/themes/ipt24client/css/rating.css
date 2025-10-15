@@ -1,0 +1,4 @@
+#thumb-icon-up{background-image: url(../images/Thumbs_up.png); width: 18px; height: 18px; background-repeat: no-repeat; cursor: pointer; display: block;}
+#thumb-icon-down{background-image: url(../images/Thumbs_down.png); width: 18px; height: 18px; background-repeat: no-repeat;cursor: pointer; display: block;}
+.rate-sum-div{display: block; padding: 3px;}
+.rate-sum,.txt-rate-sum{color: #808080; font-family: BYekan; margin: 2px}

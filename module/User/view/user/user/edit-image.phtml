@@ -1,0 +1,38 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/user-admin.css');
+\JQuery\API\JQuery::loadColorBox($this);
+?>
+<div class="row">
+    <div class="col-md-3">
+        <?
+        echo $this->partial('user/user/user-toolbar', array('userId' => $this->user->userId, 'flag' => true));
+        ?>
+    </div>
+    <div class="col-md-9">
+        <h3 class="page-title">
+            <?
+            echo sprintf($this->translate("Edit %s's Image"), "<span class='user-name-title emphasize '>" . $this->user->username . "</span>");
+            ?>
+        </h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <? print $this->form($this->form); ?>
+            </div>
+            <div class="col-md-6">
+                <? if (!empty($this->user->image)) {
+                $file_path = getThumbnail()->thumbnail($this->user->image, 250, 250);
+                ?>
+
+                <div class="user-profile-image pull-right flip">
+                    <a class="colorbox" href="<?= $this->basePath() . $this->user->image ?>">
+                        <img
+                            src="<?= $this->basePath() . $file_path ?>"
+                            alt="<?= getUserDisplayName($this->user) ?>">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <? } ?>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+.star-rater, .star-rater *{ direction:ltr !important; }
+.icon-plus{ vertical-align:middle; width:20px; height:20px; background:url(../images/icon-plus.png) no-repeat center center; cursor:pointer; display:inline-block; }
+.icon-minus{ vertical-align:middle; width:20px; height:20px; background:url(../images/icon-minus.png) no-repeat; cursor:pointer; display:inline-block; }
+.rate-sum-div{ display:inline-block; direction:ltr; }
+.rate-sum, .txt-rate-sum{ color:#808080; font-family:BYekan; direction:ltr !important; }
+.NP-div{ float:left; display:inline-block; }
+.np-disabled{ cursor:default !important; opacity:0.4; filter:alpha(opacity=40); /* For IE8 and earlier */ -moz-opacity:0.6; /* Netscape */ -khtml-opacity:0.6; /* Safari 1.x */ }
+.user-vote{ font-family:BYekan; font-size:8pt; padding-top:5px; width:100%; }
+.star-rater{ width:230px; padding-right:30px; position:relative; }
+.star-rating{ direction:ltr; }
+.rating-hint{ width:15px; position:absolute; height:15px; right:0; top:0; color:#808080; }

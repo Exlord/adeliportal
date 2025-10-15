@@ -1,0 +1,119 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/online-order-admin.css');
+
+?>
+<input type="button" value="show info for edit" id="showInfoEdit"/>
+<input type="button" value="Confirmation" id="Confirmation"/>
+<a target="_blank" href="<?=$this->routePrint?>">Print Contract</a>
+<style>
+
+    .div-item-active {
+        border: 1px solid #ffffff;
+        background-color: #FFA54E;
+        border-radius: 8px;
+        line-height: 30px;
+    }
+
+</style>
+<?
+
+$formCustomer = $this->form;
+$formCustomer->prepare();
+echo $this->form()->openTag($formCustomer);
+echo $this->iptFormRow($formCustomer->get('idGroup'));
+?>
+<div align="center">
+    <?  echo $this->formRow($formCustomer->get('resultPrice'));
+    echo $this->formRow($formCustomer->get('resultPriceLang'));
+    echo $this->formRow($formCustomer->get('sumResultPrice')); ?>
+
+</div>
+<div id="items">
+    <?
+    echo $this->iptFormCollection($formCustomer->get('itemCustomer'));
+    ?>
+</div>
+<div id="langs">
+    <?
+    echo $this->formCollection($formCustomer->get('langCustomer'));
+    echo $this->iptFormRow($formCustomer->get('others'));
+    echo $this->iptFormRow($formCustomer->get('date'));
+    echo $this->iptFormRow($formCustomer->get('csrf_customer_form'));
+    echo $this->iptFormRow($formCustomer->get('supportPer'));
+    echo $this->iptFormRow($formCustomer->get('namePer'));
+    echo $this->iptFormRow($formCustomer->get('nameCompanyPer'));
+    echo $this->iptFormRow($formCustomer->get('emailPer'));
+    echo $this->iptFormRow($formCustomer->get('phonePer'));
+    echo $this->iptFormRow($formCustomer->get('mobilePer'));
+    echo $this->iptFormRow($formCustomer->get('addressPer'));
+    echo $this->iptFormRow($formCustomer->get('commentPer'));
+    echo $this->iptFormRow($formCustomer->get('domainName'));
+    echo $this->iptFormRow($formCustomer->get('domainType'));
+    echo $this->iptFormRow($formCustomer->get('typePayment'));
+    echo $this->iptFormRow($formCustomer->get('infoPayment'));
+    echo $this->iptFormRow($formCustomer->get('end4CardNumber'));
+    echo $this->iptFormRow($formCustomer->get('datePayment'));
+    echo $this->iptFormRow($formCustomer->get('seryalPayment'));
+    echo $this->iptFormRow($formCustomer->get('factorNumber'));
+    echo $this->iptFormRow($formCustomer->get('refCode'));
+
+
+    ?>
+</div>
+<div id="message">
+    <? echo $this->iptFormRow($formCustomer->get('submit-create')); ?>
+</div>
+<?
+echo $this->form()->closeTag();
+?>
+<script>
+    $(document).ready(function () {
+        $('#items input[class=el-ch]:not(:checked)').each(function () {
+            $(this).parent().hide();
+        });
+
+        $('#items input[class=el-tx]').each(function () {
+            if ($(this).val() == '0')
+                $(this).parent().hide();
+        });
+
+        $('#showInfoEdit').click(function () {
+            $('#items input[class=el-ch]:not(:checked)').each(function () {
+                $(this).parent().slideToggle(1000);
+            });
+
+            $('#items input[class=el-tx]').each(function () {
+                if ($(this).val() == '0')
+                    $(this).parent().slideToggle(1000);
+            });
+        });
+
+        $('#Confirmation').click(function () {
+
+            if ($('#domainName').val() == "") {
+                 alert("Domain Is Empty");
+            }
+            else {
+                var data = {};
+                data['domainName'] = $('#domainName').val();
+                data['domainType'] = $('#domainType').val();
+
+                var url = '<?=$this->routeAdd?>';
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    complete: function () {
+
+                    },
+                    success: function (data) {
+                      alert("Confirmation Success");
+                    },
+                    error: __ajaxError
+                });
+            }
+        });
+
+    });
+</script>

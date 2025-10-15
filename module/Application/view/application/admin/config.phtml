@@ -1,0 +1,147 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/delete-config-img.js');
+$imageFav = '';
+$imageLogo = '';
+if ($this->imageFavIcon)
+    $imageFav = '<img src=' . $this->imageFavIcon . ' >';
+if ($this->imageAdminLogo)
+    $imageLogo = '<img src=' . $this->imageAdminLogo . ' >';
+?>
+<style>
+    #browser-options .file{ width:300px; display:inline-block; }
+    #browser-options .box-image-fav-icon{ width:300px; display:inline-block; }
+</style>
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('System Settings'); ?>
+    </h3>
+
+    <?
+    $form = $this->form;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <div id="system-config-tabs">
+        <ul>
+            <li><a href="#tab-site-options"><?= t('Routes') ?></a></li>
+            <li><a href="#tab-header-options"><?= t('Site Title') ?></a></li>
+            <li><a href="#tab-browser-options"><?= t('Browser') ?></a></li>
+            <li><a href="#tab-meta"><?= t('Meta Tags') ?></a></li>
+            <li><a href="#tab-db-backups"><?= t('Database Backup') ?></a></li>
+        </ul>
+        <div id="tab-site-options">
+            <div id="site-options">
+                <?
+                echo $this->formRow($form->get('default_route'));
+                echo $this->formRow($form->get('intro'));
+                if ($form->has('domains')) {
+                    ?>
+                    <fieldset>
+                        <legend><?= t('Domains') ?></legend>
+                        <div id="domains-config-tabs">
+                            <ul>
+                                <?
+                                foreach ($form->get('domains')->getFieldsets() as $domain) {
+                                    ?>
+                                    <li><a href="#<?= $domain->getName() ?>"><?= $domain->getLabel() ?></a></li>
+                                    <?
+                                    $domain->setLabel('');
+                                }
+                                ?>
+                            </ul>
+                            <?
+                            foreach ($form->get('domains')->getFieldsets() as $domain) {
+                                ?>
+                                <div id="<?= $domain->getName() ?>">
+                                    <?= $this->formCollection($domain) ?>
+                                </div>
+                            <?
+                            }
+                            ?>
+                        </div>
+                    </fieldset>
+                <?
+                }
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-header-options">
+            <div id="header-options">
+                <?
+                echo $this->formRow($form->get('siteTitle'));
+                echo $this->formRow($form->get('siteSubTitle'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-browser-options">
+            <div id="browser-options">
+                <?
+                echo $this->formRow($form->get('favIcon'));
+                if (!empty($imageFav)) {
+                    ?>
+                    <div class="box-image-fav-icon">
+                        <a class="image-fav-icon-preview" href="#preview"
+                           data-tooltip="<?= $imageFav ?>"><?= t('Preview') ?></a>
+                        <a class="image-fav-icon-delete" href="#delete"><?= t('Delete') ?></a>
+                    </div>
+                <?
+                }
+                echo $this->formRow($form->get('favIconUrl'));
+
+                echo $this->formRow($form->get('browserTitle'));
+
+                echo $this->formRow($form->get('adminLogo'));
+                if (!empty($imageLogo)) {
+                    ?>
+                    <div class="box-image-admin-logo">
+                        <a class="image-admin-logo-preview" href="#preview"
+                           data-tooltip="<?= $imageLogo ?>"><?= t('Preview') ?></a>
+                        <a class="image-admin-logo-delete" href="#delete"><?= t('Delete') ?></a>
+                    </div>
+                <?
+                }
+                echo $this->formRow($form->get('adminLogoUrl'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-meta">
+            <div id="meta">
+                <?
+                echo $this->formRow($form->get('description'));
+                echo $this->formRow($form->get('keywords'));
+                ?>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="tab-db-backups">
+            <div class="row">
+                <div class="col-md-6">
+                    <?
+                    print $this->formRow($form->get('newDbBackupInterval'));
+                    print $this->formRow($form->get('dbBackupCleanupInterval'));
+                    print $this->formRow($form->get('dbBackupMaxCount'));
+                    print $this->formRow($form->get('dbBackupMaxSize'));
+                    ?>
+                </div>
+                <div class="col-md-6">
+                    <? print $this->partial('application/db-backup/notice'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?
+    echo $this->iptFormCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<script>
+    var urlDeleteFavIcon = '<?=url('admin/configs/system/delete-fav-icon')?>';
+    var urlDeleteAdminLogo = '<?=url('admin/configs/system/delete-admin-logo')?>';
+    $(document).ready(function () {
+        $('#system-config-tabs').tabs();
+        $('#domains-config-tabs').tabs();
+    });
+</script>

@@ -1,0 +1,7 @@
+<?return array(
+    'PERM_User' => 'Members',
+    'User_accountNotVerified' => 'User_accountNotVerified',
+    'LOGIN_LINK' => "Login",
+    'REGISTER_LINK' => 'Register',
+    'USER_NOT_APPROVED'=>'USER_NOT_APPROVED',
+);

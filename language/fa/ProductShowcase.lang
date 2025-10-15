@@ -1,0 +1,19 @@
+<?
+return array(
+    'PS_PRODUCT_SHOWCASE' => 'ویترین محصولات',
+    'PERM_ProductShowcase' => 'ویترین محصولات',
+    'PS_NEW_PRODUCT_SHOWCASE' => 'ثبت محصول ویترین جدید',
+    'PS_NEW_SUCCESS' => 'محصول ویترین شما با موفقیت در سیستم ثبت شد .',
+    'PS_ALERT_CREATE_CATEGORY' => 'برای ورود به صفحه ثبت محصول ویترین جدید ابتدا باید از قسمت دسته بندی ها یک دسته بندی با نام ماشینی %s  ایجاد نمایید .',
+    'PS_INFO_BASE' => 'اطلاعات پایه',
+    'PS_NOT_CATEGORIES_ITEM' => 'دسته بندی وجود ندارد .',
+    'PS_NOT_ITEMS' => 'محصولی موجود نمی باشد .',
+    'Item with requested id not found' => 'موردی با شناسه درخواستی یافت نشد',
+    'PS_AD_TO_BUY' => 'این محصول با موفقیت به سبد خرید شما اضافه شد .',
+    'PS_CART_EMPTY' => 'هیچ محصولی در سبد خرید شما وجود ندارد . ',
+    'PS_NEW_CART_SUCCESS_WITH_CODE' => 'سفارش محصول شما با کد %s به طور کامل در سیستم ثبت شد . ',
+    'translate product showcase static fields' => 'ترجمه فیلدهای ثابت محصولات ویترین',
+    'Product Showcase Fields' => 'فیلدهای محصولات ویترین',
+    'translate product showcase dynamic fields' => 'ترجمه فیلدهای داینامیک محصولات ویترین',
+    'Product Showcase' => 'ویترین محصولات',
+);

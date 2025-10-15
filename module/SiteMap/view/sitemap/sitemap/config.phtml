@@ -1,0 +1,35 @@
+<div>
+    <h3 class="page-title">
+        <?= t('Sitemap Configs') ?>
+    </h3>
+
+    <?
+    $this->form->prepare();
+    print $this->form()->openTag($this->form);
+
+    $headers = array(t('Modules'), t('Xml'), t('Html'),t('SITEMAP_FREQ'));
+    $rows = array();
+    $modules = $this->form->get('modules');
+    foreach ($modules->getFieldsets() as $module) {
+
+        foreach ($module->getFieldsets() as $section) {
+
+            $row = array();
+            $row[] = t($module->getLabel()) . ' » ' . t($section->getLabel());
+            $row[] = $this->formCheckbox($section->get('xml'));
+            $row[] = $this->formCheckbox($section->get('html'));
+            $row[] = $this->formText($section->get('freq'));
+            $rows[] = $row;
+        }
+    }
+
+    ?>
+    <div class="table-responsive">
+        <? echo \Theme\API\Table::Table($headers, $rows, array('class' => 'table table-striped table-hover table-condensed')); ?>
+    </div>
+    <?
+
+    print $this->formCollection($form->get('buttons'));
+    print $this->form()->closeTag();
+    ?>
+</div>

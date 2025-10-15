@@ -1,0 +1,7 @@
+#notes-list{ margin-top:5px; max-height:500px; overflow-y:auto; }
+#notes-list blockquote{ font-size:15px; margin-bottom:0; }
+#notes-list .media{ padding:4px; border-bottom:solid #dddddd 2px; position:relative; }
+#notes-list .media.row-odd{ background:#f9f9f9; }
+#notes-list .media:hover{ background:#f5f5f5; }
+#notes-list .note-commands{ width:35px; display:none; }
+#notes-list .media-body{ position:relative; }

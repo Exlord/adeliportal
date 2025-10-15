@@ -1,0 +1,209 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/user-admin-permission.js');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/user-admin.css');
+$perms_json = array();
+$perm_index = 0;
+?>
+<div>
+    <a class="toolbar-button btn btn-default ajax_page_load"
+       href="<?= $this->url('admin/users/permission/permission-rebuild') ?>"
+       title="<?= $this->translate('Rebuild Permission List') ?>">
+        <i class="glyphicon glyphicon-refresh text-success"></i>
+        <?= $this->translate('Rebuild') ?>
+    </a>
+
+    <h3 class="page-title">
+        <?= $this->translate('Permissions') ?>
+    </h3>
+
+    <div style="clear:both">
+        <div id="page-loading-progress" class="ajax-loading" style="height:100px;">&nbsp;</div>
+        <div id="tabs" style="display:none">
+            <ul>
+                <? foreach ($this->roles as $id => $role) {
+
+                    ?>
+                    <li>
+                        <a href="#tabs-<?= $id ?>">
+                            <?
+                            for ($i = 1; $i <= $role->indent; $i++) {
+                                echo "<span class='level'>- ";
+                            }
+                            ?>
+                            <span>- <?= $this->translate($role->roleName) ?></span>
+                            <?
+                            for ($i = 1; $i <= $role->indent; $i++) {
+                                echo "</span>";
+                            }
+                            ?>
+                        </a>
+                    </li>
+                <? } ?>
+            </ul>
+            <?
+            $allowText = t('Allow');
+            $denyText = t('Deny');
+            $inheritedText = t('Inherited');
+            $deniedText = t('Denied');
+            $allowedText = t('Allowed');
+            foreach ($this->roles as $id => $role) {
+                ?>
+                <div id="tabs-<?= $id ?>">
+                    <table class="permissions-table" cellpadding="0" cellspacing='0'>
+                        <thead>
+                        <tr>
+                            <th align='right'><?= $this->translate('Permission') ?></th>
+                            <th align="center" width="150px"><?= $this->translate('USER_PERM_Section') ?></th>
+                            <th align="center" width="150px"><?= $this->translate('Change Permission') ?></th>
+                            <th align="center" width="150px"><?= $this->translate('Current Permission') ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?
+                        foreach ($this->permissions as $module => $perm_list) {
+                            ?>
+                            <tr>
+                                <td colspan="4">
+
+                                    <?
+
+                                    $rowCount = 0;
+                                    $output = "<table cellpadding='0' cellspacing='0' id='PERM_{$module}'><thead>";
+                                    $output .= '<tr class="perm-module">';
+                                    $output .= '<th align="right">' . $this->translate('PERM_' . $module) . '</th>';
+                                    $output .= '<th width="150px">&nbsp;</th>';
+                                    $output .= '<th width="150px">&nbsp;</th>';
+                                    $output .= '<th width="150px" align="center">&nbsp;</th>';
+                                    $output .= '</tr></thead><tbody>';
+
+                                    foreach ($perm_list as $key => $perm) {
+                                        $isAdmin = strpos($key, 'admin') > -1;
+                                        $perm_index = $id . '_' . str_replace(array('/', '-', ':'), '', $key);
+                                        $allow = '';
+                                        $deny = '';
+                                        $isAllowed = false;
+                                        if (!$this->acl->isAllowed($id, $key)) {
+                                            $allow = 'hidden';
+                                            $perms_json[$perm_index] = false;
+                                        } else {
+                                            $deny = 'hidden';
+                                            $perms_json[$perm_index] = true;
+                                            $isAllowed = true;
+                                        }
+                                        if (isAllowed($key)) //is current user has access to this resource
+                                        {
+                                            $rowCount++;
+                                            $output .= "<tr>";
+                                            // ---------------- col1 ----------------------
+                                            $col = '';
+                                            for ($i = 1; $i <= $perm->indent; $i++) {
+                                                $last = '';
+                                                if ($i == $perm->indent)
+                                                    $last = 'last';
+                                                $col .= "<div class='indent $last'>";
+                                            }
+
+                                            $col .= "<span class='level'>&nbsp;</span>";
+                                            $col .= $this->translate($perm->getName());
+                                            $note = $perm->getnote();
+                                            if ($perm->getName() == $note)
+                                                $note = '';
+
+                                            $note = trim($note);
+                                            if (!empty($note))
+                                                $col .= ("<p class='description'>" . t($note) . "</p>");
+
+                                            for ($i = 1; $i <= $perm->indent; $i++) {
+                                                $last = '';
+                                                if ($i == $perm->indent)
+                                                    $last = 'last';
+                                                $col .= ("<div>");
+                                            }
+                                            $output .= "<td class='no-border'>{$col}</td>";
+
+                                            // ---------------- col2 ----------------------
+                                            if ($isAdmin) {
+                                                $col = '<label class="label label-info">' . t('Administration') . '</label>';
+                                            } else {
+                                                $col = '<label class="label label-primary">' . t('Client Section') . '</label>';
+                                            }
+                                            $output .= "<td align='center' class='hoverable'>{$col}</td>";
+
+                                            // ---------------- col3 ----------------------
+//                                            $col = \Theme\API\Common::Select(array(
+//                                                "" => $this->translate('-- Select --'),
+//                                                "0" => $this->translate('Inherited'),
+//                                                "1" => $this->translate('Allowed'),
+//                                                "2" => $this->translate('Denied'),
+//                                            ), "perms[{$id}][{$key}]", "perms[{$id}][{$key}]", array('class' => array('perm-select')));
+
+                                            $allowedClass = '';
+                                            $deniedClass = '';
+                                            $inheritedClass = '';
+
+                                            if (isset($this->permissionsConfig[$id]) && isset($this->permissionsConfig[$id][$key])) {
+                                                switch ($this->permissionsConfig[$id][$key]) {
+                                                    case '1':
+                                                        $allowedClass = 'active btn-success';
+                                                        break;
+                                                    case '2':
+                                                        $deniedClass = 'active btn-danger';
+                                                        break;
+                                                    case '0':
+                                                    default:
+                                                        $inheritedClass = 'active btn-info';
+                                                        break;
+                                                }
+                                            } else
+                                                $inheritedClass = 'active btn-info';
+
+                                            $col = "<div class='btn-group btn-group-xs'>
+                                                      <button type='button' class='btn btn-default perm-select {$deniedClass}' name='perms[{$id}][{$key}]' data-value='2' data-class='active btn-danger'>{$denyText}</button>
+                                                      <button type='button' class='btn btn-default perm-select {$allowedClass}' name='perms[{$id}][{$key}]' data-value='1' data-class='active btn-success'>{$allowText}</button>
+                                                      <button type='button' class='btn btn-default perm-select {$inheritedClass}' name='perms[{$id}][{$key}]' data-value='0' data-class='active btn-info'>{$inheritedText}</button>
+                                                    </div>";
+                                            $output .= "<td align='center' class='hoverable' width='150'>{$col}</td>";
+
+                                            // ---------------- col4 ----------------------
+                                            $col = "<span class='label permission-denied " . $deny . "'>" . $deniedText . "</span>";
+                                            $col .= "<span class='label permission-allowed " . $allow . "'>" . $allowedText . "</span>";
+                                            $output .= "<td align='center' class='hoverable' id='{$perm_index}'>{$col}</td>";
+
+                                        }
+                                    }
+                                    $output .= "</tbody></table>";
+                                    if ($rowCount)
+                                        print $output;
+                                    ?>
+                                </td>
+                            </tr>
+                        <? } ?>
+                        </tbody>
+                    </table>
+                </div>
+            <? } ?>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    <?$this->inlineScript()->captureStart();?>
+    var permission_change_url = '<?=$this->url('admin/users/permission/permission-change')?>';
+    var perms = <?=json_encode($perms_json)?>;
+    $(function () {
+        $("#tabs").tabs(
+            {
+                activate: function (event, ui) {
+                    $.cookie("permission_tabs_selected", $("#tabs").tabs("option", "active"));
+                },
+                active: $.cookie("permission_tabs_selected")
+            }
+        ).addClass("ui-tabs-vertical ui-helper-clearfix").show();
+        $("#tabs li").removeClass("ui-corner-top").addClass("ui-corner-right");
+        $('#page-loading-progress').remove();
+        Permissions.init();
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>
+

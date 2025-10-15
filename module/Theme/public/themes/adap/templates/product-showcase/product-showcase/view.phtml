@@ -1,0 +1,62 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/product-view.css');
+\JQuery\API\JQuery::loadColorBox($this);
+?>
+<div class="product-view">
+    <h1 class="page-header">
+        <span id="code" class="pull-left flip"><?= $this->data->ps_code ?></span>
+        <span id="title" class="pull-left flip"><?= $this->escapeHtml(trim(t($this->data->title))) ?></span>
+    </h1>
+
+    <div id="product-fields" class="row">
+        <?
+        if ($this->data) {
+            $__fieldsData = getSM()->get('fields_api')->generate($this->fields, $this->data);
+            $fieldsData = array_chunk($__fieldsData, ((int)(count($__fieldsData) / 2)) + 1, true);
+            foreach ($fieldsData as $col) {
+                ?>
+                <div class="col-md-6 col-sm-12"><?
+                foreach ($col as $key => $val) {
+                    ?>
+                    <div class="item-row row">
+                        <div class="item-label col-sm-4"><?= $key ?> :</div>
+                        <div class="item-value col-sm-8"><?= $val ?></div>
+                    </div>
+                <?
+                }
+                ?></div><?
+            }
+            ?>
+        <?
+        }?>
+    </div>
+</div>
+<div id="product-images" class="row">
+    <?
+    $files = $this->files;
+
+    foreach ($files as $row) {
+        $path = $row->fPath;
+        $image = getThumbnail()->thumbnail($path, 200, 100);
+        ?>
+        <div class="col-md-3">
+            <div class="product-image">
+                <a href="<?= $path ?>" class="colorbox">
+                    <img src="<?= $image ?>" class="image img-responsive">
+                    <img alt="<?= $this->escapeHtml($row->fAlt) ?>"
+                         title="<?= $this->escapeHtml($row->fTitle) ?>"
+                         data-toggle="tooltip"
+                         data-placement="bottom"
+                         class="magnify" src="<?= $this->basePath() . TEMPLATE_PATH . '/images/zoom.png' ?>">
+                </a>
+            </div>
+        </div>
+    <?
+    }
+    ?>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.product-image > img').tooltip();
+    });
+</script>

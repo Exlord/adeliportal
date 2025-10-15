@@ -1,0 +1,101 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/realestate_search.js');
+$this->headScript()->appendFile($this->basePath() . '/js/geographical.js');
+?>
+<div class="box_real_main_search">
+    <?
+    $form = $this->form;
+    $form->prepare();
+    $table = $form->get('table');
+    $field = $form->get('field');
+    echo $this->form()->openTag($form);
+    ?>
+    <? if ($table->has('estateType')) { ?>
+        <div class="s_estateType"><?= $this->formRow($table->get('estateType')) ?></div>
+    <? } ?>
+    <? if ($table->has('stateId')) { ?>
+        <div class="s_stateId"><?= $this->formRow($table->get('stateId')) ?></div>
+    <? } ?>
+    <? if ($table->has('cityId')) { ?>
+        <div class="s_cityId"><?= $this->formRow($table->get('cityId')) ?></div>
+    <? } ?>
+    <? if ($table->has('parentAreaId')) { ?>
+        <div class="s_areaId"><?= $this->formRow($table->get('parentAreaId')) ?></div>
+    <? } ?>
+    <? if ($table->has('userId')) { ?>
+        <div class="s_userId"><?= $this->formRow($table->get('userId')) ?></div>
+    <? } ?>
+    <div style="clear: both"></div>
+    <? if ($table->has('totalPrice')) { ?>
+        <div class="s_totalPrice"><?= $this->formRow($table->get('totalPrice')) ?></div>
+    <? } ?>
+    <? if ($table->has('mortgagePrice')) { ?>
+        <div class="s_mortgagePrice"><?= $this->formRow($table->get('mortgagePrice')) ?></div>
+    <? } ?>
+    <? if ($table->has('rentalPrice')) { ?>
+        <div class="s_rentalPrice"><?= $this->formRow($table->get('rentalPrice')) ?></div>
+    <? } ?>
+    <? if ($field->has('zirbana')) { ?>
+        <div class="s_zirbana"><?= $this->formRow($field->get('zirbana')) ?></div>
+    <? } ?>
+    <? if ($table->has('isRequest')) { ?>
+        <div class="s_isRequest"><?= $this->formRow($table->get('isRequest')) ?></div>
+    <? } ?>
+    <? if ($table->has('regType')) { ?>
+        <div class="s_regType"><?= $this->formRow($table->get('regType')) ?></div>
+    <? } ?>
+    <? if ($field->has('masahate_zamin')) { ?>
+        <div class="s_masahate_zamin"><?= $this->formRow($field->get('masahate_zamin')) ?></div>
+    <? } ?>
+    <? if ($field->has('c_otagh_khab')) { ?>
+        <div class="s_c_otagh_khab"><?= $this->formRow($field->get('c_otagh_khab')) ?></div>
+    <? } ?>
+    <? if ($field->has('s_m_dar_tabaghe')) { ?>
+        <div class="s_s_m_dar_tabaghe"><?= $this->formRow($field->get('s_m_dar_tabaghe')) ?></div>
+    <? } ?>
+    <? if ($field->has('s_m_kolle_tabaghat')) { ?>
+        <div class="s_s_m_kolle_tabaghat"><?= $this->formRow($field->get('s_m_kolle_tabaghat')) ?></div>
+    <? } ?>
+    <? if ($field->has('s_m_vahed_dar_tabaghe')) { ?>
+        <div class="s_s_m_vahed_dar_tabaghe"><?= $this->formRow($field->get('s_m_vahed_dar_tabaghe')) ?></div>
+    <? } ?>
+    <? if ($field->has('s_m_kolle_vahedha')) { ?>
+        <div class="s_s_m_kolle_vahedha"><?= $this->formRow($field->get('s_m_kolle_vahedha')) ?></div>
+    <? } ?>
+    <? if ($field->has('gozar')) { ?>
+        <div class="s_s_m_kolle_vahedha"><?= $this->formRow($field->get('gozar')) ?></div>
+    <? } ?>
+    <?
+    echo $this->formRow($form->get('search'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+
+    $('.s_estateType select').prepend('<option selected value="">تمام انواع ملک</option>');
+
+    $(document).ready(function () {
+        if ($('.s_regType').length) {
+            $('.s_regType .form-group div ').first().children().addClass('label_active');
+            $('.s_mortgagePrice').hide();
+            $('.s_rentalPrice').hide();
+        }
+
+        $('.s_regType .form-group div ').click(function () {
+            $('.s_regType .form-group div label ').removeClass('label_active');
+            $(this).children().addClass('label_active');
+            if (parseInt($(this).children().children().val()) == 78) {
+                $('.s_mortgagePrice').show();
+                $('.s_rentalPrice').show();
+                $('.s_totalPrice').hide();
+            } else {
+                $('.s_mortgagePrice').hide();
+                $('.s_rentalPrice').hide();
+                $('.s_totalPrice').show();
+            }
+        });
+
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

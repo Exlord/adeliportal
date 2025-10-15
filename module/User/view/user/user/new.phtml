@@ -1,0 +1,147 @@
+<?
+if (!\Application\API\App::isAdminRoute()) {
+    $this->headScript()->appendFile($this->basePath() . '/js/jquery.ui.datepicker-cc.js');
+    if (SYSTEM_LANG == 'fa')
+        $this->headScript()->appendFile($this->basePath() . '/js/jquery.ui.datepicker-cc-fa.js');
+}
+$this->headLink()->appendStylesheet($this->basePath() . '/css/user-admin.css');
+if ($this->user)
+    $this->headScript()->appendFile($this->basePath() . '/js/geographical.js');
+?>
+<div class="row">
+    <? if ($this->user) {
+        ?>
+        <div class="col-md-3">
+            <?
+            echo $this->partial('user/user/user-toolbar', array('userId' => $this->user['basic']['id'], 'flag' => true));
+            ?>
+        </div>
+    <?
+    } ?>
+    <div class="col-md-<? print $this->user ? '9' : '12' ?>">
+        <h3 class="page-title">
+            <? if (!$this->user)
+                echo $this->translate('New User Account');
+            else {
+                echo sprintf($this->translate("Edit %s's Account"),
+                    "<a href='" . url('admin/users/view', array('id' => $this->user['basic']['id'])) . "'>
+            <span class='user-name-title emphasize '>" .
+                    $this->user['basic']['username'] . "</span></a>");
+            }?>
+        </h3>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        ?>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <?
+                        foreach ($form->getElements() as $el) {
+                            echo $this->formRow($el);
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <?
+                        $basic = $form->get('basic');
+                        foreach ($basic->getElements() as $el) {
+                            print $this->formRow($el);
+                        }
+                        ?>
+                    </div>
+                </div>
+                <?
+                if ($basic->has('data')) {
+                    $data = $basic->get('data');
+                    if ($data->has('fields_access')) {
+                        $fieldAccess = $data->get('fields_access');
+                        $fieldAccessElements = $fieldAccess->getElements();
+                        $headers = array(t('Field'), t('Access Level'));
+                        $rows = array();
+                        if (isset($this->user['basic']['data']['fields_access']))
+                            $fields_access = $this->user['basic']['data']['fields_access'];
+                        else
+                            $fields_access = array();
+                        foreach ($fieldAccessElements as $el) {
+//                        $rows[$el->getAttribute('data-field-id')][0] = $el->getLabel();
+//                        $rows[$el->getAttribute('data-field-id')][1] = $this->formSelect($el);
+
+
+                            $fieldId = $el->getAttribute('data-field-id');
+                            $access = isset($fields_access[$fieldId]) ? $fields_access[$fieldId] : 'private';
+                            $class = ($access == 'private') ? '' : ($access == 'members' ? 'warning' : 'danger');
+                            $rows[$fieldId]['class'][] = $class;
+                            $rows[$fieldId]['data'][] = $el->getLabel();
+                            $rows[$fieldId]['data'][] = $this->formSelect($el);
+                        }
+                        ?>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><?= t($fieldAccess->getLabel()); ?></h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <? print \Theme\API\Table::Table($headers, $rows, array('class' => 'table table-striped table-hover table-condensed')); ?>
+                                </div>
+                                <dl class="dl-horizontal">
+                                    <dt><?= t('Private') ?></dt>
+                                    <dd>
+                                        <?= t('private fields are only visible to authorized users and the owner') ?>
+                                    </dd>
+                                    <dt class="text-warning"><?= t('Site Members') ?></dt>
+                                    <dd>
+                                        <?= t("these fields are only visible to site's logged in members") ?>
+                                    </dd>
+                                    <dt class="text-danger"><?= t('Public') ?></dt>
+                                    <dd>
+                                        <?= t('public fields are visible to anyone') ?>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    <?
+                    }
+                }
+                ?>
+            </div>
+            <div class="col-md-6">
+                <?
+                if ($form->has('profile'))
+                    echo $this->formCollection($form->get('profile'));
+                ?>
+            </div>
+            <div class="col-md-12">
+                <?
+                echo $this->formCollection($form->get('buttons'));
+                ?>
+            </div>
+        </div>
+        <?
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    var this_year = <?=date('Y');?>;
+    $(document).ready(function () {
+        $("#birthDate").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+00",
+            dateFormat: 'yy/mm/dd',
+            maxDate: 1
+        });
+        $('.show-date').closest('.input-group-addon').addClass('btn btn-default');
+        $('.show-date').closest('.input-group').click(function () {
+            $(this).children('.date').datepicker("show");
+        });
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>

@@ -1,0 +1,102 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/page.css');
+if ($this->showTags) {
+    ?>
+    <div class="content-tags">
+        <?
+        $tagRouteParams = array();
+        if ($this->oldTag)
+            foreach ($this->oldTag as $tag) {
+                ?>
+                <br/>
+                <div class="box-content-tag-all-info">
+                <p><?= $this->escapeHtml($tag['itemName']) ?></p>
+
+                <div class="line-gray"></div>
+                <? if (!empty($tag['itemText'])) { ?>
+                    <div class="main-box">
+                        <? if ($this->showTags == 2) { ?>
+                            <? if (isset($this->fileArray[$tag['id']])) {
+                                $imageUrl = getThumbnail()->resize($this->fileArray[$tag['id']]['fPath'], 200, 200); //resize image
+                                ?>
+                                <img src="<?= $imageUrl ?>"
+                                     alt="<?= $this->fileArray[$tag['id']]['alt'] ?>"
+                                     title="<?= $this->fileArray[$tag['id']]['title'] ?>">
+                            <? } ?>
+                        <? } ?>
+                        <div class="box-desc">
+                            <?= $tag['itemText'] ?>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </div>
+                    </div>
+                <?
+                }else{ ?>
+                 <br/>
+                 <br/>
+               <? }
+            }
+        if ($this->tags)
+            foreach ($this->tags as $tag) {
+                $tagRouteParams['tagName'] = \Application\API\App::prepareUrlString($tag['itemName']);
+                $tagRouteParams['tagId'] = $tag['id'];
+                ?>
+                <div class="box-content-tag">
+                    <a href="<?= url('app/content', $tagRouteParams) ?>">
+                        <p><?= $this->escapeHtml($tag['itemName']) ?></p>
+                    </a>
+
+                    <div class="line-gray"></div>
+                    <? if ($this->showTags == 2) { ?>
+                        <div>
+                            <? if (isset($this->fileArray[$tag['id']])) {
+                                $imageUrl = getThumbnail()->resize($this->fileArray[$tag['id']]['fPath'], 200, 200); //resize image
+                                ?>
+                                <img src="<?= $imageUrl ?>"
+                                     alt="<?= $this->fileArray[$tag['id']]['alt'] ?>"
+                                     title="<?= $this->fileArray[$tag['id']]['title'] ?>">
+                            <? } ?>
+                        </div>
+                    <? } ?>
+                </div>
+            <?
+            }
+        ?>
+    </div>
+    <div style="clear: both"></div>
+<?
+}
+if ($this->paginator->count() && $this->flagShowAllInfo) {
+    ?>
+    <articles class='articles-intro-list-product'>
+        <?
+        $pageRouteParams = array();
+        /* @var $page \Page\Model\Page */
+        foreach ($this->paginator as $page) {
+//            if (\Application\API\App::matchDomain($page->domains, $page->domainVisibility)) {
+            $pageRouteParams['id'] = $page['id'];
+            $pageRouteParams['title'] = \Application\API\App::prepareUrlString($page['pageTitle']);
+            ?>
+            <article>
+                <a href="<?= url('app/single-content', $pageRouteParams) ?>">
+                    <h2 class="article-title dir_left">
+                        <?= $this->escapeHtml($page['pageTitle']) ?>
+                    </h2>
+                </a>
+            </article>
+        <?
+        }
+        ?>
+    </articles>
+    <div class="pager">
+        <?
+        /* @var $pages \Zend\Paginator\Paginator */
+        echo $this->paginationControl($this->paginator,
+            'Sliding',
+            'application/pagination/search.phtml', array('route' => $this->route, 'route_params' => $this->routeParams, 'route_options' => $this->route_options));
+        ?>
+    </div>
+    <?
+    $this->body()->class[] = 'articles';
+}
+?>

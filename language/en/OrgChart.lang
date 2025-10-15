@@ -1,0 +1,15 @@
+<?return array(
+    'OrgChart_CHART' => 'OrgChart_CHART',
+    'OrgChart_CHARTS' => 'OrgChart_CHARTS',
+    'OrgChart_NEWCHART' => 'OrgChart_NEWCHARTS',
+    'OrgChart_NEWNODECHART'=>'OrgChart_NEWNODECHART',
+    'OrgChart_NODECHART'=>'OrgChart_NODECHART',
+    'OrgChart_NODESCHART'=>'OrgChart_NODESCHART',
+    'OrgChart_CHARTNAME'=>'OrgChart_CHARTNAME',
+    'OrgChart_CHARTLIST'=>'OrgChart_CHARTLIST',
+    'OrgChart_CHART_LIST_MENU'=>'OrgChart_CHART_LIST_MENU',
+    'OrgChart_VIEW_TYPE_NODE'=>'OrgChart_VIEW_TYPE_NODE',
+    'OrgChart_OTHER_PAGE'=>'OrgChart_OTHER_PAGE',
+    'OrgChart_POPUP'=>'OrgChart_POPUP',
+    'OrgChart_SLIDE'=>'OrgChart_SLIDE',
+);

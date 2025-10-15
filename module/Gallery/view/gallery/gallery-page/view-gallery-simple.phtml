@@ -1,0 +1,37 @@
+<?
+$this->headScript()->prependFile($this->basePath() . '/js/jquery.lazyLoad.js');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/view-gallery-simple.css');
+$this->headScript()->prependFile($this->basePath() . '/js/gallery.js');
+$select = $this->gallery;
+?>
+<div class="gallery">
+    <?
+    foreach ($select as $row) {
+        $height = 100;
+        $width = 100;
+        if (!empty($row->width))
+            $width = $row->width;
+        if (!empty($row->height))
+            $height = $row->height;
+        if ($row->image) {
+            $imageUrl = getThumbnail()->resize($row->image, $width, $height); //resize image
+            $params = array('id' => $row->id);
+            if (!empty($row->title))
+                $params['title'] = $row->title;
+            $url = url('app/photo-gallery', $params);
+            ?>
+            <div class="gallery-box-group">
+                <a class="gallery-link" href="<?= $url ?>">
+                    <img class="lazy gallery-link-image img-responsive" rel="tooltip" data-original="<?= $imageUrl ?>"
+                         alt="<?= $row->title ?>" title="<?= $row->title ?>" height="<?= $height ?>"
+                         width="<?= $width ?>">
+                    <noscript>
+                        <img alt="<?= $row->title ?>" title="<?= $row->title ?>" src="<?= $imageUrl ?>"
+                             height="<?= $height ?>" width="<?= $width ?>">
+                    </noscript>
+                </a>
+            </div>
+        <?
+        }
+    } ?>
+</div>

@@ -1,0 +1,17 @@
+<div>
+    <h3 class="page-title">
+        <?=$this->translate('Send Sms');?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach($form->getElements() as $el){
+            echo $this->iptFormRow($el);
+        }
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>

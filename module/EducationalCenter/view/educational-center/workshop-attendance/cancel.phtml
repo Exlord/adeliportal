@@ -1,0 +1,28 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Cancel workshop class attendance'); ?>
+    </h3>
+
+    <p class="description">
+        <?
+        print sprintf(t("canceling the %s's registration for %s"),
+            \Theme\API\Common::Link(
+                getUserDisplayName($this->attendance),
+                url('app/user/user-profile', array('id' => $this->attendance->userId)),
+                array('target' => '_blank')
+            ),
+            \Theme\API\Common::Link(
+                $this->classTitle,
+                url('app/workshop/class', array('workshop' => $this->attendance->workshopId, 'class' => $this->attendance->classId)),
+                array('target' => '_blank')
+            )
+        )?>
+    </p>
+    <? if (has_value($this->attendance->note)) {
+        print $this->attendance->note;
+    }
+    ?>
+    <div>
+        <? print $this->form($this->form); ?>
+    </div>
+</div>

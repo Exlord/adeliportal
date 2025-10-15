@@ -1,0 +1,15 @@
+<?
+return array(
+    'PERM_Rating' => 'رتبه بندی',
+    'Select Your Success' => 'انتخاب شما با موفقیت انجام شد',
+    'For a new choice, please wait 5 minutes' => 'برای انتخاب جدید ، لطفا ٥ دقیقه صبر نمایید',
+    'To select, please enter your User Panel' => 'برای انتخاب ، لطفا وارد پنل کاربری خود شوید',
+    'Are you sure?' => 'آیا مطمئن هستید ؟',
+    'Rating' => 'رتبه بندی',
+    'Rating Section' => 'بخش رتبه بندی',
+    'Negative Positive Rate Section' => 'بخش رتبه مثبت و منی',
+    'Rating_nothingVoted' => 'رتبه ای ثبت نشده است .',
+    'Average Rating' => 'میانگین امتیاز',
+    'RATING_NP_GUEST_SHOW'=>'نمایش رتبه بندی مثبت و منفی برای کاربر مهمان',
+    'RATING_LOGIN'=>'کاربر گرامی ، برای رتبه دادن می بایست لاگین شوید .',
+);

@@ -1,0 +1,15 @@
+.page-header{ background:#01acd8; margin:0; border:none; font-size:130%; color:#ffffff; padding:5px 30px; }
+#books{ background:#f2f2ea; padding:15px; }
+#books .media{ margin-top:0; }
+#books .media.row-odd{ padding:25px; background:#ffffff; }
+#books .media.row-even{ padding:25px; background:#f5f5f5; }
+#books .book-title{ color:#7a0203; }
+#books .item-label{ color:#4783b5; }
+#books .item-details{ font-size:90%; line-height:30px; }
+#books .order-button{ background:url(../images/sefaresh-button.png) no-repeat center center;
+    width:109px; height:28px; display:block; }
+#books .pager{ margin-bottom:0; }
+#books .pager a{ color:#3eb6db; font-size:120%; }
+#books .pager .previous{ background:url("../images/arrow.png") no-repeat center center; width:20px; height:20px; margin-left:20px; }
+#books .pager .next{ background:url("../images/arrow2.png") no-repeat center center; width:20px; height:20px; margin-right:20px; }
+#books .pager .current_page{ color:#d60000; }

@@ -1,0 +1,86 @@
+<div class="time-line-item pull-right flip" style="width:100%;min-height:100px;" data-day="<?= $this->day ?>">
+    <?
+    $nextDay = strtotime('+1 day', $this->day);
+    $previewsDay = strtotime('-1 day', $this->day);
+    ?>
+    <a class="btn btn-default btn-sm pull-right flip next-day" data-day="<?= $nextDay ?>" href="<?=
+    url('app/health-center/time-line',
+        array('id' => $this->doctor, 'day' => $nextDay));?>">
+        <?= t('Next Day') ?> » <?= dateFormat($nextDay) ?>
+    </a>
+
+    <a class="btn btn-default btn-sm pull-left flip previews-day" data-day="<?= $previewsDay ?>" href="<?=
+    url('app/health-center/time-line',
+        array('id' => $this->doctor, 'day' => $previewsDay));?>" id="previews_day">
+        <?= dateFormat($previewsDay) ?> « <?= t('Preview Day') ?>
+    </a>
+
+    <h3 class="page-header text-center">
+        <?
+        print t('Time Table');
+        if ($this->day) {
+            print ' » ';
+            print dateFormat($this->day);
+        }
+        ?>
+    </h3>
+
+    <div class="time-line-container" id="time-line-container-<?= $this->day ?>">
+
+    </div>
+    <?
+    $data = array();
+    $now = time();
+    foreach ($this->data as $row) {
+        $start = $row->start;
+        $end = $row->end;
+
+        $startHour = date('G', $start);
+        $startMinute = date('i', $start);
+
+        $endHour = date('G', $end);
+        $endMinute = date('i', $end);
+
+        $status = 0;
+        if ($start < $now)
+            //started
+            $status = 1;
+
+        if ($end < $now)
+            //passed
+            $status = 2;
+
+        $_data = array(
+            'sh' => $startHour,
+            'sm' => $startMinute,
+            'eh' => $endHour,
+            'em' => $endMinute,
+            'width' => $end - $start,
+            'id' => $row->id,
+            'doctorId' => $row->doctorId,
+            'reserveUrl' => url('app/health-center/agreement', array('doctor' => $row->doctorId, 'time' => $row->id)),
+            'patientUrl' => null,
+            'resStatus' => $row->resStatus,
+            'status' => $status
+        );
+        if (isset($row->userId) && $row->userId) {
+            $_data['patientUrl'] = url('admin/health-center/doctor-panel/patient', array('patient' => $row->userId));
+        }
+        $data[] = $_data;
+    }
+
+    ?>
+    <script>
+        $(document).ready(function () {
+            var data = <?=json_encode($data);?>;
+            if ($.fn.TimeLine) {
+                $('#time-line-container-<?= $this->day ?>').TimeLine({ data: data});
+            }
+            else {
+                $(document).on('timetableClassIsReady', function () {
+                    $('#time-line-container-<?= $this->day ?>').TimeLine({ data: data });
+                });
+            }
+        });
+    </script>
+</div>

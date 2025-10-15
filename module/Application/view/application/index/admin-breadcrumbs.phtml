@@ -1,0 +1,25 @@
+<?
+if ($this->pages) {
+    ?>
+    <ul>
+    <?
+    /* @var $page \Zend\Navigation\Page\Mvc */
+    if ($this->pages[0]->getLabel() != 'Administration' && $this->pages[0]->getLabel() != 'Home') {
+        ?>
+        <li>
+            <a class="ajax_page_load" href="<?= url('admin') ?>"><?= t('Administration') ?></a>
+        </li>
+    <?
+    }
+    foreach ($this->pages as $page) {
+//        if ($page->isVisible()) {
+        ?>
+        <li>
+            <a class="ajax_page_load <?= $page->isActive() ? "active" : '' ?>"
+               href="<?= $page->getHref() ?>"><?= t($page->getLabel()) ?></a>
+        </li>
+<?
+//        }
+    }
+    ?></ul><?
+}

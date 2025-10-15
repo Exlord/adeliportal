@@ -1,0 +1,135 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/__/css/ads.css');
+if (!$this->error) {
+    ?>
+    <div class="box_list_ads_1000_0">
+        <div class="col-md-12 zero_padding">
+            <?
+            if ($this->select) {
+                $countEndTag = 0;
+                $panelId = 0;
+                foreach ($this->select as $row) {
+                    ?>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="media">
+                                <!--                                <a class="pull-right" href="#">-->
+                                <!--                                    --><? //
+                                //                                    if ($row->smallImage) {
+                                //                                        $dataImages = unserialize($row->smallImage);
+                                //                                        $width = 100;
+                                //                                        $height = 100;
+                                //                                        if ($dataImages) {
+                                //                                            if (isset($this->smallImgConfig['width']))
+                                //                                                $width = $this->smallImgConfig['width'];
+                                //                                            if (isset($this->smallImgConfig['height']))
+                                //                                                $width = $this->smallImgConfig['height'];
+                                //                                        }
+                                //                                        if (isset($dataImages['fPath']) && $dataImages['fPath'])
+                                //                                            $fPath = $dataImages['fPath'];
+                                //                                        else
+                                //                                            $fPath = $this->basePath() . '/__/images/notImage100_100.png';
+                                //                                        $imageUrl = getThumbnail()->resize($fPath, $width, $height); //resize image
+                                //                                    }
+                                //
+                                ?>
+                                <!--                                    <img class="media-object" src="-->
+                                <? //= $imageUrl ?><!--" alt="--><? //= $row->title ?><!--">-->
+                                <!--                                </a>-->
+
+                                <div class="media-body">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <a target="_blank" href="<?= url('app/ad/view', array('baseType'=>$row->baseType,'adId' => $row->adId, 'adTitle' => \Application\API\App::prepareUrlString($row->title))) ?>">
+                                            <h4 class="media-heading"><?= $row->title ?></h4>
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <p><? if (strlen($row->text) > 200) echo mb_substr($row->text, 0, 200, 'UTF-8') . '...'; else echo $row->text; ?></p>
+                                    </div>
+                                    <? if ($row->link) { ?>
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <span class="text-muted"><?= t('ADS_LINK') . ' : ' ?></span>
+                                            <a target="_blank" href="<?= $row->link ?>"><?= $row->link ?></a>
+                                        </div>
+                                    <? } ?>
+                                    <?
+                                    if ($this->category && isset($this->category[$row->adId]) && $this->showCategory) {
+                                        ?>
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <span class="text-muted">
+                                                <?//= t('ADS_CATEGORIES') . ' : ' ?>
+                                            زمینه فعالیت :
+                                            </span>
+                                            <?
+                                            foreach ($this->category[$row->adId] as $key => $val) {
+                                                ?>
+                                                <a href="<?= url('app/ad/list', array('baseType' => $row->baseType, 'baseTitle' => $this->baseTypeMachineName), array('query' => array('table' => array('category' => $val)))) ?>"><?= $val ?></a> |
+                                            <?
+                                            }
+                                            ?>
+                                        </div>
+                                    <?
+                                    }
+                                    ?>
+
+                                    <? if ($this->showCreateDate) { ?>
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <p class="text-muted"><?= t('ADS_REG_DATE') . " : " . $this->dateFormat($row->createDate, 2); ?></p>
+                                        </div>
+                                    <? } ?>
+
+                                    <? if ($this->showHits) { ?>
+                                        <div class="col-xs-12 col-sm-12 col-md-12 a_border_bottom">
+                                            <p class="text-muted"><?= t('ADS_HITS') . ' : ' ?> <? if ($row->hits) echo $row->hits; else echo 0; ?></p>
+                                        </div>
+                                    <? } ?>
+
+                                    <?
+                                    if ($this->keywords && isset($this->keywords[$row->adId]) && $this->showKeyword) {
+                                        ?>
+                                        <div class="col-md-8">
+                                            <span class="label label-default"><?= t('ADS_KEYWORDS') ?></span>
+                                            <?
+                                            foreach ($this->keywords[$row->adId] as $key => $val) {
+                                                ?>
+                                                <a href="<?= url('app/ad/list', array('baseType' => $row->baseType, 'baseTitle' => $this->baseTypeMachineName), array('query' => array('table' => array('keyword' => $val)))) ?>"><?= $val ?></a> |
+                                            <?
+                                            } ?>
+                                        </div>
+                                    <?
+                                    }
+                                    ?>
+                                    <div class="col-md-4">
+                                        <?= getSM('ads_api')->createViewStarRate($this->starCount, $row->starCount); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?
+                }
+            }else
+            { ?>
+             <div class="alert alert-info">
+                 <?=t('ADS_NOT_FOUND')?>
+             </div>
+           <? }
+            ?>
+            <div class="pager" style="padding-top:12px;">
+                <?
+                /* @var $pages \Zend\Paginator\Paginator */
+                echo $this->paginationControl($this->paginate,
+                    'Sliding',
+                    'ads/client/search.phtml',
+                    array(
+                        'route' => 'app/ad/list',
+                        'route_params' => array('baseType'=> $this->baseTypeId, 'baseTitle' => $this->baseTypeMachineName)
+                    )
+                ); ?>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+<? } ?>
+
+

@@ -1,0 +1,266 @@
+<?
+$basePath = $this->basePath();
+
+$this->headLink()->appendStylesheet($basePath . '/__/js/jquery.ui/jquery.ui.core.css');
+$this->headLink()->appendStylesheet($basePath . '/__/js/jquery.ui/jquery.ui.theme.css');
+$this->headLink()->appendStylesheet($basePath . '/__/js/jquery.ui/jquery.ui.datepicker.css');
+
+$this->headScript()->appendFile($basePath . '/__/js/floatThead/jquery.floatThead.min.js');
+$this->headScript()->appendFile($basePath . '/__/js/jquery.ui/core.js');
+$this->headScript()->appendFile($basePath . '/__/js/jquery.ui/datepicker.js');
+$this->headScript()->appendFile($basePath . '/js/calendar.js');
+$this->headScript()->appendFile($basePath . '/js/jquery.ui.datepicker-cc.js');
+if (SYSTEM_LANG == 'fa')
+    $this->headScript()->appendFile($basePath . '/js/jquery.ui.datepicker-cc-fa.js');
+
+$this->form->prepare();
+
+$headers = array();
+$rows = array();
+$hasData = false;
+if ($this->data && $this->data->count()) {
+    $hasData = true;
+    $headerStatus = sprintf('<button id="reserveSelected"
+            class="btn btn-success btn-xs">%s</button>', t('Reserve Selected Times'));
+    $headerStatus = array('data' => $headerStatus, 'class' => 'text-center', 'style' => 'width:135px;');
+
+    $helpHeader = \Theme\API\Common::Link(
+        "<span class='glyphicon glyphicon-question-sign text-primary'></span> " . t('Help'), '#',
+        array(
+            'id' => 'reserve-help',
+            'class' => array('btn btn-default btn-xs btn-block'),
+            'data-toggle' => "modal",
+            'data-target' => "#reserve-help-modal"
+        )
+    );
+
+    $headers = array(
+        'class' => array('active'),
+        'data' => array(t('Id'), t('Doctor'), t('Start Time'), t('Date'), t('Specialization'), $helpHeader, $headerStatus)
+    );
+
+
+    foreach ($this->data as $dataRow) {
+
+        $start = date('G', $dataRow['start']);
+        $end = date('G', $dataRow['end']);
+        if ($this->start && $start < $this->start)
+            continue;
+        if ($this->end && $end > $this->end)
+            continue;
+
+        $row = array(
+            $dataRow['id'],
+            \Theme\API\Common::Link(
+                getUserDisplayName($dataRow),
+                url('app/health-center/doctor', array('id' => $dataRow['doctorId']))
+            ),
+            dateFormat($dataRow['start'], -1, 3),
+        );
+
+        $row[] = dateFormat($dataRow['date']);
+
+        $row[] = array('data' => $dataRow['itemNames'], 'class' => 'spec-cell');
+
+        $status1 = '';
+        $status2 = '';
+        if (in_array($dataRow['status'], array(null, 2, 4))) {
+            if ($dataRow['start'] > time()) {
+                $status2 = sprintf("<input type='checkbox' class='reserve-item-checkbox' data-doctor='%s' data-id='%s'>", $dataRow['doctorId'], $dataRow['id']);
+                $status1 = \Theme\API\Common::Link(t('Reserve'),
+                    url('app/health-center/agreement', array('doctor' => $dataRow['doctorId'], 'time' => $dataRow['id'])),
+                    array('class' => 'text-top btn btn-info btn-block btn-xs')
+                );
+            } else {
+                $status1 = sprintf("<span class='text-danger'>%s</span>", t('Expired'));
+                $rows[$dataRow['id']]['class'] = array('warning');
+            }
+        } else {
+            $status1 = sprintf("<span class='text-danger'>%s</span>", t('Reserved'));
+            $rows[$dataRow['id']]['class'] = array('danger');
+        }
+
+        $row[] = array('data' => $status1, 'class' => 'text-center');
+        $row[] = array('data' => $status2, 'class' => 'text-center');
+
+        $rows[$dataRow['id']]['data'] = $row;
+
+        $catItems = explode(',', $dataRow['itemIds']);
+        if (count($catItems)) {
+            foreach ($catItems as $cat) {
+                $cat = trim($cat);
+                if (!empty($cat))
+                    $rows[$dataRow['id']]['class'][] = 'doctor-spec-' . $cat;
+            }
+        }
+    }
+}
+?>
+
+<div id="reservation-time-list">
+    <div class="table-responsive">
+        <div class="row">
+            <?
+            print $this->form()->openTag($this->form);
+            print $this->formRow($this->form->get('ex_s_guard'));
+            print $this->formRow($this->form->get('csrf__time_search'));
+            ?>
+            <div class="col-md-3">
+                <?
+                print $this->formRow($this->form->get('doctor'));
+                print $this->formRow($this->form->get('spec'));
+                ?>
+            </div>
+            <div class="col-md-3">
+                <?
+                print $this->formRow($this->form->get('dateFrom'));
+                print $this->formRow($this->form->get('dateTo'));
+                ?>
+            </div>
+            <div class="col-md-3">
+                <?
+                print $this->formRow($this->form->get('start'));
+                print $this->formRow($this->form->get('end'));
+                ?>
+            </div>
+            <div class="col-md-3">
+                <?
+                print $this->formRow($this->form->get('submit'));
+                print $this->formRow($this->form->get('reset'));
+                ?>
+            </div>
+            <?
+            print $this->form()->closeTag();
+            ?>
+        </div>
+        <?
+        print \Theme\API\Table::Table($headers, $rows,
+            array('class' => 'sticky-header-table table table-striped table-hover table-condensed'),
+            $this->alert('Nothing found to show', 'alert-warning'));
+        ?>
+    </div>
+
+    <div id="reserve-help-modal" class=" modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title"><?= t('Reservation Help') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        برای رزرو زمان مورد نظر خود بر روی دکمه
+                        <button class="text-top btn btn-info btn-xs">رزرو</button>
+                        کلیک کنید.
+                    </p>
+
+                    <p>
+                        برای رزرو چند جلسه به صورت همزمان بر روی
+                        <input type="checkbox">
+                        در انتهای هر سطر کلیک کنید تا انتخاب شود و بعد از اینکه تمام جلسات مورد نظر خود را انتخاب کردید
+                        برای رزرو آنها روی دکمه
+                        <button class="btn btn-success btn-xs">رزرو موارد انتخاب شده</button>
+                        کلیک کنید.
+                    </p>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div id="reserve-popup" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove text-danger"></span>
+                        <?= t('Close') ?>
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
+<script>
+    $(document).ready(function () {
+        <?if($hasData){?>
+        $('.sticky-header-table').floatThead();
+        <?}?>
+        $('.reserve-item-checkbox').click(function (e) {
+            var checked = $(this).is(':checked');
+            if (checked)
+                $(this).closest('tr').addClass('success');
+            else
+                $(this).closest('tr').removeClass('success');
+        });
+
+        $("#date-start").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy/mm/dd',
+            onClose: function (selectedDate) {
+                $("#date-end").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#date-end").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy/mm/dd',
+            onClose: function (selectedDate) {
+                $("#date-start").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+
+        $('.show-date').closest('.input-group-addon').addClass('btn btn-default');
+        $('.show-date').closest('.input-group').click(function () {
+            $(this).children('.date').datepicker("show");
+        });
+
+        $('#reset-button').click(function () {
+            $('#time_search input[type=text]').val('');
+            $('#time_search select').select2('val', '');
+        });
+
+        $('#reserveSelected').click(function () {
+            var selectedItems = $('.reserve-item-checkbox:checked');
+            if (selectedItems.length == 0) {
+                $('#reserve-popup .modal-body p').text('<?=t('You need to select at least one session to reserve.')?>');
+                $('#reserve-popup').modal();
+            }
+
+            var doctorId = 0;
+//            $.each(selectedItems, function (index, item) {
+//                if (!doctorId)
+//                    doctorId = $(item).data('doctor');
+//                else if (doctorId != $(item).data('doctor')) {
+//                    doctorId = false;
+//                    $('#reserve-popup .modal-body p').text('<?//=t('Reserving multiple sessions is only possible for a single doctor')?>//');
+//                    $('#reserve-popup').modal();
+//                    return false;
+//                }
+//            });
+
+//            if (doctorId) {
+            var items = [];
+            $.each(selectedItems, function (index, item) {
+                items.push($(item).data('id'));
+            });
+            var url = '<?=url('app/health-center/agreement',array('doctor'=>'__DOCTOR__','time'=>'__ID__'))?>';
+            url = url.replace('__DOCTOR__', doctorId).replace('__ID__', items.join(','));
+            window.location = url;
+//                console.log(url);
+//            }
+        });
+    });
+
+
+</script>

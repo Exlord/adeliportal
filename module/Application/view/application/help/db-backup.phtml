@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-md-6">
+        <p><?=
+            sprintf(t('You can manage database backups from %s'),
+                \Theme\API\Common::Link(
+                    t('Database Backup Management Section'),
+                    url('admin/backup/db'),
+                    array('class' => 'ajax_page_load')
+                )
+            ) ?>
+        </p>
+
+        <p>
+            <?=
+            sprintf(t('You can change automatic database backup operation settings from %s'),
+                \Theme\API\Common::Link(
+                    t('Database Backup Settings'),
+                    url('admin/configs/system', array(), array('fragment' => 'tab-db-backups')),
+                    array('class' => 'ajax_page_load')
+                ))?>
+        </p>
+    </div>
+    <div class="col-md-6">
+        <? print $this->partial('application/db-backup/notice'); ?>
+    </div>
+</div>

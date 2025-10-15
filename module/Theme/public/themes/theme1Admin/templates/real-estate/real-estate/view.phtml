@@ -1,0 +1,558 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/real-estate.css');
+$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/real-estate-melkyab.css');
+$this->headScript()->appendFile($this->basePath() . '/js/real-estate-list.js');
+$this->headScript()->appendFile($this->basePath() . '/js/real-estate-quick-send-mail.js');
+$this->headScript()->appendFile($this->basePath() . '/js/googlemap-in-colorbox.js');
+\JQuery\API\JQuery::loadColorBox($this);
+$google = $this->google;
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+if ($this->item) {
+
+
+//----------------------ali
+    $edit = 'admin/real-estate/edit';
+    $delete = 'admin/real-estate/delete';
+    $archive = 'admin/real-estate/archive';
+    $update = 'admin/real-estate/update';
+
+    $allowed_EDIT_OTHERS_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_EDIT_ALL);
+    $allowed_EDIT_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_EDIT);
+    $allowed_DELETE_OTHERS_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_DELETE_ALL);
+    $allowed_DELETE_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_DELETE);
+    $allowed_ARCHIVE_OTHERS_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_ARCHIVE_ALL);
+    $allowed_ARCHIVE_ESTATES = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_ARCHIVE);
+    $allowed_CHANGE_STATUS = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_UPDATE);
+    $allowed_CHANGE_STATUS_OTHERS = isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_UPDATE_ALL);
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO);
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO);
+    if ($this->permission) {
+        $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+        $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = true;
+    }
+
+
+    $has_command = true;
+    $isCurrentUser = isCurrentUser($this->item->userId);
+    $commands = '';
+
+    $command_temp = "<a data-id='%s' title='%s' class='button icon_button %s' href='%s'>%s</a>";
+    $can_update = false;
+    if ($allowed_CHANGE_STATUS && ($isCurrentUser || $allowed_CHANGE_STATUS_OTHERS)) {
+        $can_update = true;
+        $command_title = $command_text = $this->translate('Update');
+        $command_class = 'setting_button';
+        $command_link = $this->url($update, array('id' => $this->item->itemId));
+        $commands .= sprintf($command_temp, $this->item->itemId, $command_title, $command_class, $command_link, $command_text);
+    }
+    if ($allowed_EDIT_ESTATES && ($isCurrentUser || $allowed_EDIT_OTHERS_ESTATES) && $this->status != 'recycle') {
+        $command_title = $command_text = $this->translate('Edit');
+        $command_class = 'edit_button';
+        $command_link = $this->url($edit, array('id' => $this->item->itemId));
+        $commands .= sprintf($command_temp, $this->item->itemId, $command_title, $command_class, $command_link, $command_text);
+    }
+    if ($allowed_DELETE_ESTATES && ($isCurrentUser || $allowed_DELETE_OTHERS_ESTATES)) {
+        $command_title = $command_text = $this->translate('Delete');
+        $command_class = 'delete_button';
+
+        if ($this->status == 'recycle')
+            $typeDelete = 2;
+        else
+            $typeDelete = 1;
+        $command_link = $this->url($delete, array('id' => $this->item->itemId, 'type' => $typeDelete));
+        $commands .= sprintf($command_temp, $this->item->itemId, $command_title, $command_class, $command_link, $command_text);
+    }
+    if ($this->status != 'archived' && $allowed_ARCHIVE_ESTATES && ($isCurrentUser || $allowed_ARCHIVE_OTHERS_ESTATES) && $this->status != 'recycle') {
+        $command_title = $command_text = $this->translate('Archive');
+        $command_class = 'archive_button';
+        $command_link = $this->url($archive, array('id' => $this->item->itemId), array('query' => array('redirect' => $this->uri)));
+        $commands .= sprintf($command_temp, $this->item->itemId, $command_title, $command_class, $command_link, $command_text);
+    }
+
+
+
+
+
+//------------------------
+
+    ?>
+
+    <fieldset>
+    <legend class="pelak">
+        <span class="code"><?= $this->item->itemId; ?></span>
+        <span class="label"><?= $this->translate('Realty Id'); ?></span>
+    </legend>
+
+    <div class="real-estate-item-page">
+    <?
+
+    if ($this->item->isRequest) {
+        echo '<span class="is-request-overlay"></span>';
+    }
+    if ($this->last_visit < $this->item->published) {
+        echo '<span class="is-new-overlay"></span>';
+    }
+    if (!$this->item->status == 1) {
+        echo '<span class="is-not-approved-overlay"></span>';
+    }
+    if ($this->item->status == 3) {
+        echo '<span class="is-transferred-overlay"></span>';
+    }
+    if ($this->item->status == 4) {
+        echo '<span class="is-canceled-overlay"></span>';
+    }
+
+
+    if ($this->item->status == 3) {
+        echo '<span class="is-transferred"><span>' . $this->translate('Transferred') . '</span></span>';
+    }
+    if ($this->item->status == 4) {
+        echo '<span class="is-canceled"><span>' . $this->translate('RealEstateCanceled') . '</span></span>';
+    }
+
+    if ($has_command && $route_prefix == "admin" && !$this->permission) {
+        ?>
+        <div class="commands commands-view">
+            <? echo $commands; ?>
+            <? if ($can_update) { ?>
+                <div class="update-commands update-commands-view" id="update-row-<?= $this->item->itemId ?>">
+                    <div>
+                        <?= t('ExtentRealEstate') ?>
+                        <select name="expire">
+                            <option value="0"><?= t('No Change') ?></option>
+                            <option value="-1"><?= t('Expire') ?></option>
+                            <option value="1">1 <?= t('Month') ?></option>
+                            <option value="3">3 <?= t('Month') ?></option>
+                            <option value="6">6 <?= t('Month') ?></option>
+                            <option value="12">12 <?= t('Month') ?></option>
+                        </select>
+                    </div>
+                    <div>
+                        <?= t('Status') ?>
+                        <select name="status">
+                            <option value=""><?= t('No Change') ?></option>
+                            <option value="1"><?= t('Approved') ?></option>
+                            <option value="0"><?= t('Not Approved') ?></option>
+                            <? if (!$this->item->isRequest) { ?>
+                                <option value="3"><?= t('Transferred') ?></option>
+                                <option value="4"><?= t('RealEstateCanceled') ?></option>
+                            <? } ?>
+                        </select>
+                    </div>
+                    <div>
+                        <a data-id='<?= $this->item->itemId ?>' data-status='<?= $this->item->status ?>' href="#Save"
+                           class="button save_button"><?= t('Save') ?></a>
+                    </div>
+                </div>
+            <?
+            } ?>
+        </div>
+    <? } ?>
+
+
+    <div class="real-estate-content"></div>
+
+
+    <div class="header-content-visit-count">
+        <?= t('Visit count:') . $this->item->viewCounter; ?>
+    </div>
+
+    <? if (!$this->permission) { ?>
+        <div class="header-content-print">
+            <a href="<?= url('app/real-estate/list', array(), array('query' => array('isExport' => 1, 'exportType' => 'print', 'exportId' => $this->item->itemId))) ?>"
+               target="_blank" class="real-estate-print-btn"><? //= t('Print this page'); ?></a>
+        </div>
+    <? } ?>
+    <!-- </div>-->
+
+
+    <div class="column-owner">
+        <!-- <div>
+                            <span class="address">
+                                <?/*
+                                if (!empty($this->item->addressShort))
+                                    echo $this->item->addressShort;
+                                */?>
+                            </span>
+            <?/* if (!empty($this->item->addressFull)) { */?>
+                <span class="address">
+                                <?/*= $this->item->addressFull */?>
+                            </span>
+            <?/* } */?>
+        </div>-->
+        <div class="owner-details">
+            <?
+            //agar bichare pool dade ke etelaatesh neshun dade beshe . poolesh esraf nashe
+           /* if ($route_prefix == 'app')
+                $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = false;*/
+            if($this->item->showInfo && $this->item->expireShowInfo >= time())
+                $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+
+
+            if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO) {
+                $owner_details = array(
+                    'Name' => $this->item->ownerName,
+                    'Phone' => $this->item->ownerPhone,
+                    'Email' => $this->item->ownerEmail,
+                    'Mobile' => $this->item->ownerMobile,
+                   /* 'real_estate_M' => $this->item->estateArea,
+                    'Address Short' => $this->item->addressShort,*/
+                    'Address' => $this->item->addressFull,
+                );
+            } else {
+                $owner_details = array(
+                    'Address' => $this->item->addressShort,
+                    'Name' => $this->defaultAgent->displayName,
+                    'Phone' => $this->defaultAgent->phone,
+                    'Email' => $this->defaultAgent->email,
+                    'Mobile' => $this->defaultAgent->mobile,
+                );
+            }
+
+            /*  if (isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_VIEW_ALL, current_user()->roles))
+                  $owner_details['Address Full'] = $this->item->addressFull;*/
+
+
+            /*foreach ($owner_details as $name => $value) {
+                if (has_value($value)) {
+                    */?><!--
+                    <div>
+                        <span><?/*= $this->translate($name) */?> :</span><?/*= $value */?>
+                    </div>
+
+                --><? /*
+                }
+            }*/
+            ?>
+        </div>
+    </div>
+
+    <?
+
+    if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO && is_array($this->userAgent))
+        $data_row = $this->userAgent;
+    else
+        $data_row = $this->defaultAgent;
+
+    /*    echo '<span class="agent">';
+        echo getUserDisplayName($data_row);
+        if (has_value($data_row->phone)) {
+            echo ' - ' . $data_row->phone;
+        }
+        if (has_value($data_row->mobile)) {
+            echo ' - ' . $data_row->mobile;
+        }
+        if (has_value($data_row->email)) {
+            echo ' - <a href="mailto:' . $data_row->email . '">' . $data_row->email . '</a>';
+        }
+        echo '</span>';*/
+
+    if ($this->item->status == 3) {
+        echo '<span class="is-transferred"><span>' . $this->translate('Transferred') . '</span></span>';
+    }
+    if ($this->item->status == 4) {
+        echo '<span class="is-canceled"><span>' . $this->translate('RealEstateCanceled') . '</span></span>';
+    }
+    ?>
+
+    <div style="clear: both;"></div>
+
+    <div class="content-agent-real-estate">
+
+        <table class="special-title-real-estate-tbl">
+            <tr>
+                <td colspan="6" class="" align="center">
+                    <?
+                    echo $reg_type = t(\RealEstate\Model\RealEstateTable::$estateRegType[$this->item->regType]) . ' ';
+                    echo $this->item->estateTypeName;
+                    if ($this->item->estateArea) {
+                        $meter = $this->item->estateArea . ' ' . $this->translate('real_estate_Meter');
+                        echo $meter ?>
+                        <sup class="super">(<?= $this->translate('real_estate_M') ?>)</sup>
+                    <? } ?>
+                    <?= $this->translate('real_estate_sell_for') ?>:
+                    <?
+                    $price = 0;
+                    switch ($this->item->regType) {
+                        case 1:
+                        case 3:
+                        case 4:
+                            $price = $this->currencyFormat($this->item->totalPrice);
+                            break;
+                        case 2:
+                            $price = t('mortgage') . ' ' .
+                                $this->currencyFormat($this->item->mortgagePrice) . ' ' .
+                                t('and') . ' ' . t('rental') . ' ' .
+                                $this->currencyFormat($this->item->rentalPrice);
+                            break;
+                    }
+
+                    echo $price . ' ';
+                    echo t('in') . ' ' . $this->item->stateTitle . ' - ' . $this->item->cityTitle ?>
+                    <? if ($this->item->isRequest) { ?>
+                        <span class="is-request">
+                                    <span><?= $this->translate('Requested') ?></span>
+                                </span>
+                    <? } ?>
+                    <? if ($this->item->expire < time()) { ?>
+                        <span class="is-expired">
+                                    <span><?= $this->translate('Expired') ?></span>
+                                </span>
+                    <? } ?>
+                    <? if ($this->last_visit < $this->item->published) { ?>
+                        <span class="is-new">
+                                    <span><?= $this->translate('New') ?></span>
+                                </span>
+                    <? } ?>
+                    <? if ($this->item->status == 0) { ?>
+                        <span class="is-not-approved">
+                                    <span><?= $this->translate('Not Approved') ?></span>
+                                </span>
+                    <? } ?>
+                </td>
+            </tr>
+        </table>
+
+        <fieldset class="view-fields">
+            <legend>
+                <h2 class="home">
+                    <span class="span-fields">اطلاعات ملک </span>
+                </h2>
+            </legend>
+            <table class="fields-real-estate-tbl">
+                <tr>
+                    <?
+                    $counterCol = 0;
+                    $countCol = 2;
+                    $baseCountCol = 2;
+                    foreach ($this->fields as $key => $val) {
+                        $counterCol++; ?>
+                        <td>
+                            <span class="view-img"></span>
+                            <span><?= $key . ' : ' ?></span>
+                            <span><?= $val ?></span>
+                        </td>
+                        <? if ($counterCol == $countCol) {
+                            $countCol += $baseCountCol;
+                            echo "</tr><tr>";
+                        }
+                        ?>
+                    <?
+                    }
+                    ?>
+                </tr>
+            </table>
+        </fieldset>
+
+        <fieldset class="view-images">
+            <legend>
+                <h2 class="home">
+                    <span>  <?= t('Images') ?> </span>
+                </h2>
+            </legend>
+            <table class="images-real-estate-tbl">
+                <tr>
+                    <td>
+                        <?
+                        foreach ($this->files as $value) {
+                            if (file_exists(PUBLIC_PATH . $value)) {
+                                $file_path = getThumbnail()->thumbnail($value, 250, 250);
+                                $file_path_big = getThumbnail()->thumbnail($value, 500, 500);
+                                ?>
+                                <a class="colorbox images-real-estate-tbl-link-pic" href="<?= $file_path_big ?>">
+                                    <img src="<?= $file_path ?>">
+                                </a>
+                            <?
+                            }
+                        }
+                        ?>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+
+    </div>
+
+
+    <div class="footer-agent">
+
+        <fieldset class="view-others">
+            <legend>
+                <h2 class="home">
+                    <span>  <?= t('Others information') ?>  </span>
+                </h2>
+            </legend>
+            <table class="footer-agent-tbl">
+
+                <tr>
+                    <td>
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Owner name') . ' : ' ?></span>
+                        <span><?= $owner_details['Name'] ?></span>
+                    </td>
+                    <td>
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Email') . ' : ' ?></span>
+                        <span><?= $owner_details['Email'] ?></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Phone') . ' : ' ?></span>
+                        <span><?= $owner_details['Phone'] ?></span>
+                    </td>
+                    <td>
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Mobile') . ' : ' ?></span>
+                        <span><?= $owner_details['Mobile'] ?></span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Address') . ' : ' ?></span>
+                        <span><?= $owner_details['Address'] ?></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Description') . ' : ' ?></span>
+                        <span><? if (has_value($this->item->description)) {
+                                echo $this->item->description;
+                            } ?></span>
+                    </td>
+                </tr>
+                <?
+                if (has_value($this->item->pm) && $isCurrentUser && $route_prefix == 'admin') {
+                    ?>
+                    <tr>
+                        <td colspan="2">
+                            <span class="view-img-others"></span>
+                            <span><?= $this->translate('Private Message') . ' : ' ?></span>
+                            <span><?= $this->item->pm ?></span>
+                        </td>
+                    </tr>
+                <? } ?>
+                <tr>
+                    <td colspan="2">
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Reg Date') . ' : ' ?></span>
+                        <span><?= $this->dateFormat($this->item->created); ?></span>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <fieldset class="view-agent">
+            <legend>
+                <h2 class="home">
+                    <span>  <?= t('Agent real estate information') ?> </span>
+                </h2>
+            </legend>
+            <table class="footer-agent-tbl">
+                <tr>
+                    <td>
+                        <div>
+                            <span class="view-img-agent">
+                            <? if (isset($data_row->image) && $data_row->image) {
+                                $image = getThumbnail()->resize($data_row->image, 80, 80); //resize image;
+                            } else {
+                                $image = getThumbnail()->resize($this->basePath() . '/images/not-image.png', 80, 80); //resize image;
+                            } ?>
+                                <img src="<?= $image ?>">
+                        </span>
+                            <span><?= getUserDisplayName($data_row) ?></span>
+                        </div>
+                    </td>
+                    <td rowspan="2">
+                        <?= $this->quick_send_mail($data_row->email) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Email') . ' : ' ?></span>
+                        <span><?= $data_row->email ?></span>
+                        <br/>
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Mobile') . ' : ' ?></span>
+                        <span><?= $data_row->mobile ?></span>
+                        <br/>
+                        <span class="view-img-others"></span>
+                        <span><?= $this->translate('Phone') . ' : ' ?></span>
+                        <span><?= $data_row->phone ?></span>
+                    </td>
+
+                </tr>
+            </table>
+        </fieldset>
+
+        <? if ($google) { ?>
+            <fieldset class="view-location">
+                <legend>
+                    <h2 class="home">
+                        <span>  <?= t('Geographical location') ?> </span>
+                    </h2>
+                </legend>
+                <table class="footer-agent-tbl">
+                    <tr>
+                        <td>
+                            <a class="view-real-estate-google-map"
+                               href='#'>
+                                <img style="color: #000000;"
+                                     alt="<?= t('Please wait ...') ?>"
+                                     src="http://maps.google.com/maps/api/staticmap?center=<?= $google ?>&zoom=14&size=400x200&markers=<?= $google ?>&sensor=false"/>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        <? } ?>
+
+    </div>
+    </div>
+    <?/* if (isAllowed(\RealEstate\Module::ADMIN_REAL_ESTATE_VIEW_ALL, current_user()->roles) && !$this->permission) { */?><!--
+        <fieldset>
+            <legend>
+                <?/*= t('the realty registrant info'); */?>
+            </legend>
+            <div>
+                <?/*
+                /*if ($this->infoAgent != 0)
+                    $userId = $this->item->userId;
+                else
+                    $userId = 1;*/
+              //  */?>
+                <?/*= $this->UserInfo($this->item->userId, $route_prefix); */?>
+            </div>
+        </fieldset>
+
+    --><?// } ?>
+
+    </fieldset>
+
+    <div class="header-content-real-estate">
+        <?
+        if ($route_prefix == 'app')
+            echo $this->add_to_any_helper();
+        ?>
+    </div>
+
+    <script type="text/javascript">
+        var real_estate_page_status = '<?=$this->status?>';
+        var notApproved = '<span class="is-not-approved"><span><?= $this->translate('Not Approved') ?></span></span>';
+        var isTransfer = '<span class="is-transferred"><span><?=$this -> translate('Transferred')?></span></span>';
+        var isCancel = '<span class="is-canceled"><span><?=$this->translate('RealEstateCanceled')?></span></span>';
+        var isExpired = '<span class="is-expired"><span><?= $this->translate('Expired') ?></span></span>';
+        var marker_icon = '<?=$this->basePath() . '/images/google-map/marker.png'?>';
+        var googlemap_lat = '<?= $google ?>';
+    </script>
+<?
+
+} else
+    echo $this->general()->noOutPut();
+?>

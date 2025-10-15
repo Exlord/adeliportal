@@ -1,0 +1,51 @@
+<?
+if ($this->error) {
+    ?>
+    <div class="alert alert-danger">
+        <?= t('ADS_CONFIG_ERROR') ?>
+    </div>
+<?
+} else {
+    if ($this->flagView) {
+        ?>
+        <div>
+            <h3 class="page-title">
+                <?= $this->translate('ADS_CONFIGS'); ?>
+            </h3>
+
+            <p class="help-block"><?= t('ADS_THIRD_CONFIG_DESC') ?></p>
+            <?
+            $form = $this->form;
+            $form->prepare();
+            echo $this->form()->openTag($form);
+            if ($form->has('sort_ads'))
+                echo $this->formCollection($form->get('sort_ads'));
+            echo $this->iptFormCollection($form->get('buttons'));
+            echo $this->form()->closeTag();
+            ?>
+        </div>
+    <?
+    } else {
+        ?>
+        <div class="col-md-12">
+            <? foreach ($this->baseType as $row) { ?>
+                <div class="col-md-4">
+                    <a class="ajax_page_load btn btn-default btn-lg btn-block"
+                       href="<?= url('admin/ad/config/third-config', array('baseType' => $row['id'])) ?>">
+                        <span><?= $row['name'] ?></span>
+                    </a>
+                </div>
+                <? if ($row['isRequest']) { ?>
+                    <div class="col-md-4">
+                        <a class="ajax_page_load btn btn-default btn-lg btn-block"
+                           href="<?= url('admin/ad/config/third-config', array('baseType' => $row['id'], 'isRequest' => 1)) ?>">
+                            <span><?= t('ADS_REQUEST') . ' ' . $row['name'] ?></span>
+                        </a>
+                    </div>
+                <?
+                }
+            } ?>
+        </div>
+    <?
+    }
+}

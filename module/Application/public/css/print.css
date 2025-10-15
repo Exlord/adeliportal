@@ -1,0 +1,7 @@
+*{direction:rtl;font-family:tahoma;}
+.print-content .page,
+.print-toolbar{ display:none; }
+.print-content.portrait{ width:21cm; }
+.print-content.landscape{ width:29.7cm; }
+.print-content.portrait .page{ height:29.7cm; width:21cm; }
+.print-content.landscape .page{ width:29.7cm; height:21cm; }

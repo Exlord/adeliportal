@@ -1,0 +1,24 @@
+<?
+$basePath = $this->basePath();
+$output = "<div class='star-rating-average' dir='ltr'>";
+$score = $this->score;
+for ($i = 1; $i <= 10; $i++) {
+    $star = 'off';
+    if ($i < $score) {
+        $star = 'on';
+        if ($i < $score && $i + 1 > $score)
+            $star = 'half';
+    }
+
+    $output .= "<img src='{$basePath}/images/rating/star-{$star}-big.png'>";
+
+}
+if (!$this->inPanel)
+    $output .= "<span class='label label-info'>{$score}</span>";
+
+$output .= "</div>";
+
+if ($this->inPanel) {
+    print \Theme\API\Common::Panel($output, t('Average Rating') . "<span class='label label-info pull-right flip'>{$score}</span>");
+} else
+    print $this->placeholder('rating-average');

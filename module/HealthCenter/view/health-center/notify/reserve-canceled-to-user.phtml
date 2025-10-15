@@ -1,0 +1,14 @@
+<p>
+    <?=
+    str_replace(
+        array('__RESERVE_DATE__', '__DOCTOR__'),
+        array($this->__RESERVE_DATE__, $this->__DOCTOR__),
+        t('the session at __RESERVE_DATE__ for __DOCTOR__ is canceled')
+    ) ?>
+</p>
+<dl class="dl-horizontal">
+    <dt><?= t('Cancel Reason') ?></dt>
+    <dd><?= $this->__RESERVE_CANCEL_REASON__ ?></dd>
+    <dt><?= t('Refund Amount') ?></dt>
+    <dd><?= $this->__RESERVE_CANCEL_REFUND_AMOUNT__ ?></dd>
+</dl>

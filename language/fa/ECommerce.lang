@@ -1,0 +1,20 @@
+<?return array(
+    'New Product' => 'محصول جدید',
+    'Create new product' => 'ایجاد محصول جدید',
+    'Physical Item' => 'محصول فیزیکی',
+    'Downloadable File' => 'فایل قابل دانلود',
+    'Text Code' => 'کد متنی',
+    'Price' => 'قیمت',
+    'Type' => 'نوع',
+    "To categorise products create a category with machine name of 'commerce_product'" =>
+        "برای دسته بندی محصولات یک دسته بندی با نام ماشینی 'commerce_product' ایجاد کنید",
+    'Product Name' => 'نام محصول',
+    'Weight' => 'وزن',
+    'Width' => 'طول',
+    'Length' => 'عرض',
+    'Height' => 'ارتفاع',
+    'Product Type' => 'نوع محصول',
+    'Select product type to set its details' => 'برای تغییر مشخصلت محصول نوع آن را انتخاب کنید',
+    'E-Commerce' => 'تجارت الکترونیک',
+    'Products' => 'محصولات'
+);

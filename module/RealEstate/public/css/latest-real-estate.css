@@ -1,0 +1,10 @@
+#tabsLatestEstateType{padding:0px; min-height:294px;}
+#tabsLatestEstateType div{padding:0px;}
+#tabsLatestEstateType .ui-helper-clearfix:before, .ui-helper-clearfix:after{display:block;}
+#tabsLatestEstateType > ul{display:inline-flex !important; width:100%; padding:0px !important;}
+.tabs-latest-reg-type{min-height:100px;}
+.tabs-latest-reg-type ul{position: absolute; right: -24px; top: -1px;}
+.tabs-latest-reg-type ul li{float:none !important;}
+.tabs-latest-reg-type ul li a{float:none !important;}
+.tabs-latest-reg-type-div table{ width:100%;}
+.corner-title{display:none;}

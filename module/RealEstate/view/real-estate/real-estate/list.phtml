@@ -1,0 +1,90 @@
+<?
+use \RealEstate\Model\RealEstateTable;
+
+$this->headScript()->appendFile($this->basePath . '/js/real-estate-list-loader.js');
+$this->headScript()->appendFile($this->basePath . '/js/purl.js');
+$this->headScript()->appendFile($this->basePath . '/js/jquery.serialize-object.min.js');
+
+$route_prefix = 'app';
+
+?>
+<div class="real-estate-list-wrapper">
+    <select name="sort" id="sort">
+        <option value=""><?= t('Default') ?></option>
+        <?
+        $desc = t('Descending');
+        $asc = t('Ascending');
+        foreach ($this->sortOptions as $table => $fields) {
+            foreach ($fields as $field => $name) {
+                print "<option value='{$table}.{$field}.desc'>{$name} {$desc}</option>";
+                print "<option value='{$table}.{$field}.asc'>{$name} {$asc}</option>";
+            }
+        } ?>
+    </select>
+
+    <a class="toolbar-button btn btn-default"
+       href="<?= $this->url($route_prefix . '/real-estate/new-transfer') ?>">
+        <span class="glyphicon glyphicon-plus-sign fa-lg text-success"></span>
+        <?= $this->translate('New Estate Transfer') ?>
+    </a>
+    <a class="toolbar-button  btn btn-default"
+       href="<?= $this->url($route_prefix . '/real-estate/new-request') ?>">
+        <span class="glyphicon glyphicon-plus-sign fa-lg text-success"></span>
+        <?= $this->translate('New Estate Request') ?>
+    </a>
+
+    <h3 class="page-title">
+        <?= $this->translate('Real Estate'); ?>
+    </h3>
+
+    <div id="real-estate-list">
+        <?=
+        $this->partial('real-estate/real-estate/list-items', array(
+            'pagination' => $this->pagination,
+            'filed_api' => $this->filed_api,
+            'fields' => $this->fields,
+            'last_visit' => $this->last_visit,
+            'defaultAgent' => $this->defaultAgent,
+            'homeInfoCost' => $this->homeInfoCost,
+            'query' => $this->query,
+            'route' => $this->route
+        )) ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    RealEstate.url = '<?=url('app/real-estate/list')?>';
+    $('#sort').change(function () {
+        RealEstate.query.sort = $(this).val();
+        RealEstate.loadList();
+    });
+    $('body')
+        .on('click', '#real-estate-list .pager a', function (e) {
+            e.preventDefault();
+            var href = $.trim($(this).attr('href'));
+            if (typeof href != 'undefined' && href != '') {
+                RealEstate.query.page = $.url(href).param('page');
+                RealEstate.loadList();
+            }
+        })
+        .on('change', '#real-estate-list .pager #per_page', function (e) {
+            e.preventDefault();
+            var href = $.trim($(this).val());
+            if (typeof href != 'undefined' && href != '') {
+                var per_page = $.url(href).param('per_page');
+                if (typeof per_page != 'undefined') {
+                    RealEstate.query.per_page = per_page;
+                    RealEstate.loadList();
+                }
+            }
+        });
+
+    $('form[name="real-estate-search"]').submit(function (e) {
+        e.preventDefault();
+        $.extend(RealEstate.query, $(this).serializeObject());
+        RealEstate.query.page = 1;
+        console.log(RealEstate.query);
+        RealEstate.loadList();
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

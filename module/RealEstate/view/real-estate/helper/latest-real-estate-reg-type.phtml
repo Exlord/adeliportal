@@ -1,0 +1,91 @@
+<? use RealEstate\Model\RealEstateTable; ?>
+<? //= $this->inlineScript()->captureStart();?>
+<script>
+    $(function () {
+        $("#mainTabsRegType-<?=$this->estateType?>").tabs();
+    });
+</script>
+<? //= $this->inlineScript()->captureEnd();?>
+
+<div id="mainTabsRegType-<?= $this->estateType ?>" class="tabs-latest-reg-type">
+    <ul>
+        <?
+        foreach ($this->estateRegType as $val) {
+            switch ($val) {
+                case 77 :
+                    $classNameRegTpe = 'froosh';
+                    break;
+                case 78 :
+                    $classNameRegTpe = 'rahn';
+                    break;
+            }
+            ?>
+            <li class="<?= $classNameRegTpe ?>" data-id="<?= $val ?>">
+                <a href="#tabsRegType-<?= $val ?>"></a>
+            </li>
+        <? } ?>
+    </ul>
+    <?
+    foreach ($this->estateRegType as $valReg) {
+        if (isset($this->data[$valReg]) && $this->data[$valReg]) { //TODO COMPLETE
+            ?>
+            <div class="tabs-latest-reg-type-div" id="tabsRegType-<?= $valReg ?>">
+                <table cellpadding="10" dir="rtl">
+                    <thead>
+                    <tr>
+                        <th><?= t('City') ?></th>
+                        <th><?= t('Address') ?></th>
+                        <th><?= t('Estate Area') ?></th>
+                        <th><?= t('Price') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?
+                    $count = 0;
+                    $regTypeArray = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+                    foreach ($this->data[$valReg] as $val) {
+                        $extra_fields = $this->filed_api->generate($this->fields, $val);
+                        $reg_type = '';
+                        if (isset($regTypeArray[$val->regType]))
+                            $reg_type = $this->translate($regTypeArray[$val->regType]);
+                        $estate_type = $val->estateTypeName;
+                        $meter = $val->areaId . ' ' . $this->translate('real_estate_Meter');
+                        $title = \Application\API\App::prepareUrlString($reg_type . ' ' . $estate_type . ' ' . $meter);
+                        $url = url('app/real-estate/view', array('id' => $val->itemId, 'title' => $title));
+                        $className = 'tabs-reg-type-div-table-tbody-tr' . $count;
+                        if ($count == 1)
+                            $count = -1;
+                        $count++;
+                        ?>
+
+                        <tr class="<?= $className ?>">
+                            <td><a href="<?= $url ?>"><?= $val->cityTitle ?></a></td>
+                            <td class="latest-address"><a href="<?= $url ?>"><?= $val->addressShort ?></a></td>
+                            <td><a href="<?= $url ?>"><?
+                                    if (isset($extra_fields['زیربنا']) && $extra_fields['زیربنا'])
+                                        echo $extra_fields['زیربنا'];
+                                    elseif (isset($extra_fields['مساحت زمین']) && $extra_fields['مساحت زمین'])
+                                        echo $extra_fields['مساحت زمین'];
+                                    else
+                                        echo '----';
+                                    ?></a></td>
+                            <td><a href="<?= $url ?>"><?= $this->currencyFormat($val->totalPrice) ?></a></td>
+                        </tr>
+                    <? } ?>
+                    </tbody>
+                </table>
+            </div>
+
+        <?
+        } else {
+            ?>
+            <div class="tabs-latest-reg-type-div" id="tabsRegType-<?= $valReg ?>">
+                <p><?= t('Item not found.') ?></p>
+            </div>
+        <?
+        }
+    } ?>
+
+
+</div>
+

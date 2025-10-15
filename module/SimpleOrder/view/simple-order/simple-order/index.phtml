@@ -1,0 +1,42 @@
+<?
+$this->headLink()->appendStylesheet($this->basePath() . '/css/simple-order-form.css');
+$this->headScript()->appendFile($this->basePath() . '/js/simple-order.js');
+$form = $this->form;
+$form->prepare();
+echo $this->form()->openTag($form);
+echo $this->iptFormRow($form->get('csrf_simple_order_form'));
+?>
+<div id="simple-order">
+    <h3 class="page-title">
+        <?= t('SIMPLE_ORDER_ORDER_PRODUCT') ?>
+    </h3>
+
+    <fieldset>
+        <legend>
+            <?= t('SIMPLE_ORDER_CONTACT_INFO') ?>
+        </legend>
+        <?= $this->iptFormRow($form->get('name')) ?>
+        <?= $this->iptFormRow($form->get('mobile')) ?>
+        <?= $this->iptFormRow($form->get('email')) ?>
+        <?= $this->iptFormRow($form->get('description'))  ?>
+    </fieldset>
+    <div class="items">
+        <?= $this->iptFormCollection($form->get('category_collection')) ?>
+        <div style="clear:both;"></div>
+    </div>
+    <div>
+        <?= $this->iptFormRow($form->get('captcha')) ?>
+        <?= $this->iptFormRow($form->get('submit')) ?>
+    </div>
+    <?
+    echo $this->form()->closeTag();
+    ?>
+    <div style="clear:both;"></div>
+    <script>
+        <?$this->inlineScript()->captureStart();?>
+        var SimpleOrder = {
+            url: '<?=url('admin/category/sub-category')?>'
+        };
+        <?$this->inlineScript()->captureEnd();?>
+    </script>
+</div>

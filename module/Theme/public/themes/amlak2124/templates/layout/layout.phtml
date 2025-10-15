@@ -1,0 +1,244 @@
+<?
+//$content = \Theme\API\Themes::renderLayout($this);
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$basePath = $this->basePath();
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    );
+
+if ($direction == 'rtl')
+    $this->headLink()->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-rtl.min.css');
+
+$this->headLink()
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap-theme.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . '/css/bootstrap.min.css')
+    ->prependStylesheet($basePath . '/css/base-theme/jquery-ui-1.10.1.custom.min.css')
+    ->prependStylesheet($basePath . '/select2/select2-bootstrap.css')
+    ->prependStylesheet($basePath . '/select2/select2.css')
+    ->prependStylesheet($basePath . '/css/system.css');
+
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    // ->prependFile($basePath . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($this->basePath() . '/js/jquery.cookie.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($this->basePath() . '/js/real-estate-compare.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/js/jquery.hoverIntent.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . '/select2/select2.min.js')
+    ->prependFile($basePath . '/js/jquery-ui-1.10.4.custom.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    )
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/html5shiv.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+
+
+$topMenu = $this->blocks('top-menu');
+$bottomMenu = $this->blocks('bottom-menu');
+$user_block = $this->user_logged_in_block();
+if (!$user_block) {
+    $user_login_block = $this->blocks('user-popup');
+}
+$colLeft = $this->blocks('col-left');
+$colRight = $this->blocks('col-right');
+$main = $this->blocks('main');
+$topBanner = $this->blocks('top-banner');
+$slider = $this->blocks('slider');
+$latestContent = $this->blocks('latest-content');
+$colLeftSearch = $this->blocks('col-left-search');
+$leftBanner = $this->blocks('left-banner');
+$advancedSearch = $this->blocks('advanced-search');
+$mainWidth = '960px';
+if ($colLeft)
+    $mainWidth = '550px';
+if($colLeftSearch || $colRight)
+    $mainWidth = '702px';
+if($colRight)
+    $mainWidth = '760px';
+?>
+
+<!DOCTYPE html>
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<body>
+
+<div id="container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header_wrapper">
+                    <div class="logo-header"></div>
+                    <? if ($topBanner) { ?>
+                        <div class="top_banner">
+                            <?= $topBanner ?>
+                        </div>
+                    <? } ?>
+                    <? if (!$user_block) { ?>
+                        <span class="icon_free"></span>
+                        <a class="btn_register" href="<?=url('app/user/register')?>"><?= t('Register', 'theme') ?></a>
+                        <div class="box user_login_popup" id="user_login_popup">
+                            <?= $user_login_block ?>
+                        </div>
+                        <div class="box user_login_box">
+                            <a id="user_login_link"
+                               href="<?= url('app/user/login') ?>"><span><?= t('Login') ?></span></a>
+                        </div>
+                    <? } ?>
+                    <div id="user_popup_container">
+                        <?
+                        if ($user_block) {
+                            if (isAllowed(\Application\Module::ADMIN)) {
+                                ?>
+                                <div class="box admin_link_box">
+                                    <a title="<?= t('Administration') ?>" href="<?= url('admin') ?>"></a>
+                                </div>
+                            <?
+                            }
+                            echo $user_block;
+                        }
+                        ?>
+                    </div>
+                    <? if ($topMenu) { ?>
+                        <div class="box_top_menu">
+                            <?= $topMenu ?>
+                        </div>
+                    <? } ?>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <? if ($advancedSearch) { ?>
+                    <div class="advanced_search">
+                        <?= $advancedSearch ?>
+                    </div>
+                <? } ?>
+
+                <div id="main_wrapper">
+                    <? if ($colLeft) { ?>
+                        <div class="col_left">
+                            <?= $colLeft ?>
+                        </div>
+                    <? } ?>
+                    <? if ($colLeftSearch) { ?>
+                        <div class="col_left_search">
+                            <?= $colLeftSearch ?>
+                        </div>
+                    <? } ?>
+                    <? if ($colRight) { ?>
+                        <div class="col_right">
+                            <?= $colRight ?>
+                        </div>
+                    <? } ?>
+                    <div class="col_middle" style="width: <?= $mainWidth ?>;">
+                        <?
+                        if ($main)
+                            echo $main;
+                        if ($this->content) {
+                            ?>
+                            <div class="box-main">
+                                <?
+                                $fm = $this->flashMessenger()->render();
+                                if (!empty($fm)) {
+                                    ?>
+                                    <div id="system_messages"><?= $fm; ?></div>
+                                <? } ?>
+                                <div style="clear: both"></div>
+                                <div class="box_main_content">
+                                    <?= $this->content ?>
+                                    <div style="clear: both;"></div>
+                                </div>
+                            </div>
+                        <? } ?>
+                        <div style="clear: both"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div id="slider_wrapper">
+                    <? if ($slider) { ?>
+                        <?= $slider ?>
+                    <? } ?>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div id="bottom_wrapper">
+                    <? if ($latestContent) { ?>
+                        <?= $latestContent ?>
+                    <? } ?>
+                    <? if ($leftBanner) { ?>
+                        <?= $leftBanner ?>
+                    <? } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="width: 100%; padding: 0;">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="footer_wrapper">
+                    <? if ($bottomMenu) { ?>
+                        <div class="box_bottom_menu">
+                            <?= $bottomMenu ?>
+                        </div>
+                    <? } ?>
+                    <div class="box_footer">
+                        <?
+                        $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                        $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                        $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                        ?>
+                        <p align="center">
+                            <?= t('APPLICATION_BROWSERS') ?>
+                        </p>
+
+                        <p align="center">
+                            <span><?= sprintf(t('APPLICATION_RIGHTS'), t('Estate2124', 'theme')) ?></span>
+                            <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                            &nbsp; .
+                            <!-- <span><? /*= t('APPLICATION_SUPPORT') */ ?></span> .
+                        <span><? /*= t('APPLICATION_POWERED_BY') */ ?></span>-->
+                        </p>
+                        <span class="phone_icon_f"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>
+<script>
+    var real_compare_url = '<?= url('app/real-estate/compare') ?>';
+</script>

@@ -1,0 +1,15 @@
+<h3 class="page-title"><?= $this->translate('Welcome dear friend') ?></h3>
+<p>
+    <?
+    echo $this->translate("This is the default page for this Site");
+    echo '.';
+    echo $this->translate("You are seeing this page because the administrator of this site hasn't selected a default module for this site");
+    echo '.';
+    ?>
+</p>
+<p>
+    <?= $this->translate("Or just something has gone wrong !!! I don't Know ...") ?>
+</p>
+<?
+echo $this->user_login_block();
+?>

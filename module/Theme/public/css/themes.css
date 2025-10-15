@@ -1,0 +1,5 @@
+.theme-list{ margin:0; }
+.theme-list .theme-item-wrapper{ padding:10px; }
+.theme-list .theme-item{   }
+.theme-list .theme-item .row div div{margin:2px 0;}
+.theme-list .theme-item img{background:#dddddd;border:solid 1px #dcdcdc;min-width:200px;min-height:80px;display:block;}

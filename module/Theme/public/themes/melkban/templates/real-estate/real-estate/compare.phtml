@@ -1,0 +1,183 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/real-estate-compare.js');
+use \RealEstate\Model\RealEstateTable;
+
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+
+if ($this->dataArray) {
+    $allRegType = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+    $base_reg_type = null;
+    $dataRows = array();
+    $firstCount = 0;
+    $baseFields = array();
+    foreach ($this->dataArray as $row) {
+
+        if ($firstCount == 0) {
+            $dataRows['delete'][] = '';
+            $dataRows['image'][] = '';
+            $dataRows['id'][] = t('Id');
+            $dataRows['view'][] = t('View');
+            $dataRows['rt'][] = t('Register Type');
+            $dataRows['et'][] = t('Estate Type');
+            $dataRows['price'][] = t('Price');
+            $dataRows['priceOneMeter'][] = t('RealEstate_price_one_meter');
+            $dataRows['state'][] = t('State');
+            $dataRows['city'][] = t('City');
+            $dataRows['region'][] = t('Region');
+            $dataRows['ct'][] = t('REALESTATE_CUSTOMER_TYPE');
+            $dataRows['published'][] = t('REALESTATE_PUBLISHED');
+            $dataRows['status'][] = t('Status');
+            $dataRows['date'][] = t('Date');
+            foreach ($row['fields'] as $key => $val) {
+                if ($firstCount == 0) {
+                    if ($key != 'کمترین قیمت' && $key != 'بالاترین قیمت' && $key != 'کمترین رهن' && $key != 'بالاترین رهن' && $key != 'کمترین اجاره' && $key != 'بالاترین اجاره' && $key != 'کمترین متراژ' && $key != 'بالاترین متراژ') {
+                        $baseFields[$key][] = $key;
+                        if ($key == 'بدنه')
+                            $key = 'بدنه کابینت';
+                        if ($key == 'روکش')
+                            $key = 'روکش کابینت';
+                        if ($key == 'صفحه')
+                            $key = 'صفحه کابینت';
+                        $dataRows[$key][] = $key;
+                    }
+                }
+            }
+            $firstCount++;
+        }
+
+        $reg_type_class = '';
+        $reg_type = '';
+        if (isset($allRegType[$row['data']['regType']])) {
+            $reg_type_class = strtolower(str_replace(' ', '-', $allRegType[$row['data']['regType']]));
+            $reg_type = $this->translate($allRegType[$row['data']['regType']]);
+        }
+        if (!$base_reg_type)
+            $base_reg_type = $reg_type;
+        $estate_type = $row['data']['estateTypeName'];
+        $meter = $row['data']['areaId'] . ' ' . $this->translate('real_estate_Meter');
+        $title = \Application\API\App::prepareUrlString($reg_type . ' ' . $estate_type . ' ' . $meter);
+        $price = 0;
+        $priceOneMeter=0;
+        switch ($row['data']['regType']) {
+            case 78:
+                $price = '<span class="mortgage">&nbsp;' . $this->translate('mortgage') .
+                    '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row['data']['mortgagePrice']) . '</span><br/><span class="rental">&nbsp;' . $this->translate('rental') .
+                    '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row['data']['rentalPrice']) . '</span>';
+                break;
+            default:
+                $price = '<span class="price">' . $this->currencyFormat($row['data']['totalPrice']) . '</span>';
+                $priceOneMeter = '<span class="price">' . $this->currencyFormat($row['data']['priceOneMeter']) . '</span>';
+                break;
+        }
+
+        $typeCustomer = $row['data']['isRequest'] ? t('REALESTATE_REQUEST') : t('REALESTATE_TRANSFER');
+
+
+        if ($this->last_visit < $row['data']['published'])
+            $publishedType = t('New');
+        else
+            $publishedType = t('REALESTATE_OLD');
+
+        $statusType = t('Approved');
+        if (!$row['data']['status'] == 1)
+            $statusType = t('Not Approved');
+        if ($row['data']['status'] == 3)
+            $statusType = t('Transferred');
+        if ($row['data']['status'] == 4)
+            $statusType = t('Canceled');
+
+        $link = "<a target='_blank' href='" . $this->url($route_prefix . '/real-estate/view', array('id' => $row['data']['itemId'], 'title' => $title)) . "'>" . t('View details and contact') . "</a>";
+
+
+        $image = explode(',', $row['data']['fPath']);
+        if (is_array($image) && isset($image[0]) && !empty($image[0]))
+            $imageUrl = getThumbnail()->resize($image[0], 100, 100); //resize image
+        else
+            $imageUrl = getThumbnail()->resize($this->basePath() . '/images/not-image.png', 100, 100); //resize image;
+        $imgUrl = "<img src=" . $imageUrl . " >";
+
+        $deleteLink = "<a href='#' data-id='" . $row['data']['itemId'] . "' class='delete_real_compare' >Delete</a>";
+
+        $dataRows['delete'][] = $deleteLink;
+        $dataRows['image'][] = $imgUrl;
+        $dataRows['id'][] = $row['data']['itemId'];
+        $dataRows['view'][] = $link;
+        $dataRows['rt'][] = $reg_type;
+        $dataRows['et'][] = $estate_type;
+        $dataRows['price'][] = $price;
+        $dataRows['priceOneMeter'][] = $priceOneMeter;
+        $dataRows['state'][] = $row['data']['stateTitle'];
+        $dataRows['city'][] = $row['data']['cityTitle'];
+        if (isset($row['data']['areaTitle']))
+            $dataRows['region'][] = $row['data']['areaTitle'];
+        else
+            $dataRows['region'][] = '-----';
+        $dataRows['ct'][] = $typeCustomer;
+        $dataRows['published'][] = $publishedType;
+        $dataRows['status'][] = $statusType;
+        $dataRows['date'][] = $this->dateFormat($row['data']['created']);
+
+        if (count($row['fields']))
+            /* foreach ($row['fields'] as $key=>$val) {
+                 if ($base_reg_type == $reg_type)
+                     $dataRows[$counter++][] = $val;
+                 elseif (isset($dataRows[$counter]))
+                     $dataRows[$counter++][] = 'Not';
+             }*/
+            foreach ($baseFields as $key => $val) {
+                if (isset($row['fields'][$key])) {
+                    $valField = $row['fields'][$key];
+                    if ($key == 'بدنه')
+                        $key = 'بدنه کابینت';
+                    if ($key == 'روکش')
+                        $key = 'روکش کابینت';
+                    if ($key == 'صفحه')
+                        $key = 'صفحه کابینت';
+                    $dataRows[$key][] = $valField;
+                } else
+                    $dataRows[$key][] = '-----';
+            }
+    }
+    ?>
+
+    <div style="clear: both"></div>
+    <div class="box_real_compare">
+        <div class="compare_title">
+            <span class="icon_compare"></span>
+            <span class="text_compare">
+                <?= $this->translate('REALESTATE_COMPARE_ESTATE'); ?>
+             </span>
+        </div>
+        <table>
+            <?
+
+            $countRow = 0;
+            foreach ($dataRows as $row) {
+                ?>
+                <tr>
+                    <?
+                    $countCol = 0;
+                    foreach ($row as $data) {
+                        $td_title = '';
+                        if ($countCol == 0)
+                            $td_title = 'td_title';
+                        ?>
+                        <td class="td_<?= $countRow . $countCol ?> <?= $td_title ?>">
+                            <?= $data ?>
+                        </td>
+                        <?
+                        $countCol++;
+                    } ?>
+                </tr>
+                <?
+                $countRow++;
+            } ?>
+        </table>
+    </div>
+
+
+<?
+} else {
+    echo $this->general()->noOutPut();
+} ?>
+

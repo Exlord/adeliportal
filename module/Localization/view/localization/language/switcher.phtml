@@ -1,0 +1,80 @@
+<div class="box language-switcher-box">
+    <ul class="wrapper">
+        <?
+        $isSimple = (isset($this->simpleList) && $this->simpleList);
+        $current_lang = null;
+        $lang_text = '';
+        /* @var $MvcEvent \Zend\Mvc\MvcEvent */
+        $MvcEvent = getSM('Application')->getMvcEvent();
+
+        $route = 'app';
+        $params = array();
+        $options = array();
+        if ($MvcEvent) {
+            /* @var $routeMatch \Zend\Mvc\Router\Http\RouteMatch */
+            $routeMatch = $MvcEvent->getRouteMatch();
+            if ($routeMatch) {
+                $route = $routeMatch->getMatchedRouteName();
+                $params = $routeMatch->getParams();
+                $options['query'] = (array)getSM('Request')->getQuery();
+            }
+        }
+        $basePath = $this->basePath();
+
+        $lang__li = "<li class='%s'>%s</li>";
+
+        if ($isSimple)
+            $lang__a = "<a href='%s' data-toggle='tooltip' rel='tooltip' title='%s'>%s</a>";
+        else
+            $lang__a = "<a href='%s'>%s</a>";
+
+        $lang__text = "<span class='title label'>%s</span>";
+
+        if ($isSimple)
+            $lang__subtext = '%s';
+        else
+            $lang__subtext = "<span class='sub-label'>%s</span>";
+
+        $lang__img = "<img src='%s' alt='%s'/>";
+
+        foreach ($this->languages as $lang) {
+            $params['lang'] = $lang['langSign'];
+            $href = url($route, $params, $options, true);
+            $src = $basePath . '/images/flags/' . $lang['langSign'] . '.png';
+            $alt = $lang['langName'];
+            if ($lang['langSign'] != $this->current_lang) {
+
+                if (!$isSimple) {
+                    $langName = sprintf($lang__text, $lang['langName']) .
+                        sprintf($lang__subtext, $lang['title']);
+
+                    $link = sprintf($lang__a, $href,
+                        sprintf($lang__img, $src, $alt) .
+                        $langName
+                    );
+                } else {
+                    $langName = sprintf($lang__text, $lang['langName']);
+
+                    $link = sprintf($lang__a, $href,
+                        sprintf($lang__subtext, $lang['title']),
+                        sprintf($lang__img, $src, $alt) .
+                        $langName
+                    );
+                }
+
+                $lang_text .= sprintf($lang__li, '', $link);
+            } else {
+//                $current_lang = sprintf($lang__li, 'active-lang',
+//                    sprintf($lang__img, $src, $alt) .
+//                    sprintf($lang__text, $lang['langName'])
+//                );
+                $current_lang = sprintf($lang__img, $src, $alt) .
+                    sprintf($lang__text, $lang['langName']);
+            }
+        }
+        if (!$isSimple)
+            $lang_text = sprintf("<ul class='lang-list'>%s</ul>", $lang_text);
+        echo sprintf($lang__li, 'active-lang', $current_lang . $lang_text);
+        ?>
+    </ul>
+</div>

@@ -1,0 +1,35 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Health Center Configs'); ?>
+    </h3>
+
+    <div class="row">
+        <?
+        $this->form->prepare();
+        print $this->form()->openTag($this->form);
+        ?>
+        <div class="col-md-6">
+            <?
+            print $this->formRow($this->form->get('doctorUserRole'));
+            print $this->formRow($this->form->get('visitRules'));
+            print $this->formRow($this->form->get('sessionCost'));
+            ?>
+        </div>
+        <div class="col-md-6">
+            <?
+            print $this->formRow($this->form->get('reservationPaymentTimeout'));
+            print $this->formRow($this->form->get('cancelTimeout'));
+//            print $this->formRow($this->form->get('reservePoint'));
+//            print $this->formRow($this->form->get('reserveCancelPoint'));
+            ?>
+        </div>
+        <div class="col-md-12">
+            <?
+            print $this->formCollection($this->form->get('buttons'));
+            ?>
+        </div>
+        <?
+        print $this->form()->closeTag();
+        ?>
+    </div>
+</div>

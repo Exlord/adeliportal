@@ -1,0 +1,68 @@
+<?
+if (!empty($this->paginator) && $this->paginator->count()) {
+    $fieldsApi = getSM()->get('fields_api');
+    ?>
+    <div class="col-md-12" id="books-list">
+        <?
+        foreach ($this->paginator as $row) {
+            $image = null;
+            if (isset($row['book_image'])) {
+                $image = $row['book_image'];
+                unset($row['book_image']);
+            }
+            ?>
+            <div class="media">
+                <a class="media-left" href="#">
+                    <? //= $row->book_image ?>
+                </a>
+
+                <div class="media-body">
+
+                    <a href="<?= url('app/books/view', array('id' => $row['itemId'],
+                        'title' => \Application\API\App::prepareUrlString($row['title']))) ?>">
+                        <h4 class="media-heading">
+                            <?= $this->escapeHtml($row['title']) ?>
+                        </h4>
+                    </a>
+
+                    <div class="item-details">
+                        <?
+                        if (isset($row['book_summery']))
+                            unset($row['book_summery']);
+                        $fieldsData = $fieldsApi->generate($this->fields, $row);
+                        foreach ($fieldsData as $key => $val) {
+                            ?>
+                            <div class="detail-row">
+                                <span class="item-label"><?= $key ?> :</span>
+                                <span class="item-value"><?= $val ?></span>
+                            </div>
+                        <?
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        <?
+        }
+        ?>
+    </div>
+    <div class="pager">
+        <?
+        /* @var $pages \Zend\Paginator\Paginator */
+        echo $this->paginationControl($this->paginator,
+            'Sliding',
+            'application/pagination/search', array(
+                'route' => 'app/books',
+                'route_params' => array(),
+                'route_options' => array('query' => array('per_page' => $this->per_page))));
+        ?>
+    </div>
+<?
+} else {
+    ?>
+    <div class="col-xs-12">
+        <? print $this->alert(t('No books found !'), 'alert-info'); ?>
+    </div>
+<?
+}
+?>

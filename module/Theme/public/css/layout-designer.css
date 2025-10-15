@@ -1,0 +1,23 @@
+.ui-dialog.layout-designer .ui-dialog-titlebar{display:none;}
+.ui-dialog.layout-designer .ui-dialog-buttonpane{padding-bottom:0;}
+#layout{ display:none; }
+#layout-designer{ overflow-x:hidden; }
+#layout-designer #selected-item{ display:block; float:left; direction:ltr; }
+#layout-content{ border:solid 1px #c1c1c1; position:relative; padding:25px; background:#ececec; }
+#layout-content .row{ margin-top:15px; margin-bottom:15px; background:#d1d1d1; position:relative;
+    min-height:50px; border:solid 1px #808080; padding:22px 10px 10px 10px; }
+#layout-content .layout-column{ border:solid 1px #808080; min-height:50px; background:#ffffff; padding:22px 10px 5px 10px; }
+#layout-content .layout-column .row{margin-right:5px;margin-left:5px;}
+#layout-content .layout-tag{ cursor:move; position:absolute; top:0; right:0; padding:2px 5px;
+    font-weight:normal; font-size:7pt; background:#808080; color:#ffffff }
+#layout-content .ui-state-highlight{ height:30px; line-height:1.2em; }
+#layout-designer .selected{ border:dashed 2px #8b0000; }
+.layout-designer-form label{ display:block; }
+#designer-toolbar{ padding:4px 2px; width:12px; height:35px;
+    background:#ebebeb; border:solid 1px #afafaf; position:absolute; z-index:999; display:none;
+    -moz-box-shadow: 0px 0px 5px -2px #000000;
+    -webkit-box-shadow: 0px 0px 5px -2px #000000;
+    box-shadow: 0px 0px 5px -2px #000000;
+}
+#designer-toolbar a.hidden{display:none;}
+#add-layout-column-form table th,#add-layout-column-form table td{text-align:right;padding:4px;}

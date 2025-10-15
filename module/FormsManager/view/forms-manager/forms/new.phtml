@@ -1,0 +1,105 @@
+<? $this->headScript()->appendFile($this->basePath() . '/js/forms-manager.js');
+//$this->headScript()->appendFile($this->basePath() . '/lib/ckeditor/ckeditor.js');
+?>
+<style>
+    .form_element.textarea{ position:relative; }
+    #fields-list{ display:none; }
+    .ui-dialog-titlebar{ display:none; }
+    #insert-field{ margin:0 20px; }
+    .a{ }
+</style>
+<div>
+    <h3 class="page-title"><?= t('Create/Edit Form Template') ?></h3>
+    <!--    var element = "<img data-cke-field-placeholder='1' class='cke_field_placeholder' data-id='" + match + "' alt='" + System.FormsManager.Fields[match] + "' />";-->
+    <?
+    //    $form = $this->form;
+    //    $form->prepare();
+    //    echo $this->form()->openTag($form);
+    //
+    //    foreach ($form->getElements() as $el) {
+    //        echo $this->iptFormRow($el);
+    //    }
+    //    echo $this->iptFormCollection($form->get('config'));
+    //    echo $this->formCollection($form->get('buttons'));
+    //    echo $this->form()->closeTag();
+    print $this->form($this->form);
+    ?>
+</div>
+<div id="fields-list"><?= $this->fields ?></div>
+<script type="text/javascript">
+    <?=$this->inlineScript()->captureStart();?>
+    var insertFieldBtn = $('<a></a>')
+        .attr({
+            href: '#insert-field',
+            id: 'insert-field',
+            'class': 'btn btn-default',
+            title: '<?=t('Click here to select a field to insert to the forms template format.')?>'
+        })
+        .html('<?=t('Select and Insert Fields')?>')
+        .click(function (e) {
+            e.preventDefault();
+            var height = parseInt($(window).height() * 80 / 100);
+            var width = parseInt($(window).width() * 80 / 100);
+            $("#fields-list").dialog({
+                height: height,
+                maxHeight: height,
+                width: width,
+                maxWidth: width,
+                modal: true,
+                buttons: [
+                    {
+                        text: "<?=t('Insert Selected Fields')?>",
+                        click: function () {
+                            var items = $('.selectable-field-item input[type=checkbox]:checked');
+                            if (items.length) {
+                                var a = CKEDITOR.instances['format'];
+                                $(items).each(function (index, el) {
+                                    $(el).prop('checked', false).parent().parent().removeClass('selected');
+                                    var hidden = $(el).siblings('input[type=hidden]').clone().attr('type', 'text');
+                                    var id = hidden.attr('id');
+                                    System.Editor.insertHtml('&nbsp;' + $(hidden).attr('id') + '&nbsp;', 'format');
+//                                    CKEDITOR.plugins.placeholder.createPlaceholder(a, null, $(hidden).attr('id'));
+//                                    System.Editor.insertText(' ', 'format');
+                                });
+                            }
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: "<?=t('Cancel')?>",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                ]
+            });
+        });
+    //hide format and template
+    //$('#dynamic_form .hidden').parent(':not(".btn-group")').hide();
+    //move format and template into formType fieldset
+    //    var formType = $('input[name=formType]').parent().parent().css({'max-width': '100%', 'max-height': '100%'});
+    //    $('#templateFile').parent().appendTo(formType);
+    //    $('#format').parent().appendTo(formType);
+
+    $(document).ready(function () {
+//        CKEDITOR.plugins.addExternal('field_placeholder',
+        <!--            -->
+        <?//=$this->basePath() ?><!--'/js/', 'field-placeholder.js');-->
+//        CKEDITOR.config.extraPlugins = 'field_placeholder';
+        <?\Application\API\App::setEditor('format',$this)?>
+//        editor.focus();
+        $(insertFieldBtn).insertBefore($('#format'));
+//        $('body').on('change', 'input[name=formType]', function () {
+////            $('#dynamic_form .hidden').parent(':not(".btn-group")').hide();
+//            var id = $(this).attr('id');
+//            $('#dynamic_form .hidden').each(function () {
+//                if ($(this).data('show-on') == id)
+//                    $(this).parent().show();
+//            });
+//        });
+//        $('input[name=formType]').change();
+
+
+    });
+    <?=$this->inlineScript()->captureEnd();?>
+</script>

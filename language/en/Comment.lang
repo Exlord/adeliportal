@@ -1,0 +1,4 @@
+<?return array(
+    'PERM_Comment' => 'Comment',
+    'Comment_config_questStatus'=>'Comment_config_questStatus',
+);

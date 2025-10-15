@@ -1,0 +1,247 @@
+<?
+if ($this->pagination->count()) {
+
+    $route_prefix = 'app';
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO);
+    $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = isAllowed(\RealEstate\Module::APP_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO);
+
+    /* @var $row ArrayObject */
+    foreach ($this->pagination as $row) {
+
+        if ($row->isSpecial && $row->expireSpecial >= time())
+            $specialClass = 'div-special-real-estate';
+        else
+            $specialClass = '';
+        ?>
+        <fieldset class="<?= $specialClass ?>">
+        <legend><?= $this->translate('Realty Id') ?> : <?= $row->itemId ?></legend>
+        <?
+        $extra_fields = $this->filed_api->generate($this->fields, $row);
+        $item_class = array();
+        $item_class[] = $row->isRequest ? 'real-estate-request' : 'real-estate-transfer';
+        //        $item_class[] = $this->last_visit < $row->published ? 'real-estate-is-new' : '';
+        //        $item_class[] = $row->status == 1 ? '' : 'real-estate-not-approved';
+        $regTypeArray = getSM('category_item_table')->getItemsArrayByCatName('estate_reg_type');
+        $reg_type_class = strtolower(str_replace(' ', '-', $regTypeArray[$row->regType]));
+        $reg_type = $this->translate($regTypeArray[$row->regType]);
+        $estate_type = $row->estateTypeName;
+        //        $meter = $row->estateArea . ' ' . $this->translate('real_estate_Meter');
+        $meter = "TODO get estateArea from fields";
+        $title = \Application\API\App::prepareUrlString($reg_type . ' ' . $estate_type . ' ' . $meter);
+        $price = 0;
+
+        switch ($row->regType) {
+            case 1:
+            case 3:
+            case 4:
+                $price = '<span class="price">' . $this->currencyFormat($row->totalPrice) . '</span>';
+                break;
+            case 2:
+                $price = '<span class="mortgage">&nbsp;' . $this->translate('mortgage') .
+                    '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->mortgagePrice) . '</span>&nbsp;' .
+                    $this->translate('and') . '&nbsp;<span class="rental">&nbsp;' . $this->translate('rental') .
+                    '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row->rentalPrice) . '</span>';
+                break;
+        }
+
+        $isCurrentUser = isCurrentUser($row->userId);
+
+        $item_class = implode(' ', $item_class);
+
+        ?>
+        <div class="real-estate-item <?= $item_class ?> ">
+            <div class="real-estate-content">
+                <?
+                if ($row->isRequest) {
+                    echo '<span class="is-request-overlay"></span>';
+                }
+                if ($this->last_visit < $row->published) {
+                    echo '<span class="is-new-overlay"></span>';
+                }
+                if ($row->status == 3) {
+                    echo '<span class="is-transferred-overlay"></span>';
+                }
+                if ($row->status == 4) {
+                    echo '<span class="is-canceled-overlay"></span>';
+                }
+                ?>
+                <div class="real-estate-title">
+                    <a href="<?= $this->url('app/real-estate/view', array('id' => $row->itemId, 'title' => $title)) ?>">
+                        <h1>
+                            <span class="reg-type reg-type-<?= $reg_type_class ?>"><?= $reg_type ?></span>
+                            <span class="estate-type"><?= $estate_type ?></span>
+
+<!--                            --><?//if ($row->estateArea) {
+//                                ?>
+                                <span class="estate-area">
+                                        <?= $meter ?></span>
+                                <sup class="super">(<?= $this->translate('real_estate_M') ?>)</sup>
+<!--                            --><?// } ?>
+                            &nbsp;<span class="sell-for"><?= $this->translate('real_estate_sell_for') ?>:</span>&nbsp;
+                            <?= $price ?>
+                            <span class="location">
+                                <?= t('in') . ' ' . $row->stateTitle . ' - ' . $row->cityTitle ?></span>
+                        </h1>
+                    </a>
+                    <? if ($row->isRequest) { ?>
+                        <span class="is-request">
+                                    <span><?= $this->translate('Requested') ?></span>
+                                </span>
+                    <? } ?>
+                    <? if ($this->last_visit < $row->published) { ?>
+                        <span class="is-new">
+                                    <span><?= $this->translate('New') ?></span>
+                                </span>
+                    <? } ?>
+                </div>
+                <div class="column-owner">
+                    <div class="owner-details">
+                        <?
+                        //agar bichare pool dade ke etelaatesh neshun dade beshe . poolesh esraf nashe
+                        if ($route_prefix == 'app') //samte client hatta agar login ham shode ettelaate sabt konnande melk neshan s=dade nashavad magar pool dade ta neshan dade shavad
+                            $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = false;
+                        if ($row->showInfo && $row->expireShowInfo > time())
+                            $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO = true;
+
+                        if ($allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_INFO) {
+                            $owner_details = array(
+                                'Address' => $row->addressFull,
+                                'Name' => $row->ownerName,
+                                'Phone' => $row->ownerPhone,
+                                'Email' => $row->ownerEmail,
+                                'Mobile' => $row->ownerMobile,
+                            );
+                        } else {
+                            $owner_details = array(
+                                'Address' => $row->addressShort,
+                                'Name' => $this->defaultAgent->displayName,
+                                'Phone' => $this->defaultAgent->phone,
+                                'Email' => $this->defaultAgent->email,
+                                'Mobile' => $this->defaultAgent->mobile,
+                            );
+                        }
+
+                        foreach ($owner_details as $name => $value) {
+                            if (has_value($value)) {
+                                ?>
+                                <div>
+                                    <span><?= $this->translate($name) ?> :</span><?= $value ?>
+                                </div>
+                            <?
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="column-fields">
+                    <? $fieldHtml = '';
+                    foreach ($extra_fields as $key => $val) {
+                        $fieldHtml .= $key . " " . $val . " - ";
+                    }
+                    $fieldHtml = substr($fieldHtml, 0, strlen($fieldHtml) - 2);
+                    echo $fieldHtml;
+                    ?>
+                </div>
+                <div style="clear: both;"></div>
+                <?
+                if (has_value($row->description)) {
+                    ?>
+                    <div class="description owner-details">
+                        <div>
+                                    <span>
+                                        <?= t('Description') . " :" ?>
+                                    </span>
+                            <?= $row->description ?>
+                        </div>
+                    </div>
+                    <br/>
+                <?
+                }
+
+                //payment for realestate
+                if ($route_prefix == 'app' && !$isCurrentUser) {
+                    $paymentParams = array(
+                        'amount' => $this->homeInfoCost,
+                        'email' => $row->ownerEmail,
+                        'comment' => 'Pay For Buying a Home Information',
+                        'validate' => array(
+                            'route' => 'app/real-estate/view-all-info-estate',
+                            'params' => array(
+                                'id' => $row->itemId,
+                            ),
+                        )
+                    );
+                    $paymentParams = serialize($paymentParams);
+                    $paymentParams = base64_encode($paymentParams);
+                    ?>
+                    <a class="payer-home"
+                       href="<?= url('app/payment', array(), array('query' => array('routeParams' => $paymentParams))) ?>">
+                        <?= $this->translate('Purchase Information') ?>
+                    </a>
+                <?
+                }
+
+                $row->roleId = explode(',', $row->roleId);
+                if (\RealEstate\API\RealEstate::isRealEstateAgent($row->roleId) && $allowed_REAL_ESTATE_VIEW_ALL_SHOW_USER_AGENT_INFO)
+                    $data_row = $row;
+                else
+                    $data_row = $this->defaultAgent;
+
+                echo '<span class="agent">';
+                echo getUserDisplayName($data_row);
+                if (has_value($data_row->phone)) {
+                    echo ' - ' . $data_row->phone;
+                }
+                if (has_value($data_row->mobile)) {
+                    echo ' - ' . $data_row->mobile;
+                }
+                if (has_value($data_row->email)) {
+                    echo ' - <a href="mailto:' . $data_row->email . '">' . $data_row->email . '</a>';
+                }
+                echo '</span>';
+                echo '<span class="date-time">';
+                echo t('Reg Date') . " : ";
+                echo $this->dateFormat(
+                    $row->created
+                );
+                echo '</span>';
+                echo '<br/><span class="date-time">';
+                echo t('Last update of registration') . " : ";
+                echo $this->dateFormat(
+                    $row->modified
+                );
+                echo '</span>';
+                if ($row->status == 3) {
+                    echo '<span class="is-transferred"><span>' . $this->translate('Transferred') . '</span></span>';
+                }
+                if ($row->status == 4) {
+                    echo '<span class="is-canceled"><span>' . $this->translate('RealEstateCanceled') . '</span></span>';
+                }
+                ?>
+
+                <div style="clear: both;"></div>
+
+            </div>
+        </div>
+        </fieldset>
+
+    <?
+    }
+    ?>
+    <div class="pager">
+        <?
+        /* @var $p \Zend\Paginator\Paginator */
+        $p = $this->pagination;
+        print $this->paginationControl($this->pagination,
+            'Sliding',
+            'application/pagination/search.phtml', array(
+                'route' => $this->route,
+//                'route_params' => array('status' => $this->status),
+                'route_options' => array('query' => $this->query)
+            ));
+        ?>
+    </div>
+<?
+} else {
+    echo $this->general()->noOutPut();
+}?>

@@ -1,0 +1,259 @@
+<?
+$form = $this->form;
+$dataUser = $this->dataUser;
+$groups = $this->groups;
+$items = $this->items;
+$domains = unserialize($form->domains);
+?>
+<style>
+    .all-content-view-factor {
+        background-color: #E3E3E3;
+        border: 1px solid #D2D2D2;
+        border-radius: 5px;
+        margin: 5px;
+        padding: 5px;
+        font-family: tahoma;
+        font-size: 14px;
+        line-height: 20px;
+
+    }
+
+    .tbl-view-factor {
+        background-color: #EBEBEB;
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        border-radius: 5px;
+        direction: rtl;
+        margin: 10px;
+        padding: 10px;
+    }
+
+    .label-tbl-view-factor {
+        background-color: #83F287;
+        border: 1px solid #89C3A5;
+        border-radius: 10px;
+        color: #800080;
+        font-family: tahoma;
+        margin: 9px;
+        padding: 12px;
+        width: 100px;
+        display: inline-block;
+    }
+
+    .tbl-view-factor h2 {
+        background-color: #EAFAEE;
+        border: 1px solid #B5EFD1;
+        border-radius: 10px;
+        color: #800080;
+        margin: 9px;
+        padding: 6px;
+    }
+
+    .label-tbl-view-factor-ref-code {
+        font-family: tahoma;
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .tbl-view-factor-ref-code {
+        display: inline-block;
+        font-weight: bold;
+        padding: 10px;
+        width: 50px;
+    }
+
+    .td-text-center {
+        text-align: center;
+    }
+
+</style>
+<table class="tbl-view-factor">
+<tr>
+    <td colspan="2" class="td-text-center">
+        <div class="all-content-view-factor">
+            <label class="label-tbl-view-factor-ref-code">
+                <?=t('Tracking Code :')?>
+            </label>
+
+            <h3 class="tbl-view-factor-ref-code">
+                <?= $form->refCode ?>
+            </h3>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td colspan="2">
+        <? if ($dataUser) { ?>
+            <div class="all-content-view-factor">
+                <h2>
+                    شما با شناسه و رمز عبور ذیل میتواند وارد پنل کاربری خود در این سایت شوید و وضعیت سفارش خود را
+                    پیگیری نمایید
+                </h2>
+                <br/>
+                <label>
+                    <?=t('User Name')?>
+                </label>
+
+                <h2>
+                    <?= $dataUser['username'] ?>
+                </h2>
+                <br/>
+                <label>
+                    <?=t('Password')?>
+                </label>
+
+                <h2>
+                    <?= $dataUser['password'] ?>
+                </h2>
+            </div>
+        <? } ?>
+    </td>
+</tr>
+
+<tr>
+    <td width="150">
+        <label class="label-tbl-view-factor">
+            <?=t('Title')?>
+        </label>
+    </td>
+    <td>
+        <h2>
+            <?= $groups[$form->groupId] ?>
+        </h2>
+    </td>
+</tr>
+
+<tr>
+    <td colspan="2">
+        <div class="all-content-view-factor">
+            <p>
+                <?foreach ($items[$form->groupId] as $row) {
+                    echo ". " . $row . "<br/>";
+                }?>
+            </p>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label class="label-tbl-view-factor">
+            <?=t('Price')?>
+        </label>
+    </td>
+    <td>
+        <h2>
+            <?= $form->amount . " " . t('Rial') ?>
+
+        </h2>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label class="label-tbl-view-factor">
+            <?=t('Personal Name')?>
+        </label>
+    </td>
+    <td>
+        <h2>
+            <?= $form->name ?>
+        </h2>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label class="label-tbl-view-factor">
+            <?=t('Company Name')?>
+        </label>
+    </td>
+    <td>
+        <h2>
+            <?= $form->company ?>
+        </h2>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label class="label-tbl-view-factor">
+            <?=t('Email')?>
+        </label></td>
+    <td>
+        <h2>
+            <?= $form->email ?>
+        </h2>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label class="label-tbl-view-factor">
+            <?=t('Mobile')?>
+        </label>
+    </td>
+    <td>
+        <h2>
+            <?= $form->mobile ?>
+        </h2>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label class="label-tbl-view-factor">
+            <?=t('Description')?>
+        </label>
+    </td>
+    <td>
+        <h2>
+            <?= $form->comment ?>
+        </h2>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label class="label-tbl-view-factor">
+            <?=t('More Description')?>
+        </label>
+    </td>
+    <td>
+        <h2>
+            <?= $form->others ?>
+        </h2>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <label class="label-tbl-view-factor">
+            <?=t('Sub Domain Name')?>
+        </label>
+    </td>
+    <td>
+        <h2>
+            <?= $form->subDomain ?>
+        </h2>
+    </td>
+</tr>
+<? if (!empty($domains)) { ?>
+    <tr>
+        <td>
+            <label class="label-tbl-view-factor">
+                <?=t('Domains')?>
+            </label>
+        </td>
+        <td>
+            <h2>
+            <?foreach ($domains['domain'] as $val) {
+                if($val['domainName'])
+                    echo ". " .$val['domainName'] . "<br/>";
+             } ?>
+            </h2>
+        </td>
+    </tr>
+<? } ?>
+</table>

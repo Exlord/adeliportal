@@ -1,0 +1,57 @@
+<?
+$this->headScript()
+    ->appendFile($this->basePath() . '/js/geographical.js')
+    ->appendFile($this->basePath() . '/js/filters.js');
+?>
+<fieldset id="real_estate_search">
+    <legend><?= t('Search') ?></legend>
+    <div>
+        <?
+        $form = $this->filter_form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach ($form->getElements() as $el) {
+            echo $this->iptFormRow($el);
+        }
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</fieldset>
+<?= $this->realestate_list($this->path); ?>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+
+    var hideElement = <?=$this->hideElement?>;
+    $(document).ready(function () {
+
+        $('#filter_regType').change(function () {
+            onFilterRegTypeChanged($(this).val());
+        });
+
+        RealEstate.params.status = '<?=$this->status?>';
+        RealEstate.params.keyword = '<?=$this->keyword?>';
+        <?if($this->filter_data){?>
+        RealEstate.params['filter_data'] = <?=$this->filter_data?>;
+        <?}else{?>
+        RealEstate.params['filter_data'] = {};
+        <?}?>
+
+        <?if($this->path == 'admin' || $this->filter_data != false){?>
+        RealEstate.loadList();
+        <?}elseif($this->keyword) {?>
+        RealEstate.params.status = 'keyword';
+        RealEstate.loadList();
+        <?}?>
+        $('body').on('submit', '#real_estate_search form', function (e) {
+            e.preventDefault();
+            var a = $(this).serializeArray();
+            $.each(a, function () {
+                RealEstate.params['filter_data'][this.name] = this.value;
+            });
+            RealEstate.params['page'] = 1;
+            RealEstate.loadList();
+        });
+        onFilterRegTypeChanged(hideElement);
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

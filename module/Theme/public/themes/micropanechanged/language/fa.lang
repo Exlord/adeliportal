@@ -1,0 +1,4 @@
+<?
+return array(
+    'PRODUCT_DESC'=>'توضیحات محصول',
+);

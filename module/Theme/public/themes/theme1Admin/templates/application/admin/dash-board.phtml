@@ -1,0 +1,131 @@
+<div class="dash-board-main-div">
+    <div class="dash-board-main-div-right">
+        <?
+        if (isset($this->widgets['widgets'])) {
+            $this->headScript()->prependFile($this->basePath() . '/js/widget.js');
+            $this->headLink()->prependStylesheet($this->basePath() . '/css/widget.css');
+            foreach ($this->widgets['widgets'] as $helper) {
+                /* @var $helper callable */
+                echo $this->$helper('100%', 'colorless-widget') . '<br/>';
+            }
+        }
+        ?>
+
+    </div>
+    <div class="dash-board-main-div-left">
+        <table cellspacing="0" cellpadding="0" border="0" class="dash-board-tbl-icons" align="left">
+            <tr>
+                <td colspan="2" class="real-estate-widget-header-icons">
+                    <label class="real-estate-widget-header-text-icons">
+                        <?= t('Quick Access') ?>
+                    </label>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr1">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Canceled Estates') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-canceled dash-board-icons"
+                       href="<?= url('admin/real-estate',array(), array('query' => array('grid_filter_status'=>4))) ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr2">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Archived Estates') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-archived dash-board-icons"
+                       href="<?= url('admin/real-estate',array(), array('query' => array('grid_filter_status'=>2))) ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr1">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Transferred Estates') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-transferred dash-board-icons"
+                       href="<?= url('admin/real-estate',array(), array('query' => array('grid_filter_status'=>3))) ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr2">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Expired Estates') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-expired dash-board-icons"
+                       href="<?= url('admin/real-estate',array(), array('query' => array('grid_filter_expire'=>0))) ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr1">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Active Estates') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-approved dash-board-icons"
+                       href="<?= url('admin/real-estate',array(), array('query' => array('grid_filter_status'=>1))) ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr2">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Not-Verified Estates') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-not-approved dash-board-icons"
+                       href="<?= url('admin/real-estate',array(), array('query' => array('grid_filter_status'=>0))) ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr1">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Menu') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-menu dash-board-icons" href="<?= url('admin/menu') ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr2">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Configs') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-config dash-board-icons" href="<?= url('admin/real-estate/config') ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr1">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Phone Book') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-phone-book dash-board-icons" href="<?= url('admin/phone-book') ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr2">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Users') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-users dash-board-icons" href="<?= url('admin/users') ?>"></a>
+                </td>
+            </tr>
+            <tr class="real-estate-widget-tbl-tr1">
+                <td class="dash-board-tbl-icons-td1">
+                    <?= t('Orders') ?>
+                </td>
+                <td class="dash-board-tbl-icons-td2">
+                    <a class="dash-board-orders dash-board-icons"
+                       href="<?= url('admin/online-order/orders') ?>"></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div style="clear: both;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        System.Widgets.url = '<?=url('admin/widget-loader')?>';
+        System.Widgets.init();
+    })
+
+</script>

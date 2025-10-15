@@ -1,0 +1,45 @@
+<?
+$this->body()->class[] = 'dynamic-form-data-entry';
+$formType = $this->formModel->formType;
+$formClass = \FormsManager\API\Form::$HtmlClassForFormType[$formType];
+$this->body()->class[] = $formClass;
+?>
+    <div id="dynamic-form">
+        <?
+        $form = $this->form;
+        //    $form->prepare();
+        echo $this->form()->openTag($form);
+        if ($this->html) {
+//        if($form->getMessages())
+//            var_dump($form->getMessages());
+            echo $this->html;
+            if ($this->captcha)
+                echo $this->iptFormRow($form->get('captcha'));
+        } else {
+            foreach ($form->getElements() as $el) {
+                echo $this->iptFormRow($el);
+            }
+        }
+        echo "<hr/>";
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+<?
+if ($this->hasColorField) {
+    $this->headLink()->appendStylesheet($this->basePath() . '/color-picker/colpick.css');
+    $this->headScript()->appendFile($this->basePath() . '/color-picker/colpick.js');
+    ?>
+    <script>
+        <?$this->inlineScript()->captureStart()?>
+        $('#dynamic-form input[data-type=color]').colpick({
+            onChange: function (hsb, hex, rgb, el, bySetColor) {
+                if (!bySetColor) $(el).val(hex);
+            },
+            onSubmit: function (hsb, hex, rgb, el) {
+                $(el).colpickHide();
+            }
+        });
+        <?$this->inlineScript()->captureEnd()?>
+    </script>
+<? } ?>

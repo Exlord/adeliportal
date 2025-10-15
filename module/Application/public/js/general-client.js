@@ -1,0 +1,1 @@
+var overlay = $('<div id="ajax_loading_overlay"></div>');

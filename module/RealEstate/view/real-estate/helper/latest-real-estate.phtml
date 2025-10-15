@@ -1,0 +1,38 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/latest-real-estate.css');
+$this->headScript()->appendFile($this->basePath() . '/js/latest-real-estate.js');
+?>
+<script>
+    $(function () {
+        $("#tabsLatestEstateType").tabs();
+    });
+</script>
+<div id="tabsLatestEstateType">
+    <div class="corner-title"></div>
+
+    <ul>
+        <?
+        foreach ($this->estateTypeName as $key => $val) {
+            ?>
+            <li data-id="<?= $key ?>" >
+                <a href="#tabsEstateType-<?= $key ?>"><?= $val ?></a>
+            </li>
+        <?
+        }
+        ?>
+    </ul>
+    <?
+    foreach ($this->estateTypeName as $key => $val) {
+        ?>
+        <div id="tabsEstateType-<?= $key ?>"></div>
+    <?
+    }
+    ?>
+    <div class="latest-real-estate-loading"></div>
+</div>
+
+<script>
+    latestRealEstate.url = '<?=url('app/real-estate/latest-real-estate-reg-type')?>';
+    latestRealEstate.count = '<?=$this->count?>';
+    latestRealEstate.RegType = <?=json_encode($this->estateRegType)?>;
+</script>

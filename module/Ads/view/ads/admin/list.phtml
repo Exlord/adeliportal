@@ -1,0 +1,35 @@
+<? if ($this->error) {
+    ?>
+    <div class="alert alert-info">
+        <?= t('ADS_NOT_FOUND'); ?>
+    </div>
+<? } else { ?>
+    <div>
+        <?= $this->buttons ?>
+        <a target="_blank" class="toolbar-button btn btn-sm btn-default btn-default" href="<?=url('app/ad/new',array('baseType' => $this->baseType,'isRequest'=>0))?>" >
+            <span class="glyphicon glyphicon-plus-sign text-success"></span>
+ <?=t('ADS_TRANSFER').' '.t('New')?>
+        </a>
+        <?
+         if($this->baseTypeIsRequest)
+         { ?>
+             <a target="_blank" class="toolbar-button btn btn-sm btn-default btn-default" href="<?=url('app/ad/new',array('baseType' => $this->baseType,'isRequest'=>1))?>" >
+                 <span class="glyphicon glyphicon-plus-sign text-success"></span>
+                 <?=t('ADS_REQUEST').' '.t('New')?>
+             </a>
+        <? }
+        ?>
+
+        <h3 class="page-title">
+            <?= t('ADS_AD') ?>
+            <label class="label label-info">
+                <?=$this->baseTypeName?>
+            </label>
+        </h3>
+
+        <div>
+            <?= $this->grid ?>
+        </div>
+    </div>
+    <div id="new_ad_ref_form"></div>
+<? } ?>

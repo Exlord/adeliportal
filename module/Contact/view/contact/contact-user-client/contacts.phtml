@@ -1,0 +1,161 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . '/css/contact.css');
+$this->headScript()->appendFile($this->basePath() . '/js/contact-google-map.js');
+
+$selectContactUser = $this->selectContactUser;
+$form = $this->form;
+?>
+
+<div class="main-contact">
+    <div class="main-contact-right">
+
+        <div class="user-contact">
+            <?
+            if (!empty($selectContactUser))
+                foreach ($selectContactUser as $row) {
+                    ?>
+                    <div class="div-contact-user user_<?= $row['id'] ?>">
+                        <h2>
+                            <span class="icon-img img"></span>
+                            <?= $row['name'] ?>
+                        </h2>
+                        <? if (!empty($row['role'])) { ?>
+                            <label class="user-contact-role">
+                                <span class="icon-img img"></span>
+                                <span class="title"><?= t('Role') . " : " ?></span>
+                                <span class="value"><?= $row['role'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['email']) && $row['showEmail']) { ?>
+                            <label class="user-contact-email">
+                                <span class="icon-img img"></span>
+                                <span class="title"><?= t('Email') . " : " ?></span>
+                                <span class="value">
+                                    <?= $row['email'] ?>
+                                    <!--<img src="<? /*= getThumbnail()->createImage($row['email']); */ ?>">-->
+                                </span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['mobile'])) { ?>
+                            <label class="user-contact-mobile">
+                                <span class="icon-img img"></span>
+                                <span class="title"><?= t('Mobile') . " : " ?></span>
+                                <span class="value"><?= $row['mobile'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['smsNumber'])) { ?>
+                            <label class="user-contact-sms">
+                                <span class="icon-img img"></span>
+                                <span class="title"><?= t('CONTACT_SMS_NUMBER') . " : " ?></span>
+                                <span class="value"><?= $row['smsNumber'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['phone'])) { ?>
+                            <label class="user-contact-phone">
+                                <span class="icon-img img"></span>
+                                <span class="title"><?= t('Phone') . " : " ?></span>
+                                <span class="value"><?= $row['phone'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['fax'])) { ?>
+                            <label class="user-contact-fax">
+                                <span class="icon-img img"></span>
+                                <span class="title"><?= t('Fax') . " : " ?></span>
+                                <span class="value"><?= $row['fax'] ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['address'])) { ?>
+                            <label class="user-contact-address">
+                                <span class="icon-img img"></span>
+                                <span><?= nl2br($row['address']) ?></span>
+                            </label>
+                        <? } ?>
+                        <? if (!empty($row['description'])) { ?>
+                            <label class="user-contact-description">
+                                <span class="icon-img img"></span>
+                                <span><?= nl2br($row['description']) ?></span>
+                            </label>
+                        <? } ?>
+                        <? if ($this->showContactUrl) { ?>
+                            <br/>
+                            <a class="contact-user-link"
+                               href="<?= url('app/contact/single', array('contactId' => $row['id'])) ?>">
+                                <span><?= t('Contact the Department') ?></span>
+                            </a>
+                        <? } ?>
+                        <? if (!empty($row['google'])) { ?>
+                            <span class="lat-lng-google" data-id="<?= $row['google'] ?>"></span>
+                        <? } ?>
+                    </div>
+                    <div style="clear: both"></div>
+                <? } ?>
+        </div>
+
+    </div>
+    <div class="main-contact-left">
+
+        <div class="map-contact">
+            <div id="map" class="map-contact-us"></div>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+    <?
+    if ($this->sendId) {
+        ?>
+        <div class="main-contact-footer" id="contact-form">
+
+            <?
+            $form->prepare();
+            echo $this->form()->openTag($form);
+            echo $this->formRow($form->get('id'));
+            echo $this->formRow($form->get('sendIds'));
+            ?>
+            <div class="row">
+                <div class="col-md-1 col-sm-2 col-xs-4">
+                    <span class="header-form-contact-image contact-icon"></span>
+                </div>
+                <div class="col-md-11 col-sm-10 col-xs-8">
+                    <h2 class="page-header">
+                        <?= t('Contact Us') ?>
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 box_right">
+                    <?
+                    print $this->formRow($form->get('name'));
+                    print $this->formRow($form->get('email'));
+                    print $this->formRow($form->get('mobile'));
+                    ?>
+                </div>
+                <div class="col-md-5 box_left">
+                    <?
+                    if ($form->has('typeContact'))
+                        print $this->formRow($form->get('typeContact'));
+                    ?>
+                    <?= $this->formRow($form->get('description')) ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 box_captcha">
+                    <? print $this->formRow($form->get('captcha')); ?>
+                </div>
+                <div class="col-md-5">
+                    <?= $this->formRow($form->get('submit-send')) ?>
+                </div>
+            </div>
+            <?
+            echo $this->form()->closeTag();
+            ?>
+        </div>
+    <? } else { ?>
+        <div class="alert alert-warning">
+            <?= t('CONTACT_NOUSER') ?>
+        </div>
+    <? } ?>
+</div>
+<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script type="text/javascript">
+    var googleMapCenter = '<?=$this->center?>';
+    var googleMapZoom = '<?=$this->zoom?>';
+</script>

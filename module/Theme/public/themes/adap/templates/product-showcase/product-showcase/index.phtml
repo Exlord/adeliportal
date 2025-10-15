@@ -1,0 +1,105 @@
+<?
+$basePath = $this->basePath();
+$this->headlink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/products.css');
+$this->headScript()->appendFile($this->basePath() . '/js/jquery.lazyLoad.js');
+$maxPage = $this->paginator->count();
+?>
+<h1 class="page-header">
+    گروه محصولات فرهنگی پیامبر اعظم (ص)
+</h1>
+<div id="products">
+    <div class="main view_projects_index products-row">
+        <?
+        if (empty($this->paginator) || !$this->paginator->count()) {
+            ?>
+            <div class="col-xs-12">
+                <? print $this->alert(t('No product found !', TEMPLATE_NAME), 'alert-info'); ?>
+            </div>
+        <?
+        }
+
+        if (!empty($this->paginator)) {
+            $fieldsApi = getSM()->get('fields_api');
+            foreach ($this->paginator as $row) {
+                if (isset($row->psId) && $row->psId) {
+                    $image = '';
+                    $imageAlt = '';
+                    $imageTitle = '';
+                    if (!empty($row->fPath)) {
+//                    $images = explode(',', $row->fPath);
+                        $image = getThumbnail()->resize($row->fPath, 85, 120); //resize image
+                        if (isset($row->fAlt))
+                            $imageAlt = $row->fAlt;
+                        if (isset($row->fTitle))
+                            $imageTitle = $row->fTitle;
+                    }
+
+                    $url = '';
+                    $appUrl = url('app/product-showcase/view', array('id' => $row->psId, 'title' => \Application\API\App::prepareUrlString($row->title)));
+                    ?>
+                    <div
+                        class="product-wrapper clearfix <?= $this->cycle(array("row-odd", "row-even"))->next() ?>">
+                        <div class="product media">
+                            <? if ($image) { ?>
+                                <div class="image pull-right">
+
+                                    <img class="lazy img-responsive" data-original="<?= $image ?>"
+                                         alt="<?= $imageAlt ?>"
+                                         title="<?= $imageTitle ?>">
+                                    <noscript>
+                                        <img class="img-responsive" alt="<?= $imageAlt ?>"
+                                             title="<?= $imageTitle ?>"
+                                             src="<?= $image ?>">
+                                    </noscript>
+
+                                </div>
+                            <? } ?>
+                            <div class="details media-body">
+                                <a class="order-button pull-left"
+                                   href="<? if (isset($row->ps_ferestande)) print $row->ps_ferestande; ?>">
+                                </a>
+
+                                <h3 class="product-title">
+                                    <?= t($this->escapeHtml(trim($row->title))) ?></h3>
+
+                                <?
+                                $fieldsData = $fieldsApi->generate($this->fields, $row);
+                                foreach ($fieldsData as $key => $val) {
+                                    ?>
+                                    <div class="detail-row">
+                                        <span class="item-label"><?= $key ?> :</span>
+                                        <span class="item-value"><?= $val ?></span>
+                                    </div>
+                                <?
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                <?
+                }
+            }
+            ?>
+            <div class="pager">
+                <?
+                /* @var $pages \Zend\Paginator\Paginator */
+                echo $this->paginationControl($this->paginator,
+                    'Sliding',
+                    'theme/paginator.phtml', array(
+                        'route' => 'app/product-showcase',
+                        'route_params' => array(),
+                        'route_options' => array('query' => array('per_page' => $this->per_page))));
+                ?>
+            </div>
+        <?
+        }
+        ?>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $("img.lazy").lazyload({
+                effect: "fadeIn"
+            });
+        });
+    </script>
+</div>

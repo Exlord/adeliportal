@@ -1,0 +1,86 @@
+<?
+$form = $this->form;
+?>
+<div class="new-form">
+    <?
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    foreach ($form->getElements() as $el) {
+        echo $this->iptformRow($el);
+    }
+    echo $this->iptFormCollection($form->get('banner_image_box')); ?>
+    <div class="box-order-banner-image">
+        <? foreach ($this->images as $row) { ?>
+            <div class="order-banner-image">
+                <img src="<?= $row['url'] ?>">
+                <a href="#delete" class="delete-order-banner-image" data-id="<?= $row['url'] ?>"><?= t('Delete') ?></a>
+            </div>
+        <? } ?>
+    </div>
+    <?
+    echo $this->iptFormCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<div class="dialog-delete-order-banner-image" style="display: none;" id="dialog-delete-order-banner-image">
+    <label><?= t('Do you confirm deleting this item ?') ?></label>
+    <span class="loading-dialog-order-banner"></span>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('.delete-order-banner-image').click(function () {
+            var url = $(this).data('id');
+            var tags = $(this);
+            $("#dialog-delete-order-banner-image").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                title: '<?=t('Delete')?>',
+                close: function (event, ui) {
+                    $(this).dialog("destroy");
+                    $("#dialog-delete-order-banner-image").hide();
+                },
+                buttons: [
+                    {
+                        text: '<?=t('Yes')?>',
+                        icons: { primary: "ui-icon-check"},
+                        click: function () {
+                            var dialog = $(this);
+                            $('.loading-dialog-order-banner').addClass('tiny-ajax-loader');
+                            var data = {};
+                            data['id'] = $('#id').val();
+                            data['url'] = url;
+                            $.ajax({
+                                url: '<?=url('admin/banner/list/delete-image')?>',
+                                type: 'POST',
+                                data: data,
+                                complete: function () {
+                                  $('.loading-dialog-order-banner').removeClass('tiny-ajax-loader');
+                                },
+                                success: function (data) {
+                                    if (data.status == 1) {
+                                        dialog.dialog("destroy");
+                                        $("#dialog-delete-order-banner-image").hide();
+                                        tags.parent().hide();
+                                    } else
+                                        System.AjaxMessage('Error message, please try again');
+                                }
+                            });
+                        }
+                    },
+                    {
+                        text: '<?=t('No')?>',
+                        icons: { primary: "ui-icon-closethick"},
+                        click: function () {
+                            $(this).dialog("destroy");
+                            $("#dialog-delete-order-banner-image").hide();
+                        }
+                    }
+                ]
+            });
+        });
+
+    });
+</script>

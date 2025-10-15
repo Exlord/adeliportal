@@ -1,0 +1,11 @@
+body{ padding:0; overflow:hidden; }
+.product-order{ }
+.product-order .pages-loading{ width:100%; height:100%; background-position:center center; overflow:hidden; }
+.product-order .pages{ padding:5px; }
+.product-order .page{ display:none; }
+
+.product-order .page.categories{ margin:auto; position:relative }
+.product-order .page .category{ float:right; padding:5px; cursor:pointer; position:absolute; top:0;
+    border:solid 1px #b1b1b1; margin:10px; background:#ffffff; width:200px; height:300px; }
+.product-order .page .category img{ display:block; margin:0 auto 5px auto; width:200px; }
+.product-order .page .category p{ display:none; }

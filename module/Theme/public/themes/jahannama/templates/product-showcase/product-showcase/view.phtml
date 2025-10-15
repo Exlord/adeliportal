@@ -1,0 +1,105 @@
+<?
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/product-view.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/product-view-rtl.css');
+\JQuery\API\JQuery::loadColorBox($this);
+$cat_class = '';
+foreach ($this->tagName as $row) {
+    $cat_class .= ' category-' . $row->itemId;
+}
+
+$descriptionLabel = null;
+$description = null;
+?>
+<div class="product-view <?= $cat_class ?>">
+    <h1 class="page-header">
+        <span id="code" class="pull-left flip"><?= $this->data->ps_code ?></span>
+        <span id="title" class="pull-left flip"><?= $this->escapeHtml(trim(t($this->data->title))) ?></span>
+    </h1>
+
+    <div id="product-fields" class="row">
+        <?
+        if ($this->data) {
+            $__fieldsData = getSM()->get('fields_api')->generate($this->fields, $this->data);
+//            $fieldsData = array_chunk($__fieldsData, ((int)(count($__fieldsData) / 2)) + 1, true);
+//            foreach ($fieldsData as $col) {
+            ?>
+            <!--                <div class="col-md-6 col-sm-12">-->
+            <?
+
+            if (!current_user()->id) {
+                $fieldName = SYSTEM_LANG == 'fa' ? 'قیمت عمده کفش' : 'Price';
+                $__fieldsData[$fieldName] = sprintf(t('%s', TEMPLATE_NAME),
+                    \Theme\API\Common::Link(t('LOGIN_LINK'), url('app/user/login', array(), array('query' => array('redirect' => urlencode(getSM('Request')->getRequestUri())))))
+                );
+                //\Theme\API\Common::Link(t('REGISTER_LINK'), url('app/user/register'))
+            }
+
+
+            if (isset($__fieldsData['توضیحات'])) {
+                $description = $__fieldsData['توضیحات'];
+                $descriptionLabel = 'توضیحات';
+                unset($__fieldsData['توضیحات']);
+            }
+            if (isset($__fieldsData['Description'])) {
+                $description = $__fieldsData['Description'];
+                $descriptionLabel = 'Description';
+                unset($__fieldsData['Description']);
+            }
+
+            foreach ($__fieldsData as $key => $val) {
+                ?>
+                <div class="item-row clearfix">
+                    <div class="item-label col-xs-2"><?= $key ?> :</div>
+                    <div class="item-value col-xs-10"><?= $val ?></div>
+                </div>
+            <?
+            }
+            ?>
+            <!--    </div>-->
+        <?
+        }
+        ?>
+        <?
+        //        }
+        ?>
+    </div>
+    <?if ($description) {
+        ?>
+        <div class="row clearfix description">
+            <div class="item-label col-xs-2"><?= $descriptionLabel ?> :</div>
+            <div class="item-value col-xs-10"><?= $description ?></div>
+        </div>
+    <?
+    }?>
+</div>
+<div id="product-images" class="row">
+    <?
+    $files = $this->files;
+
+    foreach ($files as $row) {
+        $path = $row->fPath;
+        $image = getThumbnail()->thumbnail($path, 200, 100);
+        ?>
+        <div class="col-xs-3">
+            <div class="product-image">
+                <a href="<?= $path ?>" class="colorbox">
+                    <img src="<?= $image ?>" class="image img-responsive">
+                    <img alt="<?= $this->escapeHtml($row->fAlt) ?>"
+                         title="<?= $this->escapeHtml($row->fTitle) ?>"
+                         data-toggle="tooltip"
+                         data-placement="bottom"
+                         class="magnify" src="<?= $this->basePath() . TEMPLATE_PATH . '/images/zoom.png' ?>">
+                </a>
+            </div>
+        </div>
+    <?
+    }
+    ?>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.product-image > img').tooltip();
+    });
+</script>

@@ -1,0 +1,112 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?= t('Reservations') ?>
+        <? if ($this->doctor) { ?>
+            »
+            <small><?= getUserDisplayName($this->doctor) ?></small>
+        <? } ?>
+    </h3>
+
+    <div class="row">
+        <div class="col-md-7 col-sm-12">
+            <?= $this->grid ?>
+        </div>
+        <div class="col-md-5 col-sm-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well well-sm">
+                        <div class="row">
+                            <div class="col-md-6"><span class="glyphicon glyphicon-question-sign text-muted grid-icon"></span>
+                                : <?= t('Not Finalized') ?></div>
+                            <div class="col-md-6"><span class="glyphicon glyphicon-info-sign text-primary grid-icon"></span>
+                                : <?= t('Reserved') ?></div>
+                            <div class="col-md-6"><span class="glyphicon glyphicon-remove-circle text-danger grid-icon"></span>
+                                : <?= t('Cancel Request') ?></div>
+                            <div class="col-md-6"><span class="glyphicon glyphicon-calendar text-primary grid-icon"></span>
+                                : <?= t('Transfer to another time') ?></div>
+                            <div class="col-md-6"><span class="glyphicon glyphicon-exclamation-sign text-danger grid-icon"></span>
+                                : <?= t('Failed Reservation') ?></div>
+                            <div class="col-md-6"><span class="glyphicon glyphicon-remove-circle text-warning grid-icon"></span>
+                                : <?= t('Cancel Request') ?></div>
+                            <div class="col-md-6"><span class="glyphicon glyphicon-remove-sign text-danger grid-icon"></span>
+                                : <?= t('Cancel') ?></div>
+                            <div class="col-md-6"><span class="glyphicon glyphicon-ban-circle text-warning grid-icon"></span>
+                                : <?= t('Canceled') ?></div>
+                            <div class="col-md-6"><span class="glyphicon glyphicon-ok text-success grid-icon"></span>
+                                : <?= t('Visited') ?></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="well well-sm">
+                        <h4 class="text-info">
+                            نکاتی در مورد وضعیت ها
+                        </h4>
+                        <ul>
+                            <?if ($this->visitor == 'patient') {
+                                ?>
+                                <li>
+                                    در صورتی که هزینه رزرو با موفقیت پرداخت شده باشد وضعیت به حالت رزرو شده
+                                    <span class="glyphicon glyphicon-info-sign text-primary grid-icon"></span>
+                                    خواهد بود
+                                </li>
+                                <li>
+                                    بعد از پرداخت موفق و تا قبل از شروع جلسه شما قادر به در خواست لغو
+                                    <span class='glyphicon glyphicon-remove-circle text-danger'></span>
+                                    و انتقال
+                                    <span class='glyphicon glyphicon-calendar text-primary'></span>
+                                    خواهید بود
+                                </li>
+                            <?
+                            } elseif ($this->visitor == 'doctor') {
+                                ?>
+                                <li>
+                                    در صورتی که رزرو نهایی شده باشد
+                                    <span class="glyphicon glyphicon-info-sign text-primary grid-icon"></span>
+                                    ،لینک ویزیت در ستون وضعیت نمایان شده و شما قادر به ویزیت کردن مراجعه کننده خواهید
+                                    بود.
+                                </li>
+                                <li>
+                                    رزرو هایی که قبلا ویزیت شده اند، دارای یک لینک در ستون وضعیت به پرونده مراجعه کننده
+                                    هستند.
+                                </li>
+                                <li>
+                                    <a
+                                        href="<?= url('admin/health-center/doctor-panel/my-patients') ?>"
+                                        class="ajax_page_load">
+                                        لیست مراجعین
+                                    </a>
+                                    همیشه شامل لینک به پرونده مراجعه کنندگان است.
+                                </li>
+                            <?
+                            } else {
+                                ?>
+                                <li>
+                                    رزرو های نهایی شده
+                                    <span class="glyphicon glyphicon-info-sign text-primary grid-icon"></span>
+                                    در صورتی که هنوز شروع نشده باشند قابل لغو کردن هستند
+                                </li>
+                            <?
+                            }?>
+                        </ul>
+                    </div>
+                </div>
+                <? if (isAllowed(\HealthCenter\Module::RESERVATION_DELETE)) { ?>
+                    <div class="col-md-12">
+                        <div class="well well-sm">
+                            <h3 class="text-danger">
+                                <?= t('Warning') ?>
+                            </h3>
+                            <ul>
+                                <li><?= t('Delete is not the same as cancel') ?></li>
+                                <li><?= t('If you delete a reservation, it would be simply removed from database without any notifications') ?></li>
+                                <li><?= t('Do not delete unless the reservation was mistake or a test') ?></li>
+                            </ul>
+                        </div>
+                    </div>
+                <? } ?>
+            </div>
+        </div>
+    </div>
+</div>

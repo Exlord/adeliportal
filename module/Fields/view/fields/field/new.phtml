@@ -1,0 +1,58 @@
+<?
+//$this->headScript()
+//    ->appendFile($this->basePath() . '/js/fields-new.js');
+$script = $this->basePath() . '/lib/ckeditor/ckeditor.js';
+$this->headScript()->appendFile($script);
+
+?>
+<div class="row">
+    <h3 class="page-title"><?= t('Create/Edit Fields') ?></h3>
+    <?
+    $form = $this->form;
+    $form->prepare();
+    echo $this->form()->openTag($form);
+
+    ?>
+    <div class="col-md-6">
+        <?
+        foreach ($form->getElements() as $el) {
+            echo $this->formRow($el);
+        }
+        ?>
+    </div>
+    <div class="col-md-6">
+        <?
+        echo $this->formCollection($this->form->get('buttons'));
+        echo "<div id='field_settings'>" .
+            $this->iptFormCollection($this->form->get('fieldConfigData'))
+            . "</div>";
+
+        echo $this->iptFormCollection($this->form->get('filters'));
+        echo $this->iptFormCollection($this->form->get('validators'));
+        ?>
+    </div>
+    <?
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart()?>
+    $(document).ready(function () {
+        $('select[name=fieldType]').change(function () {
+            var selected = $(this).val();
+            $('#field_settings > fieldset').hide();
+            $('#field_settings > fieldset#' + selected + '_settings').show();
+        }).change();
+
+        $('select[name="fieldConfigData[text_field][text_type]"]').change(function () {
+            $('#text_settings fieldset').hide();
+            var selected = $(this).val();
+            $('#text_settings fieldset#' + selected + '_settings').show();
+        }).change();
+    });
+    $('.editor').each(function () {
+        var id = $(this).attr('id');
+        CKEDITOR.replace(id, {language: '<?=SYSTEM_LANG?>', skin: 'moonocolor'});
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>

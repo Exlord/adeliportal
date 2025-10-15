@@ -1,0 +1,42 @@
+<?
+$basePath = $this->basePath();
+?>
+<div>
+    <h3 class="page-title">
+        <?=$this->translate('Online Order');?>
+    </h3>
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach($form->getElements() as $el){
+            echo $this->iptFormRow($el);
+        }
+        if($form->has('domains'))
+            echo $this->formCollection($form->get('domains'));
+        echo $this->iptFormCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        <?
+         $imgCalendar = $this->basePath()."/images/images-datepicker/calendar.png";
+     ?>
+        $("#publishUp").datepicker({
+            showOn: 'button',
+            buttonImage: '<?=$imgCalendar?>',
+            buttonImageOnly: true
+        });
+
+        $("#publishDown").datepicker({
+            showOn: 'button',
+            buttonImage: '<?=$imgCalendar?>',
+            buttonImageOnly: true
+        });
+
+        $('#domains_add_more_select_option').hide();
+    });
+</script>

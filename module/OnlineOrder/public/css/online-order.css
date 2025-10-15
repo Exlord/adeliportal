@@ -1,0 +1,172 @@
+.online-order-img-silver {
+    background-image: url(../images/silver.png);
+    width: 196px;
+    height: 71px;
+    background-repeat: no-repeat;
+    padding: 5px;
+    margin: auto;
+}
+
+.online-order-img-bronze {
+    background-image: url(../images/boronz.png);
+    width: 196px;
+    height: 71px;
+    background-repeat: no-repeat;
+    padding: 5px;
+    margin: auto;
+}
+
+.online-order-img-gold {
+    background-image: url(../images/gold.png);
+    width: 196px;
+    height: 71px;
+    background-repeat: no-repeat;
+    padding: 5px;
+    margin: auto;
+}
+
+.tbl-config-online-order {
+    width: 600px;
+    height: auto;
+    direction: rtl;
+}
+
+.online-order-input {
+    padding: 5px;
+    width: 150px;
+    height: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.online-order-content {
+    border-radius: 5px;
+    border: 1px solid #b3b3b3;
+    padding: 10px;
+    margin: 10px;
+}
+
+.online-order-main {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    direction: rtl;
+}
+
+.div-main-free {
+    background: url(../images/free.png) no-repeat right center;
+}
+
+.div-main-silver {
+    background: url(../images/silver.png) no-repeat right center;
+}
+
+.div-main-bronze {
+    background: url(../images/boronz.png) no-repeat right center;
+}
+
+.div-main-gold {
+    background: url(../images/gold.png) no-repeat right center;
+}
+
+.online-order-all-categori-image {
+    background-origin: content-box;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #b3b3b3;
+    border-radius: 5px;
+}
+
+.all-content {
+    font-family: BYekan;
+    font-size: 14px;
+    font-variant: contextual;
+    font-kerning: normal;
+    line-height: 25px;
+    padding: 5px;
+    border: 1px solid #00ABA9;
+    border-radius: 5px;
+    margin-right: 200px;
+    position: relative;
+    height:215px;
+}
+
+.online-order-next-icon {
+    background: url(../images/button_next.png) no-repeat center;
+    position: absolute;
+    cursor: pointer;
+    display: inline-block;
+    left: 9px;
+    top: 12px;
+}
+
+.online-order-page-2 {
+    display: none;
+    position: relative;
+}
+
+.online-order-prev-icon {
+    background: url(../images/button_prev.png) no-repeat center;
+    position: absolute;
+    cursor: pointer;
+    display: inline-block;
+    left: 9px;
+    top: 12px;
+}
+
+.online-order-next-prev {
+    width: 99px;
+    height: 35px;
+}
+
+.sub-domain span {
+    font-size: 12px;
+    color: #888888;
+}
+
+.text input {
+    /* text-align: center;*/
+}
+
+.online-order-domain-input-error {
+    border: 1px solid #EE0000;
+    background-color: #B94A48;
+}
+
+.online-order-domain-input-done {
+    border: 1px solid #286e28;
+    background-color: #65a810;
+}
+
+.done {
+    background: url(../images/done.png) no-repeat center center;
+}
+
+/*.error {*/
+    /*background: url(../images/error.png) no-repeat center center;*/
+/*}*/
+
+.icon-error-done {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.loading-domain {
+    width: 16px;
+    height: 16px;
+}
+
+.view-factor-payment-button {
+    padding: 10px;
+}
+.online-order-main .price {
+    bottom: 35px;
+    color: #818182;
+    font-family: BYekan;
+    font-size: 12pt;
+    position: absolute;
+    right: -165px;
+}
+.online-order-main p{font-size:12pt !important;}

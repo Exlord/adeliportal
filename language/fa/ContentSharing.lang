@@ -1,0 +1,6 @@
+<?return array(
+    'Content Sharing' => 'اشتراک گذاری',
+    'PERM_ContentSharing' => 'اشتراک گزاری محتوا',
+    'Content Sharing Settings' => 'تنظیمات اشتراک گزاری',
+    'Show at the page ?' => 'نمایش در صفحه',
+);

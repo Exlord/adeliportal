@@ -1,0 +1,25 @@
+.system-widget-wrapper{ float:right; }
+.system-widget-wrapper.widget-25{ width:25%; }
+.system-widget-wrapper.widget-50{ width:50%; }
+.system-widget-wrapper.widget-75{ width:75%; }
+.system-widget-wrapper.widget-100{ width:100%; }
+.system-widget-wrapper h2{ margin:5px 5px 10px 5px; }
+.system-widget a{ color:#212121; }
+.system-widget-wrapper.widget-style-1 .system-widget{ background:ghostwhite; border:solid 1px #828282; }
+/*.system-widget-wrapper.widget-style-2 .system-widget{background: #FF0097;border: solid 1px #dc0076;}*/
+/*.system-widget-wrapper.widget-style-3 .system-widget{background: #00ABA9;border: solid 1px #007a78;}*/
+.system-widget-wrapper.widget-style-4 .system-widget{ background:#8cbf26; border:solid 1px #78ab26; }
+/*.system-widget-wrapper.widget-style-5 .system-widget{background: #A05000;border: solid 1px #763b00;}*/
+/*.system-widget-wrapper.widget-style-6 .system-widget{background: #E671B8;border: solid 1px #a8547f;}*/
+/*.system-widget-wrapper.widget-style-7 .system-widget{background: #F09609;border: solid 1px #bf7109;}*/
+.system-widget-wrapper.widget-style-8 .system-widget{ background:#1ba1e2; border:solid 1px #1b7bb1; }
+/*.system-widget-wrapper.widget-style-9 .system-widget{background: #E51400;border: solid 1px #c01400;}*/
+.system-widget-wrapper.widget-style-10 .system-widget{ background:#339933; border:solid 1px #286e28; color:#ffffff; }
+.system-widget-wrapper .system-widget{ margin:2px; padding:5px; min-height:50px; position:relative; }
+.system-widget-wrapper table tr:hover{ background:#ffffff; color:#000000; }
+.system-widget-wrapper.widget-style-1 table tr:hover{ background:#464646; color:#ffffff; }
+.system-widget-wrapper.widget-style-1 table tr:hover a{ color:#ffffff; }
+.system-widget-wrapper .loading{ background:url(../images/ajax-loader.gif) center center no-repeat #ffffff; height:100px; width:100%; }
+#system-widgets .sortable-placeholder{ width:25%; height:25px; background:#e5e5e5; border:solid 1px #808080; float:right; }
+#system-widgets table{ width:100%; }
+#system-widgets a.button{display:block;float:right;margin:2px;}

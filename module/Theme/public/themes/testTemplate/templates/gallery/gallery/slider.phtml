@@ -1,0 +1,63 @@
+<?
+$this->headLink()
+    ->appendStylesheet($this->basePath() . '/css/slider/nivo-slider.css')
+    ->appendStylesheet($this->basePath() . '/css/slider/themes/default/default.css');
+
+$this->headScript()
+    ->appendFile($this->basePath() . '/js/slider/jquery.nivo.slider.pack.js');
+
+
+$select = $this->select;
+$selectGallery = $this->selectGallery;
+?>
+
+<div class="slider">
+    <div id="wrapper">
+        <div class="slider-wrapper theme-default">
+            <div id="slider" class="nivoSlider">
+                <?
+                foreach ($select as $row) {
+                    if ($row->image) {
+                        $width = 100;
+                        $height = 100;
+                        if (!empty($row->width))
+                            $width = $row->width;
+                        else
+                            $width = $selectGallery->width;
+
+                        if (!empty($row->height))
+                            $height = $row->height;
+                        else
+                            $height = $selectGallery->height;
+                        $imageUrl = getThumbnail()->resize($row->image, $width, $height); //resize image
+                        $url = url('app/gallery-counter', array('id' => $row->id, 'hitsType' => $this->hitsType));
+                        ?>
+                        <a href="<?= $url ?>">
+                            <img src="<?= $imageUrl ?>" rel="tooltip" title="<?= $row->title ?>"
+                                 alt="<?= $row->title ?>"/>
+                        </a>
+                    <?
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    <?$this->inlineScript()->captureStart()?>
+    //i am here
+    $(window).load(function () {
+        $('.nivoSlider').nivoSlider({
+            afterLoad: function () {
+                $.event.trigger({
+                    type: 'nivoSliderLoaded',
+                    slider: $('#slider')
+                });
+            }
+        });
+    });
+    <?$this->inlineScript()->captureEnd()?>
+</script>
+

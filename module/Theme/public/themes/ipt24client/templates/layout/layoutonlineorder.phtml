@@ -1,0 +1,97 @@
+<?
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+
+$this->headLink()
+ //   ->prependStylesheet($this->basePath() . TEMPLATE_PATH . '/css/styleonlineorders.css')
+  // ->prependStylesheet($this->basePath() . TEMPLATE_PATH . '/css/onlineorders.css')
+  //  ->prependStylesheet($this->basePath() . TEMPLATE_PATH . '/css/reveal.css')
+    ->prependStylesheet($this->basePath() . '/css/system.css')
+    ->prependStylesheet($this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css');
+$this->headScript()
+    ->prependFile($this->basePath() . '/js/system.js')
+     ->prependFile($this->basePath() . '/js/forms.js')
+    ->prependFile($this->basePath() . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($this->basePath() . '/js/jquery-1.9.1.min.js')
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/template.js')
+   // ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/system-ui.js')
+   // ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/jquery.ui.datepicker-cc.all.min.js')
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/jquery.reveal.js')
+    ->prependFile($this->basePath() . TEMPLATE_PATH . '/js/jquery.min.js');
+
+?>
+
+<?php echo $this->doctype(); ?>
+
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('The Order Design Website| Ideh Pardaz Tabriz Company')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+
+</head>
+<body>
+
+<div class="main_content">
+    <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+    <?= $this->content; ?>
+</div>
+<div id="dialog" style="display: none;">
+    <span id="resultConfirm"></span>
+</div>
+<?= $this->inlineScript() ?>
+<script type="text/javascript">
+    var c1W = parseInt($('.column1').width());
+    var c3W = parseInt($('.column3').width());
+    var c4W = parseInt($('.column4').width());
+    var main_contentW = parseInt($('.main_content').width());
+    var c2W = main_contentW - (c1W + c3W + c4W) - 15;
+    $('.column2').css({'width': c2W});
+
+
+    $(document).ready(function () {
+        $('#btncode').click(function () {
+            var div = $(this).parent().parent();
+            var data = {};
+            data['refCode'] = $('#code').val()
+            var url = '/fa/online-orders/order-tracking';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                complete: function () {
+                    div.slideUp(1000);
+                },
+                success: function (data) {
+                    $('#dialog').dialog({
+                        autoOpen: true,
+                        modal: true,
+                        height: 200,
+                        width: 400,
+                        top: 0
+                    });
+                    if (data == 'yes')
+                        $('#resultConfirm').html('Your order has been approved by the website administrator');
+                    else if (data == 'no')
+                        $('#resultConfirm').html('Your order is not confirmed by website administrator');
+                    else
+                        $('#resultConfirm').html('Order id not registered');
+                },
+                error: __ajaxError
+            });
+        });
+
+        $('#order-tracking-button').click(function () {
+            $('#div-order-tracking').slideToggle(300);
+        });
+
+
+    });
+
+
+</script>
+</body>
+</html>

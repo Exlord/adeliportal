@@ -1,0 +1,17 @@
+<?return array(
+    'PERM_Contact' => 'Contact',
+    'contact_user_form_desc_needCategoryWithMachineName'=>'contact_user_form_desc_needCategoryWithMachineName',
+    'Contact_REPRESENTATIVE_NOTFOUND'=>'Contact_REPRESENTATIVE_NOTFOUND',
+    'Contact_SHOW_INFO_WITH_CLICK'=>'Contact_SHOW_INFO_WITH_CLICK',
+    'Contact_FORM_TYPE'=>'Contact_FORM_TYPE',
+    'Contact_TYPE_DESC'=>'Contact_TYPE_DESC',
+    'CONTACT_SUBJECT_MAIL'=>'Message',
+    'CONTACT_NOTIFY_DESC'=>'CONTACT_NOTIFY_DESC',
+    'CONTACT_NOTIFY_LABEL'=>'CONTACT_NOTIFY_LABEL',
+    'CONTACT_NOUSER'=>'CONTACT_NOUSER',
+    'CONTACT_SEND_EMAIL_ADMIN'=>'CONTACT_SEND_EMAIL_ADMIN',
+    'CONTACT_SHOW_EMAIL'=>'CONTACT_SHOW_EMAIL',
+    'Contact'=>'Contact',
+    'CONTACT_SMS_NUMBER'=>'CONTACT_SMS_NUMBER',
+    'CONTACT_MAP_CENTER_POSITION'=>'Map Center Position',
+);

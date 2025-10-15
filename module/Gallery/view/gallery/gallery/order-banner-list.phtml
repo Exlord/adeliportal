@@ -1,0 +1,94 @@
+<div>
+    <?= $this->buttons ?>
+    <h3 class="page-title">
+        <?= t('Orders Banner List') ?>
+    </h3>
+
+    <div>
+        <?= $this->grid ?>
+    </div>
+</div>
+
+<div class="extension-order-banner" style="display: none;" id="extension-order-banner">
+    <form action="<?=url('admin/banner/extension')?>" method="post" target="_blank">
+        <input type="hidden" name="id" id="id_extension" value="">
+        <label><?= t('Count Month ?') ?></label>
+        <select id="extensionCountMonth" class="select-extension-order-banner" name="countMonth">
+            <option value="1"><?= t('1 Month') ?></option>
+            <option value="2"><?= t('2 Month') ?></option>
+            <option value="3"><?= t('3 Month') ?></option>
+            <option value="4"><?= t('4 Month') ?></option>
+            <option value="5"><?= t('5 Month') ?></option>
+            <option value="6"><?= t('6 Month') ?></option>
+            <option value="7"><?= t('7 Month') ?></option>
+            <option value="8"><?= t('8 Month') ?></option>
+            <option value="9"><?= t('9 Month') ?></option>
+            <option value="10"><?= t('10 Month') ?></option>
+            <option value="11"><?= t('11 Month') ?></option>
+            <option value="12"><?= t('12 Month') ?></option>
+        </select>
+        <input type="submit" value="<?=t('Next')?>" name="btn" id="btn_extension">
+    </form>
+    <span class="loading-extension-banner"></span>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-extension').click(function (e) {
+            var id = $(this).parent().prev().prev().prev().prev().prev().prev().prev().prev().html();
+            e.preventDefault();
+            $('#id_extension').val(id);
+            $("#extension-order-banner").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                title: '<?=t('Extending Order')?>',
+                close: function (event, ui) {
+                    $(this).dialog("destroy");
+                    $("#extension-order-banner").hide();
+                },
+                /*buttons: [
+                    {
+                        text: '<?//=t('Next')?>',
+                        icons: { primary: "ui-icon-check"},
+                        click: function () {
+                            var dialog = $(this);
+                            $('.loading-extension-banner').addClass('tiny-ajax-loader');
+                            var data = {};
+                            data['id'] = id;
+                            data['countMonth'] = $('#extensionCountMonth').val();
+                            $.ajax({
+                                url: '',
+                                type: 'POST',
+                                data: data,
+                                complete: function () {
+                                    $('.loading-extension-banner').removeClass('tiny-ajax-loader');
+                                    dialog.dialog("destroy");
+                                    $("#extension-order-banner").hide();
+                                },
+                                success: function (data) {
+                                    if (data.status == 0)
+                                        System.AjaxMessage(data.msg);
+                                    if (data.status == 1) {
+                                        var url = data.url;
+                                        window.open(url, "_blank");
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    {
+                        text: '<?//=t('Cancel')?>',
+                        icons: { primary: "ui-icon-closethick"},
+                        click: function () {
+                            $(this).dialog("destroy");
+                            $("#extension-order-banner").hide();
+                        }
+                    }
+                ]*/
+            });
+
+        });
+    });
+</script>

@@ -1,0 +1,51 @@
+*{ font-family:tahoma; font-size:9pt; direction:rtl; }
+.clear-fix{ clear:both; margin:0; padding:0; }
+body, html{ padding:0; margin:0; background:#e9e9f0; }
+body{ padding:5px; }
+em{ color:gray; }
+a{ text-decoration:none; }
+h1{ font-size:15pt; font-family:BYekan; }
+h2{ font-size:13pt; font-family:BYekan; }
+h3{ font-size:11pt; }
+pre{ direction:ltr; }
+input.left-align, td.left-align, textarea.left-align{ direction:ltr; text-align:left; }
+em.left-align, span.left-align{ direction:ltr; text-align:left; display:inline-block; }
+.page-title{ font-family:'BYekan'; color:#8b0000; margin:0; font-size:16pt; margin-bottom:5px; }
+.emphasize{ font-family:'BYekan'; font-size:16pt; background:#510000; color:#ffffff; padding:0 4px;
+    -moz-box-shadow:0px 0px 5px -2px #000000;
+    -webkit-box-shadow:0px 0px 5px -2px #000000;
+    box-shadow:0px 0px 5px -2px #000000;
+}
+.emphasize-separator{ }
+.emphasize.linked{ font-size:10pt; }
+.toolbar-button{ float:left; }
+
+.admin_main_content{ padding-top:1px; clear:both; }
+.admin_main_content.no_sidebar{ margin-right:0px; }
+.column-mid{ margin:5px; border:solid 1px #dcdcdc; background:#ffffff; position:relative; }
+form .column{ float:right; margin-left:5px; max-width:50%; min-width:25%; }
+#content_body{ padding:10px; position:relative; }
+.sub_text{ color:#b2b2b2; font-size:8pt; }
+.box{ display:block; background:#ffffff; border:solid 1px #dcdcdc; color:#343434; }
+.digit{ font-family:BYekan; font-weight:normal; font-size:12pt; }
+.label{
+    font-family:BYekan;
+    color:#ffffff;
+    font-size:12px;
+    font-weight:normal;
+    line-height:14px;
+    text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
+    vertical-align:baseline;
+    white-space:nowrap;
+    padding:1px 4px 2px;
+    display:inline-block;
+    margin:0 5px;
+    -moz-border-radius:3px 3px 3px 3px;
+    -webkit-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+}
+.label-green{ background:green; color:white; }
+.label-red{ background:#801924; color:white; }
+.update-box{padding:10px;}
+fieldset{ border:solid 1px #dcdcdc; margin:26px 0 2px 0; padding:5px; background:#fdfdfd; }
+fieldset legend{ font-family:'BYekan'; border:solid 1px #dcdcdc; border-bottom:none; padding:2px 15px; margin-top:-24px; }

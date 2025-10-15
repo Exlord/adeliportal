@@ -1,0 +1,23 @@
+<?php
+/**
+ * Created by JetBrains PhpStorm.
+ * User: Exlord
+ * Date: 10/21/13
+ * Time: 10:25 AM
+ */
+?>
+<div>
+    <h2><?= t('Gallery') ?></h2>
+    <? if(isAllowed(\Gallery\Module::ADMIN_BANNER_WIDGET)) { ?>
+    <table>
+        <tr>
+            <td><a class="real-estate-widget-tbl-td-title-links" href="<?=url('admin/banner/list')?>" ><?= t('Number of all not approve banner orders') ?></a></td>
+            <td align='center'><b class="digit"><?= localizedDigits($this->data['count']) ?></b></td>
+        </tr>
+    </table>
+    <? } else { ?>
+        <div class="widget-access-denied">
+            <?=t('Dear user, your access is limited by the webmaster.')?>
+        </div>
+ <? } ?>
+</div>

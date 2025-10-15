@@ -1,0 +1,46 @@
+<?php
+return array(
+'modules' => array(
+'System',
+'Assetic',
+'AssetManager',
+'JQuery',
+'Application',
+'Logger',
+'User',
+'Category',
+'Links',
+'Components',
+'Page',
+'GeographicalAreas',
+'Fields',
+'RealEstate',
+'DataView',
+'Localization',
+'File',
+'Menu',
+'Thumbnail',
+'OnlineOrder',
+'Sms',
+'Payment',
+'PhoneBook',
+'Comment',
+'Rating',
+'Gallery',
+'RSS',
+'NewsLetter',
+'FormsManager',
+'Mail',
+'Cron'
+),
+'db' => array(
+'driver' => 'Pdo_Mysql',
+'database' => 'ipt_test',
+'hostname' => 'localhost',
+'driver_options' => array(
+PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+),
+'username' => 'test_user',
+'password' => '1407367273',
+),
+);

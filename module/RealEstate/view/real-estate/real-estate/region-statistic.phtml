@@ -1,0 +1,17 @@
+<?
+if($this->data)
+{ ?>
+   <div class="box_region_statistic">
+       <table style="width: 400px;">
+           <?
+           foreach($this->data as $key=>$val)
+           { ?>
+                <tr>
+                    <td><?=t($key)?></td>
+                    <td><?=$val?></td>
+                </tr>
+          <? }
+           ?>
+       </table>
+   </div>
+<? }

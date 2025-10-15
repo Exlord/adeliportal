@@ -1,0 +1,21 @@
+#book .col-right{ width:182px; }
+#book #summery .title{ background:#00abd7; width:70px; height:30px; color:#ffffff; margin-right:30px;
+    text-align:center; font-size:130%;
+}
+#book #summery{ margin-top:10px; }
+#book #summery .border{ border-bottom:solid 1px #00abd7; }
+#book #summery .arrow{ background:url(../images/arrow-button.png) no-repeat 117px top; height:6px; }
+#book #summery .text{ font-size:85%; margin-top:15px; line-height:25px; text-align:justify right; }
+#book .image{ text-align:center; margin:0 10px 10px 10px; }
+#book .item-label{ color:#4582b1; }
+#book .nav.nav-tabs li a{ padding:5px; }
+#book .nav.nav-tabs li.active a{ background:#01acd8; color:#ffffff; }
+#book .tab-content{ background:#f2f2ea; padding:10px; min-height:472px; }
+#book .col-left{ width:695px; padding-right:5px; }
+#book .col-left .body{ background:#f2f2ea; }
+#book .col-left .header{ background:#01acd8; }
+#book .section-row{ padding:2px; }
+#book .section-row a{ margin-right:2px; }
+#book #reader .header{ height:38px; padding:5px; background:#01acd8 }
+#book #reader .body{ height:665px; }
+#book #reader .body iframe{ border:none; background:#f2f2ea; padding:10px; }

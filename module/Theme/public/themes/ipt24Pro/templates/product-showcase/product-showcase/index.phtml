@@ -1,0 +1,99 @@
+<?
+$this->headLink()->prependStylesheet($this->basePath() . TEMPLATE_PATH . '/css/image-effect.css');
+$this->headScript()->prependFile($this->basePath() . TEMPLATE_PATH . '/js/view-projects.js');
+$this->headScript()->appendFile($this->basePath() . '/js/jquery.lazyLoad.js');
+$maxPage = $this->paginator->count();
+?>
+<? if (!$this->ajaxLoaded){ ?>
+    <div class="ps-tags">
+        <?
+        $tagRouteParams = array();
+        if ($this->selectCatItem)
+            foreach ($this->selectCatItem as $tag) {
+                $tagRouteParams['tagName'] = \Application\API\App::prepareUrlString($tag->itemName);
+                $tagRouteParams['tagId'] = $tag->id;
+                ?>
+                <div class="ps-tag">
+                    <a href="<?= url('app/product-showcase/list', $tagRouteParams) ?>">
+                        <?= $this->escapeHtml($tag->itemName) ?>
+                        <!--<span class="content-tag-page-count digit">(<? /*
+                            if (isset($this->pageCount[$tag['id']]))
+                                echo localizedDigits($this->pageCount[$tag['id']]);
+                            else
+                                echo localizedDigits('0');
+                            */
+                        ?>)</span>-->
+                        <? /* if ($this->showTags == 2) { */ ?><!--
+                            <div>
+                                <p><? /*= $tag['itemText'] */ ?></p>
+                                <? /* if (isset($this->fileArray[$tag['id']])) { */ ?>
+                                    <img src="<? /*= $this->fileArray[$tag['id']]['fPath'] */ ?>"
+                                         alt="<? /*= $this->fileArray[$tag['id']]['alt'] */ ?>"
+                                         title="<? /*= $this->fileArray[$tag['id']]['title'] */ ?>">
+                                <? /* } */ ?>
+                            </div>
+                        --><? /* } */ ?>
+                    </a>
+                </div>
+            <?
+            }
+        ?>
+    </div>
+    <div style="clear: both;"></div>
+<div class="col-xs-12 col-sm-12 col-md-12 main view_projects_index">
+    <div class="row">
+        <?
+        }
+        if (!empty($this->paginator)) {
+            foreach ($this->paginator as $row) {
+                if (isset($row->psId) && $row->psId) {
+                    $image = '';
+                    $imageAlt = '';
+                    $imageTitle = '';
+                    if (!empty($row->fPath)) {
+                        $images = explode(',', $row->fPath);
+                        $image = getThumbnail()->resize($images[0], 315, 250); //resize image
+                        if (isset($row->fAlt))
+                            $imageAlt = $row->fAlt;
+                        if (isset($row->fTitle))
+                            $imageTitle = $row->fTitle;
+                    }
+
+                    $url = '';
+                    $appUrl = url('app/product-showcase/view', array('id' => $row->psId, 'title' => $row->title));
+                    ?>
+                    <div class="col-xs-12 col-sm-6 col-md-3 view second-effect">
+                        <? if ($image) { ?>
+                            <img class="lazy  img-responsive" data-original="<?= $image ?>" alt="<?= $imageAlt ?>"
+                                 title="<?= $imageTitle ?>">
+                            <noscript>
+                                <img alt="<?= $imageAlt ?>" title="<?= $imageTitle ?>" src="<?= $image ?>"
+                                     class="img-responsive">
+                            </noscript>
+                        <? } ?>
+                        <div class="mask">
+                            <a target="_blank" title="<?= t('Show Content') ?>" href="<?= $appUrl ?>" class="info">
+                                <span class="glyphicon glyphicon-search text-default"></span>
+                                مشاهده
+                            </a>
+                        </div>
+                    </div>
+                <?
+                }
+            }
+        } ?>
+        <? if (!$this->ajaxLoaded){ ?>
+    </div>
+</div>
+    <div class="view-projects-loader"></div>
+<? } ?>
+<div style="clear: both"></div>
+
+<? if (!$this->ajaxLoaded) { ?>
+    <script>
+        var Projects = {
+            url: '<?=url($this->route,$this->routeParams)?>',
+            maxPage: '<?=$maxPage?>'
+        }
+    </script>
+<? } ?>

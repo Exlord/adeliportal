@@ -1,0 +1,6 @@
+<?
+$font_family = Locale::getDefault() == 'fa_IR' ? "font-family=tahoma;" : '';
+?>
+<div dir="<?= t('lang_direction') ?>" lang="<?= Locale::getDefault() ?>" style="<?= $font_family ?>">
+    <?= $this->content ?>
+</div>

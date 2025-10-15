@@ -1,0 +1,196 @@
+<?
+$userProfile = $this->user_info($this->userId, array('col-md-12', 'col-md-12'));
+$user = \User\API\User::$LatestUser;
+$isSelf = ($this->userId == current_user()->id);
+?>
+<div id="patient-profile">
+    <h3 class="page-title">
+        <?= t('Consulting/Health Records') ?> »
+        <?= getUserDisplayName($user) ?>
+    </h3>
+
+    <div class="row">
+        <div class="col-md-9 com-sm-12">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <?= t('Medical Records') ?>
+                            <? if ($isSelf) { ?>
+                                <a class="btn btn-default btn-xs pull-right flip ajax_page_load"
+                                   href="<?= url('admin/health-center/patient-panel/edit-profile', array('id' => $this->userId)) ?>">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                    <?= t('Edit') ?>
+                                </a>
+                            <? } ?>
+                        </div>
+                        <div class="panel-body">
+                            <?
+                            if ($this->patient_profile && is_array($this->patient_profile) && count($this->patient_profile)) {
+                                ?>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-condensed ">
+                                        <?
+                                        foreach ($this->patient_profile as $key => $value) {
+                                            ?>
+                                            <tr>
+                                                <th><?= t($key) ?></th>
+                                                <td><?= $value ?></td>
+                                            </tr>
+                                        <?
+                                        }
+                                        ?>
+                                    </table>
+                                </div>
+                            <?
+                            }
+                            ?>
+                            <!--                            <dl>-->
+                            <!--                                <dt>-->
+                            <? //= t('HEALTH_CENTER_PATIENT_PROFILE_HAS_HISTORY') ?><!--</dt>-->
+                            <!--                                <dd>-->
+                            <? // print $this->patient_profile['has_history'] == '1' ? t('Yes') : t('No') ?><!--</dd>-->
+                            <!--                                <dt>-->
+                            <? //= t('HEALTH_CENTER_PATIENT_PROFILE_DRUG') ?><!--</dt>-->
+                            <!--                                <dd>-->
+                            <? // print $this->patient_profile['drug'] ?><!--</dd>-->
+                            <!--                            </dl>-->
+                            <!--                            <h4 class="page-header">-->
+                            <!--                                --><? //= t('Relatives'); ?>
+                            <!--                            </h4>-->
+                            <!---->
+                            <!--                            <div class="table-responsive">-->
+                            <!--                                <table class="table table-striped table-hover table-condensed">-->
+                            <!--                                    <thead>-->
+                            <!--                                    <tr>-->
+                            <!--                                        <th>--><? //= t('Relation') ?><!--</th>-->
+                            <!--                                        <th>--><? //= t('Age') ?><!--</th>-->
+                            <!--                                        <th>--><? //= t('Education') ?><!--</th>-->
+                            <!--                                        <th>--><? //= t('Job') ?><!--</th>-->
+                            <!--                                    </tr>-->
+                            <!--                                    </thead>-->
+                            <!--                                    <tbody>-->
+                            <!--                                    --><?//
+                            //                                    if (isset($this->patient_profile['relatives']['relatives']) && is_array($this->patient_profile['relatives']['relatives'])) {
+                            //                                        foreach ($this->patient_profile['relatives']['relatives'] as $relative) {
+                            //                                            print "<tr>";
+                            //                                            print "<td>" . t($relative['relation']) . "</td>";
+                            //                                            print "<td class='digit'>" . $relative['age'] . "</td>";
+                            //                                            print "<td>" . $relative['education'] . "</td>";
+                            //                                            print "<td>" . $relative['job'] . "</td>";
+                            //                                            print "</tr>";
+                            //                                        }
+                            //                                    }
+                            //
+                            ?>
+                            <!--                                    </tbody>-->
+                            <!--                                </table>-->
+                            <!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <? if ($isSelf) {
+                    $now = time();
+                    $nextSession = null;
+                    if ($this->nextSession)
+                        $nextSession = $this->nextSession->current();
+                    ?>
+
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <?= t('Last Session') ?>
+                            </div>
+                            <div class="panel-body">
+                                <?if ($this->lastSession && ($lastSession = $this->lastSession->current())) {
+                                    ?>
+                                    <span class="pull-left flip">
+                                <a target="_blank"
+                                   href="<?= url('app/user/user-profile', array('id' => $lastSession['userId'])) ?>">
+                                    <?= getUserDisplayName($lastSession) ?>
+                                </a>
+                            </span>
+                                    <small
+                                        class="pull-right flip"><?= dateFormat($lastSession['start'], 0, 3) ?></small>
+                                <?
+                                } else print $this->alert(t('You have not reserved any sessions before'), 'alert-info last-alert')?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <?= t('Next Session') ?>
+                                <? if ($nextSession) { ?>
+                                    <small
+                                        class="pull-right flip">
+                                        <?= \Localization\API\Date::formatInterval($nextSession['start'] - $now) ?>
+                                    </small>
+                                <? } ?>
+                            </div>
+                            <div class="panel-body">
+                                <?if ($nextSession) {
+                                    ?>
+                                    <span class="pull-left flip">
+                                <a target="_blank"
+                                   href="<?= url('app/user/user-profile', array('id' => $nextSession['userId'])) ?>">
+                                    <?= getUserDisplayName($nextSession) ?>
+                                </a>
+                            </span>
+                                    <small
+                                        class="pull-right flip"><?= dateFormat($nextSession['start'], 0, 3) ?></small>
+                                <?
+                                } else print $this->alert(t('You have not reserved any new sessions'), 'alert-info last-alert')?>
+                            </div>
+                        </div>
+                    </div>
+
+                <? } else { ?>
+
+                <?
+                }
+                if ($this->isMyDoctor) {
+                    ?>
+                    <div class="col-md-3">
+                        <a class="btn btn-default btn-lg btn-block text-middle ajax_page_load"
+                           href="<?= url('admin/health-center/doctor-panel/refer', array('patient' => $this->userId)) ?>"
+                           title="<?= t('Refer to another doctor/consultant') ?>">
+                        <span
+                            class="glyphicon glyphicon-share-alt text-primary fa-lg pull-left flip icon-middle"></span>
+                            <?= t('HC_DOCTOR_REFER') ?>
+                        </a>
+
+                        <p class="help-block"><?= t('Refer to another doctor/consultant') ?></p>
+                    </div>
+                <? } ?>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <?= t('Notes') ?>
+                        </div>
+                        <div class="panel-body">
+                            <?= $this->notes('patient_profile', $this->userId, $this->isMyDoctor); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 com-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <?= t('Personal Info') ?>
+                    <? if ($isSelf) { ?>
+                        <a class="btn btn-default btn-xs pull-right flip ajax_page_load"
+                           href="<?= url('admin/users/view', array('id' => $this->userId)) ?>">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            <?= t('Edit') ?>
+                        </a>
+                    <? } ?>
+                </div>
+                <div class="panel-body">
+                    <?= $userProfile ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

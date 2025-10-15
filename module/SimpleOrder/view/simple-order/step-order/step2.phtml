@@ -1,0 +1,80 @@
+<div class="step-order-loading">
+    <span class="ajax-loading"></span>
+</div>
+<div class="step-order-header">
+    <h2><?= t('02. Chassis type') ?></h2>
+
+    <h3><?= t('Choose between a rigid chassis or a tractor.') ?></h3>
+
+    <p><?= t('Click on the picture for more information and to make a selection.') ?></p>
+</div>
+<div class="main-step2 main-step">
+    <? foreach ($this->dataArray as $row) {
+        if ($row['images']) {
+            foreach ($row['images'] as $imageRow) {
+                if (!empty($imageRow->fPath)) {
+                    ?>
+                    <a href="#" data-id="<?= $row['id'] ?>" class="step2-custom-link width48">
+                        <img src="<?= $imageRow->fPath ?>" alt="<?= $imageRow->fAlt ?>" rel="tooltip"
+                             title="<?= $this->escapeHtml($imageRow->fTitle) ?>">
+                    </a>
+                <?
+                }
+            }
+        }
+    } ?>
+    <div style="clear: both;"></div>
+    <?
+    $class = '';
+    $i = 1;
+    foreach ($this->dataArray as $row) {
+        if ($i != 1)
+            $class = 'hidden';
+        $i++;
+        ?>
+        <div id="descStep2order<?= $row['id'] ?>" class="box-desc-step2-order <?= $class ?>">
+            <div class="col1">
+                <h3><?= $row['itemName'] ?></h3>
+
+                <p><?= $row['itemText'] ?></p>
+            </div>
+            <div class="col2">
+                <a class="step2-order-link step2-next-level" href="#" data-id="<?= $row['id'] ?>" data-name="<?= $row['itemName'] ?>">
+                    <h3><?= $row['itemName'] ?></h3>
+                </a>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    <? } ?>
+</div>
+<div class="step-order-nav">
+    <a class="home" href="<?=url('app/step-order')?>"></a>
+    <span class="end-inactive"></span>
+        <span class="main-inactive step-order-link pointer" data-id="<? if(isset($this->info[1]['id'])) echo t($this->info[1]['id']); ?>" data-name="">
+            <label><?= t('Page1') ?></label>
+            <p><? if(isset($this->info[2]['name'])) echo t($this->info[2]['name']); ?></p>
+        </span>
+    <span class="start-active"></span>
+        <span class="main-active">
+            <label><?= t('Page2') ?></label>
+        </span>
+    <span class="end-active"></span>
+        <span class="main-inactive">
+            <label><?= t('Page3') ?></label>
+        </span>
+    <span class="end-inactive"></span>
+        <span class="main-inactive">
+            <label><?= t('Page4') ?></label>
+        </span>
+    <span class="end-inactive"></span>
+        <span class="main-inactive">
+            <label><?= t('Page5') ?></label>
+        </span>
+    <span class="end-inactive"></span>
+    <span class="main-inactive">
+            <label><?= t('Summary') ?></label>
+        </span>
+    <span class="end-inactive"></span>
+</div>
+
+

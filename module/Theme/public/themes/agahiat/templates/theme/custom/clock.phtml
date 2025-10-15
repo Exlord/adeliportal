@@ -1,0 +1,10 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        startTime();
+    });
+</script>
+<style>
+    #clock{border-left: 1px solid #cccccc;display: inline;margin-left: 2px;padding-left: 2px;width: auto;}
+</style>
+<div id="clock"></div>
+<?=$this->dateFormat(time(),null,null,null,'l , d F Y');?>

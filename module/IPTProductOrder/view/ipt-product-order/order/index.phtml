@@ -1,0 +1,66 @@
+<?
+use Localization\View\Helper\DateFormat;
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+
+$styles = array();
+$styles[] = $this->basePath() . '/css/base-theme/jquery-ui-1.10.1.custom.min.css';
+$styles[] = $this->basePath() . '/css/system.css';
+if ($direction == 'ltr')
+    $styles[] = $this->basePath() . TEMPLATE_PATH . '/css/style-ltr.css';
+$styles[] = $this->basePath() . TEMPLATE_PATH . '/css/style.css';
+$styles[] = $this->basePath() . '/css/ipt-product-order.css';
+foreach ($styles as $st) {
+    $this->headLink()->appendStylesheet($st);
+}
+
+$scripts = array(
+    '/js/ipt-product-order.js',
+    '/js/system.jquery.ui.buttons.js',
+    '/js/system.jquery.ui.js',
+    '/js/general.js',
+    '/js/system.js',
+    '/js/forms.js',
+    '/js/jquery.watermark.min.js',
+    '/js/jquery.hoverIntent.min.js',
+    '/js/jquery.cookie.js',
+    '/js/jquery.transit.min.js',
+    '/js/jquery.ui.datepicker-cc.js',
+    '/js/jquery.ui.datepicker-cc-fa.js',
+    '/js/jquery-ui-1.10.1.custom.min.js',
+    '/js/calendar.js',
+    '/js/jquery-1.10.2.js');
+foreach ($scripts as $sc) {
+    $this->headScript()->prependFile($this->basePath() . $sc);
+}
+?>
+<?php echo $this->doctype(); ?>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle($this->translate('IPT Product Order')) ?>
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+
+</head>
+<body>
+<div class="product-order">
+    <div class="pages-loading ajax-loading">&nbsp;</div>
+    <div class="pages">
+        <div class="page categories">
+            <? foreach ($this->categories[0] as $category) { ?>
+                <div class="category">
+                    <img src="<?= $this->basePath() . $category->image ?>">
+                    <a class="button"><?= t('Description') ?></a>
+
+                    <p><?=$category->itemText?></p>
+                </div>
+            <? } ?>
+        </div>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<?
+if (!$this->error) {
+    ?>
+    <div>
+        <h3 class="page-title">
+            <?= $this->translate('ADS_ADVANCE_CONFIG'); ?>
+        </h3>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formRow($form->get('showKeyword'));
+        echo $this->formRow($form->get('showCategory'));
+        echo $this->formRow($form->get('showCreateDate'));
+        echo $this->formRow($form->get('showHits'));
+        echo $this->formRow($form->get('showStatusType'));
+        echo $this->formRow($form->get('cookieTime'));
+        echo $this->formCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+<?
+} else {
+    ?>
+    <div class="alert alert-danger">
+        <?= t('ADS_CONFIG_ERROR') ?>
+    </div>
+<?
+}

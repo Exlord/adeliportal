@@ -1,0 +1,34 @@
+<div class="selectable-fields-filter">
+    <input type="text" id="field-title" watermark="<?= t('Filter by Title') ?>" size="50">
+    <input type="text" id="field-type" watermark="<?= t('Filter by Type') ?>" size="50">
+</div>
+<?
+$fields_json = array();
+foreach ($this->fields as $key => $field) {
+    $fields_json['__FIELD__' . $key . '__'] = $field['title'];
+    ?>
+    <div class="selectable-field-item">
+        <div class="field-item-content">
+            <input type="hidden"
+                   name="<?= $field['mName'] ?>"
+                   data-id="<?= $key ?>"
+                   value="<?= $field['title'] ?>"
+                   contenteditable="false"
+                   data-cke-editable="0"
+                   id="__FIELD__<?= $key ?>__"
+                   readonly="readonly"
+                   disabled="disabled">
+            <input type="checkbox">
+
+            <span class="field-item-title"><?= $field['title'] ?></span>
+            <span class="field-item-type"><?= t($this->types[$field['type']]) ?></span>
+        </div>
+    </div>
+<?
+}
+?>
+<script>
+    <?=$this->inlineScript()->captureStart();?>
+    System.FormsManager.Fields = <?=json_encode($fields_json)?>;
+    <?=$this->inlineScript()->captureEnd();?>
+</script>

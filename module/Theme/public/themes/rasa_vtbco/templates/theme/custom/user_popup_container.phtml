@@ -1,0 +1,28 @@
+<?
+$user_block = $this->user_logged_in_block();
+if (!$user_block) {
+}
+?>
+<div id="user_popup_container">
+    <?
+    if (!$user_block) {
+        ?>
+        <div class="box user_login_popup" id="user_login_popup">
+            <?= $this->user_login_block() ?>
+        </div>
+        <div class="box user_login_box">
+            <a id="user_login_link" href="<?= url('app/user/login') ?>"><span><?= t('Login') ?></span></a>
+        </div>
+    <?
+    } else {
+        if (isAllowed(\Application\Module::ADMIN)) {
+            ?>
+            <div class="box admin_link_box">
+                <a href="<?= url('admin') ?>"><span><?= t('Administration') ?></span></a>
+            </div>
+        <?
+        }
+        echo $user_block;
+    }
+    ?>
+</div>

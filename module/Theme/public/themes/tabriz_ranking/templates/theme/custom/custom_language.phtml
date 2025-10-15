@@ -1,0 +1,43 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Exlord (adeli.farhad@gmail.com)
+ * Date: 3/16/14
+ * Time: 11:19 AM
+ */
+$lang = SYSTEM_LANG == 'fa' ? 'en' : 'fa';
+/* @var $routeMatch \Zend\Mvc\Router\Http\RouteMatch */
+$app = getSM('Application');
+$route = 'app/front-page';
+$params = array();
+if ($app) {
+    $e = $app->getMvcEvent();
+    if ($e) {
+        $routeMatch = $e->getRouteMatch();
+        if ($routeMatch) {
+            $route = $routeMatch->getMatchedRouteName();
+            $params = $routeMatch->getParams();
+        }
+    }
+}
+
+$params['lang'] = $lang;
+
+$link = url($route, $params);
+$fa_link = SYSTEM_LANG == 'fa' ? '#' : 'http://ir.tabrizranking.com' . $link;
+$en_link = SYSTEM_LANG == 'en' ? '#' : 'http://tabrizranking.com' .$link;
+?>
+<div class="box language-switcher-box">
+    <ul>
+        <li class="<?= SYSTEM_LANG == 'fa' ? 'active-lang' : '' ?>" title="تغییر زبان به فارسی">
+            <a href="<?= $fa_link ?>">
+                <img alt="فارسي" src="<?= $this->basePath() ?>/images/flags/fa.png">
+            </a>
+        </li>
+        <li class="<?= SYSTEM_LANG == 'en' ? 'active-lang' : '' ?>" title="Change Language to English">
+            <a href="<?= $en_link ?>">
+                <img alt="English" src="<?= $this->basePath() ?>/images/flags/en.png">
+            </a>
+        </li>
+    </ul>
+</div>

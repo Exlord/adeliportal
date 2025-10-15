@@ -1,0 +1,11 @@
+<p>
+    <?=sprintf(t('Your request with id %s is submitted successfully.'), $this->__WORKSHOP_CLASS_REQUEST_ID__)?>
+</p>
+<p>
+    <?= sprintf(t('you have initialized your registration for the %s'), $this->__WORKSHOP_CLASS_URL__) ?>
+</p>
+<p>
+    <?=
+    sprintf(t('This registration is temporary and if payment is not completed in less than %s minutes it will be canceled'),
+        $this->__WORKSHOP_TIME_FOR_PAYMENT__) ?>
+</p>

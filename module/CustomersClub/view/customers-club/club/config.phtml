@@ -1,0 +1,46 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Customers Club Config'); ?>
+    </h3>
+
+    <div>
+        <?
+        $form = $this->form;
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        foreach ($form->getElements() as $el) {
+            echo $this->formRow($el);
+        }
+
+        $modules = $form->get('modules');
+        ?>
+        <h3 class="page-header"><?= t('Module Points') ?></h3>
+
+        <p class="help-block">
+            <?= t('configure points for each event') ?>
+        </p>
+
+        <div id="module_points_settings">
+            <ul>
+                <? foreach ($modules->getFieldsets() as $module) { ?>
+                    <li>
+                        <a href="#module-<?= str_replace(array('[' . ']', '\\'), '_', $module->getName()) ?>"><?= t($module->getLabel()) ?></a>
+                        <? $module->setLabel('') ?>
+                    </li>
+                <? } ?>
+            </ul>
+            <? foreach ($modules->getFieldsets() as $module) { ?>
+                <div id="module-<?= str_replace(array('[' . ']', '\\'), '_', $module->getName()) ?>">
+                    <? print $this->formCollection($module) ?>
+                </div>
+            <? } ?>
+        </div>
+        <?
+        echo $this->formCollection($form->get('buttons'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#module_points_settings').tabs();
+</script>

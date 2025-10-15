@@ -1,0 +1,10 @@
+<p>
+    <?= sprintf(t('the session at %s is canceled'),
+        $this->__RESERVE_DATE__) ?>
+</p>
+<dl class="dl-horizontal">
+    <dt><?=t('Cancel Reason')?></dt>
+    <dd><?=$this->__RESERVE_CANCEL_REASON__?></dd>
+    <dt><?=t('Refund Amount')?></dt>
+    <dd><?=$this->__RESERVE_CANCEL_REFUND_AMOUNT__?></dd>
+</dl>

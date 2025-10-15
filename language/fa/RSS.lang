@@ -1,0 +1,21 @@
+<?return array(
+    'PERM_RSS' => 'RSS',
+    'RSS Reader' => 'RSS خوان',
+    'RSS Readers' => 'RSS خوان',
+    'New RSS' => 'RSS جدید',
+    'Create new Rss Reader Feed Source.' => 'ساخت RSS جدید از یک مبدا',
+    'How often this feeds content should be updated ?' => 'هر چند وقت یکبار این محتوای فید باید به روز شود؟',
+    'Read Interval' => 'فاصله زمان خواندن',
+    'Feed Limit' => 'حد خبرخوان',
+    'default=10, max=100' => 'به طور پیشفرض 10 عدد و حداکثر 100 عدد',
+    'Rss Reader Section' => 'بخش Rss خوان',
+    '%s RSS Reader updated throw cron run in %s seconds at %s' =>
+        'RSS خوان %s در مدت %s ثانیه در %s بروزرسانی شد.',
+    'Newsletter' => 'خبرنامه',
+    'Newsletter Settings' => 'تنظیمات خبرنامه',
+    'Last Id' => 'آخرین شماره',
+    'New RSS Reader Created Successfully.' => 'rss خوان جدید با موفقیت ایجاد شد .',
+    'Newsletter Text configs saved successfully' => 'تنظیمات خبرنامه با موفقیت انجام شد .',
+    'Last Read' => 'آخرین خواندن',
+    'Fetch and display content for a rss feed' => 'واکشی و نمایش محتوا برای یک RSS',
+);

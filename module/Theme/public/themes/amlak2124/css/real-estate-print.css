@@ -1,0 +1,11 @@
+.tbl-view-print{ padding: 4px; width: 85%; position: relative; right: 4%;}
+.tbl-view-print td {width:18%;}
+.tbl-view-print td label {font-family:tahoma !important; font-size: 9pt; color: #747474}
+.tbl-view-print td span {margin-left:5px;}
+.tbl-view-print td p { border: 1px solid #747474; color: #3a3a3a; border-radius: 5px;  font-size: 10pt; font-family: tahoma; margin: 7px; min-height: 20px; padding-right:5px; }
+.desc-view-print p {min-height:60px !important;}
+.print-content-page h1{font-size:13pt !important;}
+.box-print-form{ width:28.7cm; height:19cm !important;}
+.img-header-print{width: 27cm;}
+.active_icon{background:url(../images/real-estate/Arrow-05.png) no-repeat center center; width:13px; height:13px; display:inline-block; float:right;}
+.p_box_em{width:20%; display:inline-block; float:right;}

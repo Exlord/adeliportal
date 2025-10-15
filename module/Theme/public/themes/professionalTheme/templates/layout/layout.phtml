@@ -1,0 +1,155 @@
+<?
+//$content = \Theme\API\Themes::renderLayout($this);
+
+$topMenu = $this->blocks('top-menu');
+$custom_1 = $this->blocks('custom-1');
+$mainSlider = $this->blocks('main-slider');
+
+$colRight = $this->blocks('col-right');
+$colLeft = $this->blocks('col-left');
+$colMid = $this->blocks('col-mid');
+$colMidLeft = $this->blocks('col-mid-left');
+$beforeMainContent = $this->blocks('before-main-content');
+$afterMainContent = $this->blocks('after-main-content');
+$contentTop = $this->blocks('content-top');
+$contentBottom = $this->blocks('content-bottom');
+
+
+$direction = $this->translate('lang_direction'); //rtl ? ltr
+$bootstrap = $direction == 'rtl' ? '/css/bootstrap.rtl.min.css' : '/css/bootstrap.min.css';
+$basePath = $this->basePath();
+$this->headLink()
+    ->prependStylesheet(
+        $basePath . TEMPLATE_PATH . '/css/ie10.css',
+        'screen',
+        'IE 10'
+    )
+    ->prependStylesheet($basePath . '/css/system.css')
+    ->prependStylesheet($basePath . '/full-page/jquery.fullPage.css')
+    ->prependStylesheet($basePath . '/css/base-theme/jquery-ui-1.10.1.custom.min.css')
+    ->prependStylesheet($basePath . TEMPLATE_PATH . $bootstrap)
+    ->prependStylesheet($basePath . '/css/reset.min.css');
+
+//------------------------------ TEMPLATE STYLE -------------------------------------------
+$this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style.css');
+if ($direction == 'rtl')
+    $this->headLink()->appendStylesheet($basePath . TEMPLATE_PATH . '/css/style-rtl.css');
+////-------------------------------------------------------------
+
+
+$this->headScript()
+    ->prependFile($basePath . '/js/system.jquery.ui.buttons.js')
+    ->prependFile($basePath . '/js/system.jquery.ui.js')
+    ->prependFile($basePath . '/js/system.js')
+    ->prependFile($basePath . '/js/forms.js')
+    ->prependFile($basePath . '/js/jquery.transit.min.js')
+    ->prependFile($basePath . '/js/general-client.js')
+    ->prependFile($basePath . '/full-page/vendors/jquery.easings.min.js')
+    ->prependFile($basePath . '/full-page/vendors/jquery.slimscroll.min.js')
+    ->prependFile($basePath . '/full-page/jquery.fullPage.js')
+    ->prependFile($basePath . '/js/jquery-ui-1.10.1.custom.min.js')
+    ->prependFile($basePath . '/js/jquery-1.9.1.min.js')
+    ->prependFile(
+        $basePath . TEMPLATE_PATH . '/js/respond.min.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );
+
+//------------------------------ TEMPLATE JAVASCRIPT -------------------------------------------
+$this->headScript()->appendFile($basePath . TEMPLATE_PATH . '/js/template.js');
+
+?>
+
+<!DOCTYPE html>
+<html lang="fa" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <?= $this->head() ?>
+    <?= $this->headTitle() ?>
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
+    <?= $this->headScript() ?>
+</head>
+<body>
+<div class="container-fluid row-top-menu">
+    <div class="row">
+        <div class="col-md-10">
+            <? if ($topMenu) { ?>
+                <div class="box-top-menu">
+                    <?= $topMenu ?>
+                </div>
+            <? } ?>
+        </div>
+        <div class="col-md-2">
+            <? if ($custom_1) { ?>
+                <div class="box-custom-1">
+                    <?= $custom_1 ?>
+                </div>
+            <? } ?>
+        </div>
+    </div>
+</div>
+<div id="container">
+    <div id="fullpage">
+        <div class="section active" id="section0">
+            aliasjkadskjhkdljshfladjkhjflads
+        </div>
+        <div class="section" id="section1">
+            page 2
+            <div id="body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <?
+                        if ($this->content) {
+                            ?>
+                            <div class="col-md-12">
+                                <?
+                                echo $this->content;
+                                ?>
+                            </div>
+                        <?
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" id="section2"><h1>No wraps, no extra markup3333</h1></div>
+        <div class="section" id="section3">
+            <div class="container-fluid footer sticky-bottom" style="clear:both;">
+                <div class="row">
+                    <div class=" col-md-12">
+                        <div class="">
+                            <?
+                            $startYear = mktime(0, 0, 0, 6, 0, 2012);
+                            $startYear = $this->dateFormat($startYear, \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                            $nowYear = $this->dateFormat(time(), \Localization\View\Helper\DateFormat::YEAR_ONLY);
+                            ?>
+                            <p align="center">
+                                <?= t('APPLICATION_BROWSERS') ?>
+                            </p>
+
+                            <p align="center">
+                                <span><?= sprintf(t('APPLICATION_RIGHTS'), 'Msa Company') ?></span>
+                                <span dir="ltr"><?= sprintf(t('APPLICATION_COPY_RIGHT'), $startYear, $nowYear) ?></span>
+                                &nbsp; .
+                                <span><?= t('APPLICATION_SUPPORT') ?></span> .
+                                <span><?= t('APPLICATION_POWERED_BY') ?></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $this->inlineScript() ?>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#fullpage').fullpage({
+            slidesColor: ['#f2f2f2', '#4BBFC3', '#7BAABE', 'whitesmoke', '#ccddff']
+        });
+    });
+</script>

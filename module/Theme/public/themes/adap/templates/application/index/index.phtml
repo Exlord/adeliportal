@@ -1,0 +1,32 @@
+<? $this->headLink()->appendStylesheet($this->basePath() . TEMPLATE_PATH . '/css/index.css');
+$mainMenu = $this->blocks('main_menu');
+$mainSlider = $this->blocks('main_slider');
+$messages = $this->blocks('messages');
+$booksSlider = $this->blocks('books_slider');
+?>
+<div class="row">
+    <div id="index-content-top">
+        <div id="main-slider">
+            <? if (!empty($mainSlider)) print $mainSlider; ?>
+        </div>
+        <div id="main-menu">
+            <? if (!empty($mainMenu)) print $mainMenu; ?>
+        </div>
+    </div>
+    <div id="index-content-bottom">
+        <div class="corner-top-right"></div>
+        <div class="corner-top-left"></div>
+        <div class="inner-box">
+            <div id="messages">
+                <? if (!empty($messages)) print $messages; ?>
+            </div>
+            <div id="books-slider">
+                <h3 class="block-title">
+                    مجموعه کتاب های اولین دانشگاه آخرین پیامبر
+                </h3>
+                <? if (!empty($booksSlider)) print $booksSlider; ?>
+            </div>
+        </div>
+        <div class="bottom"></div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div>
+    <h3><?=sprintf($this->translate('Are you sure you want to delete realty with ID:%s ?'),
+        "<em>" . $this->id . "</em>")?>
+    </h3>
+
+    <div>
+        <form method="post" action="<?=$this->url(
+            'admin/real-estate/delete',
+            array('id' => $this->id,'type'=> $this->type))?>">
+            <input class="button yes_button" type="submit" name="submit" value="<?=$this->translate('Yes')?>">
+            <input class="button no_button" type="submit" name="cancel" value="<?=$this->translate('No')?>">
+        </form>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<?
+$form = $this->form;
+?>
+<div class="new-form">
+    <?
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    foreach ($form->getElements() as $el) {
+        echo $this->iptformRow($el);
+    }
+    echo $this->iptFormCollection($form->get('buttons'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        <?\Application\API\App::setEditor('body',$this)?>
+    });
+</script>

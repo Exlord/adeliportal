@@ -1,0 +1,4 @@
+<?
+return array(
+    "Click here to change system's language" => 'برای تغییر زبان اینجا کلیک کنید',
+);

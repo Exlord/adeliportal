@@ -1,0 +1,7 @@
+<?
+return array(
+    'ABOUTUS'=>'About Stele',
+    'ONLINE_COUNSELING'=>'Online counseling',
+    'PUBLIC_TEACH'=>'Public Teach',
+    'ONLINE_SHOP'=>'Online Shop',
+);

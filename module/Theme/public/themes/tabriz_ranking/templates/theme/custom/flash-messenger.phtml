@@ -1,0 +1,5 @@
+<?$fm = $this->flashMessenger()->render();
+if (!empty($fm)) {
+    ?>
+    <div id="system_messages"><?= $this->flashMessenger()->render(); ?></div>
+<? }

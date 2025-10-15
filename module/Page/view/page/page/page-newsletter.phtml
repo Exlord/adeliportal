@@ -1,0 +1,19 @@
+<?
+foreach ($this->dataArray as $page) {
+    $pageRouteParams['id'] = $page['id'];
+    $pageRouteParams['title'] = \Application\API\App::prepareUrlString($page['pageTitle']);
+    ?>
+    <article>
+        <a href="<?= url('app/single-content', $pageRouteParams) ?>">
+            <h2 class="article-title">
+                <!--<span class="icon"></span>-->
+                <?= $this->escapeHtml($page['pageTitle']) ?>
+            </h2>
+        </a>
+
+        <p>
+            <?= $page['introText'] ?>
+        </p>
+    </article>
+<?
+}

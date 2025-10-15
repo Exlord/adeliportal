@@ -1,0 +1,8 @@
+<?return array(
+    'PERM_NewsLetter' => 'NewsLetter',
+    'NewsLetter_config_noModule'=>'NewsLetter_config_noModule',
+    'NewsLetter_SUCCESS_MESSAGE'=>'NewsLetter_SUCCESS_MESSAGE',
+    'NewsLetter_DUPLICATE_EMAIL'=>'NewsLetter_DUPLICATE_EMAIL',
+    'NEWSLETTER'=>'News Letter',
+    'NewsLetter'=>'News Letter',
+);

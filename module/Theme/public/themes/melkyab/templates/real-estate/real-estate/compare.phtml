@@ -1,0 +1,161 @@
+<?
+$this->headScript()->appendFile($this->basePath() . '/js/real-estate-compare.js');
+use \RealEstate\Model\RealEstateTable;
+
+$route_prefix = $this->admin_route ? 'admin' : 'app';
+?>
+<style>
+    table, tbody { vertical-align: top !important; display: inline-block; }
+
+    .tbl_title { width: 150px; border-top: 1px solid #999999; border-right: 1px solid #999999; }
+
+    .tbl_title td { height: 30px; width: 150px; border-bottom: 1px solid #999999; border-left: 1px solid #999999; vertical-align: middle; }
+
+    .tbl_value { width: 150px; border-top: 1px solid #999999; }
+
+    .tbl_value td { height: 30px; width: 150px; border-bottom: 1px solid #999999; border-left: 1px solid #999999; vertical-align: middle; }
+
+    .img_real_compare { height: 102px !important; text-align: center; }
+
+    .price_real_compare { height: 50px !important; }
+</style>
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Compare Real Estate'); ?>
+    </h3>
+
+    <div class="top-menu-list-real-estate">
+        <?
+        if ($this->dataArray) {
+            $base_reg_type = null;
+            $dataRows = array();
+            $firstCount = 0;
+            foreach ($this->dataArray as $row) {
+
+                if ($firstCount == 0) {
+                    $counter = 0;
+                    $dataRows[$counter++][] = 'Delete';
+                    $dataRows[$counter++][] = 'Image';
+                    $dataRows[$counter++][] = 'Id';
+                    $dataRows[$counter++][] = 'Listing Type';
+                    $dataRows[$counter++][] = 'Property Type';
+                    $dataRows[$counter++][] = 'Price';
+                    $dataRows[$counter++][] = 'Built-up area';
+                    $dataRows[$counter++][] = 'State';
+                    $dataRows[$counter++][] = 'City';
+                    $dataRows[$counter++][] = 'Area';
+                    $dataRows[$counter++][] = 'Customer Type';
+                    $dataRows[$counter++][] = 'Published Type';
+                    $dataRows[$counter++][] = 'Status Type';
+                    $dataRows[$counter++][] = 'Date';
+                    $dataRows[$counter++][] = 'Link';
+                    foreach ($row['fields'] as $key => $val) {
+                        if ($firstCount == 0)
+                            $dataRows[$counter++][] = $key;
+                    }
+                    $firstCount++;
+                }
+
+
+                $reg_type_class = strtolower(str_replace(' ', '-', RealEstateTable::$estateRegType[$row['data']['regType']]));
+                $reg_type = $this->translate(RealEstateTable::$estateRegType[$row['data']['regType']]);
+                if (!$base_reg_type)
+                    $base_reg_type = $reg_type;
+                $estate_type = $row['data']['estateTypeName'];
+                $meter = $row['data']['estateArea'] . ' ' . $this->translate('real_estate_Meter');
+                $title = \Application\API\App::prepareUrlString($reg_type . ' ' . $estate_type . ' ' . $meter);
+                $price = 0;
+
+                switch ($row['data']['regType']) {
+                    case 1:
+                    case 3:
+                    case 4:
+                        $price = '<span class="price">' . $this->currencyFormat($row['data']['totalPrice']) . '</span>';
+                        break;
+                    case 2:
+                        $price = '<span class="mortgage">&nbsp;' . $this->translate('mortgage') .
+                            '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row['data']['mortgagePrice']) . '</span><br/><span class="rental">&nbsp;' . $this->translate('rental') .
+                            '&nbsp;</span>&nbsp;<span class="price">' . $this->currencyFormat($row['data']['rentalPrice']) . '</span>';
+                        break;
+                }
+
+                $typeCustomer = $row['data']['isRequest'] ? 'Request' : 'Transfer';
+
+
+                if ($this->last_visit < $row['data']['published'])
+                    $publishedType = 'New';
+                else
+                    $publishedType = 'Old';
+
+                $statusType = 'Approved';
+                if (!$row['data']['status'] == 1)
+                    $statusType = 'Not Approved';
+                if ($row['data']['status'] == 3)
+                    $statusType = 'Transferred';
+                if ($row['data']['status'] == 4)
+                    $statusType = 'Canceled';
+
+                $link = "<a target='_blank' href='" . $this->url($route_prefix . '/real-estate/view', array('id' => $row['data']['itemId'], 'title' => $title)) . "'>" . t('View details and contact') . "</a>";
+
+
+                $image = explode(',', $row['data']['fPath']);
+                if (is_array($image) && isset($image[0]) && !empty($image[0]))
+                    $imageUrl = getThumbnail()->resize($image[0], 100, 100); //resize image
+                else
+                    $imageUrl = getThumbnail()->resize($this->basePath() . '/images/not-image.png', 100, 100); //resize image;
+                $imgUrl = "<img src=" . $imageUrl . " >";
+
+                $deleteLink = "<a href='#' data-id='" . $row['data']['itemId'] . "' class='delete_real_compare' >Delete</a>";
+
+                $counter = 0;
+                $dataRows[$counter++][] = $deleteLink;
+                $dataRows[$counter++][] = $imgUrl;
+                $dataRows[$counter++][] = $row['data']['itemId'];
+                $dataRows[$counter++][] = $reg_type;
+                $dataRows[$counter++][] = $estate_type;
+                $dataRows[$counter++][] = $price;
+                $dataRows[$counter++][] = $meter;
+                $dataRows[$counter++][] = $row['data']['stateTitle'];
+                $dataRows[$counter++][] = $row['data']['cityTitle'];
+                $dataRows[$counter++][] = $row['data']['areaTitle'];
+                $dataRows[$counter++][] = $typeCustomer;
+                $dataRows[$counter++][] = $publishedType;
+                $dataRows[$counter++][] = $statusType;
+                $dataRows[$counter++][] = $this->dateFormat($row['data']['created']);
+                $dataRows[$counter++][] = $link;
+
+                $filedHtml = null;
+                if (count($row['fields']))
+                    foreach ($row['fields'] as $val) {
+                        if ($base_reg_type == $reg_type)
+                            $dataRows[$counter++][] = $val;
+                        elseif(isset($dataRows[$counter]))
+                            $dataRows[$counter++][] = 'Not';
+                    }
+            }
+            ?>
+
+            <div style="clear: both"></div>
+            <div class="box_real_compare">
+                <table>
+                    <? foreach ($dataRows as $row) { ?>
+                        <tr>
+                            <? foreach ($row as $data) { ?>
+                                <td>
+                                    <?= $data ?>
+                                </td>
+                            <? } ?>
+                        </tr>
+                    <? } ?>
+                </table>
+            </div>
+
+
+        <?
+        } else {
+            echo $this->general()->noOutPut();
+        } ?>
+    </div>
+
+</div>
+

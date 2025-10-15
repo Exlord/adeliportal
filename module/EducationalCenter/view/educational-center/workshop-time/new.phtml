@@ -1,0 +1,47 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('New Workshop Time'); ?>
+    </h3>
+
+    <div class="container-fluid">
+        <? echo($this->form($this->form)); ?>
+    </div>
+</div>
+<script>
+    <?$this->inlineScript()->captureStart();?>
+    $(document).ready(function () {
+        $('#date-end,#date-start').closest('.form-group').addClass('col-md-6');
+        $('#days_of_week').closest('.form-group').addClass('col-md-12');
+
+        $("#date").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy/mm/dd'
+        });
+
+        $("#date-start").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy/mm/dd',
+            onClose: function (selectedDate) {
+                $("#date-end").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#date-end").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy/mm/dd',
+            onClose: function (selectedDate) {
+                $("#date-start").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+
+        $('.show-date').closest('.input-group-addon').addClass('btn btn-default');
+        $('.show-date').closest('.input-group').click(function () {
+            $(this).children('.date').datepicker("show");
+        })
+    });
+    <?$this->inlineScript()->captureEnd();?>
+</script>
+

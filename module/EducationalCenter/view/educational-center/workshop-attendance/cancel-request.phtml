@@ -1,0 +1,25 @@
+<div>
+    <h3 class="page-title">
+        <?= $this->translate('Class registration cancel request'); ?>
+    </h3>
+
+    <p class="description">
+        <?
+        print sprintf(t('You are requesting to cancel your registration for %s'),
+            \Theme\API\Common::Link(
+                $this->classTitle,
+                url('app/workshop/class', array('workshop' => $this->attendance->workshopId, 'class' => $this->attendance->classId)),
+                array('target' => '_blank')
+            )
+        )?>
+    </p>
+
+    <? if (has_value($this->attendance->note)) {
+        print $this->attendance->note;
+    }
+    ?>
+
+    <div>
+        <? print $this->form($this->form); ?>
+    </div>
+</div>

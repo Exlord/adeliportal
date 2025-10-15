@@ -1,0 +1,5 @@
+<?return array(
+    'SITEMAP'=>'Site Map',
+    'SITEMAP_DESC'=>'Site Map',
+    'SITEMAP_FREQ'=>'SITEMAP_FREQ',
+);

@@ -1,0 +1,24 @@
+.articles #content_body{ background:none; border:none; padding:0; }
+.articles h2.article-title{ color:#8b0000; border-bottom:solid 1px #dcdcdc; margin:0; font-size:14pt; }
+.articles h1.article-title{ color:#8b0000; border-bottom:solid 1px #dcdcdc; margin:0; font-size:15pt; }
+article{ background:#f5f5f5; border:1px solid #dcdcdc; display:block; padding:10px; margin-bottom:5px; }
+article .published,
+article .author,
+article .hits{ color:#808080; font-size:7pt; margin-right:10px; }
+article .rate{ float:left; }
+article .rate #rating-hint{ font-family:BYekan; }
+article .tags{ color:#808080; font-family:BYekan; font-size:10pt;border-top:solid 1px #dcdcdc; }
+article .tags a{ color:#808080; font-family:BYekan; font-size:9pt; padding:2px 5px;
+    font-weight:normal; }
+article .tags a:hover{  background:#1e90ff; color:#f0f0f0; }
+
+.content-tags{ }
+.content-tags .content-tag{ padding:3px 8px; background:#1e90ff; color:#f0f0f0;
+    margin:2px; font-size:10pt; position:relative; cursor:pointer; }
+.content-tags .content-tag a{ color:#ffffff; }
+.content-tags .content-tag .content-tag-page-count{ }
+.content-tags .content-tag:hover{ background:#3e9615; }
+.read-more{color:#808080}
+
+
+
