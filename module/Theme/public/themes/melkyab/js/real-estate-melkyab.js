@@ -161,7 +161,7 @@ $(document).ready(function () {
             $('#map-dialog').dialog('close');
         });
 
-        //key = AIzaSyCHHINs3vpJPyfIwv5u2pOB4QWlfuBr4Lg
+        //key = XXX
         var myOptions = {
             zoom: 12,
             mapTypeId: google.maps.MapTypeId.ROADMAP
