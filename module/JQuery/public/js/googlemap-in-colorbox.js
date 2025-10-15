@@ -15,7 +15,7 @@ function loadScriptGeneral(flagloadScriptGeneral) {
 
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyCx2MPpr2ZlzC6GkqBQqI1n5YTmIUBl9OE&sensor=false&callback=initializeGeneral";
+    script.src = "http://maps.googleapis.com/maps/api/js?key=XXX&sensor=false&callback=initializeGeneral";
     if (flagloadScriptGeneral)
         document.body.appendChild(script);
     else
